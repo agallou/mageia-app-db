@@ -66,7 +66,6 @@ abstract class BaseUserFollowsPackage extends BaseObject  implements Persistent 
 
 	/**
 	 * The value for the comments field.
-	 * Note: this column has a database default value of: ''
 	 * @var        string
 	 */
 	protected $comments;
@@ -116,7 +115,6 @@ abstract class BaseUserFollowsPackage extends BaseObject  implements Persistent 
 		$this->new_version = false;
 		$this->tester = false;
 		$this->packager = false;
-		$this->comments = '';
 	}
 
 	/**
@@ -369,7 +367,7 @@ abstract class BaseUserFollowsPackage extends BaseObject  implements Persistent 
 			$v = (string) $v;
 		}
 
-		if ($this->comments !== $v || $this->isNew()) {
+		if ($this->comments !== $v) {
 			$this->comments = $v;
 			$this->modifiedColumns[] = UserFollowsPackagePeer::COMMENTS;
 		}
@@ -400,10 +398,6 @@ abstract class BaseUserFollowsPackage extends BaseObject  implements Persistent 
 			}
 
 			if ($this->packager !== false) {
-				return false;
-			}
-
-			if ($this->comments !== '') {
 				return false;
 			}
 

@@ -43,7 +43,7 @@ class UserFollowsPackageTableMap extends TableMap {
 		$this->addColumn('NEW_VERSION', 'NewVersion', 'BOOLEAN', true, null, false);
 		$this->addColumn('TESTER', 'Tester', 'BOOLEAN', true, null, false);
 		$this->addColumn('PACKAGER', 'Packager', 'BOOLEAN', true, null, false);
-		$this->addColumn('COMMENTS', 'Comments', 'LONGVARCHAR', true, null, '');
+		$this->addColumn('COMMENTS', 'Comments', 'LONGVARCHAR', false, null, null);
 		// validators
 	} // initialize()
 
