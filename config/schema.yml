@@ -24,7 +24,7 @@ propel:
     new_version:                                                     { type: boolean, required: true, default: FALSE }
     tester:                                                          { type: boolean, required: true, default: FALSE }
     packager:                                                        { type: boolean, required: true, default: FALSE }
-    comments:                                                        { type: longvarchar, required: true, default: FALSE }
+    comments:                                                         longvarchar
     _uniques:
       dummy_pk:                                                      [ package_id, user_id ]
   user_comments_package:
