@@ -2,3 +2,6 @@ config/generated-schema.xml
 .vimrc
 log/*
 cache/*
+data/sql
+*~
+config/propel.ini
