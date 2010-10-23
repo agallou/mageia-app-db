@@ -20,13 +20,11 @@ propel:
     id:                                                              { type: varchar(45), required: true, primaryKey: true }
     user_id:                                                         { type: integer, required: true, foreignTable: user, foreignReference: id }
     package_id:                                                      { type: integer, required: true, foreignTable: package, foreignReference: id }
-    update:                                                          { type: UNKNOWN, required: true, default: FALSE }
-    new_version:                                                     { type: UNKNOWN, required: true, default: FALSE }
-    tester:                                                          { type: UNKNOWN, required: true, default: FALSE }
-    packager:                                                        { type: UNKNOWN, required: true, default: FALSE }
-    comments:                                                        { type: UNKNOWN, required: true, default: FALSE }
-    TODO : sortir tester et packager dans d'autres tables ?:         { type: varchar(45) }
-    TODO : abonnement mail:                                          { type: varchar(45), required: true }
+    update:                                                          { type: boolean, required: true, default: FALSE }
+    new_version:                                                     { type: boolean, required: true, default: FALSE }
+    tester:                                                          { type: boolean, required: true, default: FALSE }
+    packager:                                                        { type: boolean, required: true, default: FALSE }
+    comments:                                                        { type: longvarchar, required: true, default: FALSE }
     _uniques:
       dummy_pk:                                                      [ package_id, user_id ]
   user_comments_package:
@@ -67,16 +65,15 @@ propel:
     id:                                                              ~
     user_iduser:                                                     { type: integer, required: true, foreignTable: user, foreignReference: id }
     mga_realease_group_id:                                           { type: integer, required: true, foreignTable: mga_release_group, foreignReference: id }
-    update:                                                          { type: UNKNOWN, required: true, default: FALSE }
-    new_version:                                                     { type: UNKNOWN, required: true, default: FALSE }
-    tester:                                                          { type: UNKNOWN, required: true, default: FALSE }
-    packager:                                                        { type: UNKNOWN, required: true, default: FALSE }
-    comments:                                                        { type: UNKNOWN, required: true, default: FALSE }
+    update:                                                          { type: boolean, required: true, default: FALSE }
+    new_version:                                                     { type: boolean, required: true, default: FALSE }
+    tester:                                                          { type: boolean, required: true, default: FALSE }
+    packager:                                                        { type: boolean, required: true, default: FALSE }
+    comments:                                                        { type: boolean, required: true, default: FALSE }
     _uniques:
       dummy_pk:                                                      [ user_iduser, mga_realease_group_id ]
   user_follows_rpm_group:
     id:                                                              ~
-    TODO:                                                            { type: varchar(45) }
   new_version_request:
     id:                                                              ~
     user_iduser:                                                     { type: integer, foreignTable: user, foreignReference: id }
