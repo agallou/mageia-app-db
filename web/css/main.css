@@ -1,0 +1,31 @@
+body
+{
+  margin:0px;
+}
+
+#header
+{
+  position:relative;
+  height:60px;
+}
+
+#global
+{
+}
+#menu
+{
+  position:absolute;
+  top:60;
+  left:0;
+  width:15%;
+  height:100%;
+}
+
+#content
+{
+  position:absolute;
+  top:60;
+  right:0;
+  width:85%;
+  height:100%;
+}

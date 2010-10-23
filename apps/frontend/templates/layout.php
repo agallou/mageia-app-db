@@ -9,6 +9,17 @@
     <?php include_javascripts() ?>
   </head>
   <body>
-    <?php echo $sf_content ?>
+    <div id="header">
+    Mageia app DB
+    </div>
+    <div id="global">
+      <div id="menu">
+        <?php include_component('default', 'menu') ?>
+      </div>
+      <div id="content">
+        <?php echo $sf_content ?>
+      </div>
+    </div>
+    
   </body>
 </html>
