@@ -1,4 +1,4 @@
-config/generated-schema.xml
+config/generated*.xml
 .vimrc
 log/*
 cache/*
