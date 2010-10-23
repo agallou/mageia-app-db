@@ -1,0 +1,112 @@
+propel:
+  package:
+    id:                                                              ~
+    name:                                                            { type: varchar(1024) }
+  rpm:
+    idrpm:                                                           { type: integer, required: true, primaryKey: true }
+    package_idpackage:                                               integer
+    mga_release_idmga_release:                                       { type: integer, foreignTable: mga_release, foreignReference: id }
+    media_idmedia:                                                   { type: integer, foreignTable: media, foreignReference: idmedia }
+    package_id:                                                      { type: integer, foreignTable: package, foreignReference: id }
+    rpm_group_id:                                                    { type: integer, foreignTable: rpm_group, foreignReference: id }
+  mga_release:
+    id:                                                              ~
+    version:                                                         { type: varchar(45), required: true }
+  media:
+    idmedia:                                                         { type: integer, required: true, primaryKey: true }
+  user:
+    id:                                                              ~
+  user_follows_package:
+    id:                                                              { type: varchar(45), required: true, primaryKey: true }
+    user_id:                                                         { type: integer, required: true, foreignTable: user, foreignReference: id }
+    package_id:                                                      { type: integer, required: true, foreignTable: package, foreignReference: id }
+    update:                                                          { type: UNKNOWN, required: true, default: FALSE }
+    new_version:                                                     { type: UNKNOWN, required: true, default: FALSE }
+    tester:                                                          { type: UNKNOWN, required: true, default: FALSE }
+    packager:                                                        { type: UNKNOWN, required: true, default: FALSE }
+    comments:                                                        { type: UNKNOWN, required: true, default: FALSE }
+    TODO : sortir tester et packager dans d'autres tables ?:         { type: varchar(45) }
+    TODO : abonnement mail:                                          { type: varchar(45), required: true }
+    _uniques:
+      dummy_pk:                                                      [ package_id, user_id ]
+  user_comments_package:
+    id:                                                              ~
+    package_id:                                                      { type: integer, required: true, foreignTable: package, foreignReference: id }
+    user_id:                                                         { type: integer, required: true, foreignTable: user, foreignReference: id }
+    comment:                                                         { type: longvarchar, required: true }
+    created_at:                                                      ~
+  rpm_group:
+    id:                                                              ~
+  mga_release_group:
+    id:                                                              ~
+    name:                                                            { type: varchar(45) }
+  mga_realease_group_has_mga_release:
+    mga_release_group_id:                                            { type: integer, required: true, foreignTable: mga_release_group, foreignReference: id }
+    mga_release_idmga_release:                                       { type: integer, required: true, foreignTable: mga_release, foreignReference: id }
+  user_follows_package_has_mga_release_group:
+    user_follows_package_id:                                         { type: varchar(45), required: true, primaryKey: true, foreignTable: user_follows_package, foreignReference: id }
+    mga_release_group_id:                                            { type: integer, required: true, foreignTable: mga_release_group, foreignReference: id }
+  language:
+    id:                                                              ~
+  package_description:
+    id:                                                              ~
+    version_from:                                                    { type: varchar(45) }
+    package_id:                                                      { type: integer, foreignTable: package, foreignReference: id }
+    language_id:                                                     { type: integer, foreignTable: language, foreignReference: id }
+  package_screenshots:
+    id:                                                              ~
+    path_to_screenshot:                                              { type: varchar(1024) }
+    version_from:                                                    { type: varchar(45) }
+    package_id:                                                      { type: integer, foreignTable: package, foreignReference: id }
+  package_links:
+    id:                                                              ~
+    URL:                                                             { type: varchar(45) }
+    language_id:                                                     { type: integer, foreignTable: language, foreignReference: id }
+    package_id:                                                      { type: integer, foreignTable: package, foreignReference: id }
+  user_follows_mga_release_group:
+    id:                                                              ~
+    user_iduser:                                                     { type: integer, required: true, foreignTable: user, foreignReference: id }
+    mga_realease_group_id:                                           { type: integer, required: true, foreignTable: mga_release_group, foreignReference: id }
+    update:                                                          { type: UNKNOWN, required: true, default: FALSE }
+    new_version:                                                     { type: UNKNOWN, required: true, default: FALSE }
+    tester:                                                          { type: UNKNOWN, required: true, default: FALSE }
+    packager:                                                        { type: UNKNOWN, required: true, default: FALSE }
+    comments:                                                        { type: UNKNOWN, required: true, default: FALSE }
+    _uniques:
+      dummy_pk:                                                      [ user_iduser, mga_realease_group_id ]
+  user_follows_rpm_group:
+    id:                                                              ~
+    TODO:                                                            { type: varchar(45) }
+  new_version_request:
+    id:                                                              ~
+    user_iduser:                                                     { type: integer, foreignTable: user, foreignReference: id }
+    package_id:                                                      { type: integer, foreignTable: package, foreignReference: id }
+    mga_release_id:                                                  { type: integer, foreignTable: mga_release, foreignReference: id }
+    version_needed:                                                  { type: varchar(45), required: true }
+    status:                                                          { type: varchar(45), required: true }
+  software_request:
+    id:                                                              ~
+    name:                                                            { type: varchar(255), required: true }
+    url:                                                             { type: varchar(2048), required: true }
+    text:                                                            longvarchar
+    user_iduser:                                                     { type: integer, foreignTable: user, foreignReference: id }
+    backport_to:                                                     longvarchar
+    status:                                                          { type: varchar(45) }
+  user_has_software_request:
+    user_iduser:                                                     { type: integer, required: true, primaryKey: true, foreignTable: user, foreignReference: id }
+    software_request_id:                                             { type: integer, required: true, primaryKey: true, foreignTable: software_request, foreignReference: id }
+  user_comments_software_request:
+    id:                                                              ~
+    user_iduser:                                                     { type: integer, foreignTable: user, foreignReference: id }
+    software_request_id:                                             { type: integer, foreignTable: software_request, foreignReference: id }
+    comment:                                                         longvarchar
+    created_at:                                                      ~
+  user_comments_new_version_request:
+    id:                                                              ~
+    user_iduser:                                                     { type: integer, foreignTable: user, foreignReference: id }
+    new_version_request_id:                                          { type: integer, foreignTable: new_version_request, foreignReference: id }
+    comment:                                                         longvarchar
+    created_at:                                                      ~
+  user_has_new_version_request:
+    user_id:                                                         { type: integer, required: true, primaryKey: true, foreignTable: user, foreignReference: id }
+    new_version_request_id:                                          { type: integer, required: true, primaryKey: true, foreignTable: new_version_request, foreignReference: id }
