@@ -1,3 +1,3 @@
 <ul>
-  <li>Packages</li>
+  <li><?php echo link_to('Packages', 'package/list'); ?></li>
 </ul>

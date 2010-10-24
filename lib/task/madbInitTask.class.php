@@ -12,6 +12,7 @@ class madbInitTask extends sfBaseTask
   }
   protected function execute($arguments = array(), $options = array())
   {
+    ini_set('memory_limit', '64M'); //we need this because we load a lot of propel classes.
     if (!file_exists(sfConfig::get('sf_config_dir') . DIRECTORY_SEPARATOR . 'databases.yml')
     || !file_exists(sfConfig::get('sf_config_dir') . DIRECTORY_SEPARATOR . 'propel.ini'))
     {
@@ -65,10 +66,12 @@ class madbInitTask extends sfBaseTask
 
     $task = new sfPropelInsertSqlTask($this->dispatcher, $this->formatter);
     $task->run(array(), array());
-/*
-    $task = new sfPropelDataLoadTask($this->dispatcher, $this->formatter);
-    $task->run();
-*/
+
+    if ($options['insert-test-data'])
+    {
+      $task = new sfPropelDataLoadTask($this->dispatcher, $this->formatter);
+      $task->run();
+    }
     $task = new sfCacheClearTask($this->dispatcher, $this->formatter);
     $task->run();
   }
