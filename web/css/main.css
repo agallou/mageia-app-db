@@ -30,3 +30,11 @@ body
   height:100%;
 }
 
+#user_infos
+{
+  top:5px;
+  position:absolute;
+  width:150px;
+  right:5px;
+  text-align:right;
+}

@@ -11,6 +11,13 @@
   <body>
     <div id="header">
     Mageia app DB
+    <div id="user_infos">
+      <?php if ($sf_user->isAuthenticated()): ?>
+        <?php echo link_to('Logout', url_for('@logout')); ?>
+      <?php else: ?>
+        <?php echo link_to('Login', url_for('@login')) ?>
+      <?php endif; ?>
+    </div>
     </div>
     <div id="global">
       <div id="menu">
