@@ -13,7 +13,7 @@ class loginAction extends sfActions
       $this->form->bind($parameters);
       if ($this->form->isValid())
       {
-        $this->getUser()->setAuthenticated(true);
+        $this->getUser()->login($this->form->getValue('login'), $this->form->getValue('password'));
       }
     }
     if ($this->getUser()->isAuthenticated())

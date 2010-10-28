@@ -37,6 +37,8 @@ class UserTableMap extends TableMap {
 		$this->setUseIdGenerator(true);
 		// columns
 		$this->addPrimaryKey('ID', 'Id', 'INTEGER', true, null, null);
+		$this->addColumn('NAME', 'Name', 'VARCHAR', false, 32, null);
+		$this->addColumn('LOGIN', 'Login', 'VARCHAR', false, 50, null);
 		// validators
 	} // initialize()
 

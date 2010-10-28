@@ -16,6 +16,8 @@ propel:
     idmedia:                                                         { type: integer, required: true, primaryKey: true }
   user:
     id:                                                              ~
+    name:                                                            { type: varchar(32) }
+    login:                                                           { type: varchar(50) }
   user_follows_package:
     id:                                                              { type: varchar(45), required: true, primaryKey: true }
     user_id:                                                         { type: integer, required: true, foreignTable: user, foreignReference: id }

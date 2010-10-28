@@ -20,3 +20,7 @@ package:
     name: vim
   homebank:
     name: Homebank
+user:
+  admin:
+    name: Jean Maurice
+    login: admin

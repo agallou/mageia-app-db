@@ -25,6 +25,18 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 	protected $id;
 
 	/**
+	 * The value for the name field.
+	 * @var        string
+	 */
+	protected $name;
+
+	/**
+	 * The value for the login field.
+	 * @var        string
+	 */
+	protected $login;
+
+	/**
 	 * @var        array UserFollowsPackage[] Collection to store aggregation of UserFollowsPackage objects.
 	 */
 	protected $collUserFollowsPackages;
@@ -143,6 +155,26 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 	}
 
 	/**
+	 * Get the [name] column value.
+	 * 
+	 * @return     string
+	 */
+	public function getName()
+	{
+		return $this->name;
+	}
+
+	/**
+	 * Get the [login] column value.
+	 * 
+	 * @return     string
+	 */
+	public function getLogin()
+	{
+		return $this->login;
+	}
+
+	/**
 	 * Set the value of [id] column.
 	 * 
 	 * @param      int $v new value
@@ -161,6 +193,46 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 
 		return $this;
 	} // setId()
+
+	/**
+	 * Set the value of [name] column.
+	 * 
+	 * @param      string $v new value
+	 * @return     User The current object (for fluent API support)
+	 */
+	public function setName($v)
+	{
+		if ($v !== null) {
+			$v = (string) $v;
+		}
+
+		if ($this->name !== $v) {
+			$this->name = $v;
+			$this->modifiedColumns[] = UserPeer::NAME;
+		}
+
+		return $this;
+	} // setName()
+
+	/**
+	 * Set the value of [login] column.
+	 * 
+	 * @param      string $v new value
+	 * @return     User The current object (for fluent API support)
+	 */
+	public function setLogin($v)
+	{
+		if ($v !== null) {
+			$v = (string) $v;
+		}
+
+		if ($this->login !== $v) {
+			$this->login = $v;
+			$this->modifiedColumns[] = UserPeer::LOGIN;
+		}
+
+		return $this;
+	} // setLogin()
 
 	/**
 	 * Indicates whether the columns in this object are only set to default values.
@@ -195,6 +267,8 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 		try {
 
 			$this->id = ($row[$startcol + 0] !== null) ? (int) $row[$startcol + 0] : null;
+			$this->name = ($row[$startcol + 1] !== null) ? (string) $row[$startcol + 1] : null;
+			$this->login = ($row[$startcol + 2] !== null) ? (string) $row[$startcol + 2] : null;
 			$this->resetModified();
 
 			$this->setNew(false);
@@ -204,7 +278,7 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 			}
 
 			// FIXME - using NUM_COLUMNS may be clearer.
-			return $startcol + 1; // 1 = UserPeer::NUM_COLUMNS - UserPeer::NUM_LAZY_LOAD_COLUMNS).
+			return $startcol + 3; // 3 = UserPeer::NUM_COLUMNS - UserPeer::NUM_LAZY_LOAD_COLUMNS).
 
 		} catch (Exception $e) {
 			throw new PropelException("Error populating User object", $e);
@@ -708,6 +782,12 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 			case 0:
 				return $this->getId();
 				break;
+			case 1:
+				return $this->getName();
+				break;
+			case 2:
+				return $this->getLogin();
+				break;
 			default:
 				return null;
 				break;
@@ -730,6 +810,8 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 		$keys = UserPeer::getFieldNames($keyType);
 		$result = array(
 			$keys[0] => $this->getId(),
+			$keys[1] => $this->getName(),
+			$keys[2] => $this->getLogin(),
 		);
 		return $result;
 	}
@@ -764,6 +846,12 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 			case 0:
 				$this->setId($value);
 				break;
+			case 1:
+				$this->setName($value);
+				break;
+			case 2:
+				$this->setLogin($value);
+				break;
 		} // switch()
 	}
 
@@ -789,6 +877,8 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 		$keys = UserPeer::getFieldNames($keyType);
 
 		if (array_key_exists($keys[0], $arr)) $this->setId($arr[$keys[0]]);
+		if (array_key_exists($keys[1], $arr)) $this->setName($arr[$keys[1]]);
+		if (array_key_exists($keys[2], $arr)) $this->setLogin($arr[$keys[2]]);
 	}
 
 	/**
@@ -801,6 +891,8 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 		$criteria = new Criteria(UserPeer::DATABASE_NAME);
 
 		if ($this->isColumnModified(UserPeer::ID)) $criteria->add(UserPeer::ID, $this->id);
+		if ($this->isColumnModified(UserPeer::NAME)) $criteria->add(UserPeer::NAME, $this->name);
+		if ($this->isColumnModified(UserPeer::LOGIN)) $criteria->add(UserPeer::LOGIN, $this->login);
 
 		return $criteria;
 	}
@@ -854,6 +946,10 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 	 */
 	public function copyInto($copyObj, $deepCopy = false)
 	{
+
+		$copyObj->setName($this->name);
+
+		$copyObj->setLogin($this->login);
 
 
 		if ($deepCopy) {

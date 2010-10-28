@@ -14,4 +14,12 @@
  */
 class UserPeer extends BaseUserPeer {
 
+  public static function retrieveByLogin($login)
+  {
+    $criteria = new Criteria();
+    $criteria->add(UserPeer::LOGIN, $login);
+    return UserPeer::doSelectOne($criteria);
+  }
+
+
 } // UserPeer

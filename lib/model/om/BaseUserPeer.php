@@ -25,13 +25,19 @@ abstract class BaseUserPeer {
 	const TM_CLASS = 'UserTableMap';
 	
 	/** The total number of columns. */
-	const NUM_COLUMNS = 1;
+	const NUM_COLUMNS = 3;
 
 	/** The number of lazy-loaded columns. */
 	const NUM_LAZY_LOAD_COLUMNS = 0;
 
 	/** the column name for the ID field */
 	const ID = 'user.ID';
+
+	/** the column name for the NAME field */
+	const NAME = 'user.NAME';
+
+	/** the column name for the LOGIN field */
+	const LOGIN = 'user.LOGIN';
 
 	/**
 	 * An identiy map to hold any loaded instances of User objects.
@@ -56,11 +62,11 @@ abstract class BaseUserPeer {
 	 * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
 	 */
 	private static $fieldNames = array (
-		BasePeer::TYPE_PHPNAME => array ('Id', ),
-		BasePeer::TYPE_STUDLYPHPNAME => array ('id', ),
-		BasePeer::TYPE_COLNAME => array (self::ID, ),
-		BasePeer::TYPE_FIELDNAME => array ('id', ),
-		BasePeer::TYPE_NUM => array (0, )
+		BasePeer::TYPE_PHPNAME => array ('Id', 'Name', 'Login', ),
+		BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'name', 'login', ),
+		BasePeer::TYPE_COLNAME => array (self::ID, self::NAME, self::LOGIN, ),
+		BasePeer::TYPE_FIELDNAME => array ('id', 'name', 'login', ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, )
 	);
 
 	/**
@@ -70,11 +76,11 @@ abstract class BaseUserPeer {
 	 * e.g. self::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
 	 */
 	private static $fieldKeys = array (
-		BasePeer::TYPE_PHPNAME => array ('Id' => 0, ),
-		BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, ),
-		BasePeer::TYPE_COLNAME => array (self::ID => 0, ),
-		BasePeer::TYPE_FIELDNAME => array ('id' => 0, ),
-		BasePeer::TYPE_NUM => array (0, )
+		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Name' => 1, 'Login' => 2, ),
+		BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'name' => 1, 'login' => 2, ),
+		BasePeer::TYPE_COLNAME => array (self::ID => 0, self::NAME => 1, self::LOGIN => 2, ),
+		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'name' => 1, 'login' => 2, ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, )
 	);
 
 	/**
@@ -145,6 +151,8 @@ abstract class BaseUserPeer {
 	public static function addSelectColumns(Criteria $criteria)
 	{
 		$criteria->addSelectColumn(UserPeer::ID);
+		$criteria->addSelectColumn(UserPeer::NAME);
+		$criteria->addSelectColumn(UserPeer::LOGIN);
 	}
 
 	/**
