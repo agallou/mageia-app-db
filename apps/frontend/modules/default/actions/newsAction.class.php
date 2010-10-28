@@ -1,5 +1,5 @@
 <?php
-class indexAction extends sfActions
+class newsAction extends sfActions
 {
   public function execute($request)
   {
