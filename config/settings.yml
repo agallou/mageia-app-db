@@ -1,0 +1,4 @@
+all:
+  .actions:
+    login_module: user
+    login_action: login
