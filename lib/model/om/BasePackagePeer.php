@@ -25,7 +25,7 @@ abstract class BasePackagePeer {
 	const TM_CLASS = 'PackageTableMap';
 	
 	/** The total number of columns. */
-	const NUM_COLUMNS = 2;
+	const NUM_COLUMNS = 3;
 
 	/** The number of lazy-loaded columns. */
 	const NUM_LAZY_LOAD_COLUMNS = 0;
@@ -35,6 +35,9 @@ abstract class BasePackagePeer {
 
 	/** the column name for the NAME field */
 	const NAME = 'package.NAME';
+
+	/** the column name for the IS_APPLICATION field */
+	const IS_APPLICATION = 'package.IS_APPLICATION';
 
 	/**
 	 * An identiy map to hold any loaded instances of Package objects.
@@ -59,11 +62,11 @@ abstract class BasePackagePeer {
 	 * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
 	 */
 	private static $fieldNames = array (
-		BasePeer::TYPE_PHPNAME => array ('Id', 'Name', ),
-		BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'name', ),
-		BasePeer::TYPE_COLNAME => array (self::ID, self::NAME, ),
-		BasePeer::TYPE_FIELDNAME => array ('id', 'name', ),
-		BasePeer::TYPE_NUM => array (0, 1, )
+		BasePeer::TYPE_PHPNAME => array ('Id', 'Name', 'IsApplication', ),
+		BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'name', 'isApplication', ),
+		BasePeer::TYPE_COLNAME => array (self::ID, self::NAME, self::IS_APPLICATION, ),
+		BasePeer::TYPE_FIELDNAME => array ('id', 'name', 'is_application', ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, )
 	);
 
 	/**
@@ -73,11 +76,11 @@ abstract class BasePackagePeer {
 	 * e.g. self::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
 	 */
 	private static $fieldKeys = array (
-		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Name' => 1, ),
-		BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'name' => 1, ),
-		BasePeer::TYPE_COLNAME => array (self::ID => 0, self::NAME => 1, ),
-		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'name' => 1, ),
-		BasePeer::TYPE_NUM => array (0, 1, )
+		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Name' => 1, 'IsApplication' => 2, ),
+		BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'name' => 1, 'isApplication' => 2, ),
+		BasePeer::TYPE_COLNAME => array (self::ID => 0, self::NAME => 1, self::IS_APPLICATION => 2, ),
+		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'name' => 1, 'is_application' => 2, ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, )
 	);
 
 	/**
@@ -149,6 +152,7 @@ abstract class BasePackagePeer {
 	{
 		$criteria->addSelectColumn(PackagePeer::ID);
 		$criteria->addSelectColumn(PackagePeer::NAME);
+		$criteria->addSelectColumn(PackagePeer::IS_APPLICATION);
 	}
 
 	/**

@@ -2,6 +2,7 @@ propel:
   package:
     id:                                                              ~
     name:                                                            { type: varchar(1024) }
+    is_application:                                                  { type: boolean }
   rpm:
     idrpm:                                                           { type: integer, required: true, primaryKey: true }
     package_idpackage:                                               integer

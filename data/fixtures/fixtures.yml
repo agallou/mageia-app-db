@@ -18,8 +18,13 @@
 package:
   vim:
     name: vim
+    is_application: true
   homebank:
     name: Homebank
+    is_application: true
+  libkde4: 
+    name: lib-kde4
+    is_application: false
 user:
   admin:
     name: Jean Maurice

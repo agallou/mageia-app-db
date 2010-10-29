@@ -31,6 +31,12 @@ abstract class BasePackage extends BaseObject  implements Persistent {
 	protected $name;
 
 	/**
+	 * The value for the is_application field.
+	 * @var        boolean
+	 */
+	protected $is_application;
+
+	/**
 	 * @var        array Rpm[] Collection to store aggregation of Rpm objects.
 	 */
 	protected $collRpms;
@@ -139,6 +145,16 @@ abstract class BasePackage extends BaseObject  implements Persistent {
 	}
 
 	/**
+	 * Get the [is_application] column value.
+	 * 
+	 * @return     boolean
+	 */
+	public function getIsApplication()
+	{
+		return $this->is_application;
+	}
+
+	/**
 	 * Set the value of [id] column.
 	 * 
 	 * @param      int $v new value
@@ -179,6 +195,26 @@ abstract class BasePackage extends BaseObject  implements Persistent {
 	} // setName()
 
 	/**
+	 * Set the value of [is_application] column.
+	 * 
+	 * @param      boolean $v new value
+	 * @return     Package The current object (for fluent API support)
+	 */
+	public function setIsApplication($v)
+	{
+		if ($v !== null) {
+			$v = (boolean) $v;
+		}
+
+		if ($this->is_application !== $v) {
+			$this->is_application = $v;
+			$this->modifiedColumns[] = PackagePeer::IS_APPLICATION;
+		}
+
+		return $this;
+	} // setIsApplication()
+
+	/**
 	 * Indicates whether the columns in this object are only set to default values.
 	 *
 	 * This method can be used in conjunction with isModified() to indicate whether an object is both
@@ -212,6 +248,7 @@ abstract class BasePackage extends BaseObject  implements Persistent {
 
 			$this->id = ($row[$startcol + 0] !== null) ? (int) $row[$startcol + 0] : null;
 			$this->name = ($row[$startcol + 1] !== null) ? (string) $row[$startcol + 1] : null;
+			$this->is_application = ($row[$startcol + 2] !== null) ? (boolean) $row[$startcol + 2] : null;
 			$this->resetModified();
 
 			$this->setNew(false);
@@ -221,7 +258,7 @@ abstract class BasePackage extends BaseObject  implements Persistent {
 			}
 
 			// FIXME - using NUM_COLUMNS may be clearer.
-			return $startcol + 2; // 2 = PackagePeer::NUM_COLUMNS - PackagePeer::NUM_LAZY_LOAD_COLUMNS).
+			return $startcol + 3; // 3 = PackagePeer::NUM_COLUMNS - PackagePeer::NUM_LAZY_LOAD_COLUMNS).
 
 		} catch (Exception $e) {
 			throw new PropelException("Error populating Package object", $e);
@@ -690,6 +727,9 @@ abstract class BasePackage extends BaseObject  implements Persistent {
 			case 1:
 				return $this->getName();
 				break;
+			case 2:
+				return $this->getIsApplication();
+				break;
 			default:
 				return null;
 				break;
@@ -713,6 +753,7 @@ abstract class BasePackage extends BaseObject  implements Persistent {
 		$result = array(
 			$keys[0] => $this->getId(),
 			$keys[1] => $this->getName(),
+			$keys[2] => $this->getIsApplication(),
 		);
 		return $result;
 	}
@@ -750,6 +791,9 @@ abstract class BasePackage extends BaseObject  implements Persistent {
 			case 1:
 				$this->setName($value);
 				break;
+			case 2:
+				$this->setIsApplication($value);
+				break;
 		} // switch()
 	}
 
@@ -776,6 +820,7 @@ abstract class BasePackage extends BaseObject  implements Persistent {
 
 		if (array_key_exists($keys[0], $arr)) $this->setId($arr[$keys[0]]);
 		if (array_key_exists($keys[1], $arr)) $this->setName($arr[$keys[1]]);
+		if (array_key_exists($keys[2], $arr)) $this->setIsApplication($arr[$keys[2]]);
 	}
 
 	/**
@@ -789,6 +834,7 @@ abstract class BasePackage extends BaseObject  implements Persistent {
 
 		if ($this->isColumnModified(PackagePeer::ID)) $criteria->add(PackagePeer::ID, $this->id);
 		if ($this->isColumnModified(PackagePeer::NAME)) $criteria->add(PackagePeer::NAME, $this->name);
+		if ($this->isColumnModified(PackagePeer::IS_APPLICATION)) $criteria->add(PackagePeer::IS_APPLICATION, $this->is_application);
 
 		return $criteria;
 	}
@@ -844,6 +890,8 @@ abstract class BasePackage extends BaseObject  implements Persistent {
 	{
 
 		$copyObj->setName($this->name);
+
+		$copyObj->setIsApplication($this->is_application);
 
 
 		if ($deepCopy) {

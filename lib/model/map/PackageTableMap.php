@@ -38,6 +38,7 @@ class PackageTableMap extends TableMap {
 		// columns
 		$this->addPrimaryKey('ID', 'Id', 'INTEGER', true, null, null);
 		$this->addColumn('NAME', 'Name', 'VARCHAR', false, 1024, null);
+		$this->addColumn('IS_APPLICATION', 'IsApplication', 'BOOLEAN', false, null, null);
 		// validators
 	} // initialize()
 
