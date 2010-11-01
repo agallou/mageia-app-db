@@ -56,8 +56,6 @@ class madbInitTask extends sfBaseTask
       file_put_contents(sfConfig::get('sf_config_dir') . DIRECTORY_SEPARATOR . 'propel.ini', $propel);
     }
 
-    $dsn  = sprintf("mysql:host=%s;dbname=%s", 'localhost', 'adslogusers');
-
     $task = new sfPropelBuildSqlTask($this->dispatcher, $this->formatter);
     $task->run();
 
