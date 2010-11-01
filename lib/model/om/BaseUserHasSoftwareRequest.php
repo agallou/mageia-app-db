@@ -19,10 +19,10 @@ abstract class BaseUserHasSoftwareRequest extends BaseObject  implements Persist
 	protected static $peer;
 
 	/**
-	 * The value for the user_iduser field.
+	 * The value for the user_id field.
 	 * @var        int
 	 */
-	protected $user_iduser;
+	protected $user_id;
 
 	/**
 	 * The value for the software_request_id field.
@@ -59,13 +59,13 @@ abstract class BaseUserHasSoftwareRequest extends BaseObject  implements Persist
 	const PEER = 'UserHasSoftwareRequestPeer';
 
 	/**
-	 * Get the [user_iduser] column value.
+	 * Get the [user_id] column value.
 	 * 
 	 * @return     int
 	 */
-	public function getUserIduser()
+	public function getUserId()
 	{
-		return $this->user_iduser;
+		return $this->user_id;
 	}
 
 	/**
@@ -79,20 +79,20 @@ abstract class BaseUserHasSoftwareRequest extends BaseObject  implements Persist
 	}
 
 	/**
-	 * Set the value of [user_iduser] column.
+	 * Set the value of [user_id] column.
 	 * 
 	 * @param      int $v new value
 	 * @return     UserHasSoftwareRequest The current object (for fluent API support)
 	 */
-	public function setUserIduser($v)
+	public function setUserId($v)
 	{
 		if ($v !== null) {
 			$v = (int) $v;
 		}
 
-		if ($this->user_iduser !== $v) {
-			$this->user_iduser = $v;
-			$this->modifiedColumns[] = UserHasSoftwareRequestPeer::USER_IDUSER;
+		if ($this->user_id !== $v) {
+			$this->user_id = $v;
+			$this->modifiedColumns[] = UserHasSoftwareRequestPeer::USER_ID;
 		}
 
 		if ($this->aUser !== null && $this->aUser->getId() !== $v) {
@@ -100,7 +100,7 @@ abstract class BaseUserHasSoftwareRequest extends BaseObject  implements Persist
 		}
 
 		return $this;
-	} // setUserIduser()
+	} // setUserId()
 
 	/**
 	 * Set the value of [software_request_id] column.
@@ -158,7 +158,7 @@ abstract class BaseUserHasSoftwareRequest extends BaseObject  implements Persist
 	{
 		try {
 
-			$this->user_iduser = ($row[$startcol + 0] !== null) ? (int) $row[$startcol + 0] : null;
+			$this->user_id = ($row[$startcol + 0] !== null) ? (int) $row[$startcol + 0] : null;
 			$this->software_request_id = ($row[$startcol + 1] !== null) ? (int) $row[$startcol + 1] : null;
 			$this->resetModified();
 
@@ -192,7 +192,7 @@ abstract class BaseUserHasSoftwareRequest extends BaseObject  implements Persist
 	public function ensureConsistency()
 	{
 
-		if ($this->aUser !== null && $this->user_iduser !== $this->aUser->getId()) {
+		if ($this->aUser !== null && $this->user_id !== $this->aUser->getId()) {
 			$this->aUser = null;
 		}
 		if ($this->aSoftwareRequest !== null && $this->software_request_id !== $this->aSoftwareRequest->getId()) {
@@ -540,7 +540,7 @@ abstract class BaseUserHasSoftwareRequest extends BaseObject  implements Persist
 	{
 		switch($pos) {
 			case 0:
-				return $this->getUserIduser();
+				return $this->getUserId();
 				break;
 			case 1:
 				return $this->getSoftwareRequestId();
@@ -566,7 +566,7 @@ abstract class BaseUserHasSoftwareRequest extends BaseObject  implements Persist
 	{
 		$keys = UserHasSoftwareRequestPeer::getFieldNames($keyType);
 		$result = array(
-			$keys[0] => $this->getUserIduser(),
+			$keys[0] => $this->getUserId(),
 			$keys[1] => $this->getSoftwareRequestId(),
 		);
 		return $result;
@@ -600,7 +600,7 @@ abstract class BaseUserHasSoftwareRequest extends BaseObject  implements Persist
 	{
 		switch($pos) {
 			case 0:
-				$this->setUserIduser($value);
+				$this->setUserId($value);
 				break;
 			case 1:
 				$this->setSoftwareRequestId($value);
@@ -629,7 +629,7 @@ abstract class BaseUserHasSoftwareRequest extends BaseObject  implements Persist
 	{
 		$keys = UserHasSoftwareRequestPeer::getFieldNames($keyType);
 
-		if (array_key_exists($keys[0], $arr)) $this->setUserIduser($arr[$keys[0]]);
+		if (array_key_exists($keys[0], $arr)) $this->setUserId($arr[$keys[0]]);
 		if (array_key_exists($keys[1], $arr)) $this->setSoftwareRequestId($arr[$keys[1]]);
 	}
 
@@ -642,7 +642,7 @@ abstract class BaseUserHasSoftwareRequest extends BaseObject  implements Persist
 	{
 		$criteria = new Criteria(UserHasSoftwareRequestPeer::DATABASE_NAME);
 
-		if ($this->isColumnModified(UserHasSoftwareRequestPeer::USER_IDUSER)) $criteria->add(UserHasSoftwareRequestPeer::USER_IDUSER, $this->user_iduser);
+		if ($this->isColumnModified(UserHasSoftwareRequestPeer::USER_ID)) $criteria->add(UserHasSoftwareRequestPeer::USER_ID, $this->user_id);
 		if ($this->isColumnModified(UserHasSoftwareRequestPeer::SOFTWARE_REQUEST_ID)) $criteria->add(UserHasSoftwareRequestPeer::SOFTWARE_REQUEST_ID, $this->software_request_id);
 
 		return $criteria;
@@ -660,7 +660,7 @@ abstract class BaseUserHasSoftwareRequest extends BaseObject  implements Persist
 	{
 		$criteria = new Criteria(UserHasSoftwareRequestPeer::DATABASE_NAME);
 
-		$criteria->add(UserHasSoftwareRequestPeer::USER_IDUSER, $this->user_iduser);
+		$criteria->add(UserHasSoftwareRequestPeer::USER_ID, $this->user_id);
 		$criteria->add(UserHasSoftwareRequestPeer::SOFTWARE_REQUEST_ID, $this->software_request_id);
 
 		return $criteria;
@@ -675,7 +675,7 @@ abstract class BaseUserHasSoftwareRequest extends BaseObject  implements Persist
 	{
 		$pks = array();
 
-		$pks[0] = $this->getUserIduser();
+		$pks[0] = $this->getUserId();
 
 		$pks[1] = $this->getSoftwareRequestId();
 
@@ -691,7 +691,7 @@ abstract class BaseUserHasSoftwareRequest extends BaseObject  implements Persist
 	public function setPrimaryKey($keys)
 	{
 
-		$this->setUserIduser($keys[0]);
+		$this->setUserId($keys[0]);
 
 		$this->setSoftwareRequestId($keys[1]);
 
@@ -710,7 +710,7 @@ abstract class BaseUserHasSoftwareRequest extends BaseObject  implements Persist
 	public function copyInto($copyObj, $deepCopy = false)
 	{
 
-		$copyObj->setUserIduser($this->user_iduser);
+		$copyObj->setUserId($this->user_id);
 
 		$copyObj->setSoftwareRequestId($this->software_request_id);
 
@@ -767,9 +767,9 @@ abstract class BaseUserHasSoftwareRequest extends BaseObject  implements Persist
 	public function setUser(User $v = null)
 	{
 		if ($v === null) {
-			$this->setUserIduser(NULL);
+			$this->setUserId(NULL);
 		} else {
-			$this->setUserIduser($v->getId());
+			$this->setUserId($v->getId());
 		}
 
 		$this->aUser = $v;
@@ -793,8 +793,8 @@ abstract class BaseUserHasSoftwareRequest extends BaseObject  implements Persist
 	 */
 	public function getUser(PropelPDO $con = null)
 	{
-		if ($this->aUser === null && ($this->user_iduser !== null)) {
-			$this->aUser = UserPeer::retrieveByPk($this->user_iduser);
+		if ($this->aUser === null && ($this->user_id !== null)) {
+			$this->aUser = UserPeer::retrieveByPk($this->user_id);
 			/* The following can be used additionally to
 			   guarantee the related object contains a reference
 			   to this object.  This level of coupling may, however, be

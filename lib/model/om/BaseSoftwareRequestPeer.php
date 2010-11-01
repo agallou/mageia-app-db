@@ -42,8 +42,8 @@ abstract class BaseSoftwareRequestPeer {
 	/** the column name for the TEXT field */
 	const TEXT = 'software_request.TEXT';
 
-	/** the column name for the USER_IDUSER field */
-	const USER_IDUSER = 'software_request.USER_IDUSER';
+	/** the column name for the USER_ID field */
+	const USER_ID = 'software_request.USER_ID';
 
 	/** the column name for the BACKPORT_TO field */
 	const BACKPORT_TO = 'software_request.BACKPORT_TO';
@@ -74,10 +74,10 @@ abstract class BaseSoftwareRequestPeer {
 	 * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
 	 */
 	private static $fieldNames = array (
-		BasePeer::TYPE_PHPNAME => array ('Id', 'Name', 'Url', 'Text', 'UserIduser', 'BackportTo', 'Status', ),
-		BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'name', 'url', 'text', 'userIduser', 'backportTo', 'status', ),
-		BasePeer::TYPE_COLNAME => array (self::ID, self::NAME, self::URL, self::TEXT, self::USER_IDUSER, self::BACKPORT_TO, self::STATUS, ),
-		BasePeer::TYPE_FIELDNAME => array ('id', 'name', 'url', 'text', 'user_iduser', 'backport_to', 'status', ),
+		BasePeer::TYPE_PHPNAME => array ('Id', 'Name', 'Url', 'Text', 'UserId', 'BackportTo', 'Status', ),
+		BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'name', 'url', 'text', 'userId', 'backportTo', 'status', ),
+		BasePeer::TYPE_COLNAME => array (self::ID, self::NAME, self::URL, self::TEXT, self::USER_ID, self::BACKPORT_TO, self::STATUS, ),
+		BasePeer::TYPE_FIELDNAME => array ('id', 'name', 'url', 'text', 'user_id', 'backport_to', 'status', ),
 		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, )
 	);
 
@@ -88,10 +88,10 @@ abstract class BaseSoftwareRequestPeer {
 	 * e.g. self::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
 	 */
 	private static $fieldKeys = array (
-		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Name' => 1, 'Url' => 2, 'Text' => 3, 'UserIduser' => 4, 'BackportTo' => 5, 'Status' => 6, ),
-		BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'name' => 1, 'url' => 2, 'text' => 3, 'userIduser' => 4, 'backportTo' => 5, 'status' => 6, ),
-		BasePeer::TYPE_COLNAME => array (self::ID => 0, self::NAME => 1, self::URL => 2, self::TEXT => 3, self::USER_IDUSER => 4, self::BACKPORT_TO => 5, self::STATUS => 6, ),
-		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'name' => 1, 'url' => 2, 'text' => 3, 'user_iduser' => 4, 'backport_to' => 5, 'status' => 6, ),
+		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Name' => 1, 'Url' => 2, 'Text' => 3, 'UserId' => 4, 'BackportTo' => 5, 'Status' => 6, ),
+		BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'name' => 1, 'url' => 2, 'text' => 3, 'userId' => 4, 'backportTo' => 5, 'status' => 6, ),
+		BasePeer::TYPE_COLNAME => array (self::ID => 0, self::NAME => 1, self::URL => 2, self::TEXT => 3, self::USER_ID => 4, self::BACKPORT_TO => 5, self::STATUS => 6, ),
+		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'name' => 1, 'url' => 2, 'text' => 3, 'user_id' => 4, 'backport_to' => 5, 'status' => 6, ),
 		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, )
 	);
 
@@ -166,7 +166,7 @@ abstract class BaseSoftwareRequestPeer {
 		$criteria->addSelectColumn(SoftwareRequestPeer::NAME);
 		$criteria->addSelectColumn(SoftwareRequestPeer::URL);
 		$criteria->addSelectColumn(SoftwareRequestPeer::TEXT);
-		$criteria->addSelectColumn(SoftwareRequestPeer::USER_IDUSER);
+		$criteria->addSelectColumn(SoftwareRequestPeer::USER_ID);
 		$criteria->addSelectColumn(SoftwareRequestPeer::BACKPORT_TO);
 		$criteria->addSelectColumn(SoftwareRequestPeer::STATUS);
 	}
@@ -462,7 +462,7 @@ abstract class BaseSoftwareRequestPeer {
 			$con = Propel::getConnection(SoftwareRequestPeer::DATABASE_NAME, Propel::CONNECTION_READ);
 		}
 
-		$criteria->addJoin(SoftwareRequestPeer::USER_IDUSER, UserPeer::ID, $join_behavior);
+		$criteria->addJoin(SoftwareRequestPeer::USER_ID, UserPeer::ID, $join_behavior);
 
 		// symfony_behaviors behavior
 		foreach (sfMixer::getCallables(self::getMixerPreSelectHook(__FUNCTION__)) as $sf_hook)
@@ -504,7 +504,7 @@ abstract class BaseSoftwareRequestPeer {
 		$startcol = (SoftwareRequestPeer::NUM_COLUMNS - SoftwareRequestPeer::NUM_LAZY_LOAD_COLUMNS);
 		UserPeer::addSelectColumns($criteria);
 
-		$criteria->addJoin(SoftwareRequestPeer::USER_IDUSER, UserPeer::ID, $join_behavior);
+		$criteria->addJoin(SoftwareRequestPeer::USER_ID, UserPeer::ID, $join_behavior);
 
 		// symfony_behaviors behavior
 		foreach (sfMixer::getCallables(self::getMixerPreSelectHook(__FUNCTION__)) as $sf_hook)
@@ -590,7 +590,7 @@ abstract class BaseSoftwareRequestPeer {
 			$con = Propel::getConnection(SoftwareRequestPeer::DATABASE_NAME, Propel::CONNECTION_READ);
 		}
 
-		$criteria->addJoin(SoftwareRequestPeer::USER_IDUSER, UserPeer::ID, $join_behavior);
+		$criteria->addJoin(SoftwareRequestPeer::USER_ID, UserPeer::ID, $join_behavior);
 
 		// symfony_behaviors behavior
 		foreach (sfMixer::getCallables(self::getMixerPreSelectHook(__FUNCTION__)) as $sf_hook)
@@ -634,7 +634,7 @@ abstract class BaseSoftwareRequestPeer {
 		UserPeer::addSelectColumns($criteria);
 		$startcol3 = $startcol2 + (UserPeer::NUM_COLUMNS - UserPeer::NUM_LAZY_LOAD_COLUMNS);
 
-		$criteria->addJoin(SoftwareRequestPeer::USER_IDUSER, UserPeer::ID, $join_behavior);
+		$criteria->addJoin(SoftwareRequestPeer::USER_ID, UserPeer::ID, $join_behavior);
 
 		// symfony_behaviors behavior
 		foreach (sfMixer::getCallables(self::getMixerPreSelectHook(__FUNCTION__)) as $sf_hook)

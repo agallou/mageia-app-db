@@ -37,9 +37,9 @@ class UserCommentsNewVersionRequestTableMap extends TableMap {
 		$this->setUseIdGenerator(true);
 		// columns
 		$this->addPrimaryKey('ID', 'Id', 'INTEGER', true, null, null);
-		$this->addForeignKey('USER_IDUSER', 'UserIduser', 'INTEGER', 'user', 'ID', false, null, null);
-		$this->addForeignKey('NEW_VERSION_REQUEST_ID', 'NewVersionRequestId', 'INTEGER', 'new_version_request', 'ID', false, null, null);
-		$this->addColumn('COMMENT', 'Comment', 'LONGVARCHAR', false, null, null);
+		$this->addForeignKey('USER_ID', 'UserId', 'INTEGER', 'user', 'ID', true, null, null);
+		$this->addForeignKey('NEW_VERSION_REQUEST_ID', 'NewVersionRequestId', 'INTEGER', 'new_version_request', 'ID', true, null, null);
+		$this->addColumn('COMMENT', 'Comment', 'LONGVARCHAR', true, null, null);
 		$this->addColumn('CREATED_AT', 'CreatedAt', 'TIMESTAMP', false, null, null);
 		// validators
 	} // initialize()
@@ -49,7 +49,7 @@ class UserCommentsNewVersionRequestTableMap extends TableMap {
 	 */
 	public function buildRelations()
 	{
-    $this->addRelation('User', 'User', RelationMap::MANY_TO_ONE, array('user_iduser' => 'id', ), null, null);
+    $this->addRelation('User', 'User', RelationMap::MANY_TO_ONE, array('user_id' => 'id', ), null, null);
     $this->addRelation('NewVersionRequest', 'NewVersionRequest', RelationMap::MANY_TO_ONE, array('new_version_request_id' => 'id', ), null, null);
 	} // buildRelations()
 

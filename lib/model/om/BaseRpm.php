@@ -19,28 +19,10 @@ abstract class BaseRpm extends BaseObject  implements Persistent {
 	protected static $peer;
 
 	/**
-	 * The value for the idrpm field.
+	 * The value for the id field.
 	 * @var        int
 	 */
-	protected $idrpm;
-
-	/**
-	 * The value for the package_idpackage field.
-	 * @var        int
-	 */
-	protected $package_idpackage;
-
-	/**
-	 * The value for the mga_release_idmga_release field.
-	 * @var        int
-	 */
-	protected $mga_release_idmga_release;
-
-	/**
-	 * The value for the media_idmedia field.
-	 * @var        int
-	 */
-	protected $media_idmedia;
+	protected $id;
 
 	/**
 	 * The value for the package_id field.
@@ -49,20 +31,76 @@ abstract class BaseRpm extends BaseObject  implements Persistent {
 	protected $package_id;
 
 	/**
+	 * The value for the distrelease_id field.
+	 * @var        int
+	 */
+	protected $distrelease_id;
+
+	/**
+	 * The value for the media_id field.
+	 * @var        int
+	 */
+	protected $media_id;
+
+	/**
 	 * The value for the rpm_group_id field.
 	 * @var        int
 	 */
 	protected $rpm_group_id;
 
 	/**
-	 * @var        MgaRelease
+	 * The value for the licence field.
+	 * @var        string
 	 */
-	protected $aMgaRelease;
+	protected $licence;
 
 	/**
-	 * @var        Media
+	 * The value for the name field.
+	 * @var        string
 	 */
-	protected $aMedia;
+	protected $name;
+
+	/**
+	 * The value for the evr field.
+	 * @var        string
+	 */
+	protected $evr;
+
+	/**
+	 * The value for the version field.
+	 * @var        string
+	 */
+	protected $version;
+
+	/**
+	 * The value for the release field.
+	 * @var        string
+	 */
+	protected $release;
+
+	/**
+	 * The value for the summary field.
+	 * @var        string
+	 */
+	protected $summary;
+
+	/**
+	 * The value for the description field.
+	 * @var        string
+	 */
+	protected $description;
+
+	/**
+	 * The value for the url field.
+	 * @var        string
+	 */
+	protected $url;
+
+	/**
+	 * The value for the src_rpm field.
+	 * @var        string
+	 */
+	protected $src_rpm;
 
 	/**
 	 * @var        Package
@@ -70,9 +108,29 @@ abstract class BaseRpm extends BaseObject  implements Persistent {
 	protected $aPackage;
 
 	/**
+	 * @var        Distrelease
+	 */
+	protected $aDistrelease;
+
+	/**
+	 * @var        Media
+	 */
+	protected $aMedia;
+
+	/**
 	 * @var        RpmGroup
 	 */
 	protected $aRpmGroup;
+
+	/**
+	 * @var        array Rpmfile[] Collection to store aggregation of Rpmfile objects.
+	 */
+	protected $collRpmfiles;
+
+	/**
+	 * @var        Criteria The criteria used to select the current contents of collRpmfiles.
+	 */
+	private $lastRpmfileCriteria = null;
 
 	/**
 	 * Flag to prevent endless save loop, if this object is referenced
@@ -93,43 +151,13 @@ abstract class BaseRpm extends BaseObject  implements Persistent {
 	const PEER = 'RpmPeer';
 
 	/**
-	 * Get the [idrpm] column value.
+	 * Get the [id] column value.
 	 * 
 	 * @return     int
 	 */
-	public function getIdrpm()
+	public function getId()
 	{
-		return $this->idrpm;
-	}
-
-	/**
-	 * Get the [package_idpackage] column value.
-	 * 
-	 * @return     int
-	 */
-	public function getPackageIdpackage()
-	{
-		return $this->package_idpackage;
-	}
-
-	/**
-	 * Get the [mga_release_idmga_release] column value.
-	 * 
-	 * @return     int
-	 */
-	public function getMgaReleaseIdmgaRelease()
-	{
-		return $this->mga_release_idmga_release;
-	}
-
-	/**
-	 * Get the [media_idmedia] column value.
-	 * 
-	 * @return     int
-	 */
-	public function getMediaIdmedia()
-	{
-		return $this->media_idmedia;
+		return $this->id;
 	}
 
 	/**
@@ -143,6 +171,26 @@ abstract class BaseRpm extends BaseObject  implements Persistent {
 	}
 
 	/**
+	 * Get the [distrelease_id] column value.
+	 * 
+	 * @return     int
+	 */
+	public function getDistreleaseId()
+	{
+		return $this->distrelease_id;
+	}
+
+	/**
+	 * Get the [media_id] column value.
+	 * 
+	 * @return     int
+	 */
+	public function getMediaId()
+	{
+		return $this->media_id;
+	}
+
+	/**
 	 * Get the [rpm_group_id] column value.
 	 * 
 	 * @return     int
@@ -153,92 +201,114 @@ abstract class BaseRpm extends BaseObject  implements Persistent {
 	}
 
 	/**
-	 * Set the value of [idrpm] column.
+	 * Get the [licence] column value.
 	 * 
-	 * @param      int $v new value
-	 * @return     Rpm The current object (for fluent API support)
+	 * @return     string
 	 */
-	public function setIdrpm($v)
+	public function getLicence()
 	{
-		if ($v !== null) {
-			$v = (int) $v;
-		}
-
-		if ($this->idrpm !== $v) {
-			$this->idrpm = $v;
-			$this->modifiedColumns[] = RpmPeer::IDRPM;
-		}
-
-		return $this;
-	} // setIdrpm()
+		return $this->licence;
+	}
 
 	/**
-	 * Set the value of [package_idpackage] column.
+	 * Get the [name] column value.
 	 * 
-	 * @param      int $v new value
-	 * @return     Rpm The current object (for fluent API support)
+	 * @return     string
 	 */
-	public function setPackageIdpackage($v)
+	public function getName()
 	{
-		if ($v !== null) {
-			$v = (int) $v;
-		}
-
-		if ($this->package_idpackage !== $v) {
-			$this->package_idpackage = $v;
-			$this->modifiedColumns[] = RpmPeer::PACKAGE_IDPACKAGE;
-		}
-
-		return $this;
-	} // setPackageIdpackage()
+		return $this->name;
+	}
 
 	/**
-	 * Set the value of [mga_release_idmga_release] column.
+	 * Get the [evr] column value.
 	 * 
-	 * @param      int $v new value
-	 * @return     Rpm The current object (for fluent API support)
+	 * @return     string
 	 */
-	public function setMgaReleaseIdmgaRelease($v)
+	public function getEvr()
 	{
-		if ($v !== null) {
-			$v = (int) $v;
-		}
-
-		if ($this->mga_release_idmga_release !== $v) {
-			$this->mga_release_idmga_release = $v;
-			$this->modifiedColumns[] = RpmPeer::MGA_RELEASE_IDMGA_RELEASE;
-		}
-
-		if ($this->aMgaRelease !== null && $this->aMgaRelease->getId() !== $v) {
-			$this->aMgaRelease = null;
-		}
-
-		return $this;
-	} // setMgaReleaseIdmgaRelease()
+		return $this->evr;
+	}
 
 	/**
-	 * Set the value of [media_idmedia] column.
+	 * Get the [version] column value.
+	 * 
+	 * @return     string
+	 */
+	public function getVersion()
+	{
+		return $this->version;
+	}
+
+	/**
+	 * Get the [release] column value.
+	 * 
+	 * @return     string
+	 */
+	public function getRelease()
+	{
+		return $this->release;
+	}
+
+	/**
+	 * Get the [summary] column value.
+	 * 
+	 * @return     string
+	 */
+	public function getSummary()
+	{
+		return $this->summary;
+	}
+
+	/**
+	 * Get the [description] column value.
+	 * 
+	 * @return     string
+	 */
+	public function getDescription()
+	{
+		return $this->description;
+	}
+
+	/**
+	 * Get the [url] column value.
+	 * 
+	 * @return     string
+	 */
+	public function getUrl()
+	{
+		return $this->url;
+	}
+
+	/**
+	 * Get the [src_rpm] column value.
+	 * 
+	 * @return     string
+	 */
+	public function getSrcRpm()
+	{
+		return $this->src_rpm;
+	}
+
+	/**
+	 * Set the value of [id] column.
 	 * 
 	 * @param      int $v new value
 	 * @return     Rpm The current object (for fluent API support)
 	 */
-	public function setMediaIdmedia($v)
+	public function setId($v)
 	{
 		if ($v !== null) {
 			$v = (int) $v;
 		}
 
-		if ($this->media_idmedia !== $v) {
-			$this->media_idmedia = $v;
-			$this->modifiedColumns[] = RpmPeer::MEDIA_IDMEDIA;
-		}
-
-		if ($this->aMedia !== null && $this->aMedia->getIdmedia() !== $v) {
-			$this->aMedia = null;
+		if ($this->id !== $v) {
+			$this->id = $v;
+			$this->modifiedColumns[] = RpmPeer::ID;
 		}
 
 		return $this;
-	} // setMediaIdmedia()
+	} // setId()
 
 	/**
 	 * Set the value of [package_id] column.
@@ -265,6 +335,54 @@ abstract class BaseRpm extends BaseObject  implements Persistent {
 	} // setPackageId()
 
 	/**
+	 * Set the value of [distrelease_id] column.
+	 * 
+	 * @param      int $v new value
+	 * @return     Rpm The current object (for fluent API support)
+	 */
+	public function setDistreleaseId($v)
+	{
+		if ($v !== null) {
+			$v = (int) $v;
+		}
+
+		if ($this->distrelease_id !== $v) {
+			$this->distrelease_id = $v;
+			$this->modifiedColumns[] = RpmPeer::DISTRELEASE_ID;
+		}
+
+		if ($this->aDistrelease !== null && $this->aDistrelease->getId() !== $v) {
+			$this->aDistrelease = null;
+		}
+
+		return $this;
+	} // setDistreleaseId()
+
+	/**
+	 * Set the value of [media_id] column.
+	 * 
+	 * @param      int $v new value
+	 * @return     Rpm The current object (for fluent API support)
+	 */
+	public function setMediaId($v)
+	{
+		if ($v !== null) {
+			$v = (int) $v;
+		}
+
+		if ($this->media_id !== $v) {
+			$this->media_id = $v;
+			$this->modifiedColumns[] = RpmPeer::MEDIA_ID;
+		}
+
+		if ($this->aMedia !== null && $this->aMedia->getId() !== $v) {
+			$this->aMedia = null;
+		}
+
+		return $this;
+	} // setMediaId()
+
+	/**
 	 * Set the value of [rpm_group_id] column.
 	 * 
 	 * @param      int $v new value
@@ -287,6 +405,186 @@ abstract class BaseRpm extends BaseObject  implements Persistent {
 
 		return $this;
 	} // setRpmGroupId()
+
+	/**
+	 * Set the value of [licence] column.
+	 * 
+	 * @param      string $v new value
+	 * @return     Rpm The current object (for fluent API support)
+	 */
+	public function setLicence($v)
+	{
+		if ($v !== null) {
+			$v = (string) $v;
+		}
+
+		if ($this->licence !== $v) {
+			$this->licence = $v;
+			$this->modifiedColumns[] = RpmPeer::LICENCE;
+		}
+
+		return $this;
+	} // setLicence()
+
+	/**
+	 * Set the value of [name] column.
+	 * 
+	 * @param      string $v new value
+	 * @return     Rpm The current object (for fluent API support)
+	 */
+	public function setName($v)
+	{
+		if ($v !== null) {
+			$v = (string) $v;
+		}
+
+		if ($this->name !== $v) {
+			$this->name = $v;
+			$this->modifiedColumns[] = RpmPeer::NAME;
+		}
+
+		return $this;
+	} // setName()
+
+	/**
+	 * Set the value of [evr] column.
+	 * 
+	 * @param      string $v new value
+	 * @return     Rpm The current object (for fluent API support)
+	 */
+	public function setEvr($v)
+	{
+		if ($v !== null) {
+			$v = (string) $v;
+		}
+
+		if ($this->evr !== $v) {
+			$this->evr = $v;
+			$this->modifiedColumns[] = RpmPeer::EVR;
+		}
+
+		return $this;
+	} // setEvr()
+
+	/**
+	 * Set the value of [version] column.
+	 * 
+	 * @param      string $v new value
+	 * @return     Rpm The current object (for fluent API support)
+	 */
+	public function setVersion($v)
+	{
+		if ($v !== null) {
+			$v = (string) $v;
+		}
+
+		if ($this->version !== $v) {
+			$this->version = $v;
+			$this->modifiedColumns[] = RpmPeer::VERSION;
+		}
+
+		return $this;
+	} // setVersion()
+
+	/**
+	 * Set the value of [release] column.
+	 * 
+	 * @param      string $v new value
+	 * @return     Rpm The current object (for fluent API support)
+	 */
+	public function setRelease($v)
+	{
+		if ($v !== null) {
+			$v = (string) $v;
+		}
+
+		if ($this->release !== $v) {
+			$this->release = $v;
+			$this->modifiedColumns[] = RpmPeer::RELEASE;
+		}
+
+		return $this;
+	} // setRelease()
+
+	/**
+	 * Set the value of [summary] column.
+	 * 
+	 * @param      string $v new value
+	 * @return     Rpm The current object (for fluent API support)
+	 */
+	public function setSummary($v)
+	{
+		if ($v !== null) {
+			$v = (string) $v;
+		}
+
+		if ($this->summary !== $v) {
+			$this->summary = $v;
+			$this->modifiedColumns[] = RpmPeer::SUMMARY;
+		}
+
+		return $this;
+	} // setSummary()
+
+	/**
+	 * Set the value of [description] column.
+	 * 
+	 * @param      string $v new value
+	 * @return     Rpm The current object (for fluent API support)
+	 */
+	public function setDescription($v)
+	{
+		if ($v !== null) {
+			$v = (string) $v;
+		}
+
+		if ($this->description !== $v) {
+			$this->description = $v;
+			$this->modifiedColumns[] = RpmPeer::DESCRIPTION;
+		}
+
+		return $this;
+	} // setDescription()
+
+	/**
+	 * Set the value of [url] column.
+	 * 
+	 * @param      string $v new value
+	 * @return     Rpm The current object (for fluent API support)
+	 */
+	public function setUrl($v)
+	{
+		if ($v !== null) {
+			$v = (string) $v;
+		}
+
+		if ($this->url !== $v) {
+			$this->url = $v;
+			$this->modifiedColumns[] = RpmPeer::URL;
+		}
+
+		return $this;
+	} // setUrl()
+
+	/**
+	 * Set the value of [src_rpm] column.
+	 * 
+	 * @param      string $v new value
+	 * @return     Rpm The current object (for fluent API support)
+	 */
+	public function setSrcRpm($v)
+	{
+		if ($v !== null) {
+			$v = (string) $v;
+		}
+
+		if ($this->src_rpm !== $v) {
+			$this->src_rpm = $v;
+			$this->modifiedColumns[] = RpmPeer::SRC_RPM;
+		}
+
+		return $this;
+	} // setSrcRpm()
 
 	/**
 	 * Indicates whether the columns in this object are only set to default values.
@@ -320,12 +618,20 @@ abstract class BaseRpm extends BaseObject  implements Persistent {
 	{
 		try {
 
-			$this->idrpm = ($row[$startcol + 0] !== null) ? (int) $row[$startcol + 0] : null;
-			$this->package_idpackage = ($row[$startcol + 1] !== null) ? (int) $row[$startcol + 1] : null;
-			$this->mga_release_idmga_release = ($row[$startcol + 2] !== null) ? (int) $row[$startcol + 2] : null;
-			$this->media_idmedia = ($row[$startcol + 3] !== null) ? (int) $row[$startcol + 3] : null;
-			$this->package_id = ($row[$startcol + 4] !== null) ? (int) $row[$startcol + 4] : null;
-			$this->rpm_group_id = ($row[$startcol + 5] !== null) ? (int) $row[$startcol + 5] : null;
+			$this->id = ($row[$startcol + 0] !== null) ? (int) $row[$startcol + 0] : null;
+			$this->package_id = ($row[$startcol + 1] !== null) ? (int) $row[$startcol + 1] : null;
+			$this->distrelease_id = ($row[$startcol + 2] !== null) ? (int) $row[$startcol + 2] : null;
+			$this->media_id = ($row[$startcol + 3] !== null) ? (int) $row[$startcol + 3] : null;
+			$this->rpm_group_id = ($row[$startcol + 4] !== null) ? (int) $row[$startcol + 4] : null;
+			$this->licence = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
+			$this->name = ($row[$startcol + 6] !== null) ? (string) $row[$startcol + 6] : null;
+			$this->evr = ($row[$startcol + 7] !== null) ? (string) $row[$startcol + 7] : null;
+			$this->version = ($row[$startcol + 8] !== null) ? (string) $row[$startcol + 8] : null;
+			$this->release = ($row[$startcol + 9] !== null) ? (string) $row[$startcol + 9] : null;
+			$this->summary = ($row[$startcol + 10] !== null) ? (string) $row[$startcol + 10] : null;
+			$this->description = ($row[$startcol + 11] !== null) ? (string) $row[$startcol + 11] : null;
+			$this->url = ($row[$startcol + 12] !== null) ? (string) $row[$startcol + 12] : null;
+			$this->src_rpm = ($row[$startcol + 13] !== null) ? (string) $row[$startcol + 13] : null;
 			$this->resetModified();
 
 			$this->setNew(false);
@@ -335,7 +641,7 @@ abstract class BaseRpm extends BaseObject  implements Persistent {
 			}
 
 			// FIXME - using NUM_COLUMNS may be clearer.
-			return $startcol + 6; // 6 = RpmPeer::NUM_COLUMNS - RpmPeer::NUM_LAZY_LOAD_COLUMNS).
+			return $startcol + 14; // 14 = RpmPeer::NUM_COLUMNS - RpmPeer::NUM_LAZY_LOAD_COLUMNS).
 
 		} catch (Exception $e) {
 			throw new PropelException("Error populating Rpm object", $e);
@@ -358,14 +664,14 @@ abstract class BaseRpm extends BaseObject  implements Persistent {
 	public function ensureConsistency()
 	{
 
-		if ($this->aMgaRelease !== null && $this->mga_release_idmga_release !== $this->aMgaRelease->getId()) {
-			$this->aMgaRelease = null;
-		}
-		if ($this->aMedia !== null && $this->media_idmedia !== $this->aMedia->getIdmedia()) {
-			$this->aMedia = null;
-		}
 		if ($this->aPackage !== null && $this->package_id !== $this->aPackage->getId()) {
 			$this->aPackage = null;
+		}
+		if ($this->aDistrelease !== null && $this->distrelease_id !== $this->aDistrelease->getId()) {
+			$this->aDistrelease = null;
+		}
+		if ($this->aMedia !== null && $this->media_id !== $this->aMedia->getId()) {
+			$this->aMedia = null;
 		}
 		if ($this->aRpmGroup !== null && $this->rpm_group_id !== $this->aRpmGroup->getId()) {
 			$this->aRpmGroup = null;
@@ -409,10 +715,13 @@ abstract class BaseRpm extends BaseObject  implements Persistent {
 
 		if ($deep) {  // also de-associate any related objects?
 
-			$this->aMgaRelease = null;
-			$this->aMedia = null;
 			$this->aPackage = null;
+			$this->aDistrelease = null;
+			$this->aMedia = null;
 			$this->aRpmGroup = null;
+			$this->collRpmfiles = null;
+			$this->lastRpmfileCriteria = null;
+
 		} // if (deep)
 	}
 
@@ -560,11 +869,18 @@ abstract class BaseRpm extends BaseObject  implements Persistent {
 			// method.  This object relates to these object(s) by a
 			// foreign key reference.
 
-			if ($this->aMgaRelease !== null) {
-				if ($this->aMgaRelease->isModified() || $this->aMgaRelease->isNew()) {
-					$affectedRows += $this->aMgaRelease->save($con);
+			if ($this->aPackage !== null) {
+				if ($this->aPackage->isModified() || $this->aPackage->isNew()) {
+					$affectedRows += $this->aPackage->save($con);
 				}
-				$this->setMgaRelease($this->aMgaRelease);
+				$this->setPackage($this->aPackage);
+			}
+
+			if ($this->aDistrelease !== null) {
+				if ($this->aDistrelease->isModified() || $this->aDistrelease->isNew()) {
+					$affectedRows += $this->aDistrelease->save($con);
+				}
+				$this->setDistrelease($this->aDistrelease);
 			}
 
 			if ($this->aMedia !== null) {
@@ -574,13 +890,6 @@ abstract class BaseRpm extends BaseObject  implements Persistent {
 				$this->setMedia($this->aMedia);
 			}
 
-			if ($this->aPackage !== null) {
-				if ($this->aPackage->isModified() || $this->aPackage->isNew()) {
-					$affectedRows += $this->aPackage->save($con);
-				}
-				$this->setPackage($this->aPackage);
-			}
-
 			if ($this->aRpmGroup !== null) {
 				if ($this->aRpmGroup->isModified() || $this->aRpmGroup->isNew()) {
 					$affectedRows += $this->aRpmGroup->save($con);
@@ -588,6 +897,9 @@ abstract class BaseRpm extends BaseObject  implements Persistent {
 				$this->setRpmGroup($this->aRpmGroup);
 			}
 
+			if ($this->isNew() ) {
+				$this->modifiedColumns[] = RpmPeer::ID;
+			}
 
 			// If this object has been modified, then save it to the database.
 			if ($this->isModified()) {
@@ -597,12 +909,22 @@ abstract class BaseRpm extends BaseObject  implements Persistent {
 										 // should always be true here (even though technically
 										 // BasePeer::doInsert() can insert multiple rows).
 
+					$this->setId($pk);  //[IMV] update autoincrement primary key
+
 					$this->setNew(false);
 				} else {
 					$affectedRows += RpmPeer::doUpdate($this, $con);
 				}
 
 				$this->resetModified(); // [HL] After being saved an object is no longer 'modified'
+			}
+
+			if ($this->collRpmfiles !== null) {
+				foreach ($this->collRpmfiles as $referrerFK) {
+					if (!$referrerFK->isDeleted()) {
+						$affectedRows += $referrerFK->save($con);
+					}
+				}
 			}
 
 			$this->alreadyInSave = false;
@@ -676,21 +998,21 @@ abstract class BaseRpm extends BaseObject  implements Persistent {
 			// method.  This object relates to these object(s) by a
 			// foreign key reference.
 
-			if ($this->aMgaRelease !== null) {
-				if (!$this->aMgaRelease->validate($columns)) {
-					$failureMap = array_merge($failureMap, $this->aMgaRelease->getValidationFailures());
+			if ($this->aPackage !== null) {
+				if (!$this->aPackage->validate($columns)) {
+					$failureMap = array_merge($failureMap, $this->aPackage->getValidationFailures());
+				}
+			}
+
+			if ($this->aDistrelease !== null) {
+				if (!$this->aDistrelease->validate($columns)) {
+					$failureMap = array_merge($failureMap, $this->aDistrelease->getValidationFailures());
 				}
 			}
 
 			if ($this->aMedia !== null) {
 				if (!$this->aMedia->validate($columns)) {
 					$failureMap = array_merge($failureMap, $this->aMedia->getValidationFailures());
-				}
-			}
-
-			if ($this->aPackage !== null) {
-				if (!$this->aPackage->validate($columns)) {
-					$failureMap = array_merge($failureMap, $this->aPackage->getValidationFailures());
 				}
 			}
 
@@ -705,6 +1027,14 @@ abstract class BaseRpm extends BaseObject  implements Persistent {
 				$failureMap = array_merge($failureMap, $retval);
 			}
 
+
+				if ($this->collRpmfiles !== null) {
+					foreach ($this->collRpmfiles as $referrerFK) {
+						if (!$referrerFK->validate($columns)) {
+							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
+						}
+					}
+				}
 
 
 			$this->alreadyInValidation = false;
@@ -740,22 +1070,46 @@ abstract class BaseRpm extends BaseObject  implements Persistent {
 	{
 		switch($pos) {
 			case 0:
-				return $this->getIdrpm();
+				return $this->getId();
 				break;
 			case 1:
-				return $this->getPackageIdpackage();
-				break;
-			case 2:
-				return $this->getMgaReleaseIdmgaRelease();
-				break;
-			case 3:
-				return $this->getMediaIdmedia();
-				break;
-			case 4:
 				return $this->getPackageId();
 				break;
-			case 5:
+			case 2:
+				return $this->getDistreleaseId();
+				break;
+			case 3:
+				return $this->getMediaId();
+				break;
+			case 4:
 				return $this->getRpmGroupId();
+				break;
+			case 5:
+				return $this->getLicence();
+				break;
+			case 6:
+				return $this->getName();
+				break;
+			case 7:
+				return $this->getEvr();
+				break;
+			case 8:
+				return $this->getVersion();
+				break;
+			case 9:
+				return $this->getRelease();
+				break;
+			case 10:
+				return $this->getSummary();
+				break;
+			case 11:
+				return $this->getDescription();
+				break;
+			case 12:
+				return $this->getUrl();
+				break;
+			case 13:
+				return $this->getSrcRpm();
 				break;
 			default:
 				return null;
@@ -778,12 +1132,20 @@ abstract class BaseRpm extends BaseObject  implements Persistent {
 	{
 		$keys = RpmPeer::getFieldNames($keyType);
 		$result = array(
-			$keys[0] => $this->getIdrpm(),
-			$keys[1] => $this->getPackageIdpackage(),
-			$keys[2] => $this->getMgaReleaseIdmgaRelease(),
-			$keys[3] => $this->getMediaIdmedia(),
-			$keys[4] => $this->getPackageId(),
-			$keys[5] => $this->getRpmGroupId(),
+			$keys[0] => $this->getId(),
+			$keys[1] => $this->getPackageId(),
+			$keys[2] => $this->getDistreleaseId(),
+			$keys[3] => $this->getMediaId(),
+			$keys[4] => $this->getRpmGroupId(),
+			$keys[5] => $this->getLicence(),
+			$keys[6] => $this->getName(),
+			$keys[7] => $this->getEvr(),
+			$keys[8] => $this->getVersion(),
+			$keys[9] => $this->getRelease(),
+			$keys[10] => $this->getSummary(),
+			$keys[11] => $this->getDescription(),
+			$keys[12] => $this->getUrl(),
+			$keys[13] => $this->getSrcRpm(),
 		);
 		return $result;
 	}
@@ -816,22 +1178,46 @@ abstract class BaseRpm extends BaseObject  implements Persistent {
 	{
 		switch($pos) {
 			case 0:
-				$this->setIdrpm($value);
+				$this->setId($value);
 				break;
 			case 1:
-				$this->setPackageIdpackage($value);
-				break;
-			case 2:
-				$this->setMgaReleaseIdmgaRelease($value);
-				break;
-			case 3:
-				$this->setMediaIdmedia($value);
-				break;
-			case 4:
 				$this->setPackageId($value);
 				break;
-			case 5:
+			case 2:
+				$this->setDistreleaseId($value);
+				break;
+			case 3:
+				$this->setMediaId($value);
+				break;
+			case 4:
 				$this->setRpmGroupId($value);
+				break;
+			case 5:
+				$this->setLicence($value);
+				break;
+			case 6:
+				$this->setName($value);
+				break;
+			case 7:
+				$this->setEvr($value);
+				break;
+			case 8:
+				$this->setVersion($value);
+				break;
+			case 9:
+				$this->setRelease($value);
+				break;
+			case 10:
+				$this->setSummary($value);
+				break;
+			case 11:
+				$this->setDescription($value);
+				break;
+			case 12:
+				$this->setUrl($value);
+				break;
+			case 13:
+				$this->setSrcRpm($value);
 				break;
 		} // switch()
 	}
@@ -857,12 +1243,20 @@ abstract class BaseRpm extends BaseObject  implements Persistent {
 	{
 		$keys = RpmPeer::getFieldNames($keyType);
 
-		if (array_key_exists($keys[0], $arr)) $this->setIdrpm($arr[$keys[0]]);
-		if (array_key_exists($keys[1], $arr)) $this->setPackageIdpackage($arr[$keys[1]]);
-		if (array_key_exists($keys[2], $arr)) $this->setMgaReleaseIdmgaRelease($arr[$keys[2]]);
-		if (array_key_exists($keys[3], $arr)) $this->setMediaIdmedia($arr[$keys[3]]);
-		if (array_key_exists($keys[4], $arr)) $this->setPackageId($arr[$keys[4]]);
-		if (array_key_exists($keys[5], $arr)) $this->setRpmGroupId($arr[$keys[5]]);
+		if (array_key_exists($keys[0], $arr)) $this->setId($arr[$keys[0]]);
+		if (array_key_exists($keys[1], $arr)) $this->setPackageId($arr[$keys[1]]);
+		if (array_key_exists($keys[2], $arr)) $this->setDistreleaseId($arr[$keys[2]]);
+		if (array_key_exists($keys[3], $arr)) $this->setMediaId($arr[$keys[3]]);
+		if (array_key_exists($keys[4], $arr)) $this->setRpmGroupId($arr[$keys[4]]);
+		if (array_key_exists($keys[5], $arr)) $this->setLicence($arr[$keys[5]]);
+		if (array_key_exists($keys[6], $arr)) $this->setName($arr[$keys[6]]);
+		if (array_key_exists($keys[7], $arr)) $this->setEvr($arr[$keys[7]]);
+		if (array_key_exists($keys[8], $arr)) $this->setVersion($arr[$keys[8]]);
+		if (array_key_exists($keys[9], $arr)) $this->setRelease($arr[$keys[9]]);
+		if (array_key_exists($keys[10], $arr)) $this->setSummary($arr[$keys[10]]);
+		if (array_key_exists($keys[11], $arr)) $this->setDescription($arr[$keys[11]]);
+		if (array_key_exists($keys[12], $arr)) $this->setUrl($arr[$keys[12]]);
+		if (array_key_exists($keys[13], $arr)) $this->setSrcRpm($arr[$keys[13]]);
 	}
 
 	/**
@@ -874,12 +1268,20 @@ abstract class BaseRpm extends BaseObject  implements Persistent {
 	{
 		$criteria = new Criteria(RpmPeer::DATABASE_NAME);
 
-		if ($this->isColumnModified(RpmPeer::IDRPM)) $criteria->add(RpmPeer::IDRPM, $this->idrpm);
-		if ($this->isColumnModified(RpmPeer::PACKAGE_IDPACKAGE)) $criteria->add(RpmPeer::PACKAGE_IDPACKAGE, $this->package_idpackage);
-		if ($this->isColumnModified(RpmPeer::MGA_RELEASE_IDMGA_RELEASE)) $criteria->add(RpmPeer::MGA_RELEASE_IDMGA_RELEASE, $this->mga_release_idmga_release);
-		if ($this->isColumnModified(RpmPeer::MEDIA_IDMEDIA)) $criteria->add(RpmPeer::MEDIA_IDMEDIA, $this->media_idmedia);
+		if ($this->isColumnModified(RpmPeer::ID)) $criteria->add(RpmPeer::ID, $this->id);
 		if ($this->isColumnModified(RpmPeer::PACKAGE_ID)) $criteria->add(RpmPeer::PACKAGE_ID, $this->package_id);
+		if ($this->isColumnModified(RpmPeer::DISTRELEASE_ID)) $criteria->add(RpmPeer::DISTRELEASE_ID, $this->distrelease_id);
+		if ($this->isColumnModified(RpmPeer::MEDIA_ID)) $criteria->add(RpmPeer::MEDIA_ID, $this->media_id);
 		if ($this->isColumnModified(RpmPeer::RPM_GROUP_ID)) $criteria->add(RpmPeer::RPM_GROUP_ID, $this->rpm_group_id);
+		if ($this->isColumnModified(RpmPeer::LICENCE)) $criteria->add(RpmPeer::LICENCE, $this->licence);
+		if ($this->isColumnModified(RpmPeer::NAME)) $criteria->add(RpmPeer::NAME, $this->name);
+		if ($this->isColumnModified(RpmPeer::EVR)) $criteria->add(RpmPeer::EVR, $this->evr);
+		if ($this->isColumnModified(RpmPeer::VERSION)) $criteria->add(RpmPeer::VERSION, $this->version);
+		if ($this->isColumnModified(RpmPeer::RELEASE)) $criteria->add(RpmPeer::RELEASE, $this->release);
+		if ($this->isColumnModified(RpmPeer::SUMMARY)) $criteria->add(RpmPeer::SUMMARY, $this->summary);
+		if ($this->isColumnModified(RpmPeer::DESCRIPTION)) $criteria->add(RpmPeer::DESCRIPTION, $this->description);
+		if ($this->isColumnModified(RpmPeer::URL)) $criteria->add(RpmPeer::URL, $this->url);
+		if ($this->isColumnModified(RpmPeer::SRC_RPM)) $criteria->add(RpmPeer::SRC_RPM, $this->src_rpm);
 
 		return $criteria;
 	}
@@ -896,7 +1298,7 @@ abstract class BaseRpm extends BaseObject  implements Persistent {
 	{
 		$criteria = new Criteria(RpmPeer::DATABASE_NAME);
 
-		$criteria->add(RpmPeer::IDRPM, $this->idrpm);
+		$criteria->add(RpmPeer::ID, $this->id);
 
 		return $criteria;
 	}
@@ -907,18 +1309,18 @@ abstract class BaseRpm extends BaseObject  implements Persistent {
 	 */
 	public function getPrimaryKey()
 	{
-		return $this->getIdrpm();
+		return $this->getId();
 	}
 
 	/**
-	 * Generic method to set the primary key (idrpm column).
+	 * Generic method to set the primary key (id column).
 	 *
 	 * @param      int $key Primary key.
 	 * @return     void
 	 */
 	public function setPrimaryKey($key)
 	{
-		$this->setIdrpm($key);
+		$this->setId($key);
 	}
 
 	/**
@@ -934,20 +1336,50 @@ abstract class BaseRpm extends BaseObject  implements Persistent {
 	public function copyInto($copyObj, $deepCopy = false)
 	{
 
-		$copyObj->setIdrpm($this->idrpm);
-
-		$copyObj->setPackageIdpackage($this->package_idpackage);
-
-		$copyObj->setMgaReleaseIdmgaRelease($this->mga_release_idmga_release);
-
-		$copyObj->setMediaIdmedia($this->media_idmedia);
-
 		$copyObj->setPackageId($this->package_id);
+
+		$copyObj->setDistreleaseId($this->distrelease_id);
+
+		$copyObj->setMediaId($this->media_id);
 
 		$copyObj->setRpmGroupId($this->rpm_group_id);
 
+		$copyObj->setLicence($this->licence);
+
+		$copyObj->setName($this->name);
+
+		$copyObj->setEvr($this->evr);
+
+		$copyObj->setVersion($this->version);
+
+		$copyObj->setRelease($this->release);
+
+		$copyObj->setSummary($this->summary);
+
+		$copyObj->setDescription($this->description);
+
+		$copyObj->setUrl($this->url);
+
+		$copyObj->setSrcRpm($this->src_rpm);
+
+
+		if ($deepCopy) {
+			// important: temporarily setNew(false) because this affects the behavior of
+			// the getter/setter methods for fkey referrer objects.
+			$copyObj->setNew(false);
+
+			foreach ($this->getRpmfiles() as $relObj) {
+				if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+					$copyObj->addRpmfile($relObj->copy($deepCopy));
+				}
+			}
+
+		} // if ($deepCopy)
+
 
 		$copyObj->setNew(true);
+
+		$copyObj->setId(NULL); // this is a auto-increment column, so set to default value
 
 	}
 
@@ -987,104 +1419,6 @@ abstract class BaseRpm extends BaseObject  implements Persistent {
 			self::$peer = new RpmPeer();
 		}
 		return self::$peer;
-	}
-
-	/**
-	 * Declares an association between this object and a MgaRelease object.
-	 *
-	 * @param      MgaRelease $v
-	 * @return     Rpm The current object (for fluent API support)
-	 * @throws     PropelException
-	 */
-	public function setMgaRelease(MgaRelease $v = null)
-	{
-		if ($v === null) {
-			$this->setMgaReleaseIdmgaRelease(NULL);
-		} else {
-			$this->setMgaReleaseIdmgaRelease($v->getId());
-		}
-
-		$this->aMgaRelease = $v;
-
-		// Add binding for other direction of this n:n relationship.
-		// If this object has already been added to the MgaRelease object, it will not be re-added.
-		if ($v !== null) {
-			$v->addRpm($this);
-		}
-
-		return $this;
-	}
-
-
-	/**
-	 * Get the associated MgaRelease object
-	 *
-	 * @param      PropelPDO Optional Connection object.
-	 * @return     MgaRelease The associated MgaRelease object.
-	 * @throws     PropelException
-	 */
-	public function getMgaRelease(PropelPDO $con = null)
-	{
-		if ($this->aMgaRelease === null && ($this->mga_release_idmga_release !== null)) {
-			$this->aMgaRelease = MgaReleasePeer::retrieveByPk($this->mga_release_idmga_release);
-			/* The following can be used additionally to
-			   guarantee the related object contains a reference
-			   to this object.  This level of coupling may, however, be
-			   undesirable since it could result in an only partially populated collection
-			   in the referenced object.
-			   $this->aMgaRelease->addRpms($this);
-			 */
-		}
-		return $this->aMgaRelease;
-	}
-
-	/**
-	 * Declares an association between this object and a Media object.
-	 *
-	 * @param      Media $v
-	 * @return     Rpm The current object (for fluent API support)
-	 * @throws     PropelException
-	 */
-	public function setMedia(Media $v = null)
-	{
-		if ($v === null) {
-			$this->setMediaIdmedia(NULL);
-		} else {
-			$this->setMediaIdmedia($v->getIdmedia());
-		}
-
-		$this->aMedia = $v;
-
-		// Add binding for other direction of this n:n relationship.
-		// If this object has already been added to the Media object, it will not be re-added.
-		if ($v !== null) {
-			$v->addRpm($this);
-		}
-
-		return $this;
-	}
-
-
-	/**
-	 * Get the associated Media object
-	 *
-	 * @param      PropelPDO Optional Connection object.
-	 * @return     Media The associated Media object.
-	 * @throws     PropelException
-	 */
-	public function getMedia(PropelPDO $con = null)
-	{
-		if ($this->aMedia === null && ($this->media_idmedia !== null)) {
-			$this->aMedia = MediaPeer::retrieveByPk($this->media_idmedia);
-			/* The following can be used additionally to
-			   guarantee the related object contains a reference
-			   to this object.  This level of coupling may, however, be
-			   undesirable since it could result in an only partially populated collection
-			   in the referenced object.
-			   $this->aMedia->addRpms($this);
-			 */
-		}
-		return $this->aMedia;
 	}
 
 	/**
@@ -1137,6 +1471,104 @@ abstract class BaseRpm extends BaseObject  implements Persistent {
 	}
 
 	/**
+	 * Declares an association between this object and a Distrelease object.
+	 *
+	 * @param      Distrelease $v
+	 * @return     Rpm The current object (for fluent API support)
+	 * @throws     PropelException
+	 */
+	public function setDistrelease(Distrelease $v = null)
+	{
+		if ($v === null) {
+			$this->setDistreleaseId(NULL);
+		} else {
+			$this->setDistreleaseId($v->getId());
+		}
+
+		$this->aDistrelease = $v;
+
+		// Add binding for other direction of this n:n relationship.
+		// If this object has already been added to the Distrelease object, it will not be re-added.
+		if ($v !== null) {
+			$v->addRpm($this);
+		}
+
+		return $this;
+	}
+
+
+	/**
+	 * Get the associated Distrelease object
+	 *
+	 * @param      PropelPDO Optional Connection object.
+	 * @return     Distrelease The associated Distrelease object.
+	 * @throws     PropelException
+	 */
+	public function getDistrelease(PropelPDO $con = null)
+	{
+		if ($this->aDistrelease === null && ($this->distrelease_id !== null)) {
+			$this->aDistrelease = DistreleasePeer::retrieveByPk($this->distrelease_id);
+			/* The following can be used additionally to
+			   guarantee the related object contains a reference
+			   to this object.  This level of coupling may, however, be
+			   undesirable since it could result in an only partially populated collection
+			   in the referenced object.
+			   $this->aDistrelease->addRpms($this);
+			 */
+		}
+		return $this->aDistrelease;
+	}
+
+	/**
+	 * Declares an association between this object and a Media object.
+	 *
+	 * @param      Media $v
+	 * @return     Rpm The current object (for fluent API support)
+	 * @throws     PropelException
+	 */
+	public function setMedia(Media $v = null)
+	{
+		if ($v === null) {
+			$this->setMediaId(NULL);
+		} else {
+			$this->setMediaId($v->getId());
+		}
+
+		$this->aMedia = $v;
+
+		// Add binding for other direction of this n:n relationship.
+		// If this object has already been added to the Media object, it will not be re-added.
+		if ($v !== null) {
+			$v->addRpm($this);
+		}
+
+		return $this;
+	}
+
+
+	/**
+	 * Get the associated Media object
+	 *
+	 * @param      PropelPDO Optional Connection object.
+	 * @return     Media The associated Media object.
+	 * @throws     PropelException
+	 */
+	public function getMedia(PropelPDO $con = null)
+	{
+		if ($this->aMedia === null && ($this->media_id !== null)) {
+			$this->aMedia = MediaPeer::retrieveByPk($this->media_id);
+			/* The following can be used additionally to
+			   guarantee the related object contains a reference
+			   to this object.  This level of coupling may, however, be
+			   undesirable since it could result in an only partially populated collection
+			   in the referenced object.
+			   $this->aMedia->addRpms($this);
+			 */
+		}
+		return $this->aMedia;
+	}
+
+	/**
 	 * Declares an association between this object and a RpmGroup object.
 	 *
 	 * @param      RpmGroup $v
@@ -1186,6 +1618,207 @@ abstract class BaseRpm extends BaseObject  implements Persistent {
 	}
 
 	/**
+	 * Clears out the collRpmfiles collection (array).
+	 *
+	 * This does not modify the database; however, it will remove any associated objects, causing
+	 * them to be refetched by subsequent calls to accessor method.
+	 *
+	 * @return     void
+	 * @see        addRpmfiles()
+	 */
+	public function clearRpmfiles()
+	{
+		$this->collRpmfiles = null; // important to set this to NULL since that means it is uninitialized
+	}
+
+	/**
+	 * Initializes the collRpmfiles collection (array).
+	 *
+	 * By default this just sets the collRpmfiles collection to an empty array (like clearcollRpmfiles());
+	 * however, you may wish to override this method in your stub class to provide setting appropriate
+	 * to your application -- for example, setting the initial array to the values stored in database.
+	 *
+	 * @return     void
+	 */
+	public function initRpmfiles()
+	{
+		$this->collRpmfiles = array();
+	}
+
+	/**
+	 * Gets an array of Rpmfile objects which contain a foreign key that references this object.
+	 *
+	 * If this collection has already been initialized with an identical Criteria, it returns the collection.
+	 * Otherwise if this Rpm has previously been saved, it will retrieve
+	 * related Rpmfiles from storage. If this Rpm is new, it will return
+	 * an empty collection or the current collection, the criteria is ignored on a new object.
+	 *
+	 * @param      PropelPDO $con
+	 * @param      Criteria $criteria
+	 * @return     array Rpmfile[]
+	 * @throws     PropelException
+	 */
+	public function getRpmfiles($criteria = null, PropelPDO $con = null)
+	{
+		if ($criteria === null) {
+			$criteria = new Criteria(RpmPeer::DATABASE_NAME);
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collRpmfiles === null) {
+			if ($this->isNew()) {
+			   $this->collRpmfiles = array();
+			} else {
+
+				$criteria->add(RpmfilePeer::RPM_ID, $this->id);
+
+				RpmfilePeer::addSelectColumns($criteria);
+				$this->collRpmfiles = RpmfilePeer::doSelect($criteria, $con);
+			}
+		} else {
+			// criteria has no effect for a new object
+			if (!$this->isNew()) {
+				// the following code is to determine if a new query is
+				// called for.  If the criteria is the same as the last
+				// one, just return the collection.
+
+
+				$criteria->add(RpmfilePeer::RPM_ID, $this->id);
+
+				RpmfilePeer::addSelectColumns($criteria);
+				if (!isset($this->lastRpmfileCriteria) || !$this->lastRpmfileCriteria->equals($criteria)) {
+					$this->collRpmfiles = RpmfilePeer::doSelect($criteria, $con);
+				}
+			}
+		}
+		$this->lastRpmfileCriteria = $criteria;
+		return $this->collRpmfiles;
+	}
+
+	/**
+	 * Returns the number of related Rpmfile objects.
+	 *
+	 * @param      Criteria $criteria
+	 * @param      boolean $distinct
+	 * @param      PropelPDO $con
+	 * @return     int Count of related Rpmfile objects.
+	 * @throws     PropelException
+	 */
+	public function countRpmfiles(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+	{
+		if ($criteria === null) {
+			$criteria = new Criteria(RpmPeer::DATABASE_NAME);
+		} else {
+			$criteria = clone $criteria;
+		}
+
+		if ($distinct) {
+			$criteria->setDistinct();
+		}
+
+		$count = null;
+
+		if ($this->collRpmfiles === null) {
+			if ($this->isNew()) {
+				$count = 0;
+			} else {
+
+				$criteria->add(RpmfilePeer::RPM_ID, $this->id);
+
+				$count = RpmfilePeer::doCount($criteria, false, $con);
+			}
+		} else {
+			// criteria has no effect for a new object
+			if (!$this->isNew()) {
+				// the following code is to determine if a new query is
+				// called for.  If the criteria is the same as the last
+				// one, just return count of the collection.
+
+
+				$criteria->add(RpmfilePeer::RPM_ID, $this->id);
+
+				if (!isset($this->lastRpmfileCriteria) || !$this->lastRpmfileCriteria->equals($criteria)) {
+					$count = RpmfilePeer::doCount($criteria, false, $con);
+				} else {
+					$count = count($this->collRpmfiles);
+				}
+			} else {
+				$count = count($this->collRpmfiles);
+			}
+		}
+		return $count;
+	}
+
+	/**
+	 * Method called to associate a Rpmfile object to this object
+	 * through the Rpmfile foreign key attribute.
+	 *
+	 * @param      Rpmfile $l Rpmfile
+	 * @return     void
+	 * @throws     PropelException
+	 */
+	public function addRpmfile(Rpmfile $l)
+	{
+		if ($this->collRpmfiles === null) {
+			$this->initRpmfiles();
+		}
+		if (!in_array($l, $this->collRpmfiles, true)) { // only add it if the **same** object is not already associated
+			array_push($this->collRpmfiles, $l);
+			$l->setRpm($this);
+		}
+	}
+
+
+	/**
+	 * If this collection has already been initialized with
+	 * an identical criteria, it returns the collection.
+	 * Otherwise if this Rpm is new, it will return
+	 * an empty collection; or if this Rpm has previously
+	 * been saved, it will retrieve related Rpmfiles from storage.
+	 *
+	 * This method is protected by default in order to keep the public
+	 * api reasonable.  You can provide public methods for those you
+	 * actually need in Rpm.
+	 */
+	public function getRpmfilesJoinArchRelatedByArchId($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	{
+		if ($criteria === null) {
+			$criteria = new Criteria(RpmPeer::DATABASE_NAME);
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collRpmfiles === null) {
+			if ($this->isNew()) {
+				$this->collRpmfiles = array();
+			} else {
+
+				$criteria->add(RpmfilePeer::RPM_ID, $this->id);
+
+				$this->collRpmfiles = RpmfilePeer::doSelectJoinArchRelatedByArchId($criteria, $con, $join_behavior);
+			}
+		} else {
+			// the following code is to determine if a new query is
+			// called for.  If the criteria is the same as the last
+			// one, just return the collection.
+
+			$criteria->add(RpmfilePeer::RPM_ID, $this->id);
+
+			if (!isset($this->lastRpmfileCriteria) || !$this->lastRpmfileCriteria->equals($criteria)) {
+				$this->collRpmfiles = RpmfilePeer::doSelectJoinArchRelatedByArchId($criteria, $con, $join_behavior);
+			}
+		}
+		$this->lastRpmfileCriteria = $criteria;
+
+		return $this->collRpmfiles;
+	}
+
+	/**
 	 * Resets all collections of referencing foreign keys.
 	 *
 	 * This method is a user-space workaround for PHP's inability to garbage collect objects
@@ -1197,11 +1830,17 @@ abstract class BaseRpm extends BaseObject  implements Persistent {
 	public function clearAllReferences($deep = false)
 	{
 		if ($deep) {
+			if ($this->collRpmfiles) {
+				foreach ((array) $this->collRpmfiles as $o) {
+					$o->clearAllReferences($deep);
+				}
+			}
 		} // if ($deep)
 
-			$this->aMgaRelease = null;
-			$this->aMedia = null;
+		$this->collRpmfiles = null;
 			$this->aPackage = null;
+			$this->aDistrelease = null;
+			$this->aMedia = null;
 			$this->aRpmGroup = null;
 	}
 

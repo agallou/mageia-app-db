@@ -37,8 +37,9 @@ class PackageTableMap extends TableMap {
 		$this->setUseIdGenerator(true);
 		// columns
 		$this->addPrimaryKey('ID', 'Id', 'INTEGER', true, null, null);
-		$this->addColumn('NAME', 'Name', 'VARCHAR', false, 1024, null);
-		$this->addColumn('IS_APPLICATION', 'IsApplication', 'BOOLEAN', false, null, null);
+		$this->addColumn('NAME', 'Name', 'VARCHAR', true, 1024, null);
+		$this->addColumn('MD5_NAME', 'Md5Name', 'CHAR', true, 32, null);
+		$this->addColumn('IS_APPLICATION', 'IsApplication', 'BOOLEAN', true, null, null);
 		// validators
 	} // initialize()
 
@@ -48,12 +49,12 @@ class PackageTableMap extends TableMap {
 	public function buildRelations()
 	{
     $this->addRelation('Rpm', 'Rpm', RelationMap::ONE_TO_MANY, array('id' => 'package_id', ), null, null);
-    $this->addRelation('UserFollowsPackage', 'UserFollowsPackage', RelationMap::ONE_TO_MANY, array('id' => 'package_id', ), null, null);
     $this->addRelation('UserCommentsPackage', 'UserCommentsPackage', RelationMap::ONE_TO_MANY, array('id' => 'package_id', ), null, null);
     $this->addRelation('PackageDescription', 'PackageDescription', RelationMap::ONE_TO_MANY, array('id' => 'package_id', ), null, null);
     $this->addRelation('PackageScreenshots', 'PackageScreenshots', RelationMap::ONE_TO_MANY, array('id' => 'package_id', ), null, null);
     $this->addRelation('PackageLinks', 'PackageLinks', RelationMap::ONE_TO_MANY, array('id' => 'package_id', ), null, null);
     $this->addRelation('NewVersionRequest', 'NewVersionRequest', RelationMap::ONE_TO_MANY, array('id' => 'package_id', ), null, null);
+    $this->addRelation('NotificationElement', 'NotificationElement', RelationMap::ONE_TO_MANY, array('id' => 'package_id', ), null, null);
 	} // buildRelations()
 
 	/**

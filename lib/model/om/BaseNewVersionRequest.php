@@ -25,10 +25,10 @@ abstract class BaseNewVersionRequest extends BaseObject  implements Persistent {
 	protected $id;
 
 	/**
-	 * The value for the user_iduser field.
+	 * The value for the user_id field.
 	 * @var        int
 	 */
-	protected $user_iduser;
+	protected $user_id;
 
 	/**
 	 * The value for the package_id field.
@@ -37,10 +37,10 @@ abstract class BaseNewVersionRequest extends BaseObject  implements Persistent {
 	protected $package_id;
 
 	/**
-	 * The value for the mga_release_id field.
+	 * The value for the distrelease_id field.
 	 * @var        int
 	 */
-	protected $mga_release_id;
+	protected $distrelease_id;
 
 	/**
 	 * The value for the version_needed field.
@@ -65,9 +65,9 @@ abstract class BaseNewVersionRequest extends BaseObject  implements Persistent {
 	protected $aPackage;
 
 	/**
-	 * @var        MgaRelease
+	 * @var        Distrelease
 	 */
-	protected $aMgaRelease;
+	protected $aDistrelease;
 
 	/**
 	 * @var        array UserCommentsNewVersionRequest[] Collection to store aggregation of UserCommentsNewVersionRequest objects.
@@ -118,13 +118,13 @@ abstract class BaseNewVersionRequest extends BaseObject  implements Persistent {
 	}
 
 	/**
-	 * Get the [user_iduser] column value.
+	 * Get the [user_id] column value.
 	 * 
 	 * @return     int
 	 */
-	public function getUserIduser()
+	public function getUserId()
 	{
-		return $this->user_iduser;
+		return $this->user_id;
 	}
 
 	/**
@@ -138,13 +138,13 @@ abstract class BaseNewVersionRequest extends BaseObject  implements Persistent {
 	}
 
 	/**
-	 * Get the [mga_release_id] column value.
+	 * Get the [distrelease_id] column value.
 	 * 
 	 * @return     int
 	 */
-	public function getMgaReleaseId()
+	public function getDistreleaseId()
 	{
-		return $this->mga_release_id;
+		return $this->distrelease_id;
 	}
 
 	/**
@@ -188,20 +188,20 @@ abstract class BaseNewVersionRequest extends BaseObject  implements Persistent {
 	} // setId()
 
 	/**
-	 * Set the value of [user_iduser] column.
+	 * Set the value of [user_id] column.
 	 * 
 	 * @param      int $v new value
 	 * @return     NewVersionRequest The current object (for fluent API support)
 	 */
-	public function setUserIduser($v)
+	public function setUserId($v)
 	{
 		if ($v !== null) {
 			$v = (int) $v;
 		}
 
-		if ($this->user_iduser !== $v) {
-			$this->user_iduser = $v;
-			$this->modifiedColumns[] = NewVersionRequestPeer::USER_IDUSER;
+		if ($this->user_id !== $v) {
+			$this->user_id = $v;
+			$this->modifiedColumns[] = NewVersionRequestPeer::USER_ID;
 		}
 
 		if ($this->aUser !== null && $this->aUser->getId() !== $v) {
@@ -209,7 +209,7 @@ abstract class BaseNewVersionRequest extends BaseObject  implements Persistent {
 		}
 
 		return $this;
-	} // setUserIduser()
+	} // setUserId()
 
 	/**
 	 * Set the value of [package_id] column.
@@ -236,28 +236,28 @@ abstract class BaseNewVersionRequest extends BaseObject  implements Persistent {
 	} // setPackageId()
 
 	/**
-	 * Set the value of [mga_release_id] column.
+	 * Set the value of [distrelease_id] column.
 	 * 
 	 * @param      int $v new value
 	 * @return     NewVersionRequest The current object (for fluent API support)
 	 */
-	public function setMgaReleaseId($v)
+	public function setDistreleaseId($v)
 	{
 		if ($v !== null) {
 			$v = (int) $v;
 		}
 
-		if ($this->mga_release_id !== $v) {
-			$this->mga_release_id = $v;
-			$this->modifiedColumns[] = NewVersionRequestPeer::MGA_RELEASE_ID;
+		if ($this->distrelease_id !== $v) {
+			$this->distrelease_id = $v;
+			$this->modifiedColumns[] = NewVersionRequestPeer::DISTRELEASE_ID;
 		}
 
-		if ($this->aMgaRelease !== null && $this->aMgaRelease->getId() !== $v) {
-			$this->aMgaRelease = null;
+		if ($this->aDistrelease !== null && $this->aDistrelease->getId() !== $v) {
+			$this->aDistrelease = null;
 		}
 
 		return $this;
-	} // setMgaReleaseId()
+	} // setDistreleaseId()
 
 	/**
 	 * Set the value of [version_needed] column.
@@ -332,9 +332,9 @@ abstract class BaseNewVersionRequest extends BaseObject  implements Persistent {
 		try {
 
 			$this->id = ($row[$startcol + 0] !== null) ? (int) $row[$startcol + 0] : null;
-			$this->user_iduser = ($row[$startcol + 1] !== null) ? (int) $row[$startcol + 1] : null;
+			$this->user_id = ($row[$startcol + 1] !== null) ? (int) $row[$startcol + 1] : null;
 			$this->package_id = ($row[$startcol + 2] !== null) ? (int) $row[$startcol + 2] : null;
-			$this->mga_release_id = ($row[$startcol + 3] !== null) ? (int) $row[$startcol + 3] : null;
+			$this->distrelease_id = ($row[$startcol + 3] !== null) ? (int) $row[$startcol + 3] : null;
 			$this->version_needed = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
 			$this->status = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
 			$this->resetModified();
@@ -369,14 +369,14 @@ abstract class BaseNewVersionRequest extends BaseObject  implements Persistent {
 	public function ensureConsistency()
 	{
 
-		if ($this->aUser !== null && $this->user_iduser !== $this->aUser->getId()) {
+		if ($this->aUser !== null && $this->user_id !== $this->aUser->getId()) {
 			$this->aUser = null;
 		}
 		if ($this->aPackage !== null && $this->package_id !== $this->aPackage->getId()) {
 			$this->aPackage = null;
 		}
-		if ($this->aMgaRelease !== null && $this->mga_release_id !== $this->aMgaRelease->getId()) {
-			$this->aMgaRelease = null;
+		if ($this->aDistrelease !== null && $this->distrelease_id !== $this->aDistrelease->getId()) {
+			$this->aDistrelease = null;
 		}
 	} // ensureConsistency
 
@@ -419,7 +419,7 @@ abstract class BaseNewVersionRequest extends BaseObject  implements Persistent {
 
 			$this->aUser = null;
 			$this->aPackage = null;
-			$this->aMgaRelease = null;
+			$this->aDistrelease = null;
 			$this->collUserCommentsNewVersionRequests = null;
 			$this->lastUserCommentsNewVersionRequestCriteria = null;
 
@@ -587,11 +587,11 @@ abstract class BaseNewVersionRequest extends BaseObject  implements Persistent {
 				$this->setPackage($this->aPackage);
 			}
 
-			if ($this->aMgaRelease !== null) {
-				if ($this->aMgaRelease->isModified() || $this->aMgaRelease->isNew()) {
-					$affectedRows += $this->aMgaRelease->save($con);
+			if ($this->aDistrelease !== null) {
+				if ($this->aDistrelease->isModified() || $this->aDistrelease->isNew()) {
+					$affectedRows += $this->aDistrelease->save($con);
 				}
-				$this->setMgaRelease($this->aMgaRelease);
+				$this->setDistrelease($this->aDistrelease);
 			}
 
 			if ($this->isNew() ) {
@@ -715,9 +715,9 @@ abstract class BaseNewVersionRequest extends BaseObject  implements Persistent {
 				}
 			}
 
-			if ($this->aMgaRelease !== null) {
-				if (!$this->aMgaRelease->validate($columns)) {
-					$failureMap = array_merge($failureMap, $this->aMgaRelease->getValidationFailures());
+			if ($this->aDistrelease !== null) {
+				if (!$this->aDistrelease->validate($columns)) {
+					$failureMap = array_merge($failureMap, $this->aDistrelease->getValidationFailures());
 				}
 			}
 
@@ -780,13 +780,13 @@ abstract class BaseNewVersionRequest extends BaseObject  implements Persistent {
 				return $this->getId();
 				break;
 			case 1:
-				return $this->getUserIduser();
+				return $this->getUserId();
 				break;
 			case 2:
 				return $this->getPackageId();
 				break;
 			case 3:
-				return $this->getMgaReleaseId();
+				return $this->getDistreleaseId();
 				break;
 			case 4:
 				return $this->getVersionNeeded();
@@ -816,9 +816,9 @@ abstract class BaseNewVersionRequest extends BaseObject  implements Persistent {
 		$keys = NewVersionRequestPeer::getFieldNames($keyType);
 		$result = array(
 			$keys[0] => $this->getId(),
-			$keys[1] => $this->getUserIduser(),
+			$keys[1] => $this->getUserId(),
 			$keys[2] => $this->getPackageId(),
-			$keys[3] => $this->getMgaReleaseId(),
+			$keys[3] => $this->getDistreleaseId(),
 			$keys[4] => $this->getVersionNeeded(),
 			$keys[5] => $this->getStatus(),
 		);
@@ -856,13 +856,13 @@ abstract class BaseNewVersionRequest extends BaseObject  implements Persistent {
 				$this->setId($value);
 				break;
 			case 1:
-				$this->setUserIduser($value);
+				$this->setUserId($value);
 				break;
 			case 2:
 				$this->setPackageId($value);
 				break;
 			case 3:
-				$this->setMgaReleaseId($value);
+				$this->setDistreleaseId($value);
 				break;
 			case 4:
 				$this->setVersionNeeded($value);
@@ -895,9 +895,9 @@ abstract class BaseNewVersionRequest extends BaseObject  implements Persistent {
 		$keys = NewVersionRequestPeer::getFieldNames($keyType);
 
 		if (array_key_exists($keys[0], $arr)) $this->setId($arr[$keys[0]]);
-		if (array_key_exists($keys[1], $arr)) $this->setUserIduser($arr[$keys[1]]);
+		if (array_key_exists($keys[1], $arr)) $this->setUserId($arr[$keys[1]]);
 		if (array_key_exists($keys[2], $arr)) $this->setPackageId($arr[$keys[2]]);
-		if (array_key_exists($keys[3], $arr)) $this->setMgaReleaseId($arr[$keys[3]]);
+		if (array_key_exists($keys[3], $arr)) $this->setDistreleaseId($arr[$keys[3]]);
 		if (array_key_exists($keys[4], $arr)) $this->setVersionNeeded($arr[$keys[4]]);
 		if (array_key_exists($keys[5], $arr)) $this->setStatus($arr[$keys[5]]);
 	}
@@ -912,9 +912,9 @@ abstract class BaseNewVersionRequest extends BaseObject  implements Persistent {
 		$criteria = new Criteria(NewVersionRequestPeer::DATABASE_NAME);
 
 		if ($this->isColumnModified(NewVersionRequestPeer::ID)) $criteria->add(NewVersionRequestPeer::ID, $this->id);
-		if ($this->isColumnModified(NewVersionRequestPeer::USER_IDUSER)) $criteria->add(NewVersionRequestPeer::USER_IDUSER, $this->user_iduser);
+		if ($this->isColumnModified(NewVersionRequestPeer::USER_ID)) $criteria->add(NewVersionRequestPeer::USER_ID, $this->user_id);
 		if ($this->isColumnModified(NewVersionRequestPeer::PACKAGE_ID)) $criteria->add(NewVersionRequestPeer::PACKAGE_ID, $this->package_id);
-		if ($this->isColumnModified(NewVersionRequestPeer::MGA_RELEASE_ID)) $criteria->add(NewVersionRequestPeer::MGA_RELEASE_ID, $this->mga_release_id);
+		if ($this->isColumnModified(NewVersionRequestPeer::DISTRELEASE_ID)) $criteria->add(NewVersionRequestPeer::DISTRELEASE_ID, $this->distrelease_id);
 		if ($this->isColumnModified(NewVersionRequestPeer::VERSION_NEEDED)) $criteria->add(NewVersionRequestPeer::VERSION_NEEDED, $this->version_needed);
 		if ($this->isColumnModified(NewVersionRequestPeer::STATUS)) $criteria->add(NewVersionRequestPeer::STATUS, $this->status);
 
@@ -934,28 +934,40 @@ abstract class BaseNewVersionRequest extends BaseObject  implements Persistent {
 		$criteria = new Criteria(NewVersionRequestPeer::DATABASE_NAME);
 
 		$criteria->add(NewVersionRequestPeer::ID, $this->id);
+		$criteria->add(NewVersionRequestPeer::DISTRELEASE_ID, $this->distrelease_id);
 
 		return $criteria;
 	}
 
 	/**
-	 * Returns the primary key for this object (row).
-	 * @return     int
+	 * Returns the composite primary key for this object.
+	 * The array elements will be in same order as specified in XML.
+	 * @return     array
 	 */
 	public function getPrimaryKey()
 	{
-		return $this->getId();
+		$pks = array();
+
+		$pks[0] = $this->getId();
+
+		$pks[1] = $this->getDistreleaseId();
+
+		return $pks;
 	}
 
 	/**
-	 * Generic method to set the primary key (id column).
+	 * Set the [composite] primary key.
 	 *
-	 * @param      int $key Primary key.
+	 * @param      array $keys The elements of the composite key (order must match the order in XML file).
 	 * @return     void
 	 */
-	public function setPrimaryKey($key)
+	public function setPrimaryKey($keys)
 	{
-		$this->setId($key);
+
+		$this->setId($keys[0]);
+
+		$this->setDistreleaseId($keys[1]);
+
 	}
 
 	/**
@@ -971,11 +983,11 @@ abstract class BaseNewVersionRequest extends BaseObject  implements Persistent {
 	public function copyInto($copyObj, $deepCopy = false)
 	{
 
-		$copyObj->setUserIduser($this->user_iduser);
+		$copyObj->setUserId($this->user_id);
 
 		$copyObj->setPackageId($this->package_id);
 
-		$copyObj->setMgaReleaseId($this->mga_release_id);
+		$copyObj->setDistreleaseId($this->distrelease_id);
 
 		$copyObj->setVersionNeeded($this->version_needed);
 
@@ -1056,9 +1068,9 @@ abstract class BaseNewVersionRequest extends BaseObject  implements Persistent {
 	public function setUser(User $v = null)
 	{
 		if ($v === null) {
-			$this->setUserIduser(NULL);
+			$this->setUserId(NULL);
 		} else {
-			$this->setUserIduser($v->getId());
+			$this->setUserId($v->getId());
 		}
 
 		$this->aUser = $v;
@@ -1082,8 +1094,8 @@ abstract class BaseNewVersionRequest extends BaseObject  implements Persistent {
 	 */
 	public function getUser(PropelPDO $con = null)
 	{
-		if ($this->aUser === null && ($this->user_iduser !== null)) {
-			$this->aUser = UserPeer::retrieveByPk($this->user_iduser);
+		if ($this->aUser === null && ($this->user_id !== null)) {
+			$this->aUser = UserPeer::retrieveByPk($this->user_id);
 			/* The following can be used additionally to
 			   guarantee the related object contains a reference
 			   to this object.  This level of coupling may, however, be
@@ -1145,24 +1157,24 @@ abstract class BaseNewVersionRequest extends BaseObject  implements Persistent {
 	}
 
 	/**
-	 * Declares an association between this object and a MgaRelease object.
+	 * Declares an association between this object and a Distrelease object.
 	 *
-	 * @param      MgaRelease $v
+	 * @param      Distrelease $v
 	 * @return     NewVersionRequest The current object (for fluent API support)
 	 * @throws     PropelException
 	 */
-	public function setMgaRelease(MgaRelease $v = null)
+	public function setDistrelease(Distrelease $v = null)
 	{
 		if ($v === null) {
-			$this->setMgaReleaseId(NULL);
+			$this->setDistreleaseId(NULL);
 		} else {
-			$this->setMgaReleaseId($v->getId());
+			$this->setDistreleaseId($v->getId());
 		}
 
-		$this->aMgaRelease = $v;
+		$this->aDistrelease = $v;
 
 		// Add binding for other direction of this n:n relationship.
-		// If this object has already been added to the MgaRelease object, it will not be re-added.
+		// If this object has already been added to the Distrelease object, it will not be re-added.
 		if ($v !== null) {
 			$v->addNewVersionRequest($this);
 		}
@@ -1172,25 +1184,25 @@ abstract class BaseNewVersionRequest extends BaseObject  implements Persistent {
 
 
 	/**
-	 * Get the associated MgaRelease object
+	 * Get the associated Distrelease object
 	 *
 	 * @param      PropelPDO Optional Connection object.
-	 * @return     MgaRelease The associated MgaRelease object.
+	 * @return     Distrelease The associated Distrelease object.
 	 * @throws     PropelException
 	 */
-	public function getMgaRelease(PropelPDO $con = null)
+	public function getDistrelease(PropelPDO $con = null)
 	{
-		if ($this->aMgaRelease === null && ($this->mga_release_id !== null)) {
-			$this->aMgaRelease = MgaReleasePeer::retrieveByPk($this->mga_release_id);
+		if ($this->aDistrelease === null && ($this->distrelease_id !== null)) {
+			$this->aDistrelease = DistreleasePeer::retrieveByPk($this->distrelease_id);
 			/* The following can be used additionally to
 			   guarantee the related object contains a reference
 			   to this object.  This level of coupling may, however, be
 			   undesirable since it could result in an only partially populated collection
 			   in the referenced object.
-			   $this->aMgaRelease->addNewVersionRequests($this);
+			   $this->aDistrelease->addNewVersionRequests($this);
 			 */
 		}
-		return $this->aMgaRelease;
+		return $this->aDistrelease;
 	}
 
 	/**
@@ -1623,7 +1635,7 @@ abstract class BaseNewVersionRequest extends BaseObject  implements Persistent {
 		$this->collUserHasNewVersionRequests = null;
 			$this->aUser = null;
 			$this->aPackage = null;
-			$this->aMgaRelease = null;
+			$this->aDistrelease = null;
 	}
 
 	// symfony_behaviors behavior

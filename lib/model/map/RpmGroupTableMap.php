@@ -37,6 +37,7 @@ class RpmGroupTableMap extends TableMap {
 		$this->setUseIdGenerator(true);
 		// columns
 		$this->addPrimaryKey('ID', 'Id', 'INTEGER', true, null, null);
+		$this->addColumn('NAME', 'Name', 'VARCHAR', true, 255, null);
 		// validators
 	} // initialize()
 
@@ -46,6 +47,7 @@ class RpmGroupTableMap extends TableMap {
 	public function buildRelations()
 	{
     $this->addRelation('Rpm', 'Rpm', RelationMap::ONE_TO_MANY, array('id' => 'rpm_group_id', ), null, null);
+    $this->addRelation('NotificationElement', 'NotificationElement', RelationMap::ONE_TO_MANY, array('id' => 'rpm_group_id', ), null, null);
 	} // buildRelations()
 
 	/**

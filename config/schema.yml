@@ -1,112 +1,190 @@
 propel:
   package:
-    id:                                                              ~
-    name:                                                            { type: varchar(1024) }
-    is_application:                                                  { type: boolean }
+    id:                                                                ~
+    name:                                                              { type: varchar(1024), required: true }
+    md5_name:                                                          { type: char, size:32, required: true }
+    is_application:                                                    { type: boolean, required: true }
+    _uniques:
+      unique_md5_name:                                                 [ md5_name ]
   rpm:
-    idrpm:                                                           { type: integer, required: true, primaryKey: true }
-    package_idpackage:                                               integer
-    mga_release_idmga_release:                                       { type: integer, foreignTable: mga_release, foreignReference: id }
-    media_idmedia:                                                   { type: integer, foreignTable: media, foreignReference: idmedia }
-    package_id:                                                      { type: integer, foreignTable: package, foreignReference: id }
-    rpm_group_id:                                                    { type: integer, foreignTable: rpm_group, foreignReference: id }
-  mga_release:
-    id:                                                              ~
-    version:                                                         { type: varchar(45), required: true }
-  media:
-    idmedia:                                                         { type: integer, required: true, primaryKey: true }
+    id:                                                                ~
+    package_id:                                                        { type: integer, required: true, foreignTable: package, foreignReference: id }
+    distrelease_id:                                                    { type: integer, required: true, foreignTable: distrelease, foreignReference: id }
+    media_id:                                                          { type: integer, required: true, foreignTable: media, foreignReference: id }
+    rpm_group_id:                                                      { type: integer, required: true, foreignTable: rpm_group, foreignReference: id }
+    licence:                                                           { type: varchar(255), required: true }
+    name:                                                              { type: varchar(255), required: true }
+    evr:                                                               { type: varchar(255), required: true }
+    version:                                                           { type: varchar(255), required: true }
+    release:                                                           { type: varchar(255), required: true }
+    summary:                                                           { type: varchar(255), required: true }
+    description:                                                       { type: varchar(45), required: true }
+    url:                                                               longvarchar
+    src_rpm:                                                           { type: longvarchar, required: true }
+    _indexes:
+      fk_rpm_distrelease1:                                             [ distrelease_id ]
+      fk_rpm_package1:                                                 [ package_id ]
+      fk_rpm_rpm_group1:                                               [ rpm_group_id ]
+      fk_rpm_media1:                                                   [ media_id ]
+  distrelease:
+    id:                                                                ~
+    name:                                                              { type: varchar(45), required: true }
+    is_meta:                                                           { type: boolean, required: true, default: false }
+    _uniques:
+      unique_name:                                                     [ name ]
   user:
-    id:                                                              ~
-    name:                                                            { type: varchar(32) }
-    login:                                                           { type: varchar(50) }
-  user_follows_package:
-    id:                                                              { type: varchar(45), required: true, primaryKey: true }
-    user_id:                                                         { type: integer, required: true, foreignTable: user, foreignReference: id }
-    package_id:                                                      { type: integer, required: true, foreignTable: package, foreignReference: id }
-    update:                                                          { type: boolean, required: true, default: FALSE }
-    new_version:                                                     { type: boolean, required: true, default: FALSE }
-    tester:                                                          { type: boolean, required: true, default: FALSE }
-    packager:                                                        { type: boolean, required: true, default: FALSE }
-    comments:                                                         longvarchar
-    _uniques:
-      dummy_pk:                                                      [ package_id, user_id ]
+    id:                                                                ~
+    name:                                                              { type: longvarchar, required: true }
+    login:                                                             { type: varchar(255), required: true }
+    _indexes:
+      unique_login:                                                    [ login ]
   user_comments_package:
-    id:                                                              ~
-    package_id:                                                      { type: integer, required: true, foreignTable: package, foreignReference: id }
-    user_id:                                                         { type: integer, required: true, foreignTable: user, foreignReference: id }
-    comment:                                                         { type: longvarchar, required: true }
-    created_at:                                                      ~
+    id:                                                                ~
+    package_id:                                                        { type: integer, required: true, foreignTable: package, foreignReference: id }
+    user_id:                                                           { type: integer, required: true, foreignTable: user, foreignReference: id }
+    comment:                                                           { type: longvarchar, required: true }
+    created_at:                                                        ~
+    _indexes:
+      fk_user_comment_application_application1:                        [ package_id ]
+      fk_user_comment_application_user1:                               [ user_id ]
   rpm_group:
-    id:                                                              ~
-  mga_release_group:
-    id:                                                              ~
-    name:                                                            { type: varchar(45) }
-  mga_realease_group_has_mga_release:
-    mga_release_group_id:                                            { type: integer, required: true, foreignTable: mga_release_group, foreignReference: id }
-    mga_release_idmga_release:                                       { type: integer, required: true, foreignTable: mga_release, foreignReference: id }
-  user_follows_package_has_mga_release_group:
-    user_follows_package_id:                                         { type: varchar(45), required: true, primaryKey: true, foreignTable: user_follows_package, foreignReference: id }
-    mga_release_group_id:                                            { type: integer, required: true, foreignTable: mga_release_group, foreignReference: id }
-  language:
-    id:                                                              ~
-  package_description:
-    id:                                                              ~
-    version_from:                                                    { type: varchar(45) }
-    package_id:                                                      { type: integer, foreignTable: package, foreignReference: id }
-    language_id:                                                     { type: integer, foreignTable: language, foreignReference: id }
-  package_screenshots:
-    id:                                                              ~
-    path_to_screenshot:                                              { type: varchar(1024) }
-    version_from:                                                    { type: varchar(45) }
-    package_id:                                                      { type: integer, foreignTable: package, foreignReference: id }
-  package_links:
-    id:                                                              ~
-    URL:                                                             { type: varchar(45) }
-    language_id:                                                     { type: integer, foreignTable: language, foreignReference: id }
-    package_id:                                                      { type: integer, foreignTable: package, foreignReference: id }
-  user_follows_mga_release_group:
-    id:                                                              ~
-    user_iduser:                                                     { type: integer, required: true, foreignTable: user, foreignReference: id }
-    mga_realease_group_id:                                           { type: integer, required: true, foreignTable: mga_release_group, foreignReference: id }
-    update:                                                          { type: boolean, required: true, default: FALSE }
-    new_version:                                                     { type: boolean, required: true, default: FALSE }
-    tester:                                                          { type: boolean, required: true, default: FALSE }
-    packager:                                                        { type: boolean, required: true, default: FALSE }
-    comments:                                                        { type: boolean, required: true, default: FALSE }
+    id:                                                                ~
+    name:                                                              { type: varchar(255), required: true }
     _uniques:
-      dummy_pk:                                                      [ user_iduser, mga_realease_group_id ]
-  user_follows_rpm_group:
-    id:                                                              ~
+      unique_name:                                                     [ name ]
+  language:
+    id:                                                                ~
+    name:                                                              { type: varchar(255), required: true }
+  package_description:
+    id:                                                                ~
+    version_from:                                                      { type: varchar(45) }
+    package_id:                                                        { type: integer, required: true, foreignTable: package, foreignReference: id }
+    language_id:                                                       { type: integer, required: true, foreignTable: language, foreignReference: id }
+    _indexes:
+      fk_package_description_package1:                                 [ package_id ]
+      fk_package_description_language1:                                [ language_id ]
+  package_screenshots:
+    id:                                                                ~
+    path_to_screenshot:                                                { type: varchar(1024), required: true }
+    version_from:                                                      { type: varchar(45) }
+    package_id:                                                        { type: integer, required: true, foreignTable: package, foreignReference: id }
+    _indexes:
+      fk_package_screenshots_package1:                                 [ package_id ]
+  package_links:
+    id:                                                                ~
+    URL:                                                               { type: longvarchar, required: true }
+    language_id:                                                       { type: integer, required: true, foreignTable: language, foreignReference: id }
+    package_id:                                                        { type: integer, required: true, foreignTable: package, foreignReference: id }
+    _indexes:
+      fk_package_links_language1:                                      [ language_id ]
+      fk_package_links_package1:                                       [ package_id ]
   new_version_request:
-    id:                                                              ~
-    user_iduser:                                                     { type: integer, foreignTable: user, foreignReference: id }
-    package_id:                                                      { type: integer, foreignTable: package, foreignReference: id }
-    mga_release_id:                                                  { type: integer, foreignTable: mga_release, foreignReference: id }
-    version_needed:                                                  { type: varchar(45), required: true }
-    status:                                                          { type: varchar(45), required: true }
+    id:                                                                ~
+    user_id:                                                           { type: integer, required: true, foreignTable: user, foreignReference: id }
+    package_id:                                                        { type: integer, required: true, foreignTable: package, foreignReference: id }
+    distrelease_id:                                                    { type: integer, required: true, primaryKey: true, foreignTable: distrelease, foreignReference: id }
+    version_needed:                                                    { type: varchar(45), required: true }
+    status:                                                            { type: varchar(45), required: true }
+    _indexes:
+      fk_new_version_request_user1:                                    [ user_id ]
+      fk_new_version_request_package1:                                 [ package_id ]
+      fk_new_version_request_mga_release1:                             [ distrelease_id ]
   software_request:
-    id:                                                              ~
-    name:                                                            { type: varchar(255), required: true }
-    url:                                                             { type: varchar(2048), required: true }
-    text:                                                            longvarchar
-    user_iduser:                                                     { type: integer, foreignTable: user, foreignReference: id }
-    backport_to:                                                     longvarchar
-    status:                                                          { type: varchar(45) }
+    id:                                                                ~
+    name:                                                              { type: varchar(255), required: true }
+    url:                                                               { type: varchar(2048), required: true }
+    text:                                                              { type: longvarchar, required: true }
+    user_id:                                                           { type: integer, required: true, foreignTable: user, foreignReference: id }
+    backport_to:                                                       longvarchar
+    status:                                                            { type: varchar(45), required: true }
+    _indexes:
+      fk_software_request_user1:                                       [ user_id ]
   user_has_software_request:
-    user_iduser:                                                     { type: integer, required: true, primaryKey: true, foreignTable: user, foreignReference: id }
-    software_request_id:                                             { type: integer, required: true, primaryKey: true, foreignTable: software_request, foreignReference: id }
+    user_id:                                                           { type: integer, required: true, primaryKey: true, foreignTable: user, foreignReference: id }
+    software_request_id:                                               { type: integer, required: true, primaryKey: true, foreignTable: software_request, foreignReference: id }
+    _indexes:
+      fk_user_has_software_request_user1:                              [ user_id ]
+      fk_user_has_software_request_software_request1:                  [ software_request_id ]
   user_comments_software_request:
-    id:                                                              ~
-    user_iduser:                                                     { type: integer, foreignTable: user, foreignReference: id }
-    software_request_id:                                             { type: integer, foreignTable: software_request, foreignReference: id }
-    comment:                                                         longvarchar
-    created_at:                                                      ~
+    id:                                                                ~
+    user_id:                                                           { type: integer, required: true, foreignTable: user, foreignReference: id }
+    software_request_id:                                               { type: integer, required: true, foreignTable: software_request, foreignReference: id }
+    comment:                                                           { type: longvarchar, required: true }
+    created_at:                                                        ~
+    _indexes:
+      fk_user_comments_software_request_user1:                         [ user_id ]
+      fk_user_comments_software_request_software_request1:             [ software_request_id ]
   user_comments_new_version_request:
-    id:                                                              ~
-    user_iduser:                                                     { type: integer, foreignTable: user, foreignReference: id }
-    new_version_request_id:                                          { type: integer, foreignTable: new_version_request, foreignReference: id }
-    comment:                                                         longvarchar
-    created_at:                                                      ~
+    id:                                                                ~
+    user_id:                                                           { type: integer, required: true, foreignTable: user, foreignReference: id }
+    new_version_request_id:                                            { type: integer, required: true, foreignTable: new_version_request, foreignReference: id }
+    comment:                                                           { type: longvarchar, required: true }
+    created_at:                                                        ~
+    _indexes:
+      fk_user_comments_new_version_request_user1:                      [ user_id ]
+      fk_user_comments_new_version_request_new_version_request1:       [ new_version_request_id ]
   user_has_new_version_request:
-    user_id:                                                         { type: integer, required: true, primaryKey: true, foreignTable: user, foreignReference: id }
-    new_version_request_id:                                          { type: integer, required: true, primaryKey: true, foreignTable: new_version_request, foreignReference: id }
+    user_id:                                                           { type: integer, required: true, primaryKey: true, foreignTable: user, foreignReference: id }
+    new_version_request_id:                                            { type: integer, required: true, primaryKey: true, foreignTable: new_version_request, foreignReference: id }
+    _indexes:
+      fk_user_has_new_version_request_user1:                           [ user_id ]
+      fk_user_has_new_version_request_new_version_request1:            [ new_version_request_id ]
+  arch:
+    id:                                                                ~
+    name:                                                              { type: varchar(45), required: true }
+    _uniques:
+      unique_name:                                                     [ name ]
+  media:
+    id:                                                                ~
+    name:                                                              { type: varchar(45), required: true }
+    vendor:                                                            { type: varchar(255), required: true }
+    _uniques:
+      unique_name:                                                     [ name ]
+  notification:
+    id:                                                                ~
+    user_id:                                                           { type: integer, required: true, foreignTable: user, foreignReference: id }
+    update:                                                            { type: boolean, required: true, default: false }
+    new_version:                                                       { type: boolean, required: true, default: false }
+    update_candidate:                                                  { type: boolean, required: true, default: false }
+    new_version_candidate:                                             { type: boolean, required: true, default: false }
+    comments:                                                          { type: boolean, required: true, default: false }
+    mail_notification:                                                 { type: boolean, required: true, default: false }
+    mail_prefix:                                                       { type: varchar(45) }
+    rss_feed_id:                                                       { type: integer, foreignTable: rss_feed, foreignReference: id }
+    _indexes:
+      fk_notification_user1:                                           [ user_id ]
+      fk_notification_rss_feed1:                                       [ rss_feed_id ]
+  notification_element:
+    id:                                                                ~
+    notification_id:                                                   { type: integer, required: true, foreignTable: notification, foreignReference: id }
+    package_id:                                                        { type: integer, foreignTable: package, foreignReference: id }
+    rpm_group_id:                                                      { type: integer, foreignTable: rpm_group, foreignReference: id }
+    distrelease_id:                                                    { type: integer, foreignTable: distrelease, foreignReference: id }
+    arch_id:                                                           { type: integer, foreignTable: arch, foreignReference: id }
+    media_id:                                                          { type: integer, foreignTable: media, foreignReference: id }
+    _indexes:
+      fk_notification_element_notification1:                           [ notification_id ]
+      fk_notification_element_package1:                                [ package_id ]
+      fk_notification_element_rpm_group1:                              [ rpm_group_id ]
+      fk_notification_element_distrelease1:                            [ distrelease_id ]
+      fk_notification_element_arch1:                                   [ arch_id ]
+      fk_notification_element_media1:                                  [ media_id ]
+    _uniques:
+      dummy_pk:                                                        [ notification_id, package_id, rpm_group_id, distrelease_id, arch_id, media_id ]
+  rss_feed:
+    id:                                                                ~
+    name:                                                              { type: varchar(45) }
+    hash:                                                              { type: varchar(45), required: true }
+    _uniques:
+      hash_UNIQUE:                                                     [ hash ]
+  rpmfile:
+    id:                                                                ~
+    rpm_pkgid:                                                         { type: char, size:32, required: true }
+    build_time:                                                        timestamp
+    arch_id:                                                           { type: integer, required: true, foreignTable: arch, foreignReference: id }
+    rpm_id:                                                            { type: integer, required: true, foreignTable: rpm, foreignReference: id }
+    size:                                                              { type: integer, required: true }
+    arch:                                                              { type: varchar(45) }
+    _indexes:
+      fk_rpmfile_arch1:                                                [ arch_id ]
+      fk_rpmfile_rpm1:                                                 [ rpm_id ]

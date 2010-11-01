@@ -37,9 +37,9 @@ class NewVersionRequestTableMap extends TableMap {
 		$this->setUseIdGenerator(true);
 		// columns
 		$this->addPrimaryKey('ID', 'Id', 'INTEGER', true, null, null);
-		$this->addForeignKey('USER_IDUSER', 'UserIduser', 'INTEGER', 'user', 'ID', false, null, null);
-		$this->addForeignKey('PACKAGE_ID', 'PackageId', 'INTEGER', 'package', 'ID', false, null, null);
-		$this->addForeignKey('MGA_RELEASE_ID', 'MgaReleaseId', 'INTEGER', 'mga_release', 'ID', false, null, null);
+		$this->addForeignKey('USER_ID', 'UserId', 'INTEGER', 'user', 'ID', true, null, null);
+		$this->addForeignKey('PACKAGE_ID', 'PackageId', 'INTEGER', 'package', 'ID', true, null, null);
+		$this->addForeignPrimaryKey('DISTRELEASE_ID', 'DistreleaseId', 'INTEGER' , 'distrelease', 'ID', true, null, null);
 		$this->addColumn('VERSION_NEEDED', 'VersionNeeded', 'VARCHAR', true, 45, null);
 		$this->addColumn('STATUS', 'Status', 'VARCHAR', true, 45, null);
 		// validators
@@ -50,9 +50,9 @@ class NewVersionRequestTableMap extends TableMap {
 	 */
 	public function buildRelations()
 	{
-    $this->addRelation('User', 'User', RelationMap::MANY_TO_ONE, array('user_iduser' => 'id', ), null, null);
+    $this->addRelation('User', 'User', RelationMap::MANY_TO_ONE, array('user_id' => 'id', ), null, null);
     $this->addRelation('Package', 'Package', RelationMap::MANY_TO_ONE, array('package_id' => 'id', ), null, null);
-    $this->addRelation('MgaRelease', 'MgaRelease', RelationMap::MANY_TO_ONE, array('mga_release_id' => 'id', ), null, null);
+    $this->addRelation('Distrelease', 'Distrelease', RelationMap::MANY_TO_ONE, array('distrelease_id' => 'id', ), null, null);
     $this->addRelation('UserCommentsNewVersionRequest', 'UserCommentsNewVersionRequest', RelationMap::ONE_TO_MANY, array('id' => 'new_version_request_id', ), null, null);
     $this->addRelation('UserHasNewVersionRequest', 'UserHasNewVersionRequest', RelationMap::ONE_TO_MANY, array('id' => 'new_version_request_id', ), null, null);
 	} // buildRelations()

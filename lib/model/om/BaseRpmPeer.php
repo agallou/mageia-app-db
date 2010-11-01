@@ -25,28 +25,52 @@ abstract class BaseRpmPeer {
 	const TM_CLASS = 'RpmTableMap';
 	
 	/** The total number of columns. */
-	const NUM_COLUMNS = 6;
+	const NUM_COLUMNS = 14;
 
 	/** The number of lazy-loaded columns. */
 	const NUM_LAZY_LOAD_COLUMNS = 0;
 
-	/** the column name for the IDRPM field */
-	const IDRPM = 'rpm.IDRPM';
-
-	/** the column name for the PACKAGE_IDPACKAGE field */
-	const PACKAGE_IDPACKAGE = 'rpm.PACKAGE_IDPACKAGE';
-
-	/** the column name for the MGA_RELEASE_IDMGA_RELEASE field */
-	const MGA_RELEASE_IDMGA_RELEASE = 'rpm.MGA_RELEASE_IDMGA_RELEASE';
-
-	/** the column name for the MEDIA_IDMEDIA field */
-	const MEDIA_IDMEDIA = 'rpm.MEDIA_IDMEDIA';
+	/** the column name for the ID field */
+	const ID = 'rpm.ID';
 
 	/** the column name for the PACKAGE_ID field */
 	const PACKAGE_ID = 'rpm.PACKAGE_ID';
 
+	/** the column name for the DISTRELEASE_ID field */
+	const DISTRELEASE_ID = 'rpm.DISTRELEASE_ID';
+
+	/** the column name for the MEDIA_ID field */
+	const MEDIA_ID = 'rpm.MEDIA_ID';
+
 	/** the column name for the RPM_GROUP_ID field */
 	const RPM_GROUP_ID = 'rpm.RPM_GROUP_ID';
+
+	/** the column name for the LICENCE field */
+	const LICENCE = 'rpm.LICENCE';
+
+	/** the column name for the NAME field */
+	const NAME = 'rpm.NAME';
+
+	/** the column name for the EVR field */
+	const EVR = 'rpm.EVR';
+
+	/** the column name for the VERSION field */
+	const VERSION = 'rpm.VERSION';
+
+	/** the column name for the RELEASE field */
+	const RELEASE = 'rpm.RELEASE';
+
+	/** the column name for the SUMMARY field */
+	const SUMMARY = 'rpm.SUMMARY';
+
+	/** the column name for the DESCRIPTION field */
+	const DESCRIPTION = 'rpm.DESCRIPTION';
+
+	/** the column name for the URL field */
+	const URL = 'rpm.URL';
+
+	/** the column name for the SRC_RPM field */
+	const SRC_RPM = 'rpm.SRC_RPM';
 
 	/**
 	 * An identiy map to hold any loaded instances of Rpm objects.
@@ -71,11 +95,11 @@ abstract class BaseRpmPeer {
 	 * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
 	 */
 	private static $fieldNames = array (
-		BasePeer::TYPE_PHPNAME => array ('Idrpm', 'PackageIdpackage', 'MgaReleaseIdmgaRelease', 'MediaIdmedia', 'PackageId', 'RpmGroupId', ),
-		BasePeer::TYPE_STUDLYPHPNAME => array ('idrpm', 'packageIdpackage', 'mgaReleaseIdmgaRelease', 'mediaIdmedia', 'packageId', 'rpmGroupId', ),
-		BasePeer::TYPE_COLNAME => array (self::IDRPM, self::PACKAGE_IDPACKAGE, self::MGA_RELEASE_IDMGA_RELEASE, self::MEDIA_IDMEDIA, self::PACKAGE_ID, self::RPM_GROUP_ID, ),
-		BasePeer::TYPE_FIELDNAME => array ('idrpm', 'package_idpackage', 'mga_release_idmga_release', 'media_idmedia', 'package_id', 'rpm_group_id', ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, )
+		BasePeer::TYPE_PHPNAME => array ('Id', 'PackageId', 'DistreleaseId', 'MediaId', 'RpmGroupId', 'Licence', 'Name', 'Evr', 'Version', 'Release', 'Summary', 'Description', 'Url', 'SrcRpm', ),
+		BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'packageId', 'distreleaseId', 'mediaId', 'rpmGroupId', 'licence', 'name', 'evr', 'version', 'release', 'summary', 'description', 'url', 'srcRpm', ),
+		BasePeer::TYPE_COLNAME => array (self::ID, self::PACKAGE_ID, self::DISTRELEASE_ID, self::MEDIA_ID, self::RPM_GROUP_ID, self::LICENCE, self::NAME, self::EVR, self::VERSION, self::RELEASE, self::SUMMARY, self::DESCRIPTION, self::URL, self::SRC_RPM, ),
+		BasePeer::TYPE_FIELDNAME => array ('id', 'package_id', 'distrelease_id', 'media_id', 'rpm_group_id', 'licence', 'name', 'evr', 'version', 'release', 'summary', 'description', 'url', 'src_rpm', ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, )
 	);
 
 	/**
@@ -85,11 +109,11 @@ abstract class BaseRpmPeer {
 	 * e.g. self::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
 	 */
 	private static $fieldKeys = array (
-		BasePeer::TYPE_PHPNAME => array ('Idrpm' => 0, 'PackageIdpackage' => 1, 'MgaReleaseIdmgaRelease' => 2, 'MediaIdmedia' => 3, 'PackageId' => 4, 'RpmGroupId' => 5, ),
-		BasePeer::TYPE_STUDLYPHPNAME => array ('idrpm' => 0, 'packageIdpackage' => 1, 'mgaReleaseIdmgaRelease' => 2, 'mediaIdmedia' => 3, 'packageId' => 4, 'rpmGroupId' => 5, ),
-		BasePeer::TYPE_COLNAME => array (self::IDRPM => 0, self::PACKAGE_IDPACKAGE => 1, self::MGA_RELEASE_IDMGA_RELEASE => 2, self::MEDIA_IDMEDIA => 3, self::PACKAGE_ID => 4, self::RPM_GROUP_ID => 5, ),
-		BasePeer::TYPE_FIELDNAME => array ('idrpm' => 0, 'package_idpackage' => 1, 'mga_release_idmga_release' => 2, 'media_idmedia' => 3, 'package_id' => 4, 'rpm_group_id' => 5, ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, )
+		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'PackageId' => 1, 'DistreleaseId' => 2, 'MediaId' => 3, 'RpmGroupId' => 4, 'Licence' => 5, 'Name' => 6, 'Evr' => 7, 'Version' => 8, 'Release' => 9, 'Summary' => 10, 'Description' => 11, 'Url' => 12, 'SrcRpm' => 13, ),
+		BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'packageId' => 1, 'distreleaseId' => 2, 'mediaId' => 3, 'rpmGroupId' => 4, 'licence' => 5, 'name' => 6, 'evr' => 7, 'version' => 8, 'release' => 9, 'summary' => 10, 'description' => 11, 'url' => 12, 'srcRpm' => 13, ),
+		BasePeer::TYPE_COLNAME => array (self::ID => 0, self::PACKAGE_ID => 1, self::DISTRELEASE_ID => 2, self::MEDIA_ID => 3, self::RPM_GROUP_ID => 4, self::LICENCE => 5, self::NAME => 6, self::EVR => 7, self::VERSION => 8, self::RELEASE => 9, self::SUMMARY => 10, self::DESCRIPTION => 11, self::URL => 12, self::SRC_RPM => 13, ),
+		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'package_id' => 1, 'distrelease_id' => 2, 'media_id' => 3, 'rpm_group_id' => 4, 'licence' => 5, 'name' => 6, 'evr' => 7, 'version' => 8, 'release' => 9, 'summary' => 10, 'description' => 11, 'url' => 12, 'src_rpm' => 13, ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, )
 	);
 
 	/**
@@ -159,12 +183,20 @@ abstract class BaseRpmPeer {
 	 */
 	public static function addSelectColumns(Criteria $criteria)
 	{
-		$criteria->addSelectColumn(RpmPeer::IDRPM);
-		$criteria->addSelectColumn(RpmPeer::PACKAGE_IDPACKAGE);
-		$criteria->addSelectColumn(RpmPeer::MGA_RELEASE_IDMGA_RELEASE);
-		$criteria->addSelectColumn(RpmPeer::MEDIA_IDMEDIA);
+		$criteria->addSelectColumn(RpmPeer::ID);
 		$criteria->addSelectColumn(RpmPeer::PACKAGE_ID);
+		$criteria->addSelectColumn(RpmPeer::DISTRELEASE_ID);
+		$criteria->addSelectColumn(RpmPeer::MEDIA_ID);
 		$criteria->addSelectColumn(RpmPeer::RPM_GROUP_ID);
+		$criteria->addSelectColumn(RpmPeer::LICENCE);
+		$criteria->addSelectColumn(RpmPeer::NAME);
+		$criteria->addSelectColumn(RpmPeer::EVR);
+		$criteria->addSelectColumn(RpmPeer::VERSION);
+		$criteria->addSelectColumn(RpmPeer::RELEASE);
+		$criteria->addSelectColumn(RpmPeer::SUMMARY);
+		$criteria->addSelectColumn(RpmPeer::DESCRIPTION);
+		$criteria->addSelectColumn(RpmPeer::URL);
+		$criteria->addSelectColumn(RpmPeer::SRC_RPM);
 	}
 
 	/**
@@ -300,7 +332,7 @@ abstract class BaseRpmPeer {
 	{
 		if (Propel::isInstancePoolingEnabled()) {
 			if ($key === null) {
-				$key = (string) $obj->getIdrpm();
+				$key = (string) $obj->getId();
 			} // if key === null
 			self::$instances[$key] = $obj;
 		}
@@ -320,7 +352,7 @@ abstract class BaseRpmPeer {
 	{
 		if (Propel::isInstancePoolingEnabled() && $value !== null) {
 			if (is_object($value) && $value instanceof Rpm) {
-				$key = (string) $value->getIdrpm();
+				$key = (string) $value->getId();
 			} elseif (is_scalar($value)) {
 				// assume we've been passed a primary key
 				$key = (string) $value;
@@ -423,7 +455,7 @@ abstract class BaseRpmPeer {
 	}
 
 	/**
-	 * Returns the number of rows matching criteria, joining the related MgaRelease table
+	 * Returns the number of rows matching criteria, joining the related Package table
 	 *
 	 * @param      Criteria $criteria
 	 * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
@@ -431,7 +463,7 @@ abstract class BaseRpmPeer {
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
 	 * @return     int Number of matching rows.
 	 */
-	public static function doCountJoinMgaRelease(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public static function doCountJoinPackage(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
 		// we're going to modify criteria, so copy it first
 		$criteria = clone $criteria;
@@ -458,7 +490,63 @@ abstract class BaseRpmPeer {
 			$con = Propel::getConnection(RpmPeer::DATABASE_NAME, Propel::CONNECTION_READ);
 		}
 
-		$criteria->addJoin(RpmPeer::MGA_RELEASE_IDMGA_RELEASE, MgaReleasePeer::ID, $join_behavior);
+		$criteria->addJoin(RpmPeer::PACKAGE_ID, PackagePeer::ID, $join_behavior);
+
+		// symfony_behaviors behavior
+		foreach (sfMixer::getCallables(self::getMixerPreSelectHook(__FUNCTION__)) as $sf_hook)
+		{
+		  call_user_func($sf_hook, 'BaseRpmPeer', $criteria, $con);
+		}
+
+		$stmt = BasePeer::doCount($criteria, $con);
+
+		if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+			$count = (int) $row[0];
+		} else {
+			$count = 0; // no rows returned; we infer that means 0 matches.
+		}
+		$stmt->closeCursor();
+		return $count;
+	}
+
+
+	/**
+	 * Returns the number of rows matching criteria, joining the related Distrelease table
+	 *
+	 * @param      Criteria $criteria
+	 * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
+	 * @param      PropelPDO $con
+	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+	 * @return     int Number of matching rows.
+	 */
+	public static function doCountJoinDistrelease(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	{
+		// we're going to modify criteria, so copy it first
+		$criteria = clone $criteria;
+
+		// We need to set the primary table name, since in the case that there are no WHERE columns
+		// it will be impossible for the BasePeer::createSelectSql() method to determine which
+		// tables go into the FROM clause.
+		$criteria->setPrimaryTableName(RpmPeer::TABLE_NAME);
+
+		if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
+			$criteria->setDistinct();
+		}
+
+		if (!$criteria->hasSelectClause()) {
+			RpmPeer::addSelectColumns($criteria);
+		}
+		
+		$criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
+		
+		// Set the correct dbName
+		$criteria->setDbName(self::DATABASE_NAME);
+
+		if ($con === null) {
+			$con = Propel::getConnection(RpmPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+		}
+
+		$criteria->addJoin(RpmPeer::DISTRELEASE_ID, DistreleasePeer::ID, $join_behavior);
 
 		// symfony_behaviors behavior
 		foreach (sfMixer::getCallables(self::getMixerPreSelectHook(__FUNCTION__)) as $sf_hook)
@@ -514,63 +602,7 @@ abstract class BaseRpmPeer {
 			$con = Propel::getConnection(RpmPeer::DATABASE_NAME, Propel::CONNECTION_READ);
 		}
 
-		$criteria->addJoin(RpmPeer::MEDIA_IDMEDIA, MediaPeer::IDMEDIA, $join_behavior);
-
-		// symfony_behaviors behavior
-		foreach (sfMixer::getCallables(self::getMixerPreSelectHook(__FUNCTION__)) as $sf_hook)
-		{
-		  call_user_func($sf_hook, 'BaseRpmPeer', $criteria, $con);
-		}
-
-		$stmt = BasePeer::doCount($criteria, $con);
-
-		if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
-			$count = (int) $row[0];
-		} else {
-			$count = 0; // no rows returned; we infer that means 0 matches.
-		}
-		$stmt->closeCursor();
-		return $count;
-	}
-
-
-	/**
-	 * Returns the number of rows matching criteria, joining the related Package table
-	 *
-	 * @param      Criteria $criteria
-	 * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
-	 * @param      PropelPDO $con
-	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
-	 * @return     int Number of matching rows.
-	 */
-	public static function doCountJoinPackage(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
-	{
-		// we're going to modify criteria, so copy it first
-		$criteria = clone $criteria;
-
-		// We need to set the primary table name, since in the case that there are no WHERE columns
-		// it will be impossible for the BasePeer::createSelectSql() method to determine which
-		// tables go into the FROM clause.
-		$criteria->setPrimaryTableName(RpmPeer::TABLE_NAME);
-
-		if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
-			$criteria->setDistinct();
-		}
-
-		if (!$criteria->hasSelectClause()) {
-			RpmPeer::addSelectColumns($criteria);
-		}
-		
-		$criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
-		
-		// Set the correct dbName
-		$criteria->setDbName(self::DATABASE_NAME);
-
-		if ($con === null) {
-			$con = Propel::getConnection(RpmPeer::DATABASE_NAME, Propel::CONNECTION_READ);
-		}
-
-		$criteria->addJoin(RpmPeer::PACKAGE_ID, PackagePeer::ID, $join_behavior);
+		$criteria->addJoin(RpmPeer::MEDIA_ID, MediaPeer::ID, $join_behavior);
 
 		// symfony_behaviors behavior
 		foreach (sfMixer::getCallables(self::getMixerPreSelectHook(__FUNCTION__)) as $sf_hook)
@@ -647,150 +679,6 @@ abstract class BaseRpmPeer {
 
 
 	/**
-	 * Selects a collection of Rpm objects pre-filled with their MgaRelease objects.
-	 * @param      Criteria  $criteria
-	 * @param      PropelPDO $con
-	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
-	 * @return     array Array of Rpm objects.
-	 * @throws     PropelException Any exceptions caught during processing will be
-	 *		 rethrown wrapped into a PropelException.
-	 */
-	public static function doSelectJoinMgaRelease(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
-	{
-		$criteria = clone $criteria;
-
-		// Set the correct dbName if it has not been overridden
-		if ($criteria->getDbName() == Propel::getDefaultDB()) {
-			$criteria->setDbName(self::DATABASE_NAME);
-		}
-
-		RpmPeer::addSelectColumns($criteria);
-		$startcol = (RpmPeer::NUM_COLUMNS - RpmPeer::NUM_LAZY_LOAD_COLUMNS);
-		MgaReleasePeer::addSelectColumns($criteria);
-
-		$criteria->addJoin(RpmPeer::MGA_RELEASE_IDMGA_RELEASE, MgaReleasePeer::ID, $join_behavior);
-
-		// symfony_behaviors behavior
-		foreach (sfMixer::getCallables(self::getMixerPreSelectHook(__FUNCTION__)) as $sf_hook)
-		{
-		  call_user_func($sf_hook, 'BaseRpmPeer', $criteria, $con);
-		}
-
-		$stmt = BasePeer::doSelect($criteria, $con);
-		$results = array();
-
-		while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
-			$key1 = RpmPeer::getPrimaryKeyHashFromRow($row, 0);
-			if (null !== ($obj1 = RpmPeer::getInstanceFromPool($key1))) {
-				// We no longer rehydrate the object, since this can cause data loss.
-				// See http://propel.phpdb.org/trac/ticket/509
-				// $obj1->hydrate($row, 0, true); // rehydrate
-			} else {
-
-				$cls = RpmPeer::getOMClass(false);
-
-				$obj1 = new $cls();
-				$obj1->hydrate($row);
-				RpmPeer::addInstanceToPool($obj1, $key1);
-			} // if $obj1 already loaded
-
-			$key2 = MgaReleasePeer::getPrimaryKeyHashFromRow($row, $startcol);
-			if ($key2 !== null) {
-				$obj2 = MgaReleasePeer::getInstanceFromPool($key2);
-				if (!$obj2) {
-
-					$cls = MgaReleasePeer::getOMClass(false);
-
-					$obj2 = new $cls();
-					$obj2->hydrate($row, $startcol);
-					MgaReleasePeer::addInstanceToPool($obj2, $key2);
-				} // if obj2 already loaded
-				
-				// Add the $obj1 (Rpm) to $obj2 (MgaRelease)
-				$obj2->addRpm($obj1);
-
-			} // if joined row was not null
-
-			$results[] = $obj1;
-		}
-		$stmt->closeCursor();
-		return $results;
-	}
-
-
-	/**
-	 * Selects a collection of Rpm objects pre-filled with their Media objects.
-	 * @param      Criteria  $criteria
-	 * @param      PropelPDO $con
-	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
-	 * @return     array Array of Rpm objects.
-	 * @throws     PropelException Any exceptions caught during processing will be
-	 *		 rethrown wrapped into a PropelException.
-	 */
-	public static function doSelectJoinMedia(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
-	{
-		$criteria = clone $criteria;
-
-		// Set the correct dbName if it has not been overridden
-		if ($criteria->getDbName() == Propel::getDefaultDB()) {
-			$criteria->setDbName(self::DATABASE_NAME);
-		}
-
-		RpmPeer::addSelectColumns($criteria);
-		$startcol = (RpmPeer::NUM_COLUMNS - RpmPeer::NUM_LAZY_LOAD_COLUMNS);
-		MediaPeer::addSelectColumns($criteria);
-
-		$criteria->addJoin(RpmPeer::MEDIA_IDMEDIA, MediaPeer::IDMEDIA, $join_behavior);
-
-		// symfony_behaviors behavior
-		foreach (sfMixer::getCallables(self::getMixerPreSelectHook(__FUNCTION__)) as $sf_hook)
-		{
-		  call_user_func($sf_hook, 'BaseRpmPeer', $criteria, $con);
-		}
-
-		$stmt = BasePeer::doSelect($criteria, $con);
-		$results = array();
-
-		while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
-			$key1 = RpmPeer::getPrimaryKeyHashFromRow($row, 0);
-			if (null !== ($obj1 = RpmPeer::getInstanceFromPool($key1))) {
-				// We no longer rehydrate the object, since this can cause data loss.
-				// See http://propel.phpdb.org/trac/ticket/509
-				// $obj1->hydrate($row, 0, true); // rehydrate
-			} else {
-
-				$cls = RpmPeer::getOMClass(false);
-
-				$obj1 = new $cls();
-				$obj1->hydrate($row);
-				RpmPeer::addInstanceToPool($obj1, $key1);
-			} // if $obj1 already loaded
-
-			$key2 = MediaPeer::getPrimaryKeyHashFromRow($row, $startcol);
-			if ($key2 !== null) {
-				$obj2 = MediaPeer::getInstanceFromPool($key2);
-				if (!$obj2) {
-
-					$cls = MediaPeer::getOMClass(false);
-
-					$obj2 = new $cls();
-					$obj2->hydrate($row, $startcol);
-					MediaPeer::addInstanceToPool($obj2, $key2);
-				} // if obj2 already loaded
-				
-				// Add the $obj1 (Rpm) to $obj2 (Media)
-				$obj2->addRpm($obj1);
-
-			} // if joined row was not null
-
-			$results[] = $obj1;
-		}
-		$stmt->closeCursor();
-		return $results;
-	}
-
-
-	/**
 	 * Selects a collection of Rpm objects pre-filled with their Package objects.
 	 * @param      Criteria  $criteria
 	 * @param      PropelPDO $con
@@ -851,6 +739,150 @@ abstract class BaseRpmPeer {
 				} // if obj2 already loaded
 				
 				// Add the $obj1 (Rpm) to $obj2 (Package)
+				$obj2->addRpm($obj1);
+
+			} // if joined row was not null
+
+			$results[] = $obj1;
+		}
+		$stmt->closeCursor();
+		return $results;
+	}
+
+
+	/**
+	 * Selects a collection of Rpm objects pre-filled with their Distrelease objects.
+	 * @param      Criteria  $criteria
+	 * @param      PropelPDO $con
+	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+	 * @return     array Array of Rpm objects.
+	 * @throws     PropelException Any exceptions caught during processing will be
+	 *		 rethrown wrapped into a PropelException.
+	 */
+	public static function doSelectJoinDistrelease(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	{
+		$criteria = clone $criteria;
+
+		// Set the correct dbName if it has not been overridden
+		if ($criteria->getDbName() == Propel::getDefaultDB()) {
+			$criteria->setDbName(self::DATABASE_NAME);
+		}
+
+		RpmPeer::addSelectColumns($criteria);
+		$startcol = (RpmPeer::NUM_COLUMNS - RpmPeer::NUM_LAZY_LOAD_COLUMNS);
+		DistreleasePeer::addSelectColumns($criteria);
+
+		$criteria->addJoin(RpmPeer::DISTRELEASE_ID, DistreleasePeer::ID, $join_behavior);
+
+		// symfony_behaviors behavior
+		foreach (sfMixer::getCallables(self::getMixerPreSelectHook(__FUNCTION__)) as $sf_hook)
+		{
+		  call_user_func($sf_hook, 'BaseRpmPeer', $criteria, $con);
+		}
+
+		$stmt = BasePeer::doSelect($criteria, $con);
+		$results = array();
+
+		while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+			$key1 = RpmPeer::getPrimaryKeyHashFromRow($row, 0);
+			if (null !== ($obj1 = RpmPeer::getInstanceFromPool($key1))) {
+				// We no longer rehydrate the object, since this can cause data loss.
+				// See http://propel.phpdb.org/trac/ticket/509
+				// $obj1->hydrate($row, 0, true); // rehydrate
+			} else {
+
+				$cls = RpmPeer::getOMClass(false);
+
+				$obj1 = new $cls();
+				$obj1->hydrate($row);
+				RpmPeer::addInstanceToPool($obj1, $key1);
+			} // if $obj1 already loaded
+
+			$key2 = DistreleasePeer::getPrimaryKeyHashFromRow($row, $startcol);
+			if ($key2 !== null) {
+				$obj2 = DistreleasePeer::getInstanceFromPool($key2);
+				if (!$obj2) {
+
+					$cls = DistreleasePeer::getOMClass(false);
+
+					$obj2 = new $cls();
+					$obj2->hydrate($row, $startcol);
+					DistreleasePeer::addInstanceToPool($obj2, $key2);
+				} // if obj2 already loaded
+				
+				// Add the $obj1 (Rpm) to $obj2 (Distrelease)
+				$obj2->addRpm($obj1);
+
+			} // if joined row was not null
+
+			$results[] = $obj1;
+		}
+		$stmt->closeCursor();
+		return $results;
+	}
+
+
+	/**
+	 * Selects a collection of Rpm objects pre-filled with their Media objects.
+	 * @param      Criteria  $criteria
+	 * @param      PropelPDO $con
+	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+	 * @return     array Array of Rpm objects.
+	 * @throws     PropelException Any exceptions caught during processing will be
+	 *		 rethrown wrapped into a PropelException.
+	 */
+	public static function doSelectJoinMedia(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	{
+		$criteria = clone $criteria;
+
+		// Set the correct dbName if it has not been overridden
+		if ($criteria->getDbName() == Propel::getDefaultDB()) {
+			$criteria->setDbName(self::DATABASE_NAME);
+		}
+
+		RpmPeer::addSelectColumns($criteria);
+		$startcol = (RpmPeer::NUM_COLUMNS - RpmPeer::NUM_LAZY_LOAD_COLUMNS);
+		MediaPeer::addSelectColumns($criteria);
+
+		$criteria->addJoin(RpmPeer::MEDIA_ID, MediaPeer::ID, $join_behavior);
+
+		// symfony_behaviors behavior
+		foreach (sfMixer::getCallables(self::getMixerPreSelectHook(__FUNCTION__)) as $sf_hook)
+		{
+		  call_user_func($sf_hook, 'BaseRpmPeer', $criteria, $con);
+		}
+
+		$stmt = BasePeer::doSelect($criteria, $con);
+		$results = array();
+
+		while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+			$key1 = RpmPeer::getPrimaryKeyHashFromRow($row, 0);
+			if (null !== ($obj1 = RpmPeer::getInstanceFromPool($key1))) {
+				// We no longer rehydrate the object, since this can cause data loss.
+				// See http://propel.phpdb.org/trac/ticket/509
+				// $obj1->hydrate($row, 0, true); // rehydrate
+			} else {
+
+				$cls = RpmPeer::getOMClass(false);
+
+				$obj1 = new $cls();
+				$obj1->hydrate($row);
+				RpmPeer::addInstanceToPool($obj1, $key1);
+			} // if $obj1 already loaded
+
+			$key2 = MediaPeer::getPrimaryKeyHashFromRow($row, $startcol);
+			if ($key2 !== null) {
+				$obj2 = MediaPeer::getInstanceFromPool($key2);
+				if (!$obj2) {
+
+					$cls = MediaPeer::getOMClass(false);
+
+					$obj2 = new $cls();
+					$obj2->hydrate($row, $startcol);
+					MediaPeer::addInstanceToPool($obj2, $key2);
+				} // if obj2 already loaded
+				
+				// Add the $obj1 (Rpm) to $obj2 (Media)
 				$obj2->addRpm($obj1);
 
 			} // if joined row was not null
@@ -970,11 +1002,11 @@ abstract class BaseRpmPeer {
 			$con = Propel::getConnection(RpmPeer::DATABASE_NAME, Propel::CONNECTION_READ);
 		}
 
-		$criteria->addJoin(RpmPeer::MGA_RELEASE_IDMGA_RELEASE, MgaReleasePeer::ID, $join_behavior);
-
-		$criteria->addJoin(RpmPeer::MEDIA_IDMEDIA, MediaPeer::IDMEDIA, $join_behavior);
-
 		$criteria->addJoin(RpmPeer::PACKAGE_ID, PackagePeer::ID, $join_behavior);
+
+		$criteria->addJoin(RpmPeer::DISTRELEASE_ID, DistreleasePeer::ID, $join_behavior);
+
+		$criteria->addJoin(RpmPeer::MEDIA_ID, MediaPeer::ID, $join_behavior);
 
 		$criteria->addJoin(RpmPeer::RPM_GROUP_ID, RpmGroupPeer::ID, $join_behavior);
 
@@ -1017,23 +1049,23 @@ abstract class BaseRpmPeer {
 		RpmPeer::addSelectColumns($criteria);
 		$startcol2 = (RpmPeer::NUM_COLUMNS - RpmPeer::NUM_LAZY_LOAD_COLUMNS);
 
-		MgaReleasePeer::addSelectColumns($criteria);
-		$startcol3 = $startcol2 + (MgaReleasePeer::NUM_COLUMNS - MgaReleasePeer::NUM_LAZY_LOAD_COLUMNS);
+		PackagePeer::addSelectColumns($criteria);
+		$startcol3 = $startcol2 + (PackagePeer::NUM_COLUMNS - PackagePeer::NUM_LAZY_LOAD_COLUMNS);
+
+		DistreleasePeer::addSelectColumns($criteria);
+		$startcol4 = $startcol3 + (DistreleasePeer::NUM_COLUMNS - DistreleasePeer::NUM_LAZY_LOAD_COLUMNS);
 
 		MediaPeer::addSelectColumns($criteria);
-		$startcol4 = $startcol3 + (MediaPeer::NUM_COLUMNS - MediaPeer::NUM_LAZY_LOAD_COLUMNS);
-
-		PackagePeer::addSelectColumns($criteria);
-		$startcol5 = $startcol4 + (PackagePeer::NUM_COLUMNS - PackagePeer::NUM_LAZY_LOAD_COLUMNS);
+		$startcol5 = $startcol4 + (MediaPeer::NUM_COLUMNS - MediaPeer::NUM_LAZY_LOAD_COLUMNS);
 
 		RpmGroupPeer::addSelectColumns($criteria);
 		$startcol6 = $startcol5 + (RpmGroupPeer::NUM_COLUMNS - RpmGroupPeer::NUM_LAZY_LOAD_COLUMNS);
 
-		$criteria->addJoin(RpmPeer::MGA_RELEASE_IDMGA_RELEASE, MgaReleasePeer::ID, $join_behavior);
-
-		$criteria->addJoin(RpmPeer::MEDIA_IDMEDIA, MediaPeer::IDMEDIA, $join_behavior);
-
 		$criteria->addJoin(RpmPeer::PACKAGE_ID, PackagePeer::ID, $join_behavior);
+
+		$criteria->addJoin(RpmPeer::DISTRELEASE_ID, DistreleasePeer::ID, $join_behavior);
+
+		$criteria->addJoin(RpmPeer::MEDIA_ID, MediaPeer::ID, $join_behavior);
 
 		$criteria->addJoin(RpmPeer::RPM_GROUP_ID, RpmGroupPeer::ID, $join_behavior);
 
@@ -1060,57 +1092,57 @@ abstract class BaseRpmPeer {
 				RpmPeer::addInstanceToPool($obj1, $key1);
 			} // if obj1 already loaded
 
-			// Add objects for joined MgaRelease rows
+			// Add objects for joined Package rows
 
-			$key2 = MgaReleasePeer::getPrimaryKeyHashFromRow($row, $startcol2);
+			$key2 = PackagePeer::getPrimaryKeyHashFromRow($row, $startcol2);
 			if ($key2 !== null) {
-				$obj2 = MgaReleasePeer::getInstanceFromPool($key2);
+				$obj2 = PackagePeer::getInstanceFromPool($key2);
 				if (!$obj2) {
 
-					$cls = MgaReleasePeer::getOMClass(false);
+					$cls = PackagePeer::getOMClass(false);
 
 					$obj2 = new $cls();
 					$obj2->hydrate($row, $startcol2);
-					MgaReleasePeer::addInstanceToPool($obj2, $key2);
+					PackagePeer::addInstanceToPool($obj2, $key2);
 				} // if obj2 loaded
 
-				// Add the $obj1 (Rpm) to the collection in $obj2 (MgaRelease)
+				// Add the $obj1 (Rpm) to the collection in $obj2 (Package)
 				$obj2->addRpm($obj1);
+			} // if joined row not null
+
+			// Add objects for joined Distrelease rows
+
+			$key3 = DistreleasePeer::getPrimaryKeyHashFromRow($row, $startcol3);
+			if ($key3 !== null) {
+				$obj3 = DistreleasePeer::getInstanceFromPool($key3);
+				if (!$obj3) {
+
+					$cls = DistreleasePeer::getOMClass(false);
+
+					$obj3 = new $cls();
+					$obj3->hydrate($row, $startcol3);
+					DistreleasePeer::addInstanceToPool($obj3, $key3);
+				} // if obj3 loaded
+
+				// Add the $obj1 (Rpm) to the collection in $obj3 (Distrelease)
+				$obj3->addRpm($obj1);
 			} // if joined row not null
 
 			// Add objects for joined Media rows
 
-			$key3 = MediaPeer::getPrimaryKeyHashFromRow($row, $startcol3);
-			if ($key3 !== null) {
-				$obj3 = MediaPeer::getInstanceFromPool($key3);
-				if (!$obj3) {
+			$key4 = MediaPeer::getPrimaryKeyHashFromRow($row, $startcol4);
+			if ($key4 !== null) {
+				$obj4 = MediaPeer::getInstanceFromPool($key4);
+				if (!$obj4) {
 
 					$cls = MediaPeer::getOMClass(false);
 
-					$obj3 = new $cls();
-					$obj3->hydrate($row, $startcol3);
-					MediaPeer::addInstanceToPool($obj3, $key3);
-				} // if obj3 loaded
-
-				// Add the $obj1 (Rpm) to the collection in $obj3 (Media)
-				$obj3->addRpm($obj1);
-			} // if joined row not null
-
-			// Add objects for joined Package rows
-
-			$key4 = PackagePeer::getPrimaryKeyHashFromRow($row, $startcol4);
-			if ($key4 !== null) {
-				$obj4 = PackagePeer::getInstanceFromPool($key4);
-				if (!$obj4) {
-
-					$cls = PackagePeer::getOMClass(false);
-
 					$obj4 = new $cls();
 					$obj4->hydrate($row, $startcol4);
-					PackagePeer::addInstanceToPool($obj4, $key4);
+					MediaPeer::addInstanceToPool($obj4, $key4);
 				} // if obj4 loaded
 
-				// Add the $obj1 (Rpm) to the collection in $obj4 (Package)
+				// Add the $obj1 (Rpm) to the collection in $obj4 (Media)
 				$obj4->addRpm($obj1);
 			} // if joined row not null
 
@@ -1140,7 +1172,7 @@ abstract class BaseRpmPeer {
 
 
 	/**
-	 * Returns the number of rows matching criteria, joining the related MgaRelease table
+	 * Returns the number of rows matching criteria, joining the related Package table
 	 *
 	 * @param      Criteria $criteria
 	 * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
@@ -1148,7 +1180,7 @@ abstract class BaseRpmPeer {
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
 	 * @return     int Number of matching rows.
 	 */
-	public static function doCountJoinAllExceptMgaRelease(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public static function doCountJoinAllExceptPackage(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
 		// we're going to modify criteria, so copy it first
 		$criteria = clone $criteria;
@@ -1175,9 +1207,69 @@ abstract class BaseRpmPeer {
 			$con = Propel::getConnection(RpmPeer::DATABASE_NAME, Propel::CONNECTION_READ);
 		}
 	
-		$criteria->addJoin(RpmPeer::MEDIA_IDMEDIA, MediaPeer::IDMEDIA, $join_behavior);
+		$criteria->addJoin(RpmPeer::DISTRELEASE_ID, DistreleasePeer::ID, $join_behavior);
 
+		$criteria->addJoin(RpmPeer::MEDIA_ID, MediaPeer::ID, $join_behavior);
+
+		$criteria->addJoin(RpmPeer::RPM_GROUP_ID, RpmGroupPeer::ID, $join_behavior);
+
+		// symfony_behaviors behavior
+		foreach (sfMixer::getCallables(self::getMixerPreSelectHook(__FUNCTION__)) as $sf_hook)
+		{
+		  call_user_func($sf_hook, 'BaseRpmPeer', $criteria, $con);
+		}
+
+		$stmt = BasePeer::doCount($criteria, $con);
+
+		if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+			$count = (int) $row[0];
+		} else {
+			$count = 0; // no rows returned; we infer that means 0 matches.
+		}
+		$stmt->closeCursor();
+		return $count;
+	}
+
+
+	/**
+	 * Returns the number of rows matching criteria, joining the related Distrelease table
+	 *
+	 * @param      Criteria $criteria
+	 * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
+	 * @param      PropelPDO $con
+	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+	 * @return     int Number of matching rows.
+	 */
+	public static function doCountJoinAllExceptDistrelease(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	{
+		// we're going to modify criteria, so copy it first
+		$criteria = clone $criteria;
+
+		// We need to set the primary table name, since in the case that there are no WHERE columns
+		// it will be impossible for the BasePeer::createSelectSql() method to determine which
+		// tables go into the FROM clause.
+		$criteria->setPrimaryTableName(RpmPeer::TABLE_NAME);
+		
+		if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
+			$criteria->setDistinct();
+		}
+
+		if (!$criteria->hasSelectClause()) {
+			RpmPeer::addSelectColumns($criteria);
+		}
+		
+		$criteria->clearOrderByColumns(); // ORDER BY should not affect count
+		
+		// Set the correct dbName
+		$criteria->setDbName(self::DATABASE_NAME);
+
+		if ($con === null) {
+			$con = Propel::getConnection(RpmPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+		}
+	
 		$criteria->addJoin(RpmPeer::PACKAGE_ID, PackagePeer::ID, $join_behavior);
+
+		$criteria->addJoin(RpmPeer::MEDIA_ID, MediaPeer::ID, $join_behavior);
 
 		$criteria->addJoin(RpmPeer::RPM_GROUP_ID, RpmGroupPeer::ID, $join_behavior);
 
@@ -1235,69 +1327,9 @@ abstract class BaseRpmPeer {
 			$con = Propel::getConnection(RpmPeer::DATABASE_NAME, Propel::CONNECTION_READ);
 		}
 	
-		$criteria->addJoin(RpmPeer::MGA_RELEASE_IDMGA_RELEASE, MgaReleasePeer::ID, $join_behavior);
-
 		$criteria->addJoin(RpmPeer::PACKAGE_ID, PackagePeer::ID, $join_behavior);
 
-		$criteria->addJoin(RpmPeer::RPM_GROUP_ID, RpmGroupPeer::ID, $join_behavior);
-
-		// symfony_behaviors behavior
-		foreach (sfMixer::getCallables(self::getMixerPreSelectHook(__FUNCTION__)) as $sf_hook)
-		{
-		  call_user_func($sf_hook, 'BaseRpmPeer', $criteria, $con);
-		}
-
-		$stmt = BasePeer::doCount($criteria, $con);
-
-		if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
-			$count = (int) $row[0];
-		} else {
-			$count = 0; // no rows returned; we infer that means 0 matches.
-		}
-		$stmt->closeCursor();
-		return $count;
-	}
-
-
-	/**
-	 * Returns the number of rows matching criteria, joining the related Package table
-	 *
-	 * @param      Criteria $criteria
-	 * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
-	 * @param      PropelPDO $con
-	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
-	 * @return     int Number of matching rows.
-	 */
-	public static function doCountJoinAllExceptPackage(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
-	{
-		// we're going to modify criteria, so copy it first
-		$criteria = clone $criteria;
-
-		// We need to set the primary table name, since in the case that there are no WHERE columns
-		// it will be impossible for the BasePeer::createSelectSql() method to determine which
-		// tables go into the FROM clause.
-		$criteria->setPrimaryTableName(RpmPeer::TABLE_NAME);
-		
-		if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
-			$criteria->setDistinct();
-		}
-
-		if (!$criteria->hasSelectClause()) {
-			RpmPeer::addSelectColumns($criteria);
-		}
-		
-		$criteria->clearOrderByColumns(); // ORDER BY should not affect count
-		
-		// Set the correct dbName
-		$criteria->setDbName(self::DATABASE_NAME);
-
-		if ($con === null) {
-			$con = Propel::getConnection(RpmPeer::DATABASE_NAME, Propel::CONNECTION_READ);
-		}
-	
-		$criteria->addJoin(RpmPeer::MGA_RELEASE_IDMGA_RELEASE, MgaReleasePeer::ID, $join_behavior);
-
-		$criteria->addJoin(RpmPeer::MEDIA_IDMEDIA, MediaPeer::IDMEDIA, $join_behavior);
+		$criteria->addJoin(RpmPeer::DISTRELEASE_ID, DistreleasePeer::ID, $join_behavior);
 
 		$criteria->addJoin(RpmPeer::RPM_GROUP_ID, RpmGroupPeer::ID, $join_behavior);
 
@@ -1355,11 +1387,11 @@ abstract class BaseRpmPeer {
 			$con = Propel::getConnection(RpmPeer::DATABASE_NAME, Propel::CONNECTION_READ);
 		}
 	
-		$criteria->addJoin(RpmPeer::MGA_RELEASE_IDMGA_RELEASE, MgaReleasePeer::ID, $join_behavior);
-
-		$criteria->addJoin(RpmPeer::MEDIA_IDMEDIA, MediaPeer::IDMEDIA, $join_behavior);
-
 		$criteria->addJoin(RpmPeer::PACKAGE_ID, PackagePeer::ID, $join_behavior);
+
+		$criteria->addJoin(RpmPeer::DISTRELEASE_ID, DistreleasePeer::ID, $join_behavior);
+
+		$criteria->addJoin(RpmPeer::MEDIA_ID, MediaPeer::ID, $join_behavior);
 
 		// symfony_behaviors behavior
 		foreach (sfMixer::getCallables(self::getMixerPreSelectHook(__FUNCTION__)) as $sf_hook)
@@ -1380,7 +1412,7 @@ abstract class BaseRpmPeer {
 
 
 	/**
-	 * Selects a collection of Rpm objects pre-filled with all related objects except MgaRelease.
+	 * Selects a collection of Rpm objects pre-filled with all related objects except Package.
 	 *
 	 * @param      Criteria  $criteria
 	 * @param      PropelPDO $con
@@ -1389,7 +1421,7 @@ abstract class BaseRpmPeer {
 	 * @throws     PropelException Any exceptions caught during processing will be
 	 *		 rethrown wrapped into a PropelException.
 	 */
-	public static function doSelectJoinAllExceptMgaRelease(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public static function doSelectJoinAllExceptPackage(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
 		$criteria = clone $criteria;
 
@@ -1403,18 +1435,18 @@ abstract class BaseRpmPeer {
 		RpmPeer::addSelectColumns($criteria);
 		$startcol2 = (RpmPeer::NUM_COLUMNS - RpmPeer::NUM_LAZY_LOAD_COLUMNS);
 
-		MediaPeer::addSelectColumns($criteria);
-		$startcol3 = $startcol2 + (MediaPeer::NUM_COLUMNS - MediaPeer::NUM_LAZY_LOAD_COLUMNS);
+		DistreleasePeer::addSelectColumns($criteria);
+		$startcol3 = $startcol2 + (DistreleasePeer::NUM_COLUMNS - DistreleasePeer::NUM_LAZY_LOAD_COLUMNS);
 
-		PackagePeer::addSelectColumns($criteria);
-		$startcol4 = $startcol3 + (PackagePeer::NUM_COLUMNS - PackagePeer::NUM_LAZY_LOAD_COLUMNS);
+		MediaPeer::addSelectColumns($criteria);
+		$startcol4 = $startcol3 + (MediaPeer::NUM_COLUMNS - MediaPeer::NUM_LAZY_LOAD_COLUMNS);
 
 		RpmGroupPeer::addSelectColumns($criteria);
 		$startcol5 = $startcol4 + (RpmGroupPeer::NUM_COLUMNS - RpmGroupPeer::NUM_LAZY_LOAD_COLUMNS);
 
-		$criteria->addJoin(RpmPeer::MEDIA_IDMEDIA, MediaPeer::IDMEDIA, $join_behavior);
+		$criteria->addJoin(RpmPeer::DISTRELEASE_ID, DistreleasePeer::ID, $join_behavior);
 
-		$criteria->addJoin(RpmPeer::PACKAGE_ID, PackagePeer::ID, $join_behavior);
+		$criteria->addJoin(RpmPeer::MEDIA_ID, MediaPeer::ID, $join_behavior);
 
 		$criteria->addJoin(RpmPeer::RPM_GROUP_ID, RpmGroupPeer::ID, $join_behavior);
 
@@ -1442,40 +1474,167 @@ abstract class BaseRpmPeer {
 				RpmPeer::addInstanceToPool($obj1, $key1);
 			} // if obj1 already loaded
 
-				// Add objects for joined Media rows
+				// Add objects for joined Distrelease rows
 
-				$key2 = MediaPeer::getPrimaryKeyHashFromRow($row, $startcol2);
+				$key2 = DistreleasePeer::getPrimaryKeyHashFromRow($row, $startcol2);
 				if ($key2 !== null) {
-					$obj2 = MediaPeer::getInstanceFromPool($key2);
+					$obj2 = DistreleasePeer::getInstanceFromPool($key2);
 					if (!$obj2) {
 	
-						$cls = MediaPeer::getOMClass(false);
+						$cls = DistreleasePeer::getOMClass(false);
 
 					$obj2 = new $cls();
 					$obj2->hydrate($row, $startcol2);
-					MediaPeer::addInstanceToPool($obj2, $key2);
+					DistreleasePeer::addInstanceToPool($obj2, $key2);
 				} // if $obj2 already loaded
 
-				// Add the $obj1 (Rpm) to the collection in $obj2 (Media)
+				// Add the $obj1 (Rpm) to the collection in $obj2 (Distrelease)
 				$obj2->addRpm($obj1);
 
 			} // if joined row is not null
 
-				// Add objects for joined Package rows
+				// Add objects for joined Media rows
 
-				$key3 = PackagePeer::getPrimaryKeyHashFromRow($row, $startcol3);
+				$key3 = MediaPeer::getPrimaryKeyHashFromRow($row, $startcol3);
 				if ($key3 !== null) {
-					$obj3 = PackagePeer::getInstanceFromPool($key3);
+					$obj3 = MediaPeer::getInstanceFromPool($key3);
 					if (!$obj3) {
 	
-						$cls = PackagePeer::getOMClass(false);
+						$cls = MediaPeer::getOMClass(false);
 
 					$obj3 = new $cls();
 					$obj3->hydrate($row, $startcol3);
-					PackagePeer::addInstanceToPool($obj3, $key3);
+					MediaPeer::addInstanceToPool($obj3, $key3);
 				} // if $obj3 already loaded
 
-				// Add the $obj1 (Rpm) to the collection in $obj3 (Package)
+				// Add the $obj1 (Rpm) to the collection in $obj3 (Media)
+				$obj3->addRpm($obj1);
+
+			} // if joined row is not null
+
+				// Add objects for joined RpmGroup rows
+
+				$key4 = RpmGroupPeer::getPrimaryKeyHashFromRow($row, $startcol4);
+				if ($key4 !== null) {
+					$obj4 = RpmGroupPeer::getInstanceFromPool($key4);
+					if (!$obj4) {
+	
+						$cls = RpmGroupPeer::getOMClass(false);
+
+					$obj4 = new $cls();
+					$obj4->hydrate($row, $startcol4);
+					RpmGroupPeer::addInstanceToPool($obj4, $key4);
+				} // if $obj4 already loaded
+
+				// Add the $obj1 (Rpm) to the collection in $obj4 (RpmGroup)
+				$obj4->addRpm($obj1);
+
+			} // if joined row is not null
+
+			$results[] = $obj1;
+		}
+		$stmt->closeCursor();
+		return $results;
+	}
+
+
+	/**
+	 * Selects a collection of Rpm objects pre-filled with all related objects except Distrelease.
+	 *
+	 * @param      Criteria  $criteria
+	 * @param      PropelPDO $con
+	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+	 * @return     array Array of Rpm objects.
+	 * @throws     PropelException Any exceptions caught during processing will be
+	 *		 rethrown wrapped into a PropelException.
+	 */
+	public static function doSelectJoinAllExceptDistrelease(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	{
+		$criteria = clone $criteria;
+
+		// Set the correct dbName if it has not been overridden
+		// $criteria->getDbName() will return the same object if not set to another value
+		// so == check is okay and faster
+		if ($criteria->getDbName() == Propel::getDefaultDB()) {
+			$criteria->setDbName(self::DATABASE_NAME);
+		}
+
+		RpmPeer::addSelectColumns($criteria);
+		$startcol2 = (RpmPeer::NUM_COLUMNS - RpmPeer::NUM_LAZY_LOAD_COLUMNS);
+
+		PackagePeer::addSelectColumns($criteria);
+		$startcol3 = $startcol2 + (PackagePeer::NUM_COLUMNS - PackagePeer::NUM_LAZY_LOAD_COLUMNS);
+
+		MediaPeer::addSelectColumns($criteria);
+		$startcol4 = $startcol3 + (MediaPeer::NUM_COLUMNS - MediaPeer::NUM_LAZY_LOAD_COLUMNS);
+
+		RpmGroupPeer::addSelectColumns($criteria);
+		$startcol5 = $startcol4 + (RpmGroupPeer::NUM_COLUMNS - RpmGroupPeer::NUM_LAZY_LOAD_COLUMNS);
+
+		$criteria->addJoin(RpmPeer::PACKAGE_ID, PackagePeer::ID, $join_behavior);
+
+		$criteria->addJoin(RpmPeer::MEDIA_ID, MediaPeer::ID, $join_behavior);
+
+		$criteria->addJoin(RpmPeer::RPM_GROUP_ID, RpmGroupPeer::ID, $join_behavior);
+
+		// symfony_behaviors behavior
+		foreach (sfMixer::getCallables(self::getMixerPreSelectHook(__FUNCTION__)) as $sf_hook)
+		{
+		  call_user_func($sf_hook, 'BaseRpmPeer', $criteria, $con);
+		}
+
+
+		$stmt = BasePeer::doSelect($criteria, $con);
+		$results = array();
+
+		while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+			$key1 = RpmPeer::getPrimaryKeyHashFromRow($row, 0);
+			if (null !== ($obj1 = RpmPeer::getInstanceFromPool($key1))) {
+				// We no longer rehydrate the object, since this can cause data loss.
+				// See http://propel.phpdb.org/trac/ticket/509
+				// $obj1->hydrate($row, 0, true); // rehydrate
+			} else {
+				$cls = RpmPeer::getOMClass(false);
+
+				$obj1 = new $cls();
+				$obj1->hydrate($row);
+				RpmPeer::addInstanceToPool($obj1, $key1);
+			} // if obj1 already loaded
+
+				// Add objects for joined Package rows
+
+				$key2 = PackagePeer::getPrimaryKeyHashFromRow($row, $startcol2);
+				if ($key2 !== null) {
+					$obj2 = PackagePeer::getInstanceFromPool($key2);
+					if (!$obj2) {
+	
+						$cls = PackagePeer::getOMClass(false);
+
+					$obj2 = new $cls();
+					$obj2->hydrate($row, $startcol2);
+					PackagePeer::addInstanceToPool($obj2, $key2);
+				} // if $obj2 already loaded
+
+				// Add the $obj1 (Rpm) to the collection in $obj2 (Package)
+				$obj2->addRpm($obj1);
+
+			} // if joined row is not null
+
+				// Add objects for joined Media rows
+
+				$key3 = MediaPeer::getPrimaryKeyHashFromRow($row, $startcol3);
+				if ($key3 !== null) {
+					$obj3 = MediaPeer::getInstanceFromPool($key3);
+					if (!$obj3) {
+	
+						$cls = MediaPeer::getOMClass(false);
+
+					$obj3 = new $cls();
+					$obj3->hydrate($row, $startcol3);
+					MediaPeer::addInstanceToPool($obj3, $key3);
+				} // if $obj3 already loaded
+
+				// Add the $obj1 (Rpm) to the collection in $obj3 (Media)
 				$obj3->addRpm($obj1);
 
 			} // if joined row is not null
@@ -1530,19 +1689,19 @@ abstract class BaseRpmPeer {
 		RpmPeer::addSelectColumns($criteria);
 		$startcol2 = (RpmPeer::NUM_COLUMNS - RpmPeer::NUM_LAZY_LOAD_COLUMNS);
 
-		MgaReleasePeer::addSelectColumns($criteria);
-		$startcol3 = $startcol2 + (MgaReleasePeer::NUM_COLUMNS - MgaReleasePeer::NUM_LAZY_LOAD_COLUMNS);
-
 		PackagePeer::addSelectColumns($criteria);
-		$startcol4 = $startcol3 + (PackagePeer::NUM_COLUMNS - PackagePeer::NUM_LAZY_LOAD_COLUMNS);
+		$startcol3 = $startcol2 + (PackagePeer::NUM_COLUMNS - PackagePeer::NUM_LAZY_LOAD_COLUMNS);
+
+		DistreleasePeer::addSelectColumns($criteria);
+		$startcol4 = $startcol3 + (DistreleasePeer::NUM_COLUMNS - DistreleasePeer::NUM_LAZY_LOAD_COLUMNS);
 
 		RpmGroupPeer::addSelectColumns($criteria);
 		$startcol5 = $startcol4 + (RpmGroupPeer::NUM_COLUMNS - RpmGroupPeer::NUM_LAZY_LOAD_COLUMNS);
-
-		$criteria->addJoin(RpmPeer::MGA_RELEASE_IDMGA_RELEASE, MgaReleasePeer::ID, $join_behavior);
 
 		$criteria->addJoin(RpmPeer::PACKAGE_ID, PackagePeer::ID, $join_behavior);
 
+		$criteria->addJoin(RpmPeer::DISTRELEASE_ID, DistreleasePeer::ID, $join_behavior);
+
 		$criteria->addJoin(RpmPeer::RPM_GROUP_ID, RpmGroupPeer::ID, $join_behavior);
 
 		// symfony_behaviors behavior
@@ -1568,168 +1727,41 @@ abstract class BaseRpmPeer {
 				$obj1->hydrate($row);
 				RpmPeer::addInstanceToPool($obj1, $key1);
 			} // if obj1 already loaded
-
-				// Add objects for joined MgaRelease rows
-
-				$key2 = MgaReleasePeer::getPrimaryKeyHashFromRow($row, $startcol2);
-				if ($key2 !== null) {
-					$obj2 = MgaReleasePeer::getInstanceFromPool($key2);
-					if (!$obj2) {
-	
-						$cls = MgaReleasePeer::getOMClass(false);
-
-					$obj2 = new $cls();
-					$obj2->hydrate($row, $startcol2);
-					MgaReleasePeer::addInstanceToPool($obj2, $key2);
-				} // if $obj2 already loaded
-
-				// Add the $obj1 (Rpm) to the collection in $obj2 (MgaRelease)
-				$obj2->addRpm($obj1);
-
-			} // if joined row is not null
 
 				// Add objects for joined Package rows
 
-				$key3 = PackagePeer::getPrimaryKeyHashFromRow($row, $startcol3);
-				if ($key3 !== null) {
-					$obj3 = PackagePeer::getInstanceFromPool($key3);
-					if (!$obj3) {
+				$key2 = PackagePeer::getPrimaryKeyHashFromRow($row, $startcol2);
+				if ($key2 !== null) {
+					$obj2 = PackagePeer::getInstanceFromPool($key2);
+					if (!$obj2) {
 	
 						$cls = PackagePeer::getOMClass(false);
 
-					$obj3 = new $cls();
-					$obj3->hydrate($row, $startcol3);
-					PackagePeer::addInstanceToPool($obj3, $key3);
-				} // if $obj3 already loaded
-
-				// Add the $obj1 (Rpm) to the collection in $obj3 (Package)
-				$obj3->addRpm($obj1);
-
-			} // if joined row is not null
-
-				// Add objects for joined RpmGroup rows
-
-				$key4 = RpmGroupPeer::getPrimaryKeyHashFromRow($row, $startcol4);
-				if ($key4 !== null) {
-					$obj4 = RpmGroupPeer::getInstanceFromPool($key4);
-					if (!$obj4) {
-	
-						$cls = RpmGroupPeer::getOMClass(false);
-
-					$obj4 = new $cls();
-					$obj4->hydrate($row, $startcol4);
-					RpmGroupPeer::addInstanceToPool($obj4, $key4);
-				} // if $obj4 already loaded
-
-				// Add the $obj1 (Rpm) to the collection in $obj4 (RpmGroup)
-				$obj4->addRpm($obj1);
-
-			} // if joined row is not null
-
-			$results[] = $obj1;
-		}
-		$stmt->closeCursor();
-		return $results;
-	}
-
-
-	/**
-	 * Selects a collection of Rpm objects pre-filled with all related objects except Package.
-	 *
-	 * @param      Criteria  $criteria
-	 * @param      PropelPDO $con
-	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
-	 * @return     array Array of Rpm objects.
-	 * @throws     PropelException Any exceptions caught during processing will be
-	 *		 rethrown wrapped into a PropelException.
-	 */
-	public static function doSelectJoinAllExceptPackage(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
-	{
-		$criteria = clone $criteria;
-
-		// Set the correct dbName if it has not been overridden
-		// $criteria->getDbName() will return the same object if not set to another value
-		// so == check is okay and faster
-		if ($criteria->getDbName() == Propel::getDefaultDB()) {
-			$criteria->setDbName(self::DATABASE_NAME);
-		}
-
-		RpmPeer::addSelectColumns($criteria);
-		$startcol2 = (RpmPeer::NUM_COLUMNS - RpmPeer::NUM_LAZY_LOAD_COLUMNS);
-
-		MgaReleasePeer::addSelectColumns($criteria);
-		$startcol3 = $startcol2 + (MgaReleasePeer::NUM_COLUMNS - MgaReleasePeer::NUM_LAZY_LOAD_COLUMNS);
-
-		MediaPeer::addSelectColumns($criteria);
-		$startcol4 = $startcol3 + (MediaPeer::NUM_COLUMNS - MediaPeer::NUM_LAZY_LOAD_COLUMNS);
-
-		RpmGroupPeer::addSelectColumns($criteria);
-		$startcol5 = $startcol4 + (RpmGroupPeer::NUM_COLUMNS - RpmGroupPeer::NUM_LAZY_LOAD_COLUMNS);
-
-		$criteria->addJoin(RpmPeer::MGA_RELEASE_IDMGA_RELEASE, MgaReleasePeer::ID, $join_behavior);
-
-		$criteria->addJoin(RpmPeer::MEDIA_IDMEDIA, MediaPeer::IDMEDIA, $join_behavior);
-
-		$criteria->addJoin(RpmPeer::RPM_GROUP_ID, RpmGroupPeer::ID, $join_behavior);
-
-		// symfony_behaviors behavior
-		foreach (sfMixer::getCallables(self::getMixerPreSelectHook(__FUNCTION__)) as $sf_hook)
-		{
-		  call_user_func($sf_hook, 'BaseRpmPeer', $criteria, $con);
-		}
-
-
-		$stmt = BasePeer::doSelect($criteria, $con);
-		$results = array();
-
-		while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
-			$key1 = RpmPeer::getPrimaryKeyHashFromRow($row, 0);
-			if (null !== ($obj1 = RpmPeer::getInstanceFromPool($key1))) {
-				// We no longer rehydrate the object, since this can cause data loss.
-				// See http://propel.phpdb.org/trac/ticket/509
-				// $obj1->hydrate($row, 0, true); // rehydrate
-			} else {
-				$cls = RpmPeer::getOMClass(false);
-
-				$obj1 = new $cls();
-				$obj1->hydrate($row);
-				RpmPeer::addInstanceToPool($obj1, $key1);
-			} // if obj1 already loaded
-
-				// Add objects for joined MgaRelease rows
-
-				$key2 = MgaReleasePeer::getPrimaryKeyHashFromRow($row, $startcol2);
-				if ($key2 !== null) {
-					$obj2 = MgaReleasePeer::getInstanceFromPool($key2);
-					if (!$obj2) {
-	
-						$cls = MgaReleasePeer::getOMClass(false);
-
 					$obj2 = new $cls();
 					$obj2->hydrate($row, $startcol2);
-					MgaReleasePeer::addInstanceToPool($obj2, $key2);
+					PackagePeer::addInstanceToPool($obj2, $key2);
 				} // if $obj2 already loaded
 
-				// Add the $obj1 (Rpm) to the collection in $obj2 (MgaRelease)
+				// Add the $obj1 (Rpm) to the collection in $obj2 (Package)
 				$obj2->addRpm($obj1);
 
 			} // if joined row is not null
 
-				// Add objects for joined Media rows
+				// Add objects for joined Distrelease rows
 
-				$key3 = MediaPeer::getPrimaryKeyHashFromRow($row, $startcol3);
+				$key3 = DistreleasePeer::getPrimaryKeyHashFromRow($row, $startcol3);
 				if ($key3 !== null) {
-					$obj3 = MediaPeer::getInstanceFromPool($key3);
+					$obj3 = DistreleasePeer::getInstanceFromPool($key3);
 					if (!$obj3) {
 	
-						$cls = MediaPeer::getOMClass(false);
+						$cls = DistreleasePeer::getOMClass(false);
 
 					$obj3 = new $cls();
 					$obj3->hydrate($row, $startcol3);
-					MediaPeer::addInstanceToPool($obj3, $key3);
+					DistreleasePeer::addInstanceToPool($obj3, $key3);
 				} // if $obj3 already loaded
 
-				// Add the $obj1 (Rpm) to the collection in $obj3 (Media)
+				// Add the $obj1 (Rpm) to the collection in $obj3 (Distrelease)
 				$obj3->addRpm($obj1);
 
 			} // if joined row is not null
@@ -1784,20 +1816,20 @@ abstract class BaseRpmPeer {
 		RpmPeer::addSelectColumns($criteria);
 		$startcol2 = (RpmPeer::NUM_COLUMNS - RpmPeer::NUM_LAZY_LOAD_COLUMNS);
 
-		MgaReleasePeer::addSelectColumns($criteria);
-		$startcol3 = $startcol2 + (MgaReleasePeer::NUM_COLUMNS - MgaReleasePeer::NUM_LAZY_LOAD_COLUMNS);
+		PackagePeer::addSelectColumns($criteria);
+		$startcol3 = $startcol2 + (PackagePeer::NUM_COLUMNS - PackagePeer::NUM_LAZY_LOAD_COLUMNS);
+
+		DistreleasePeer::addSelectColumns($criteria);
+		$startcol4 = $startcol3 + (DistreleasePeer::NUM_COLUMNS - DistreleasePeer::NUM_LAZY_LOAD_COLUMNS);
 
 		MediaPeer::addSelectColumns($criteria);
-		$startcol4 = $startcol3 + (MediaPeer::NUM_COLUMNS - MediaPeer::NUM_LAZY_LOAD_COLUMNS);
-
-		PackagePeer::addSelectColumns($criteria);
-		$startcol5 = $startcol4 + (PackagePeer::NUM_COLUMNS - PackagePeer::NUM_LAZY_LOAD_COLUMNS);
-
-		$criteria->addJoin(RpmPeer::MGA_RELEASE_IDMGA_RELEASE, MgaReleasePeer::ID, $join_behavior);
-
-		$criteria->addJoin(RpmPeer::MEDIA_IDMEDIA, MediaPeer::IDMEDIA, $join_behavior);
+		$startcol5 = $startcol4 + (MediaPeer::NUM_COLUMNS - MediaPeer::NUM_LAZY_LOAD_COLUMNS);
 
 		$criteria->addJoin(RpmPeer::PACKAGE_ID, PackagePeer::ID, $join_behavior);
+
+		$criteria->addJoin(RpmPeer::DISTRELEASE_ID, DistreleasePeer::ID, $join_behavior);
+
+		$criteria->addJoin(RpmPeer::MEDIA_ID, MediaPeer::ID, $join_behavior);
 
 		// symfony_behaviors behavior
 		foreach (sfMixer::getCallables(self::getMixerPreSelectHook(__FUNCTION__)) as $sf_hook)
@@ -1823,59 +1855,59 @@ abstract class BaseRpmPeer {
 				RpmPeer::addInstanceToPool($obj1, $key1);
 			} // if obj1 already loaded
 
-				// Add objects for joined MgaRelease rows
+				// Add objects for joined Package rows
 
-				$key2 = MgaReleasePeer::getPrimaryKeyHashFromRow($row, $startcol2);
+				$key2 = PackagePeer::getPrimaryKeyHashFromRow($row, $startcol2);
 				if ($key2 !== null) {
-					$obj2 = MgaReleasePeer::getInstanceFromPool($key2);
+					$obj2 = PackagePeer::getInstanceFromPool($key2);
 					if (!$obj2) {
 	
-						$cls = MgaReleasePeer::getOMClass(false);
+						$cls = PackagePeer::getOMClass(false);
 
 					$obj2 = new $cls();
 					$obj2->hydrate($row, $startcol2);
-					MgaReleasePeer::addInstanceToPool($obj2, $key2);
+					PackagePeer::addInstanceToPool($obj2, $key2);
 				} // if $obj2 already loaded
 
-				// Add the $obj1 (Rpm) to the collection in $obj2 (MgaRelease)
+				// Add the $obj1 (Rpm) to the collection in $obj2 (Package)
 				$obj2->addRpm($obj1);
+
+			} // if joined row is not null
+
+				// Add objects for joined Distrelease rows
+
+				$key3 = DistreleasePeer::getPrimaryKeyHashFromRow($row, $startcol3);
+				if ($key3 !== null) {
+					$obj3 = DistreleasePeer::getInstanceFromPool($key3);
+					if (!$obj3) {
+	
+						$cls = DistreleasePeer::getOMClass(false);
+
+					$obj3 = new $cls();
+					$obj3->hydrate($row, $startcol3);
+					DistreleasePeer::addInstanceToPool($obj3, $key3);
+				} // if $obj3 already loaded
+
+				// Add the $obj1 (Rpm) to the collection in $obj3 (Distrelease)
+				$obj3->addRpm($obj1);
 
 			} // if joined row is not null
 
 				// Add objects for joined Media rows
 
-				$key3 = MediaPeer::getPrimaryKeyHashFromRow($row, $startcol3);
-				if ($key3 !== null) {
-					$obj3 = MediaPeer::getInstanceFromPool($key3);
-					if (!$obj3) {
+				$key4 = MediaPeer::getPrimaryKeyHashFromRow($row, $startcol4);
+				if ($key4 !== null) {
+					$obj4 = MediaPeer::getInstanceFromPool($key4);
+					if (!$obj4) {
 	
 						$cls = MediaPeer::getOMClass(false);
 
-					$obj3 = new $cls();
-					$obj3->hydrate($row, $startcol3);
-					MediaPeer::addInstanceToPool($obj3, $key3);
-				} // if $obj3 already loaded
-
-				// Add the $obj1 (Rpm) to the collection in $obj3 (Media)
-				$obj3->addRpm($obj1);
-
-			} // if joined row is not null
-
-				// Add objects for joined Package rows
-
-				$key4 = PackagePeer::getPrimaryKeyHashFromRow($row, $startcol4);
-				if ($key4 !== null) {
-					$obj4 = PackagePeer::getInstanceFromPool($key4);
-					if (!$obj4) {
-	
-						$cls = PackagePeer::getOMClass(false);
-
 					$obj4 = new $cls();
 					$obj4->hydrate($row, $startcol4);
-					PackagePeer::addInstanceToPool($obj4, $key4);
+					MediaPeer::addInstanceToPool($obj4, $key4);
 				} // if $obj4 already loaded
 
-				// Add the $obj1 (Rpm) to the collection in $obj4 (Package)
+				// Add the $obj1 (Rpm) to the collection in $obj4 (Media)
 				$obj4->addRpm($obj1);
 
 			} // if joined row is not null
@@ -1956,6 +1988,10 @@ abstract class BaseRpmPeer {
 			$criteria = $values->buildCriteria(); // build Criteria from Rpm object
 		}
 
+		if ($criteria->containsKey(RpmPeer::ID) && $criteria->keyContainsValue(RpmPeer::ID) ) {
+			throw new PropelException('Cannot insert a value for auto-increment primary key ('.RpmPeer::ID.')');
+		}
+
 
 		// Set the correct dbName
 		$criteria->setDbName(self::DATABASE_NAME);
@@ -2009,8 +2045,8 @@ abstract class BaseRpmPeer {
 		if ($values instanceof Criteria) {
 			$criteria = clone $values; // rename for clarity
 
-			$comparison = $criteria->getComparison(RpmPeer::IDRPM);
-			$selectCriteria->add(RpmPeer::IDRPM, $criteria->remove(RpmPeer::IDRPM), $comparison);
+			$comparison = $criteria->getComparison(RpmPeer::ID);
+			$selectCriteria->add(RpmPeer::ID, $criteria->remove(RpmPeer::ID), $comparison);
 
 		} else { // $values is Rpm object
 			$criteria = $values->buildCriteria(); // gets full criteria
@@ -2091,7 +2127,7 @@ abstract class BaseRpmPeer {
 			$criteria = $values->buildPkeyCriteria();
 		} else { // it's a primary key, or an array of pks
 			$criteria = new Criteria(self::DATABASE_NAME);
-			$criteria->add(RpmPeer::IDRPM, (array) $values, Criteria::IN);
+			$criteria->add(RpmPeer::ID, (array) $values, Criteria::IN);
 			// invalidate the cache for this object(s)
 			foreach ((array) $values as $singleval) {
 				RpmPeer::removeInstanceFromPool($singleval);
@@ -2174,7 +2210,7 @@ abstract class BaseRpmPeer {
 		}
 
 		$criteria = new Criteria(RpmPeer::DATABASE_NAME);
-		$criteria->add(RpmPeer::IDRPM, $pk);
+		$criteria->add(RpmPeer::ID, $pk);
 
 		$v = RpmPeer::doSelect($criteria, $con);
 
@@ -2200,7 +2236,7 @@ abstract class BaseRpmPeer {
 			$objs = array();
 		} else {
 			$criteria = new Criteria(RpmPeer::DATABASE_NAME);
-			$criteria->add(RpmPeer::IDRPM, $pks, Criteria::IN);
+			$criteria->add(RpmPeer::ID, $pks, Criteria::IN);
 			$objs = RpmPeer::doSelect($criteria, $con);
 		}
 		return $objs;

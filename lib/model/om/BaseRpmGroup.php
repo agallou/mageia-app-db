@@ -25,6 +25,12 @@ abstract class BaseRpmGroup extends BaseObject  implements Persistent {
 	protected $id;
 
 	/**
+	 * The value for the name field.
+	 * @var        string
+	 */
+	protected $name;
+
+	/**
 	 * @var        array Rpm[] Collection to store aggregation of Rpm objects.
 	 */
 	protected $collRpms;
@@ -33,6 +39,16 @@ abstract class BaseRpmGroup extends BaseObject  implements Persistent {
 	 * @var        Criteria The criteria used to select the current contents of collRpms.
 	 */
 	private $lastRpmCriteria = null;
+
+	/**
+	 * @var        array NotificationElement[] Collection to store aggregation of NotificationElement objects.
+	 */
+	protected $collNotificationElements;
+
+	/**
+	 * @var        Criteria The criteria used to select the current contents of collNotificationElements.
+	 */
+	private $lastNotificationElementCriteria = null;
 
 	/**
 	 * Flag to prevent endless save loop, if this object is referenced
@@ -63,6 +79,16 @@ abstract class BaseRpmGroup extends BaseObject  implements Persistent {
 	}
 
 	/**
+	 * Get the [name] column value.
+	 * 
+	 * @return     string
+	 */
+	public function getName()
+	{
+		return $this->name;
+	}
+
+	/**
 	 * Set the value of [id] column.
 	 * 
 	 * @param      int $v new value
@@ -81,6 +107,26 @@ abstract class BaseRpmGroup extends BaseObject  implements Persistent {
 
 		return $this;
 	} // setId()
+
+	/**
+	 * Set the value of [name] column.
+	 * 
+	 * @param      string $v new value
+	 * @return     RpmGroup The current object (for fluent API support)
+	 */
+	public function setName($v)
+	{
+		if ($v !== null) {
+			$v = (string) $v;
+		}
+
+		if ($this->name !== $v) {
+			$this->name = $v;
+			$this->modifiedColumns[] = RpmGroupPeer::NAME;
+		}
+
+		return $this;
+	} // setName()
 
 	/**
 	 * Indicates whether the columns in this object are only set to default values.
@@ -115,6 +161,7 @@ abstract class BaseRpmGroup extends BaseObject  implements Persistent {
 		try {
 
 			$this->id = ($row[$startcol + 0] !== null) ? (int) $row[$startcol + 0] : null;
+			$this->name = ($row[$startcol + 1] !== null) ? (string) $row[$startcol + 1] : null;
 			$this->resetModified();
 
 			$this->setNew(false);
@@ -124,7 +171,7 @@ abstract class BaseRpmGroup extends BaseObject  implements Persistent {
 			}
 
 			// FIXME - using NUM_COLUMNS may be clearer.
-			return $startcol + 1; // 1 = RpmGroupPeer::NUM_COLUMNS - RpmGroupPeer::NUM_LAZY_LOAD_COLUMNS).
+			return $startcol + 2; // 2 = RpmGroupPeer::NUM_COLUMNS - RpmGroupPeer::NUM_LAZY_LOAD_COLUMNS).
 
 		} catch (Exception $e) {
 			throw new PropelException("Error populating RpmGroup object", $e);
@@ -188,6 +235,9 @@ abstract class BaseRpmGroup extends BaseObject  implements Persistent {
 
 			$this->collRpms = null;
 			$this->lastRpmCriteria = null;
+
+			$this->collNotificationElements = null;
+			$this->lastNotificationElementCriteria = null;
 
 		} // if (deep)
 	}
@@ -361,6 +411,14 @@ abstract class BaseRpmGroup extends BaseObject  implements Persistent {
 				}
 			}
 
+			if ($this->collNotificationElements !== null) {
+				foreach ($this->collNotificationElements as $referrerFK) {
+					if (!$referrerFK->isDeleted()) {
+						$affectedRows += $referrerFK->save($con);
+					}
+				}
+			}
+
 			$this->alreadyInSave = false;
 
 		}
@@ -440,6 +498,14 @@ abstract class BaseRpmGroup extends BaseObject  implements Persistent {
 					}
 				}
 
+				if ($this->collNotificationElements !== null) {
+					foreach ($this->collNotificationElements as $referrerFK) {
+						if (!$referrerFK->validate($columns)) {
+							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
+						}
+					}
+				}
+
 
 			$this->alreadyInValidation = false;
 		}
@@ -476,6 +542,9 @@ abstract class BaseRpmGroup extends BaseObject  implements Persistent {
 			case 0:
 				return $this->getId();
 				break;
+			case 1:
+				return $this->getName();
+				break;
 			default:
 				return null;
 				break;
@@ -498,6 +567,7 @@ abstract class BaseRpmGroup extends BaseObject  implements Persistent {
 		$keys = RpmGroupPeer::getFieldNames($keyType);
 		$result = array(
 			$keys[0] => $this->getId(),
+			$keys[1] => $this->getName(),
 		);
 		return $result;
 	}
@@ -532,6 +602,9 @@ abstract class BaseRpmGroup extends BaseObject  implements Persistent {
 			case 0:
 				$this->setId($value);
 				break;
+			case 1:
+				$this->setName($value);
+				break;
 		} // switch()
 	}
 
@@ -557,6 +630,7 @@ abstract class BaseRpmGroup extends BaseObject  implements Persistent {
 		$keys = RpmGroupPeer::getFieldNames($keyType);
 
 		if (array_key_exists($keys[0], $arr)) $this->setId($arr[$keys[0]]);
+		if (array_key_exists($keys[1], $arr)) $this->setName($arr[$keys[1]]);
 	}
 
 	/**
@@ -569,6 +643,7 @@ abstract class BaseRpmGroup extends BaseObject  implements Persistent {
 		$criteria = new Criteria(RpmGroupPeer::DATABASE_NAME);
 
 		if ($this->isColumnModified(RpmGroupPeer::ID)) $criteria->add(RpmGroupPeer::ID, $this->id);
+		if ($this->isColumnModified(RpmGroupPeer::NAME)) $criteria->add(RpmGroupPeer::NAME, $this->name);
 
 		return $criteria;
 	}
@@ -623,6 +698,8 @@ abstract class BaseRpmGroup extends BaseObject  implements Persistent {
 	public function copyInto($copyObj, $deepCopy = false)
 	{
 
+		$copyObj->setName($this->name);
+
 
 		if ($deepCopy) {
 			// important: temporarily setNew(false) because this affects the behavior of
@@ -632,6 +709,12 @@ abstract class BaseRpmGroup extends BaseObject  implements Persistent {
 			foreach ($this->getRpms() as $relObj) {
 				if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
 					$copyObj->addRpm($relObj->copy($deepCopy));
+				}
+			}
+
+			foreach ($this->getNotificationElements() as $relObj) {
+				if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+					$copyObj->addNotificationElement($relObj->copy($deepCopy));
 				}
 			}
 
@@ -848,7 +931,7 @@ abstract class BaseRpmGroup extends BaseObject  implements Persistent {
 	 * api reasonable.  You can provide public methods for those you
 	 * actually need in RpmGroup.
 	 */
-	public function getRpmsJoinMgaRelease($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public function getRpmsJoinPackage($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
 		if ($criteria === null) {
 			$criteria = new Criteria(RpmGroupPeer::DATABASE_NAME);
@@ -865,7 +948,7 @@ abstract class BaseRpmGroup extends BaseObject  implements Persistent {
 
 				$criteria->add(RpmPeer::RPM_GROUP_ID, $this->id);
 
-				$this->collRpms = RpmPeer::doSelectJoinMgaRelease($criteria, $con, $join_behavior);
+				$this->collRpms = RpmPeer::doSelectJoinPackage($criteria, $con, $join_behavior);
 			}
 		} else {
 			// the following code is to determine if a new query is
@@ -875,7 +958,54 @@ abstract class BaseRpmGroup extends BaseObject  implements Persistent {
 			$criteria->add(RpmPeer::RPM_GROUP_ID, $this->id);
 
 			if (!isset($this->lastRpmCriteria) || !$this->lastRpmCriteria->equals($criteria)) {
-				$this->collRpms = RpmPeer::doSelectJoinMgaRelease($criteria, $con, $join_behavior);
+				$this->collRpms = RpmPeer::doSelectJoinPackage($criteria, $con, $join_behavior);
+			}
+		}
+		$this->lastRpmCriteria = $criteria;
+
+		return $this->collRpms;
+	}
+
+
+	/**
+	 * If this collection has already been initialized with
+	 * an identical criteria, it returns the collection.
+	 * Otherwise if this RpmGroup is new, it will return
+	 * an empty collection; or if this RpmGroup has previously
+	 * been saved, it will retrieve related Rpms from storage.
+	 *
+	 * This method is protected by default in order to keep the public
+	 * api reasonable.  You can provide public methods for those you
+	 * actually need in RpmGroup.
+	 */
+	public function getRpmsJoinDistrelease($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	{
+		if ($criteria === null) {
+			$criteria = new Criteria(RpmGroupPeer::DATABASE_NAME);
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collRpms === null) {
+			if ($this->isNew()) {
+				$this->collRpms = array();
+			} else {
+
+				$criteria->add(RpmPeer::RPM_GROUP_ID, $this->id);
+
+				$this->collRpms = RpmPeer::doSelectJoinDistrelease($criteria, $con, $join_behavior);
+			}
+		} else {
+			// the following code is to determine if a new query is
+			// called for.  If the criteria is the same as the last
+			// one, just return the collection.
+
+			$criteria->add(RpmPeer::RPM_GROUP_ID, $this->id);
+
+			if (!isset($this->lastRpmCriteria) || !$this->lastRpmCriteria->equals($criteria)) {
+				$this->collRpms = RpmPeer::doSelectJoinDistrelease($criteria, $con, $join_behavior);
 			}
 		}
 		$this->lastRpmCriteria = $criteria;
@@ -930,19 +1060,48 @@ abstract class BaseRpmGroup extends BaseObject  implements Persistent {
 		return $this->collRpms;
 	}
 
+	/**
+	 * Clears out the collNotificationElements collection (array).
+	 *
+	 * This does not modify the database; however, it will remove any associated objects, causing
+	 * them to be refetched by subsequent calls to accessor method.
+	 *
+	 * @return     void
+	 * @see        addNotificationElements()
+	 */
+	public function clearNotificationElements()
+	{
+		$this->collNotificationElements = null; // important to set this to NULL since that means it is uninitialized
+	}
 
 	/**
-	 * If this collection has already been initialized with
-	 * an identical criteria, it returns the collection.
-	 * Otherwise if this RpmGroup is new, it will return
-	 * an empty collection; or if this RpmGroup has previously
-	 * been saved, it will retrieve related Rpms from storage.
+	 * Initializes the collNotificationElements collection (array).
 	 *
-	 * This method is protected by default in order to keep the public
-	 * api reasonable.  You can provide public methods for those you
-	 * actually need in RpmGroup.
+	 * By default this just sets the collNotificationElements collection to an empty array (like clearcollNotificationElements());
+	 * however, you may wish to override this method in your stub class to provide setting appropriate
+	 * to your application -- for example, setting the initial array to the values stored in database.
+	 *
+	 * @return     void
 	 */
-	public function getRpmsJoinPackage($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public function initNotificationElements()
+	{
+		$this->collNotificationElements = array();
+	}
+
+	/**
+	 * Gets an array of NotificationElement objects which contain a foreign key that references this object.
+	 *
+	 * If this collection has already been initialized with an identical Criteria, it returns the collection.
+	 * Otherwise if this RpmGroup has previously been saved, it will retrieve
+	 * related NotificationElements from storage. If this RpmGroup is new, it will return
+	 * an empty collection or the current collection, the criteria is ignored on a new object.
+	 *
+	 * @param      PropelPDO $con
+	 * @param      Criteria $criteria
+	 * @return     array NotificationElement[]
+	 * @throws     PropelException
+	 */
+	public function getNotificationElements($criteria = null, PropelPDO $con = null)
 	{
 		if ($criteria === null) {
 			$criteria = new Criteria(RpmGroupPeer::DATABASE_NAME);
@@ -952,29 +1111,342 @@ abstract class BaseRpmGroup extends BaseObject  implements Persistent {
 			$criteria = clone $criteria;
 		}
 
-		if ($this->collRpms === null) {
+		if ($this->collNotificationElements === null) {
 			if ($this->isNew()) {
-				$this->collRpms = array();
+			   $this->collNotificationElements = array();
 			} else {
 
-				$criteria->add(RpmPeer::RPM_GROUP_ID, $this->id);
+				$criteria->add(NotificationElementPeer::RPM_GROUP_ID, $this->id);
 
-				$this->collRpms = RpmPeer::doSelectJoinPackage($criteria, $con, $join_behavior);
+				NotificationElementPeer::addSelectColumns($criteria);
+				$this->collNotificationElements = NotificationElementPeer::doSelect($criteria, $con);
+			}
+		} else {
+			// criteria has no effect for a new object
+			if (!$this->isNew()) {
+				// the following code is to determine if a new query is
+				// called for.  If the criteria is the same as the last
+				// one, just return the collection.
+
+
+				$criteria->add(NotificationElementPeer::RPM_GROUP_ID, $this->id);
+
+				NotificationElementPeer::addSelectColumns($criteria);
+				if (!isset($this->lastNotificationElementCriteria) || !$this->lastNotificationElementCriteria->equals($criteria)) {
+					$this->collNotificationElements = NotificationElementPeer::doSelect($criteria, $con);
+				}
+			}
+		}
+		$this->lastNotificationElementCriteria = $criteria;
+		return $this->collNotificationElements;
+	}
+
+	/**
+	 * Returns the number of related NotificationElement objects.
+	 *
+	 * @param      Criteria $criteria
+	 * @param      boolean $distinct
+	 * @param      PropelPDO $con
+	 * @return     int Count of related NotificationElement objects.
+	 * @throws     PropelException
+	 */
+	public function countNotificationElements(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+	{
+		if ($criteria === null) {
+			$criteria = new Criteria(RpmGroupPeer::DATABASE_NAME);
+		} else {
+			$criteria = clone $criteria;
+		}
+
+		if ($distinct) {
+			$criteria->setDistinct();
+		}
+
+		$count = null;
+
+		if ($this->collNotificationElements === null) {
+			if ($this->isNew()) {
+				$count = 0;
+			} else {
+
+				$criteria->add(NotificationElementPeer::RPM_GROUP_ID, $this->id);
+
+				$count = NotificationElementPeer::doCount($criteria, false, $con);
+			}
+		} else {
+			// criteria has no effect for a new object
+			if (!$this->isNew()) {
+				// the following code is to determine if a new query is
+				// called for.  If the criteria is the same as the last
+				// one, just return count of the collection.
+
+
+				$criteria->add(NotificationElementPeer::RPM_GROUP_ID, $this->id);
+
+				if (!isset($this->lastNotificationElementCriteria) || !$this->lastNotificationElementCriteria->equals($criteria)) {
+					$count = NotificationElementPeer::doCount($criteria, false, $con);
+				} else {
+					$count = count($this->collNotificationElements);
+				}
+			} else {
+				$count = count($this->collNotificationElements);
+			}
+		}
+		return $count;
+	}
+
+	/**
+	 * Method called to associate a NotificationElement object to this object
+	 * through the NotificationElement foreign key attribute.
+	 *
+	 * @param      NotificationElement $l NotificationElement
+	 * @return     void
+	 * @throws     PropelException
+	 */
+	public function addNotificationElement(NotificationElement $l)
+	{
+		if ($this->collNotificationElements === null) {
+			$this->initNotificationElements();
+		}
+		if (!in_array($l, $this->collNotificationElements, true)) { // only add it if the **same** object is not already associated
+			array_push($this->collNotificationElements, $l);
+			$l->setRpmGroup($this);
+		}
+	}
+
+
+	/**
+	 * If this collection has already been initialized with
+	 * an identical criteria, it returns the collection.
+	 * Otherwise if this RpmGroup is new, it will return
+	 * an empty collection; or if this RpmGroup has previously
+	 * been saved, it will retrieve related NotificationElements from storage.
+	 *
+	 * This method is protected by default in order to keep the public
+	 * api reasonable.  You can provide public methods for those you
+	 * actually need in RpmGroup.
+	 */
+	public function getNotificationElementsJoinNotification($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	{
+		if ($criteria === null) {
+			$criteria = new Criteria(RpmGroupPeer::DATABASE_NAME);
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collNotificationElements === null) {
+			if ($this->isNew()) {
+				$this->collNotificationElements = array();
+			} else {
+
+				$criteria->add(NotificationElementPeer::RPM_GROUP_ID, $this->id);
+
+				$this->collNotificationElements = NotificationElementPeer::doSelectJoinNotification($criteria, $con, $join_behavior);
 			}
 		} else {
 			// the following code is to determine if a new query is
 			// called for.  If the criteria is the same as the last
 			// one, just return the collection.
 
-			$criteria->add(RpmPeer::RPM_GROUP_ID, $this->id);
+			$criteria->add(NotificationElementPeer::RPM_GROUP_ID, $this->id);
 
-			if (!isset($this->lastRpmCriteria) || !$this->lastRpmCriteria->equals($criteria)) {
-				$this->collRpms = RpmPeer::doSelectJoinPackage($criteria, $con, $join_behavior);
+			if (!isset($this->lastNotificationElementCriteria) || !$this->lastNotificationElementCriteria->equals($criteria)) {
+				$this->collNotificationElements = NotificationElementPeer::doSelectJoinNotification($criteria, $con, $join_behavior);
 			}
 		}
-		$this->lastRpmCriteria = $criteria;
+		$this->lastNotificationElementCriteria = $criteria;
 
-		return $this->collRpms;
+		return $this->collNotificationElements;
+	}
+
+
+	/**
+	 * If this collection has already been initialized with
+	 * an identical criteria, it returns the collection.
+	 * Otherwise if this RpmGroup is new, it will return
+	 * an empty collection; or if this RpmGroup has previously
+	 * been saved, it will retrieve related NotificationElements from storage.
+	 *
+	 * This method is protected by default in order to keep the public
+	 * api reasonable.  You can provide public methods for those you
+	 * actually need in RpmGroup.
+	 */
+	public function getNotificationElementsJoinPackage($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	{
+		if ($criteria === null) {
+			$criteria = new Criteria(RpmGroupPeer::DATABASE_NAME);
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collNotificationElements === null) {
+			if ($this->isNew()) {
+				$this->collNotificationElements = array();
+			} else {
+
+				$criteria->add(NotificationElementPeer::RPM_GROUP_ID, $this->id);
+
+				$this->collNotificationElements = NotificationElementPeer::doSelectJoinPackage($criteria, $con, $join_behavior);
+			}
+		} else {
+			// the following code is to determine if a new query is
+			// called for.  If the criteria is the same as the last
+			// one, just return the collection.
+
+			$criteria->add(NotificationElementPeer::RPM_GROUP_ID, $this->id);
+
+			if (!isset($this->lastNotificationElementCriteria) || !$this->lastNotificationElementCriteria->equals($criteria)) {
+				$this->collNotificationElements = NotificationElementPeer::doSelectJoinPackage($criteria, $con, $join_behavior);
+			}
+		}
+		$this->lastNotificationElementCriteria = $criteria;
+
+		return $this->collNotificationElements;
+	}
+
+
+	/**
+	 * If this collection has already been initialized with
+	 * an identical criteria, it returns the collection.
+	 * Otherwise if this RpmGroup is new, it will return
+	 * an empty collection; or if this RpmGroup has previously
+	 * been saved, it will retrieve related NotificationElements from storage.
+	 *
+	 * This method is protected by default in order to keep the public
+	 * api reasonable.  You can provide public methods for those you
+	 * actually need in RpmGroup.
+	 */
+	public function getNotificationElementsJoinDistrelease($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	{
+		if ($criteria === null) {
+			$criteria = new Criteria(RpmGroupPeer::DATABASE_NAME);
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collNotificationElements === null) {
+			if ($this->isNew()) {
+				$this->collNotificationElements = array();
+			} else {
+
+				$criteria->add(NotificationElementPeer::RPM_GROUP_ID, $this->id);
+
+				$this->collNotificationElements = NotificationElementPeer::doSelectJoinDistrelease($criteria, $con, $join_behavior);
+			}
+		} else {
+			// the following code is to determine if a new query is
+			// called for.  If the criteria is the same as the last
+			// one, just return the collection.
+
+			$criteria->add(NotificationElementPeer::RPM_GROUP_ID, $this->id);
+
+			if (!isset($this->lastNotificationElementCriteria) || !$this->lastNotificationElementCriteria->equals($criteria)) {
+				$this->collNotificationElements = NotificationElementPeer::doSelectJoinDistrelease($criteria, $con, $join_behavior);
+			}
+		}
+		$this->lastNotificationElementCriteria = $criteria;
+
+		return $this->collNotificationElements;
+	}
+
+
+	/**
+	 * If this collection has already been initialized with
+	 * an identical criteria, it returns the collection.
+	 * Otherwise if this RpmGroup is new, it will return
+	 * an empty collection; or if this RpmGroup has previously
+	 * been saved, it will retrieve related NotificationElements from storage.
+	 *
+	 * This method is protected by default in order to keep the public
+	 * api reasonable.  You can provide public methods for those you
+	 * actually need in RpmGroup.
+	 */
+	public function getNotificationElementsJoinArch($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	{
+		if ($criteria === null) {
+			$criteria = new Criteria(RpmGroupPeer::DATABASE_NAME);
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collNotificationElements === null) {
+			if ($this->isNew()) {
+				$this->collNotificationElements = array();
+			} else {
+
+				$criteria->add(NotificationElementPeer::RPM_GROUP_ID, $this->id);
+
+				$this->collNotificationElements = NotificationElementPeer::doSelectJoinArch($criteria, $con, $join_behavior);
+			}
+		} else {
+			// the following code is to determine if a new query is
+			// called for.  If the criteria is the same as the last
+			// one, just return the collection.
+
+			$criteria->add(NotificationElementPeer::RPM_GROUP_ID, $this->id);
+
+			if (!isset($this->lastNotificationElementCriteria) || !$this->lastNotificationElementCriteria->equals($criteria)) {
+				$this->collNotificationElements = NotificationElementPeer::doSelectJoinArch($criteria, $con, $join_behavior);
+			}
+		}
+		$this->lastNotificationElementCriteria = $criteria;
+
+		return $this->collNotificationElements;
+	}
+
+
+	/**
+	 * If this collection has already been initialized with
+	 * an identical criteria, it returns the collection.
+	 * Otherwise if this RpmGroup is new, it will return
+	 * an empty collection; or if this RpmGroup has previously
+	 * been saved, it will retrieve related NotificationElements from storage.
+	 *
+	 * This method is protected by default in order to keep the public
+	 * api reasonable.  You can provide public methods for those you
+	 * actually need in RpmGroup.
+	 */
+	public function getNotificationElementsJoinMedia($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	{
+		if ($criteria === null) {
+			$criteria = new Criteria(RpmGroupPeer::DATABASE_NAME);
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collNotificationElements === null) {
+			if ($this->isNew()) {
+				$this->collNotificationElements = array();
+			} else {
+
+				$criteria->add(NotificationElementPeer::RPM_GROUP_ID, $this->id);
+
+				$this->collNotificationElements = NotificationElementPeer::doSelectJoinMedia($criteria, $con, $join_behavior);
+			}
+		} else {
+			// the following code is to determine if a new query is
+			// called for.  If the criteria is the same as the last
+			// one, just return the collection.
+
+			$criteria->add(NotificationElementPeer::RPM_GROUP_ID, $this->id);
+
+			if (!isset($this->lastNotificationElementCriteria) || !$this->lastNotificationElementCriteria->equals($criteria)) {
+				$this->collNotificationElements = NotificationElementPeer::doSelectJoinMedia($criteria, $con, $join_behavior);
+			}
+		}
+		$this->lastNotificationElementCriteria = $criteria;
+
+		return $this->collNotificationElements;
 	}
 
 	/**
@@ -994,9 +1466,15 @@ abstract class BaseRpmGroup extends BaseObject  implements Persistent {
 					$o->clearAllReferences($deep);
 				}
 			}
+			if ($this->collNotificationElements) {
+				foreach ((array) $this->collNotificationElements as $o) {
+					$o->clearAllReferences($deep);
+				}
+			}
 		} // if ($deep)
 
 		$this->collRpms = null;
+		$this->collNotificationElements = null;
 	}
 
 	// symfony_behaviors behavior

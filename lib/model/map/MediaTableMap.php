@@ -34,9 +34,11 @@ class MediaTableMap extends TableMap {
 		$this->setPhpName('Media');
 		$this->setClassname('Media');
 		$this->setPackage('lib.model');
-		$this->setUseIdGenerator(false);
+		$this->setUseIdGenerator(true);
 		// columns
-		$this->addPrimaryKey('IDMEDIA', 'Idmedia', 'INTEGER', true, null, null);
+		$this->addPrimaryKey('ID', 'Id', 'INTEGER', true, null, null);
+		$this->addColumn('NAME', 'Name', 'VARCHAR', true, 45, null);
+		$this->addColumn('VENDOR', 'Vendor', 'VARCHAR', true, 255, null);
 		// validators
 	} // initialize()
 
@@ -45,7 +47,8 @@ class MediaTableMap extends TableMap {
 	 */
 	public function buildRelations()
 	{
-    $this->addRelation('Rpm', 'Rpm', RelationMap::ONE_TO_MANY, array('idmedia' => 'media_idmedia', ), null, null);
+    $this->addRelation('Rpm', 'Rpm', RelationMap::ONE_TO_MANY, array('id' => 'media_id', ), null, null);
+    $this->addRelation('NotificationElement', 'NotificationElement', RelationMap::ONE_TO_MANY, array('id' => 'media_id', ), null, null);
 	} // buildRelations()
 
 	/**

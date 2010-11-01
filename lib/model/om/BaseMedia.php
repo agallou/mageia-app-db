@@ -19,10 +19,22 @@ abstract class BaseMedia extends BaseObject  implements Persistent {
 	protected static $peer;
 
 	/**
-	 * The value for the idmedia field.
+	 * The value for the id field.
 	 * @var        int
 	 */
-	protected $idmedia;
+	protected $id;
+
+	/**
+	 * The value for the name field.
+	 * @var        string
+	 */
+	protected $name;
+
+	/**
+	 * The value for the vendor field.
+	 * @var        string
+	 */
+	protected $vendor;
 
 	/**
 	 * @var        array Rpm[] Collection to store aggregation of Rpm objects.
@@ -33,6 +45,16 @@ abstract class BaseMedia extends BaseObject  implements Persistent {
 	 * @var        Criteria The criteria used to select the current contents of collRpms.
 	 */
 	private $lastRpmCriteria = null;
+
+	/**
+	 * @var        array NotificationElement[] Collection to store aggregation of NotificationElement objects.
+	 */
+	protected $collNotificationElements;
+
+	/**
+	 * @var        Criteria The criteria used to select the current contents of collNotificationElements.
+	 */
+	private $lastNotificationElementCriteria = null;
 
 	/**
 	 * Flag to prevent endless save loop, if this object is referenced
@@ -53,34 +75,94 @@ abstract class BaseMedia extends BaseObject  implements Persistent {
 	const PEER = 'MediaPeer';
 
 	/**
-	 * Get the [idmedia] column value.
+	 * Get the [id] column value.
 	 * 
 	 * @return     int
 	 */
-	public function getIdmedia()
+	public function getId()
 	{
-		return $this->idmedia;
+		return $this->id;
 	}
 
 	/**
-	 * Set the value of [idmedia] column.
+	 * Get the [name] column value.
+	 * 
+	 * @return     string
+	 */
+	public function getName()
+	{
+		return $this->name;
+	}
+
+	/**
+	 * Get the [vendor] column value.
+	 * 
+	 * @return     string
+	 */
+	public function getVendor()
+	{
+		return $this->vendor;
+	}
+
+	/**
+	 * Set the value of [id] column.
 	 * 
 	 * @param      int $v new value
 	 * @return     Media The current object (for fluent API support)
 	 */
-	public function setIdmedia($v)
+	public function setId($v)
 	{
 		if ($v !== null) {
 			$v = (int) $v;
 		}
 
-		if ($this->idmedia !== $v) {
-			$this->idmedia = $v;
-			$this->modifiedColumns[] = MediaPeer::IDMEDIA;
+		if ($this->id !== $v) {
+			$this->id = $v;
+			$this->modifiedColumns[] = MediaPeer::ID;
 		}
 
 		return $this;
-	} // setIdmedia()
+	} // setId()
+
+	/**
+	 * Set the value of [name] column.
+	 * 
+	 * @param      string $v new value
+	 * @return     Media The current object (for fluent API support)
+	 */
+	public function setName($v)
+	{
+		if ($v !== null) {
+			$v = (string) $v;
+		}
+
+		if ($this->name !== $v) {
+			$this->name = $v;
+			$this->modifiedColumns[] = MediaPeer::NAME;
+		}
+
+		return $this;
+	} // setName()
+
+	/**
+	 * Set the value of [vendor] column.
+	 * 
+	 * @param      string $v new value
+	 * @return     Media The current object (for fluent API support)
+	 */
+	public function setVendor($v)
+	{
+		if ($v !== null) {
+			$v = (string) $v;
+		}
+
+		if ($this->vendor !== $v) {
+			$this->vendor = $v;
+			$this->modifiedColumns[] = MediaPeer::VENDOR;
+		}
+
+		return $this;
+	} // setVendor()
 
 	/**
 	 * Indicates whether the columns in this object are only set to default values.
@@ -114,7 +196,9 @@ abstract class BaseMedia extends BaseObject  implements Persistent {
 	{
 		try {
 
-			$this->idmedia = ($row[$startcol + 0] !== null) ? (int) $row[$startcol + 0] : null;
+			$this->id = ($row[$startcol + 0] !== null) ? (int) $row[$startcol + 0] : null;
+			$this->name = ($row[$startcol + 1] !== null) ? (string) $row[$startcol + 1] : null;
+			$this->vendor = ($row[$startcol + 2] !== null) ? (string) $row[$startcol + 2] : null;
 			$this->resetModified();
 
 			$this->setNew(false);
@@ -124,7 +208,7 @@ abstract class BaseMedia extends BaseObject  implements Persistent {
 			}
 
 			// FIXME - using NUM_COLUMNS may be clearer.
-			return $startcol + 1; // 1 = MediaPeer::NUM_COLUMNS - MediaPeer::NUM_LAZY_LOAD_COLUMNS).
+			return $startcol + 3; // 3 = MediaPeer::NUM_COLUMNS - MediaPeer::NUM_LAZY_LOAD_COLUMNS).
 
 		} catch (Exception $e) {
 			throw new PropelException("Error populating Media object", $e);
@@ -188,6 +272,9 @@ abstract class BaseMedia extends BaseObject  implements Persistent {
 
 			$this->collRpms = null;
 			$this->lastRpmCriteria = null;
+
+			$this->collNotificationElements = null;
+			$this->lastNotificationElementCriteria = null;
 
 		} // if (deep)
 	}
@@ -331,6 +418,9 @@ abstract class BaseMedia extends BaseObject  implements Persistent {
 		if (!$this->alreadyInSave) {
 			$this->alreadyInSave = true;
 
+			if ($this->isNew() ) {
+				$this->modifiedColumns[] = MediaPeer::ID;
+			}
 
 			// If this object has been modified, then save it to the database.
 			if ($this->isModified()) {
@@ -339,6 +429,8 @@ abstract class BaseMedia extends BaseObject  implements Persistent {
 					$affectedRows += 1; // we are assuming that there is only 1 row per doInsert() which
 										 // should always be true here (even though technically
 										 // BasePeer::doInsert() can insert multiple rows).
+
+					$this->setId($pk);  //[IMV] update autoincrement primary key
 
 					$this->setNew(false);
 				} else {
@@ -350,6 +442,14 @@ abstract class BaseMedia extends BaseObject  implements Persistent {
 
 			if ($this->collRpms !== null) {
 				foreach ($this->collRpms as $referrerFK) {
+					if (!$referrerFK->isDeleted()) {
+						$affectedRows += $referrerFK->save($con);
+					}
+				}
+			}
+
+			if ($this->collNotificationElements !== null) {
+				foreach ($this->collNotificationElements as $referrerFK) {
 					if (!$referrerFK->isDeleted()) {
 						$affectedRows += $referrerFK->save($con);
 					}
@@ -435,6 +535,14 @@ abstract class BaseMedia extends BaseObject  implements Persistent {
 					}
 				}
 
+				if ($this->collNotificationElements !== null) {
+					foreach ($this->collNotificationElements as $referrerFK) {
+						if (!$referrerFK->validate($columns)) {
+							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
+						}
+					}
+				}
+
 
 			$this->alreadyInValidation = false;
 		}
@@ -469,7 +577,13 @@ abstract class BaseMedia extends BaseObject  implements Persistent {
 	{
 		switch($pos) {
 			case 0:
-				return $this->getIdmedia();
+				return $this->getId();
+				break;
+			case 1:
+				return $this->getName();
+				break;
+			case 2:
+				return $this->getVendor();
 				break;
 			default:
 				return null;
@@ -492,7 +606,9 @@ abstract class BaseMedia extends BaseObject  implements Persistent {
 	{
 		$keys = MediaPeer::getFieldNames($keyType);
 		$result = array(
-			$keys[0] => $this->getIdmedia(),
+			$keys[0] => $this->getId(),
+			$keys[1] => $this->getName(),
+			$keys[2] => $this->getVendor(),
 		);
 		return $result;
 	}
@@ -525,7 +641,13 @@ abstract class BaseMedia extends BaseObject  implements Persistent {
 	{
 		switch($pos) {
 			case 0:
-				$this->setIdmedia($value);
+				$this->setId($value);
+				break;
+			case 1:
+				$this->setName($value);
+				break;
+			case 2:
+				$this->setVendor($value);
 				break;
 		} // switch()
 	}
@@ -551,7 +673,9 @@ abstract class BaseMedia extends BaseObject  implements Persistent {
 	{
 		$keys = MediaPeer::getFieldNames($keyType);
 
-		if (array_key_exists($keys[0], $arr)) $this->setIdmedia($arr[$keys[0]]);
+		if (array_key_exists($keys[0], $arr)) $this->setId($arr[$keys[0]]);
+		if (array_key_exists($keys[1], $arr)) $this->setName($arr[$keys[1]]);
+		if (array_key_exists($keys[2], $arr)) $this->setVendor($arr[$keys[2]]);
 	}
 
 	/**
@@ -563,7 +687,9 @@ abstract class BaseMedia extends BaseObject  implements Persistent {
 	{
 		$criteria = new Criteria(MediaPeer::DATABASE_NAME);
 
-		if ($this->isColumnModified(MediaPeer::IDMEDIA)) $criteria->add(MediaPeer::IDMEDIA, $this->idmedia);
+		if ($this->isColumnModified(MediaPeer::ID)) $criteria->add(MediaPeer::ID, $this->id);
+		if ($this->isColumnModified(MediaPeer::NAME)) $criteria->add(MediaPeer::NAME, $this->name);
+		if ($this->isColumnModified(MediaPeer::VENDOR)) $criteria->add(MediaPeer::VENDOR, $this->vendor);
 
 		return $criteria;
 	}
@@ -580,7 +706,7 @@ abstract class BaseMedia extends BaseObject  implements Persistent {
 	{
 		$criteria = new Criteria(MediaPeer::DATABASE_NAME);
 
-		$criteria->add(MediaPeer::IDMEDIA, $this->idmedia);
+		$criteria->add(MediaPeer::ID, $this->id);
 
 		return $criteria;
 	}
@@ -591,18 +717,18 @@ abstract class BaseMedia extends BaseObject  implements Persistent {
 	 */
 	public function getPrimaryKey()
 	{
-		return $this->getIdmedia();
+		return $this->getId();
 	}
 
 	/**
-	 * Generic method to set the primary key (idmedia column).
+	 * Generic method to set the primary key (id column).
 	 *
 	 * @param      int $key Primary key.
 	 * @return     void
 	 */
 	public function setPrimaryKey($key)
 	{
-		$this->setIdmedia($key);
+		$this->setId($key);
 	}
 
 	/**
@@ -618,7 +744,9 @@ abstract class BaseMedia extends BaseObject  implements Persistent {
 	public function copyInto($copyObj, $deepCopy = false)
 	{
 
-		$copyObj->setIdmedia($this->idmedia);
+		$copyObj->setName($this->name);
+
+		$copyObj->setVendor($this->vendor);
 
 
 		if ($deepCopy) {
@@ -632,10 +760,18 @@ abstract class BaseMedia extends BaseObject  implements Persistent {
 				}
 			}
 
+			foreach ($this->getNotificationElements() as $relObj) {
+				if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+					$copyObj->addNotificationElement($relObj->copy($deepCopy));
+				}
+			}
+
 		} // if ($deepCopy)
 
 
 		$copyObj->setNew(true);
+
+		$copyObj->setId(NULL); // this is a auto-increment column, so set to default value
 
 	}
 
@@ -733,7 +869,7 @@ abstract class BaseMedia extends BaseObject  implements Persistent {
 			   $this->collRpms = array();
 			} else {
 
-				$criteria->add(RpmPeer::MEDIA_IDMEDIA, $this->idmedia);
+				$criteria->add(RpmPeer::MEDIA_ID, $this->id);
 
 				RpmPeer::addSelectColumns($criteria);
 				$this->collRpms = RpmPeer::doSelect($criteria, $con);
@@ -746,7 +882,7 @@ abstract class BaseMedia extends BaseObject  implements Persistent {
 				// one, just return the collection.
 
 
-				$criteria->add(RpmPeer::MEDIA_IDMEDIA, $this->idmedia);
+				$criteria->add(RpmPeer::MEDIA_ID, $this->id);
 
 				RpmPeer::addSelectColumns($criteria);
 				if (!isset($this->lastRpmCriteria) || !$this->lastRpmCriteria->equals($criteria)) {
@@ -786,7 +922,7 @@ abstract class BaseMedia extends BaseObject  implements Persistent {
 				$count = 0;
 			} else {
 
-				$criteria->add(RpmPeer::MEDIA_IDMEDIA, $this->idmedia);
+				$criteria->add(RpmPeer::MEDIA_ID, $this->id);
 
 				$count = RpmPeer::doCount($criteria, false, $con);
 			}
@@ -798,7 +934,7 @@ abstract class BaseMedia extends BaseObject  implements Persistent {
 				// one, just return count of the collection.
 
 
-				$criteria->add(RpmPeer::MEDIA_IDMEDIA, $this->idmedia);
+				$criteria->add(RpmPeer::MEDIA_ID, $this->id);
 
 				if (!isset($this->lastRpmCriteria) || !$this->lastRpmCriteria->equals($criteria)) {
 					$count = RpmPeer::doCount($criteria, false, $con);
@@ -843,7 +979,7 @@ abstract class BaseMedia extends BaseObject  implements Persistent {
 	 * api reasonable.  You can provide public methods for those you
 	 * actually need in Media.
 	 */
-	public function getRpmsJoinMgaRelease($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public function getRpmsJoinPackage($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
 		if ($criteria === null) {
 			$criteria = new Criteria(MediaPeer::DATABASE_NAME);
@@ -858,19 +994,19 @@ abstract class BaseMedia extends BaseObject  implements Persistent {
 				$this->collRpms = array();
 			} else {
 
-				$criteria->add(RpmPeer::MEDIA_IDMEDIA, $this->idmedia);
+				$criteria->add(RpmPeer::MEDIA_ID, $this->id);
 
-				$this->collRpms = RpmPeer::doSelectJoinMgaRelease($criteria, $con, $join_behavior);
+				$this->collRpms = RpmPeer::doSelectJoinPackage($criteria, $con, $join_behavior);
 			}
 		} else {
 			// the following code is to determine if a new query is
 			// called for.  If the criteria is the same as the last
 			// one, just return the collection.
 
-			$criteria->add(RpmPeer::MEDIA_IDMEDIA, $this->idmedia);
+			$criteria->add(RpmPeer::MEDIA_ID, $this->id);
 
 			if (!isset($this->lastRpmCriteria) || !$this->lastRpmCriteria->equals($criteria)) {
-				$this->collRpms = RpmPeer::doSelectJoinMgaRelease($criteria, $con, $join_behavior);
+				$this->collRpms = RpmPeer::doSelectJoinPackage($criteria, $con, $join_behavior);
 			}
 		}
 		$this->lastRpmCriteria = $criteria;
@@ -890,7 +1026,7 @@ abstract class BaseMedia extends BaseObject  implements Persistent {
 	 * api reasonable.  You can provide public methods for those you
 	 * actually need in Media.
 	 */
-	public function getRpmsJoinPackage($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public function getRpmsJoinDistrelease($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
 		if ($criteria === null) {
 			$criteria = new Criteria(MediaPeer::DATABASE_NAME);
@@ -905,19 +1041,19 @@ abstract class BaseMedia extends BaseObject  implements Persistent {
 				$this->collRpms = array();
 			} else {
 
-				$criteria->add(RpmPeer::MEDIA_IDMEDIA, $this->idmedia);
+				$criteria->add(RpmPeer::MEDIA_ID, $this->id);
 
-				$this->collRpms = RpmPeer::doSelectJoinPackage($criteria, $con, $join_behavior);
+				$this->collRpms = RpmPeer::doSelectJoinDistrelease($criteria, $con, $join_behavior);
 			}
 		} else {
 			// the following code is to determine if a new query is
 			// called for.  If the criteria is the same as the last
 			// one, just return the collection.
 
-			$criteria->add(RpmPeer::MEDIA_IDMEDIA, $this->idmedia);
+			$criteria->add(RpmPeer::MEDIA_ID, $this->id);
 
 			if (!isset($this->lastRpmCriteria) || !$this->lastRpmCriteria->equals($criteria)) {
-				$this->collRpms = RpmPeer::doSelectJoinPackage($criteria, $con, $join_behavior);
+				$this->collRpms = RpmPeer::doSelectJoinDistrelease($criteria, $con, $join_behavior);
 			}
 		}
 		$this->lastRpmCriteria = $criteria;
@@ -952,7 +1088,7 @@ abstract class BaseMedia extends BaseObject  implements Persistent {
 				$this->collRpms = array();
 			} else {
 
-				$criteria->add(RpmPeer::MEDIA_IDMEDIA, $this->idmedia);
+				$criteria->add(RpmPeer::MEDIA_ID, $this->id);
 
 				$this->collRpms = RpmPeer::doSelectJoinRpmGroup($criteria, $con, $join_behavior);
 			}
@@ -961,7 +1097,7 @@ abstract class BaseMedia extends BaseObject  implements Persistent {
 			// called for.  If the criteria is the same as the last
 			// one, just return the collection.
 
-			$criteria->add(RpmPeer::MEDIA_IDMEDIA, $this->idmedia);
+			$criteria->add(RpmPeer::MEDIA_ID, $this->id);
 
 			if (!isset($this->lastRpmCriteria) || !$this->lastRpmCriteria->equals($criteria)) {
 				$this->collRpms = RpmPeer::doSelectJoinRpmGroup($criteria, $con, $join_behavior);
@@ -970,6 +1106,395 @@ abstract class BaseMedia extends BaseObject  implements Persistent {
 		$this->lastRpmCriteria = $criteria;
 
 		return $this->collRpms;
+	}
+
+	/**
+	 * Clears out the collNotificationElements collection (array).
+	 *
+	 * This does not modify the database; however, it will remove any associated objects, causing
+	 * them to be refetched by subsequent calls to accessor method.
+	 *
+	 * @return     void
+	 * @see        addNotificationElements()
+	 */
+	public function clearNotificationElements()
+	{
+		$this->collNotificationElements = null; // important to set this to NULL since that means it is uninitialized
+	}
+
+	/**
+	 * Initializes the collNotificationElements collection (array).
+	 *
+	 * By default this just sets the collNotificationElements collection to an empty array (like clearcollNotificationElements());
+	 * however, you may wish to override this method in your stub class to provide setting appropriate
+	 * to your application -- for example, setting the initial array to the values stored in database.
+	 *
+	 * @return     void
+	 */
+	public function initNotificationElements()
+	{
+		$this->collNotificationElements = array();
+	}
+
+	/**
+	 * Gets an array of NotificationElement objects which contain a foreign key that references this object.
+	 *
+	 * If this collection has already been initialized with an identical Criteria, it returns the collection.
+	 * Otherwise if this Media has previously been saved, it will retrieve
+	 * related NotificationElements from storage. If this Media is new, it will return
+	 * an empty collection or the current collection, the criteria is ignored on a new object.
+	 *
+	 * @param      PropelPDO $con
+	 * @param      Criteria $criteria
+	 * @return     array NotificationElement[]
+	 * @throws     PropelException
+	 */
+	public function getNotificationElements($criteria = null, PropelPDO $con = null)
+	{
+		if ($criteria === null) {
+			$criteria = new Criteria(MediaPeer::DATABASE_NAME);
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collNotificationElements === null) {
+			if ($this->isNew()) {
+			   $this->collNotificationElements = array();
+			} else {
+
+				$criteria->add(NotificationElementPeer::MEDIA_ID, $this->id);
+
+				NotificationElementPeer::addSelectColumns($criteria);
+				$this->collNotificationElements = NotificationElementPeer::doSelect($criteria, $con);
+			}
+		} else {
+			// criteria has no effect for a new object
+			if (!$this->isNew()) {
+				// the following code is to determine if a new query is
+				// called for.  If the criteria is the same as the last
+				// one, just return the collection.
+
+
+				$criteria->add(NotificationElementPeer::MEDIA_ID, $this->id);
+
+				NotificationElementPeer::addSelectColumns($criteria);
+				if (!isset($this->lastNotificationElementCriteria) || !$this->lastNotificationElementCriteria->equals($criteria)) {
+					$this->collNotificationElements = NotificationElementPeer::doSelect($criteria, $con);
+				}
+			}
+		}
+		$this->lastNotificationElementCriteria = $criteria;
+		return $this->collNotificationElements;
+	}
+
+	/**
+	 * Returns the number of related NotificationElement objects.
+	 *
+	 * @param      Criteria $criteria
+	 * @param      boolean $distinct
+	 * @param      PropelPDO $con
+	 * @return     int Count of related NotificationElement objects.
+	 * @throws     PropelException
+	 */
+	public function countNotificationElements(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+	{
+		if ($criteria === null) {
+			$criteria = new Criteria(MediaPeer::DATABASE_NAME);
+		} else {
+			$criteria = clone $criteria;
+		}
+
+		if ($distinct) {
+			$criteria->setDistinct();
+		}
+
+		$count = null;
+
+		if ($this->collNotificationElements === null) {
+			if ($this->isNew()) {
+				$count = 0;
+			} else {
+
+				$criteria->add(NotificationElementPeer::MEDIA_ID, $this->id);
+
+				$count = NotificationElementPeer::doCount($criteria, false, $con);
+			}
+		} else {
+			// criteria has no effect for a new object
+			if (!$this->isNew()) {
+				// the following code is to determine if a new query is
+				// called for.  If the criteria is the same as the last
+				// one, just return count of the collection.
+
+
+				$criteria->add(NotificationElementPeer::MEDIA_ID, $this->id);
+
+				if (!isset($this->lastNotificationElementCriteria) || !$this->lastNotificationElementCriteria->equals($criteria)) {
+					$count = NotificationElementPeer::doCount($criteria, false, $con);
+				} else {
+					$count = count($this->collNotificationElements);
+				}
+			} else {
+				$count = count($this->collNotificationElements);
+			}
+		}
+		return $count;
+	}
+
+	/**
+	 * Method called to associate a NotificationElement object to this object
+	 * through the NotificationElement foreign key attribute.
+	 *
+	 * @param      NotificationElement $l NotificationElement
+	 * @return     void
+	 * @throws     PropelException
+	 */
+	public function addNotificationElement(NotificationElement $l)
+	{
+		if ($this->collNotificationElements === null) {
+			$this->initNotificationElements();
+		}
+		if (!in_array($l, $this->collNotificationElements, true)) { // only add it if the **same** object is not already associated
+			array_push($this->collNotificationElements, $l);
+			$l->setMedia($this);
+		}
+	}
+
+
+	/**
+	 * If this collection has already been initialized with
+	 * an identical criteria, it returns the collection.
+	 * Otherwise if this Media is new, it will return
+	 * an empty collection; or if this Media has previously
+	 * been saved, it will retrieve related NotificationElements from storage.
+	 *
+	 * This method is protected by default in order to keep the public
+	 * api reasonable.  You can provide public methods for those you
+	 * actually need in Media.
+	 */
+	public function getNotificationElementsJoinNotification($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	{
+		if ($criteria === null) {
+			$criteria = new Criteria(MediaPeer::DATABASE_NAME);
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collNotificationElements === null) {
+			if ($this->isNew()) {
+				$this->collNotificationElements = array();
+			} else {
+
+				$criteria->add(NotificationElementPeer::MEDIA_ID, $this->id);
+
+				$this->collNotificationElements = NotificationElementPeer::doSelectJoinNotification($criteria, $con, $join_behavior);
+			}
+		} else {
+			// the following code is to determine if a new query is
+			// called for.  If the criteria is the same as the last
+			// one, just return the collection.
+
+			$criteria->add(NotificationElementPeer::MEDIA_ID, $this->id);
+
+			if (!isset($this->lastNotificationElementCriteria) || !$this->lastNotificationElementCriteria->equals($criteria)) {
+				$this->collNotificationElements = NotificationElementPeer::doSelectJoinNotification($criteria, $con, $join_behavior);
+			}
+		}
+		$this->lastNotificationElementCriteria = $criteria;
+
+		return $this->collNotificationElements;
+	}
+
+
+	/**
+	 * If this collection has already been initialized with
+	 * an identical criteria, it returns the collection.
+	 * Otherwise if this Media is new, it will return
+	 * an empty collection; or if this Media has previously
+	 * been saved, it will retrieve related NotificationElements from storage.
+	 *
+	 * This method is protected by default in order to keep the public
+	 * api reasonable.  You can provide public methods for those you
+	 * actually need in Media.
+	 */
+	public function getNotificationElementsJoinPackage($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	{
+		if ($criteria === null) {
+			$criteria = new Criteria(MediaPeer::DATABASE_NAME);
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collNotificationElements === null) {
+			if ($this->isNew()) {
+				$this->collNotificationElements = array();
+			} else {
+
+				$criteria->add(NotificationElementPeer::MEDIA_ID, $this->id);
+
+				$this->collNotificationElements = NotificationElementPeer::doSelectJoinPackage($criteria, $con, $join_behavior);
+			}
+		} else {
+			// the following code is to determine if a new query is
+			// called for.  If the criteria is the same as the last
+			// one, just return the collection.
+
+			$criteria->add(NotificationElementPeer::MEDIA_ID, $this->id);
+
+			if (!isset($this->lastNotificationElementCriteria) || !$this->lastNotificationElementCriteria->equals($criteria)) {
+				$this->collNotificationElements = NotificationElementPeer::doSelectJoinPackage($criteria, $con, $join_behavior);
+			}
+		}
+		$this->lastNotificationElementCriteria = $criteria;
+
+		return $this->collNotificationElements;
+	}
+
+
+	/**
+	 * If this collection has already been initialized with
+	 * an identical criteria, it returns the collection.
+	 * Otherwise if this Media is new, it will return
+	 * an empty collection; or if this Media has previously
+	 * been saved, it will retrieve related NotificationElements from storage.
+	 *
+	 * This method is protected by default in order to keep the public
+	 * api reasonable.  You can provide public methods for those you
+	 * actually need in Media.
+	 */
+	public function getNotificationElementsJoinRpmGroup($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	{
+		if ($criteria === null) {
+			$criteria = new Criteria(MediaPeer::DATABASE_NAME);
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collNotificationElements === null) {
+			if ($this->isNew()) {
+				$this->collNotificationElements = array();
+			} else {
+
+				$criteria->add(NotificationElementPeer::MEDIA_ID, $this->id);
+
+				$this->collNotificationElements = NotificationElementPeer::doSelectJoinRpmGroup($criteria, $con, $join_behavior);
+			}
+		} else {
+			// the following code is to determine if a new query is
+			// called for.  If the criteria is the same as the last
+			// one, just return the collection.
+
+			$criteria->add(NotificationElementPeer::MEDIA_ID, $this->id);
+
+			if (!isset($this->lastNotificationElementCriteria) || !$this->lastNotificationElementCriteria->equals($criteria)) {
+				$this->collNotificationElements = NotificationElementPeer::doSelectJoinRpmGroup($criteria, $con, $join_behavior);
+			}
+		}
+		$this->lastNotificationElementCriteria = $criteria;
+
+		return $this->collNotificationElements;
+	}
+
+
+	/**
+	 * If this collection has already been initialized with
+	 * an identical criteria, it returns the collection.
+	 * Otherwise if this Media is new, it will return
+	 * an empty collection; or if this Media has previously
+	 * been saved, it will retrieve related NotificationElements from storage.
+	 *
+	 * This method is protected by default in order to keep the public
+	 * api reasonable.  You can provide public methods for those you
+	 * actually need in Media.
+	 */
+	public function getNotificationElementsJoinDistrelease($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	{
+		if ($criteria === null) {
+			$criteria = new Criteria(MediaPeer::DATABASE_NAME);
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collNotificationElements === null) {
+			if ($this->isNew()) {
+				$this->collNotificationElements = array();
+			} else {
+
+				$criteria->add(NotificationElementPeer::MEDIA_ID, $this->id);
+
+				$this->collNotificationElements = NotificationElementPeer::doSelectJoinDistrelease($criteria, $con, $join_behavior);
+			}
+		} else {
+			// the following code is to determine if a new query is
+			// called for.  If the criteria is the same as the last
+			// one, just return the collection.
+
+			$criteria->add(NotificationElementPeer::MEDIA_ID, $this->id);
+
+			if (!isset($this->lastNotificationElementCriteria) || !$this->lastNotificationElementCriteria->equals($criteria)) {
+				$this->collNotificationElements = NotificationElementPeer::doSelectJoinDistrelease($criteria, $con, $join_behavior);
+			}
+		}
+		$this->lastNotificationElementCriteria = $criteria;
+
+		return $this->collNotificationElements;
+	}
+
+
+	/**
+	 * If this collection has already been initialized with
+	 * an identical criteria, it returns the collection.
+	 * Otherwise if this Media is new, it will return
+	 * an empty collection; or if this Media has previously
+	 * been saved, it will retrieve related NotificationElements from storage.
+	 *
+	 * This method is protected by default in order to keep the public
+	 * api reasonable.  You can provide public methods for those you
+	 * actually need in Media.
+	 */
+	public function getNotificationElementsJoinArch($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	{
+		if ($criteria === null) {
+			$criteria = new Criteria(MediaPeer::DATABASE_NAME);
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collNotificationElements === null) {
+			if ($this->isNew()) {
+				$this->collNotificationElements = array();
+			} else {
+
+				$criteria->add(NotificationElementPeer::MEDIA_ID, $this->id);
+
+				$this->collNotificationElements = NotificationElementPeer::doSelectJoinArch($criteria, $con, $join_behavior);
+			}
+		} else {
+			// the following code is to determine if a new query is
+			// called for.  If the criteria is the same as the last
+			// one, just return the collection.
+
+			$criteria->add(NotificationElementPeer::MEDIA_ID, $this->id);
+
+			if (!isset($this->lastNotificationElementCriteria) || !$this->lastNotificationElementCriteria->equals($criteria)) {
+				$this->collNotificationElements = NotificationElementPeer::doSelectJoinArch($criteria, $con, $join_behavior);
+			}
+		}
+		$this->lastNotificationElementCriteria = $criteria;
+
+		return $this->collNotificationElements;
 	}
 
 	/**
@@ -989,9 +1514,15 @@ abstract class BaseMedia extends BaseObject  implements Persistent {
 					$o->clearAllReferences($deep);
 				}
 			}
+			if ($this->collNotificationElements) {
+				foreach ((array) $this->collNotificationElements as $o) {
+					$o->clearAllReferences($deep);
+				}
+			}
 		} // if ($deep)
 
 		$this->collRpms = null;
+		$this->collNotificationElements = null;
 	}
 
 	// symfony_behaviors behavior

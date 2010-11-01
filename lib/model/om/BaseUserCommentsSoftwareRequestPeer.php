@@ -33,8 +33,8 @@ abstract class BaseUserCommentsSoftwareRequestPeer {
 	/** the column name for the ID field */
 	const ID = 'user_comments_software_request.ID';
 
-	/** the column name for the USER_IDUSER field */
-	const USER_IDUSER = 'user_comments_software_request.USER_IDUSER';
+	/** the column name for the USER_ID field */
+	const USER_ID = 'user_comments_software_request.USER_ID';
 
 	/** the column name for the SOFTWARE_REQUEST_ID field */
 	const SOFTWARE_REQUEST_ID = 'user_comments_software_request.SOFTWARE_REQUEST_ID';
@@ -68,10 +68,10 @@ abstract class BaseUserCommentsSoftwareRequestPeer {
 	 * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
 	 */
 	private static $fieldNames = array (
-		BasePeer::TYPE_PHPNAME => array ('Id', 'UserIduser', 'SoftwareRequestId', 'Comment', 'CreatedAt', ),
-		BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'userIduser', 'softwareRequestId', 'comment', 'createdAt', ),
-		BasePeer::TYPE_COLNAME => array (self::ID, self::USER_IDUSER, self::SOFTWARE_REQUEST_ID, self::COMMENT, self::CREATED_AT, ),
-		BasePeer::TYPE_FIELDNAME => array ('id', 'user_iduser', 'software_request_id', 'comment', 'created_at', ),
+		BasePeer::TYPE_PHPNAME => array ('Id', 'UserId', 'SoftwareRequestId', 'Comment', 'CreatedAt', ),
+		BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'userId', 'softwareRequestId', 'comment', 'createdAt', ),
+		BasePeer::TYPE_COLNAME => array (self::ID, self::USER_ID, self::SOFTWARE_REQUEST_ID, self::COMMENT, self::CREATED_AT, ),
+		BasePeer::TYPE_FIELDNAME => array ('id', 'user_id', 'software_request_id', 'comment', 'created_at', ),
 		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, )
 	);
 
@@ -82,10 +82,10 @@ abstract class BaseUserCommentsSoftwareRequestPeer {
 	 * e.g. self::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
 	 */
 	private static $fieldKeys = array (
-		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'UserIduser' => 1, 'SoftwareRequestId' => 2, 'Comment' => 3, 'CreatedAt' => 4, ),
-		BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'userIduser' => 1, 'softwareRequestId' => 2, 'comment' => 3, 'createdAt' => 4, ),
-		BasePeer::TYPE_COLNAME => array (self::ID => 0, self::USER_IDUSER => 1, self::SOFTWARE_REQUEST_ID => 2, self::COMMENT => 3, self::CREATED_AT => 4, ),
-		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'user_iduser' => 1, 'software_request_id' => 2, 'comment' => 3, 'created_at' => 4, ),
+		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'UserId' => 1, 'SoftwareRequestId' => 2, 'Comment' => 3, 'CreatedAt' => 4, ),
+		BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'userId' => 1, 'softwareRequestId' => 2, 'comment' => 3, 'createdAt' => 4, ),
+		BasePeer::TYPE_COLNAME => array (self::ID => 0, self::USER_ID => 1, self::SOFTWARE_REQUEST_ID => 2, self::COMMENT => 3, self::CREATED_AT => 4, ),
+		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'user_id' => 1, 'software_request_id' => 2, 'comment' => 3, 'created_at' => 4, ),
 		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, )
 	);
 
@@ -157,7 +157,7 @@ abstract class BaseUserCommentsSoftwareRequestPeer {
 	public static function addSelectColumns(Criteria $criteria)
 	{
 		$criteria->addSelectColumn(UserCommentsSoftwareRequestPeer::ID);
-		$criteria->addSelectColumn(UserCommentsSoftwareRequestPeer::USER_IDUSER);
+		$criteria->addSelectColumn(UserCommentsSoftwareRequestPeer::USER_ID);
 		$criteria->addSelectColumn(UserCommentsSoftwareRequestPeer::SOFTWARE_REQUEST_ID);
 		$criteria->addSelectColumn(UserCommentsSoftwareRequestPeer::COMMENT);
 		$criteria->addSelectColumn(UserCommentsSoftwareRequestPeer::CREATED_AT);
@@ -454,7 +454,7 @@ abstract class BaseUserCommentsSoftwareRequestPeer {
 			$con = Propel::getConnection(UserCommentsSoftwareRequestPeer::DATABASE_NAME, Propel::CONNECTION_READ);
 		}
 
-		$criteria->addJoin(UserCommentsSoftwareRequestPeer::USER_IDUSER, UserPeer::ID, $join_behavior);
+		$criteria->addJoin(UserCommentsSoftwareRequestPeer::USER_ID, UserPeer::ID, $join_behavior);
 
 		// symfony_behaviors behavior
 		foreach (sfMixer::getCallables(self::getMixerPreSelectHook(__FUNCTION__)) as $sf_hook)
@@ -552,7 +552,7 @@ abstract class BaseUserCommentsSoftwareRequestPeer {
 		$startcol = (UserCommentsSoftwareRequestPeer::NUM_COLUMNS - UserCommentsSoftwareRequestPeer::NUM_LAZY_LOAD_COLUMNS);
 		UserPeer::addSelectColumns($criteria);
 
-		$criteria->addJoin(UserCommentsSoftwareRequestPeer::USER_IDUSER, UserPeer::ID, $join_behavior);
+		$criteria->addJoin(UserCommentsSoftwareRequestPeer::USER_ID, UserPeer::ID, $join_behavior);
 
 		// symfony_behaviors behavior
 		foreach (sfMixer::getCallables(self::getMixerPreSelectHook(__FUNCTION__)) as $sf_hook)
@@ -710,7 +710,7 @@ abstract class BaseUserCommentsSoftwareRequestPeer {
 			$con = Propel::getConnection(UserCommentsSoftwareRequestPeer::DATABASE_NAME, Propel::CONNECTION_READ);
 		}
 
-		$criteria->addJoin(UserCommentsSoftwareRequestPeer::USER_IDUSER, UserPeer::ID, $join_behavior);
+		$criteria->addJoin(UserCommentsSoftwareRequestPeer::USER_ID, UserPeer::ID, $join_behavior);
 
 		$criteria->addJoin(UserCommentsSoftwareRequestPeer::SOFTWARE_REQUEST_ID, SoftwareRequestPeer::ID, $join_behavior);
 
@@ -759,7 +759,7 @@ abstract class BaseUserCommentsSoftwareRequestPeer {
 		SoftwareRequestPeer::addSelectColumns($criteria);
 		$startcol4 = $startcol3 + (SoftwareRequestPeer::NUM_COLUMNS - SoftwareRequestPeer::NUM_LAZY_LOAD_COLUMNS);
 
-		$criteria->addJoin(UserCommentsSoftwareRequestPeer::USER_IDUSER, UserPeer::ID, $join_behavior);
+		$criteria->addJoin(UserCommentsSoftwareRequestPeer::USER_ID, UserPeer::ID, $join_behavior);
 
 		$criteria->addJoin(UserCommentsSoftwareRequestPeer::SOFTWARE_REQUEST_ID, SoftwareRequestPeer::ID, $join_behavior);
 
@@ -921,7 +921,7 @@ abstract class BaseUserCommentsSoftwareRequestPeer {
 			$con = Propel::getConnection(UserCommentsSoftwareRequestPeer::DATABASE_NAME, Propel::CONNECTION_READ);
 		}
 	
-		$criteria->addJoin(UserCommentsSoftwareRequestPeer::USER_IDUSER, UserPeer::ID, $join_behavior);
+		$criteria->addJoin(UserCommentsSoftwareRequestPeer::USER_ID, UserPeer::ID, $join_behavior);
 
 		// symfony_behaviors behavior
 		foreach (sfMixer::getCallables(self::getMixerPreSelectHook(__FUNCTION__)) as $sf_hook)
@@ -1047,7 +1047,7 @@ abstract class BaseUserCommentsSoftwareRequestPeer {
 		UserPeer::addSelectColumns($criteria);
 		$startcol3 = $startcol2 + (UserPeer::NUM_COLUMNS - UserPeer::NUM_LAZY_LOAD_COLUMNS);
 
-		$criteria->addJoin(UserCommentsSoftwareRequestPeer::USER_IDUSER, UserPeer::ID, $join_behavior);
+		$criteria->addJoin(UserCommentsSoftwareRequestPeer::USER_ID, UserPeer::ID, $join_behavior);
 
 		// symfony_behaviors behavior
 		foreach (sfMixer::getCallables(self::getMixerPreSelectHook(__FUNCTION__)) as $sf_hook)

@@ -34,14 +34,22 @@ class RpmTableMap extends TableMap {
 		$this->setPhpName('Rpm');
 		$this->setClassname('Rpm');
 		$this->setPackage('lib.model');
-		$this->setUseIdGenerator(false);
+		$this->setUseIdGenerator(true);
 		// columns
-		$this->addPrimaryKey('IDRPM', 'Idrpm', 'INTEGER', true, null, null);
-		$this->addColumn('PACKAGE_IDPACKAGE', 'PackageIdpackage', 'INTEGER', false, null, null);
-		$this->addForeignKey('MGA_RELEASE_IDMGA_RELEASE', 'MgaReleaseIdmgaRelease', 'INTEGER', 'mga_release', 'ID', false, null, null);
-		$this->addForeignKey('MEDIA_IDMEDIA', 'MediaIdmedia', 'INTEGER', 'media', 'IDMEDIA', false, null, null);
-		$this->addForeignKey('PACKAGE_ID', 'PackageId', 'INTEGER', 'package', 'ID', false, null, null);
-		$this->addForeignKey('RPM_GROUP_ID', 'RpmGroupId', 'INTEGER', 'rpm_group', 'ID', false, null, null);
+		$this->addPrimaryKey('ID', 'Id', 'INTEGER', true, null, null);
+		$this->addForeignKey('PACKAGE_ID', 'PackageId', 'INTEGER', 'package', 'ID', true, null, null);
+		$this->addForeignKey('DISTRELEASE_ID', 'DistreleaseId', 'INTEGER', 'distrelease', 'ID', true, null, null);
+		$this->addForeignKey('MEDIA_ID', 'MediaId', 'INTEGER', 'media', 'ID', true, null, null);
+		$this->addForeignKey('RPM_GROUP_ID', 'RpmGroupId', 'INTEGER', 'rpm_group', 'ID', true, null, null);
+		$this->addColumn('LICENCE', 'Licence', 'VARCHAR', true, 255, null);
+		$this->addColumn('NAME', 'Name', 'VARCHAR', true, 255, null);
+		$this->addColumn('EVR', 'Evr', 'VARCHAR', true, 255, null);
+		$this->addColumn('VERSION', 'Version', 'VARCHAR', true, 255, null);
+		$this->addColumn('RELEASE', 'Release', 'VARCHAR', true, 255, null);
+		$this->addColumn('SUMMARY', 'Summary', 'VARCHAR', true, 255, null);
+		$this->addColumn('DESCRIPTION', 'Description', 'VARCHAR', true, 45, null);
+		$this->addColumn('URL', 'Url', 'LONGVARCHAR', false, null, null);
+		$this->addColumn('SRC_RPM', 'SrcRpm', 'LONGVARCHAR', true, null, null);
 		// validators
 	} // initialize()
 
@@ -50,10 +58,11 @@ class RpmTableMap extends TableMap {
 	 */
 	public function buildRelations()
 	{
-    $this->addRelation('MgaRelease', 'MgaRelease', RelationMap::MANY_TO_ONE, array('mga_release_idmga_release' => 'id', ), null, null);
-    $this->addRelation('Media', 'Media', RelationMap::MANY_TO_ONE, array('media_idmedia' => 'idmedia', ), null, null);
     $this->addRelation('Package', 'Package', RelationMap::MANY_TO_ONE, array('package_id' => 'id', ), null, null);
+    $this->addRelation('Distrelease', 'Distrelease', RelationMap::MANY_TO_ONE, array('distrelease_id' => 'id', ), null, null);
+    $this->addRelation('Media', 'Media', RelationMap::MANY_TO_ONE, array('media_id' => 'id', ), null, null);
     $this->addRelation('RpmGroup', 'RpmGroup', RelationMap::MANY_TO_ONE, array('rpm_group_id' => 'id', ), null, null);
+    $this->addRelation('Rpmfile', 'Rpmfile', RelationMap::ONE_TO_MANY, array('id' => 'rpm_id', ), null, null);
 	} // buildRelations()
 
 	/**

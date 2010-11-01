@@ -39,10 +39,10 @@ class SoftwareRequestTableMap extends TableMap {
 		$this->addPrimaryKey('ID', 'Id', 'INTEGER', true, null, null);
 		$this->addColumn('NAME', 'Name', 'VARCHAR', true, 255, null);
 		$this->addColumn('URL', 'Url', 'VARCHAR', true, 2048, null);
-		$this->addColumn('TEXT', 'Text', 'LONGVARCHAR', false, null, null);
-		$this->addForeignKey('USER_IDUSER', 'UserIduser', 'INTEGER', 'user', 'ID', false, null, null);
+		$this->addColumn('TEXT', 'Text', 'LONGVARCHAR', true, null, null);
+		$this->addForeignKey('USER_ID', 'UserId', 'INTEGER', 'user', 'ID', true, null, null);
 		$this->addColumn('BACKPORT_TO', 'BackportTo', 'LONGVARCHAR', false, null, null);
-		$this->addColumn('STATUS', 'Status', 'VARCHAR', false, 45, null);
+		$this->addColumn('STATUS', 'Status', 'VARCHAR', true, 45, null);
 		// validators
 	} // initialize()
 
@@ -51,7 +51,7 @@ class SoftwareRequestTableMap extends TableMap {
 	 */
 	public function buildRelations()
 	{
-    $this->addRelation('User', 'User', RelationMap::MANY_TO_ONE, array('user_iduser' => 'id', ), null, null);
+    $this->addRelation('User', 'User', RelationMap::MANY_TO_ONE, array('user_id' => 'id', ), null, null);
     $this->addRelation('UserHasSoftwareRequest', 'UserHasSoftwareRequest', RelationMap::ONE_TO_MANY, array('id' => 'software_request_id', ), null, null);
     $this->addRelation('UserCommentsSoftwareRequest', 'UserCommentsSoftwareRequest', RelationMap::ONE_TO_MANY, array('id' => 'software_request_id', ), null, null);
 	} // buildRelations()

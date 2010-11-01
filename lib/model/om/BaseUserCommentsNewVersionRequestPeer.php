@@ -33,8 +33,8 @@ abstract class BaseUserCommentsNewVersionRequestPeer {
 	/** the column name for the ID field */
 	const ID = 'user_comments_new_version_request.ID';
 
-	/** the column name for the USER_IDUSER field */
-	const USER_IDUSER = 'user_comments_new_version_request.USER_IDUSER';
+	/** the column name for the USER_ID field */
+	const USER_ID = 'user_comments_new_version_request.USER_ID';
 
 	/** the column name for the NEW_VERSION_REQUEST_ID field */
 	const NEW_VERSION_REQUEST_ID = 'user_comments_new_version_request.NEW_VERSION_REQUEST_ID';
@@ -68,10 +68,10 @@ abstract class BaseUserCommentsNewVersionRequestPeer {
 	 * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
 	 */
 	private static $fieldNames = array (
-		BasePeer::TYPE_PHPNAME => array ('Id', 'UserIduser', 'NewVersionRequestId', 'Comment', 'CreatedAt', ),
-		BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'userIduser', 'newVersionRequestId', 'comment', 'createdAt', ),
-		BasePeer::TYPE_COLNAME => array (self::ID, self::USER_IDUSER, self::NEW_VERSION_REQUEST_ID, self::COMMENT, self::CREATED_AT, ),
-		BasePeer::TYPE_FIELDNAME => array ('id', 'user_iduser', 'new_version_request_id', 'comment', 'created_at', ),
+		BasePeer::TYPE_PHPNAME => array ('Id', 'UserId', 'NewVersionRequestId', 'Comment', 'CreatedAt', ),
+		BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'userId', 'newVersionRequestId', 'comment', 'createdAt', ),
+		BasePeer::TYPE_COLNAME => array (self::ID, self::USER_ID, self::NEW_VERSION_REQUEST_ID, self::COMMENT, self::CREATED_AT, ),
+		BasePeer::TYPE_FIELDNAME => array ('id', 'user_id', 'new_version_request_id', 'comment', 'created_at', ),
 		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, )
 	);
 
@@ -82,10 +82,10 @@ abstract class BaseUserCommentsNewVersionRequestPeer {
 	 * e.g. self::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
 	 */
 	private static $fieldKeys = array (
-		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'UserIduser' => 1, 'NewVersionRequestId' => 2, 'Comment' => 3, 'CreatedAt' => 4, ),
-		BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'userIduser' => 1, 'newVersionRequestId' => 2, 'comment' => 3, 'createdAt' => 4, ),
-		BasePeer::TYPE_COLNAME => array (self::ID => 0, self::USER_IDUSER => 1, self::NEW_VERSION_REQUEST_ID => 2, self::COMMENT => 3, self::CREATED_AT => 4, ),
-		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'user_iduser' => 1, 'new_version_request_id' => 2, 'comment' => 3, 'created_at' => 4, ),
+		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'UserId' => 1, 'NewVersionRequestId' => 2, 'Comment' => 3, 'CreatedAt' => 4, ),
+		BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'userId' => 1, 'newVersionRequestId' => 2, 'comment' => 3, 'createdAt' => 4, ),
+		BasePeer::TYPE_COLNAME => array (self::ID => 0, self::USER_ID => 1, self::NEW_VERSION_REQUEST_ID => 2, self::COMMENT => 3, self::CREATED_AT => 4, ),
+		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'user_id' => 1, 'new_version_request_id' => 2, 'comment' => 3, 'created_at' => 4, ),
 		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, )
 	);
 
@@ -157,7 +157,7 @@ abstract class BaseUserCommentsNewVersionRequestPeer {
 	public static function addSelectColumns(Criteria $criteria)
 	{
 		$criteria->addSelectColumn(UserCommentsNewVersionRequestPeer::ID);
-		$criteria->addSelectColumn(UserCommentsNewVersionRequestPeer::USER_IDUSER);
+		$criteria->addSelectColumn(UserCommentsNewVersionRequestPeer::USER_ID);
 		$criteria->addSelectColumn(UserCommentsNewVersionRequestPeer::NEW_VERSION_REQUEST_ID);
 		$criteria->addSelectColumn(UserCommentsNewVersionRequestPeer::COMMENT);
 		$criteria->addSelectColumn(UserCommentsNewVersionRequestPeer::CREATED_AT);
@@ -454,7 +454,7 @@ abstract class BaseUserCommentsNewVersionRequestPeer {
 			$con = Propel::getConnection(UserCommentsNewVersionRequestPeer::DATABASE_NAME, Propel::CONNECTION_READ);
 		}
 
-		$criteria->addJoin(UserCommentsNewVersionRequestPeer::USER_IDUSER, UserPeer::ID, $join_behavior);
+		$criteria->addJoin(UserCommentsNewVersionRequestPeer::USER_ID, UserPeer::ID, $join_behavior);
 
 		// symfony_behaviors behavior
 		foreach (sfMixer::getCallables(self::getMixerPreSelectHook(__FUNCTION__)) as $sf_hook)
@@ -552,7 +552,7 @@ abstract class BaseUserCommentsNewVersionRequestPeer {
 		$startcol = (UserCommentsNewVersionRequestPeer::NUM_COLUMNS - UserCommentsNewVersionRequestPeer::NUM_LAZY_LOAD_COLUMNS);
 		UserPeer::addSelectColumns($criteria);
 
-		$criteria->addJoin(UserCommentsNewVersionRequestPeer::USER_IDUSER, UserPeer::ID, $join_behavior);
+		$criteria->addJoin(UserCommentsNewVersionRequestPeer::USER_ID, UserPeer::ID, $join_behavior);
 
 		// symfony_behaviors behavior
 		foreach (sfMixer::getCallables(self::getMixerPreSelectHook(__FUNCTION__)) as $sf_hook)
@@ -710,7 +710,7 @@ abstract class BaseUserCommentsNewVersionRequestPeer {
 			$con = Propel::getConnection(UserCommentsNewVersionRequestPeer::DATABASE_NAME, Propel::CONNECTION_READ);
 		}
 
-		$criteria->addJoin(UserCommentsNewVersionRequestPeer::USER_IDUSER, UserPeer::ID, $join_behavior);
+		$criteria->addJoin(UserCommentsNewVersionRequestPeer::USER_ID, UserPeer::ID, $join_behavior);
 
 		$criteria->addJoin(UserCommentsNewVersionRequestPeer::NEW_VERSION_REQUEST_ID, NewVersionRequestPeer::ID, $join_behavior);
 
@@ -759,7 +759,7 @@ abstract class BaseUserCommentsNewVersionRequestPeer {
 		NewVersionRequestPeer::addSelectColumns($criteria);
 		$startcol4 = $startcol3 + (NewVersionRequestPeer::NUM_COLUMNS - NewVersionRequestPeer::NUM_LAZY_LOAD_COLUMNS);
 
-		$criteria->addJoin(UserCommentsNewVersionRequestPeer::USER_IDUSER, UserPeer::ID, $join_behavior);
+		$criteria->addJoin(UserCommentsNewVersionRequestPeer::USER_ID, UserPeer::ID, $join_behavior);
 
 		$criteria->addJoin(UserCommentsNewVersionRequestPeer::NEW_VERSION_REQUEST_ID, NewVersionRequestPeer::ID, $join_behavior);
 
@@ -921,7 +921,7 @@ abstract class BaseUserCommentsNewVersionRequestPeer {
 			$con = Propel::getConnection(UserCommentsNewVersionRequestPeer::DATABASE_NAME, Propel::CONNECTION_READ);
 		}
 	
-		$criteria->addJoin(UserCommentsNewVersionRequestPeer::USER_IDUSER, UserPeer::ID, $join_behavior);
+		$criteria->addJoin(UserCommentsNewVersionRequestPeer::USER_ID, UserPeer::ID, $join_behavior);
 
 		// symfony_behaviors behavior
 		foreach (sfMixer::getCallables(self::getMixerPreSelectHook(__FUNCTION__)) as $sf_hook)
@@ -1047,7 +1047,7 @@ abstract class BaseUserCommentsNewVersionRequestPeer {
 		UserPeer::addSelectColumns($criteria);
 		$startcol3 = $startcol2 + (UserPeer::NUM_COLUMNS - UserPeer::NUM_LAZY_LOAD_COLUMNS);
 
-		$criteria->addJoin(UserCommentsNewVersionRequestPeer::USER_IDUSER, UserPeer::ID, $join_behavior);
+		$criteria->addJoin(UserCommentsNewVersionRequestPeer::USER_ID, UserPeer::ID, $join_behavior);
 
 		// symfony_behaviors behavior
 		foreach (sfMixer::getCallables(self::getMixerPreSelectHook(__FUNCTION__)) as $sf_hook)

@@ -38,8 +38,8 @@ class PackageDescriptionTableMap extends TableMap {
 		// columns
 		$this->addPrimaryKey('ID', 'Id', 'INTEGER', true, null, null);
 		$this->addColumn('VERSION_FROM', 'VersionFrom', 'VARCHAR', false, 45, null);
-		$this->addForeignKey('PACKAGE_ID', 'PackageId', 'INTEGER', 'package', 'ID', false, null, null);
-		$this->addForeignKey('LANGUAGE_ID', 'LanguageId', 'INTEGER', 'language', 'ID', false, null, null);
+		$this->addForeignKey('PACKAGE_ID', 'PackageId', 'INTEGER', 'package', 'ID', true, null, null);
+		$this->addForeignKey('LANGUAGE_ID', 'LanguageId', 'INTEGER', 'language', 'ID', true, null, null);
 		// validators
 	} // initialize()
 

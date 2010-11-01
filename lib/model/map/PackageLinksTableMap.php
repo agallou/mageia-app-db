@@ -37,9 +37,9 @@ class PackageLinksTableMap extends TableMap {
 		$this->setUseIdGenerator(true);
 		// columns
 		$this->addPrimaryKey('ID', 'Id', 'INTEGER', true, null, null);
-		$this->addColumn('URL', 'Url', 'VARCHAR', false, 45, null);
-		$this->addForeignKey('LANGUAGE_ID', 'LanguageId', 'INTEGER', 'language', 'ID', false, null, null);
-		$this->addForeignKey('PACKAGE_ID', 'PackageId', 'INTEGER', 'package', 'ID', false, null, null);
+		$this->addColumn('URL', 'Url', 'LONGVARCHAR', true, null, null);
+		$this->addForeignKey('LANGUAGE_ID', 'LanguageId', 'INTEGER', 'language', 'ID', true, null, null);
+		$this->addForeignKey('PACKAGE_ID', 'PackageId', 'INTEGER', 'package', 'ID', true, null, null);
 		// validators
 	} // initialize()
 

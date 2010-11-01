@@ -25,13 +25,19 @@ abstract class BaseMediaPeer {
 	const TM_CLASS = 'MediaTableMap';
 	
 	/** The total number of columns. */
-	const NUM_COLUMNS = 1;
+	const NUM_COLUMNS = 3;
 
 	/** The number of lazy-loaded columns. */
 	const NUM_LAZY_LOAD_COLUMNS = 0;
 
-	/** the column name for the IDMEDIA field */
-	const IDMEDIA = 'media.IDMEDIA';
+	/** the column name for the ID field */
+	const ID = 'media.ID';
+
+	/** the column name for the NAME field */
+	const NAME = 'media.NAME';
+
+	/** the column name for the VENDOR field */
+	const VENDOR = 'media.VENDOR';
 
 	/**
 	 * An identiy map to hold any loaded instances of Media objects.
@@ -56,11 +62,11 @@ abstract class BaseMediaPeer {
 	 * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
 	 */
 	private static $fieldNames = array (
-		BasePeer::TYPE_PHPNAME => array ('Idmedia', ),
-		BasePeer::TYPE_STUDLYPHPNAME => array ('idmedia', ),
-		BasePeer::TYPE_COLNAME => array (self::IDMEDIA, ),
-		BasePeer::TYPE_FIELDNAME => array ('idmedia', ),
-		BasePeer::TYPE_NUM => array (0, )
+		BasePeer::TYPE_PHPNAME => array ('Id', 'Name', 'Vendor', ),
+		BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'name', 'vendor', ),
+		BasePeer::TYPE_COLNAME => array (self::ID, self::NAME, self::VENDOR, ),
+		BasePeer::TYPE_FIELDNAME => array ('id', 'name', 'vendor', ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, )
 	);
 
 	/**
@@ -70,11 +76,11 @@ abstract class BaseMediaPeer {
 	 * e.g. self::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
 	 */
 	private static $fieldKeys = array (
-		BasePeer::TYPE_PHPNAME => array ('Idmedia' => 0, ),
-		BasePeer::TYPE_STUDLYPHPNAME => array ('idmedia' => 0, ),
-		BasePeer::TYPE_COLNAME => array (self::IDMEDIA => 0, ),
-		BasePeer::TYPE_FIELDNAME => array ('idmedia' => 0, ),
-		BasePeer::TYPE_NUM => array (0, )
+		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Name' => 1, 'Vendor' => 2, ),
+		BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'name' => 1, 'vendor' => 2, ),
+		BasePeer::TYPE_COLNAME => array (self::ID => 0, self::NAME => 1, self::VENDOR => 2, ),
+		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'name' => 1, 'vendor' => 2, ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, )
 	);
 
 	/**
@@ -144,7 +150,9 @@ abstract class BaseMediaPeer {
 	 */
 	public static function addSelectColumns(Criteria $criteria)
 	{
-		$criteria->addSelectColumn(MediaPeer::IDMEDIA);
+		$criteria->addSelectColumn(MediaPeer::ID);
+		$criteria->addSelectColumn(MediaPeer::NAME);
+		$criteria->addSelectColumn(MediaPeer::VENDOR);
 	}
 
 	/**
@@ -280,7 +288,7 @@ abstract class BaseMediaPeer {
 	{
 		if (Propel::isInstancePoolingEnabled()) {
 			if ($key === null) {
-				$key = (string) $obj->getIdmedia();
+				$key = (string) $obj->getId();
 			} // if key === null
 			self::$instances[$key] = $obj;
 		}
@@ -300,7 +308,7 @@ abstract class BaseMediaPeer {
 	{
 		if (Propel::isInstancePoolingEnabled() && $value !== null) {
 			if (is_object($value) && $value instanceof Media) {
-				$key = (string) $value->getIdmedia();
+				$key = (string) $value->getId();
 			} elseif (is_scalar($value)) {
 				// assume we've been passed a primary key
 				$key = (string) $value;
@@ -471,6 +479,10 @@ abstract class BaseMediaPeer {
 			$criteria = $values->buildCriteria(); // build Criteria from Media object
 		}
 
+		if ($criteria->containsKey(MediaPeer::ID) && $criteria->keyContainsValue(MediaPeer::ID) ) {
+			throw new PropelException('Cannot insert a value for auto-increment primary key ('.MediaPeer::ID.')');
+		}
+
 
 		// Set the correct dbName
 		$criteria->setDbName(self::DATABASE_NAME);
@@ -524,8 +536,8 @@ abstract class BaseMediaPeer {
 		if ($values instanceof Criteria) {
 			$criteria = clone $values; // rename for clarity
 
-			$comparison = $criteria->getComparison(MediaPeer::IDMEDIA);
-			$selectCriteria->add(MediaPeer::IDMEDIA, $criteria->remove(MediaPeer::IDMEDIA), $comparison);
+			$comparison = $criteria->getComparison(MediaPeer::ID);
+			$selectCriteria->add(MediaPeer::ID, $criteria->remove(MediaPeer::ID), $comparison);
 
 		} else { // $values is Media object
 			$criteria = $values->buildCriteria(); // gets full criteria
@@ -606,7 +618,7 @@ abstract class BaseMediaPeer {
 			$criteria = $values->buildPkeyCriteria();
 		} else { // it's a primary key, or an array of pks
 			$criteria = new Criteria(self::DATABASE_NAME);
-			$criteria->add(MediaPeer::IDMEDIA, (array) $values, Criteria::IN);
+			$criteria->add(MediaPeer::ID, (array) $values, Criteria::IN);
 			// invalidate the cache for this object(s)
 			foreach ((array) $values as $singleval) {
 				MediaPeer::removeInstanceFromPool($singleval);
@@ -689,7 +701,7 @@ abstract class BaseMediaPeer {
 		}
 
 		$criteria = new Criteria(MediaPeer::DATABASE_NAME);
-		$criteria->add(MediaPeer::IDMEDIA, $pk);
+		$criteria->add(MediaPeer::ID, $pk);
 
 		$v = MediaPeer::doSelect($criteria, $con);
 
@@ -715,7 +727,7 @@ abstract class BaseMediaPeer {
 			$objs = array();
 		} else {
 			$criteria = new Criteria(MediaPeer::DATABASE_NAME);
-			$criteria->add(MediaPeer::IDMEDIA, $pks, Criteria::IN);
+			$criteria->add(MediaPeer::ID, $pks, Criteria::IN);
 			$objs = MediaPeer::doSelect($criteria, $con);
 		}
 		return $objs;
@@ -730,7 +742,7 @@ abstract class BaseMediaPeer {
 	 */
 	static public function getUniqueColumnNames()
 	{
-	  return array();
+	  return array(array('name'));
 	}
 
 	// symfony_behaviors behavior

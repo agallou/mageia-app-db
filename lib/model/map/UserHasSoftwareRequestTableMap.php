@@ -36,7 +36,7 @@ class UserHasSoftwareRequestTableMap extends TableMap {
 		$this->setPackage('lib.model');
 		$this->setUseIdGenerator(false);
 		// columns
-		$this->addForeignPrimaryKey('USER_IDUSER', 'UserIduser', 'INTEGER' , 'user', 'ID', true, null, null);
+		$this->addForeignPrimaryKey('USER_ID', 'UserId', 'INTEGER' , 'user', 'ID', true, null, null);
 		$this->addForeignPrimaryKey('SOFTWARE_REQUEST_ID', 'SoftwareRequestId', 'INTEGER' , 'software_request', 'ID', true, null, null);
 		// validators
 	} // initialize()
@@ -46,7 +46,7 @@ class UserHasSoftwareRequestTableMap extends TableMap {
 	 */
 	public function buildRelations()
 	{
-    $this->addRelation('User', 'User', RelationMap::MANY_TO_ONE, array('user_iduser' => 'id', ), null, null);
+    $this->addRelation('User', 'User', RelationMap::MANY_TO_ONE, array('user_id' => 'id', ), null, null);
     $this->addRelation('SoftwareRequest', 'SoftwareRequest', RelationMap::MANY_TO_ONE, array('software_request_id' => 'id', ), null, null);
 	} // buildRelations()
 

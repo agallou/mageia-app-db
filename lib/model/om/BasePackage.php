@@ -31,6 +31,12 @@ abstract class BasePackage extends BaseObject  implements Persistent {
 	protected $name;
 
 	/**
+	 * The value for the md5_name field.
+	 * @var        string
+	 */
+	protected $md5_name;
+
+	/**
 	 * The value for the is_application field.
 	 * @var        boolean
 	 */
@@ -45,16 +51,6 @@ abstract class BasePackage extends BaseObject  implements Persistent {
 	 * @var        Criteria The criteria used to select the current contents of collRpms.
 	 */
 	private $lastRpmCriteria = null;
-
-	/**
-	 * @var        array UserFollowsPackage[] Collection to store aggregation of UserFollowsPackage objects.
-	 */
-	protected $collUserFollowsPackages;
-
-	/**
-	 * @var        Criteria The criteria used to select the current contents of collUserFollowsPackages.
-	 */
-	private $lastUserFollowsPackageCriteria = null;
 
 	/**
 	 * @var        array UserCommentsPackage[] Collection to store aggregation of UserCommentsPackage objects.
@@ -107,6 +103,16 @@ abstract class BasePackage extends BaseObject  implements Persistent {
 	private $lastNewVersionRequestCriteria = null;
 
 	/**
+	 * @var        array NotificationElement[] Collection to store aggregation of NotificationElement objects.
+	 */
+	protected $collNotificationElements;
+
+	/**
+	 * @var        Criteria The criteria used to select the current contents of collNotificationElements.
+	 */
+	private $lastNotificationElementCriteria = null;
+
+	/**
 	 * Flag to prevent endless save loop, if this object is referenced
 	 * by another object which falls in this transaction.
 	 * @var        boolean
@@ -142,6 +148,16 @@ abstract class BasePackage extends BaseObject  implements Persistent {
 	public function getName()
 	{
 		return $this->name;
+	}
+
+	/**
+	 * Get the [md5_name] column value.
+	 * 
+	 * @return     string
+	 */
+	public function getMd5Name()
+	{
+		return $this->md5_name;
 	}
 
 	/**
@@ -193,6 +209,26 @@ abstract class BasePackage extends BaseObject  implements Persistent {
 
 		return $this;
 	} // setName()
+
+	/**
+	 * Set the value of [md5_name] column.
+	 * 
+	 * @param      string $v new value
+	 * @return     Package The current object (for fluent API support)
+	 */
+	public function setMd5Name($v)
+	{
+		if ($v !== null) {
+			$v = (string) $v;
+		}
+
+		if ($this->md5_name !== $v) {
+			$this->md5_name = $v;
+			$this->modifiedColumns[] = PackagePeer::MD5_NAME;
+		}
+
+		return $this;
+	} // setMd5Name()
 
 	/**
 	 * Set the value of [is_application] column.
@@ -248,7 +284,8 @@ abstract class BasePackage extends BaseObject  implements Persistent {
 
 			$this->id = ($row[$startcol + 0] !== null) ? (int) $row[$startcol + 0] : null;
 			$this->name = ($row[$startcol + 1] !== null) ? (string) $row[$startcol + 1] : null;
-			$this->is_application = ($row[$startcol + 2] !== null) ? (boolean) $row[$startcol + 2] : null;
+			$this->md5_name = ($row[$startcol + 2] !== null) ? (string) $row[$startcol + 2] : null;
+			$this->is_application = ($row[$startcol + 3] !== null) ? (boolean) $row[$startcol + 3] : null;
 			$this->resetModified();
 
 			$this->setNew(false);
@@ -258,7 +295,7 @@ abstract class BasePackage extends BaseObject  implements Persistent {
 			}
 
 			// FIXME - using NUM_COLUMNS may be clearer.
-			return $startcol + 3; // 3 = PackagePeer::NUM_COLUMNS - PackagePeer::NUM_LAZY_LOAD_COLUMNS).
+			return $startcol + 4; // 4 = PackagePeer::NUM_COLUMNS - PackagePeer::NUM_LAZY_LOAD_COLUMNS).
 
 		} catch (Exception $e) {
 			throw new PropelException("Error populating Package object", $e);
@@ -323,9 +360,6 @@ abstract class BasePackage extends BaseObject  implements Persistent {
 			$this->collRpms = null;
 			$this->lastRpmCriteria = null;
 
-			$this->collUserFollowsPackages = null;
-			$this->lastUserFollowsPackageCriteria = null;
-
 			$this->collUserCommentsPackages = null;
 			$this->lastUserCommentsPackageCriteria = null;
 
@@ -340,6 +374,9 @@ abstract class BasePackage extends BaseObject  implements Persistent {
 
 			$this->collNewVersionRequests = null;
 			$this->lastNewVersionRequestCriteria = null;
+
+			$this->collNotificationElements = null;
+			$this->lastNotificationElementCriteria = null;
 
 		} // if (deep)
 	}
@@ -513,14 +550,6 @@ abstract class BasePackage extends BaseObject  implements Persistent {
 				}
 			}
 
-			if ($this->collUserFollowsPackages !== null) {
-				foreach ($this->collUserFollowsPackages as $referrerFK) {
-					if (!$referrerFK->isDeleted()) {
-						$affectedRows += $referrerFK->save($con);
-					}
-				}
-			}
-
 			if ($this->collUserCommentsPackages !== null) {
 				foreach ($this->collUserCommentsPackages as $referrerFK) {
 					if (!$referrerFK->isDeleted()) {
@@ -555,6 +584,14 @@ abstract class BasePackage extends BaseObject  implements Persistent {
 
 			if ($this->collNewVersionRequests !== null) {
 				foreach ($this->collNewVersionRequests as $referrerFK) {
+					if (!$referrerFK->isDeleted()) {
+						$affectedRows += $referrerFK->save($con);
+					}
+				}
+			}
+
+			if ($this->collNotificationElements !== null) {
+				foreach ($this->collNotificationElements as $referrerFK) {
 					if (!$referrerFK->isDeleted()) {
 						$affectedRows += $referrerFK->save($con);
 					}
@@ -640,14 +677,6 @@ abstract class BasePackage extends BaseObject  implements Persistent {
 					}
 				}
 
-				if ($this->collUserFollowsPackages !== null) {
-					foreach ($this->collUserFollowsPackages as $referrerFK) {
-						if (!$referrerFK->validate($columns)) {
-							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
-						}
-					}
-				}
-
 				if ($this->collUserCommentsPackages !== null) {
 					foreach ($this->collUserCommentsPackages as $referrerFK) {
 						if (!$referrerFK->validate($columns)) {
@@ -682,6 +711,14 @@ abstract class BasePackage extends BaseObject  implements Persistent {
 
 				if ($this->collNewVersionRequests !== null) {
 					foreach ($this->collNewVersionRequests as $referrerFK) {
+						if (!$referrerFK->validate($columns)) {
+							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
+						}
+					}
+				}
+
+				if ($this->collNotificationElements !== null) {
+					foreach ($this->collNotificationElements as $referrerFK) {
 						if (!$referrerFK->validate($columns)) {
 							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
 						}
@@ -728,6 +765,9 @@ abstract class BasePackage extends BaseObject  implements Persistent {
 				return $this->getName();
 				break;
 			case 2:
+				return $this->getMd5Name();
+				break;
+			case 3:
 				return $this->getIsApplication();
 				break;
 			default:
@@ -753,7 +793,8 @@ abstract class BasePackage extends BaseObject  implements Persistent {
 		$result = array(
 			$keys[0] => $this->getId(),
 			$keys[1] => $this->getName(),
-			$keys[2] => $this->getIsApplication(),
+			$keys[2] => $this->getMd5Name(),
+			$keys[3] => $this->getIsApplication(),
 		);
 		return $result;
 	}
@@ -792,6 +833,9 @@ abstract class BasePackage extends BaseObject  implements Persistent {
 				$this->setName($value);
 				break;
 			case 2:
+				$this->setMd5Name($value);
+				break;
+			case 3:
 				$this->setIsApplication($value);
 				break;
 		} // switch()
@@ -820,7 +864,8 @@ abstract class BasePackage extends BaseObject  implements Persistent {
 
 		if (array_key_exists($keys[0], $arr)) $this->setId($arr[$keys[0]]);
 		if (array_key_exists($keys[1], $arr)) $this->setName($arr[$keys[1]]);
-		if (array_key_exists($keys[2], $arr)) $this->setIsApplication($arr[$keys[2]]);
+		if (array_key_exists($keys[2], $arr)) $this->setMd5Name($arr[$keys[2]]);
+		if (array_key_exists($keys[3], $arr)) $this->setIsApplication($arr[$keys[3]]);
 	}
 
 	/**
@@ -834,6 +879,7 @@ abstract class BasePackage extends BaseObject  implements Persistent {
 
 		if ($this->isColumnModified(PackagePeer::ID)) $criteria->add(PackagePeer::ID, $this->id);
 		if ($this->isColumnModified(PackagePeer::NAME)) $criteria->add(PackagePeer::NAME, $this->name);
+		if ($this->isColumnModified(PackagePeer::MD5_NAME)) $criteria->add(PackagePeer::MD5_NAME, $this->md5_name);
 		if ($this->isColumnModified(PackagePeer::IS_APPLICATION)) $criteria->add(PackagePeer::IS_APPLICATION, $this->is_application);
 
 		return $criteria;
@@ -891,6 +937,8 @@ abstract class BasePackage extends BaseObject  implements Persistent {
 
 		$copyObj->setName($this->name);
 
+		$copyObj->setMd5Name($this->md5_name);
+
 		$copyObj->setIsApplication($this->is_application);
 
 
@@ -902,12 +950,6 @@ abstract class BasePackage extends BaseObject  implements Persistent {
 			foreach ($this->getRpms() as $relObj) {
 				if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
 					$copyObj->addRpm($relObj->copy($deepCopy));
-				}
-			}
-
-			foreach ($this->getUserFollowsPackages() as $relObj) {
-				if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
-					$copyObj->addUserFollowsPackage($relObj->copy($deepCopy));
 				}
 			}
 
@@ -938,6 +980,12 @@ abstract class BasePackage extends BaseObject  implements Persistent {
 			foreach ($this->getNewVersionRequests() as $relObj) {
 				if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
 					$copyObj->addNewVersionRequest($relObj->copy($deepCopy));
+				}
+			}
+
+			foreach ($this->getNotificationElements() as $relObj) {
+				if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+					$copyObj->addNotificationElement($relObj->copy($deepCopy));
 				}
 			}
 
@@ -1154,7 +1202,7 @@ abstract class BasePackage extends BaseObject  implements Persistent {
 	 * api reasonable.  You can provide public methods for those you
 	 * actually need in Package.
 	 */
-	public function getRpmsJoinMgaRelease($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public function getRpmsJoinDistrelease($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
 		if ($criteria === null) {
 			$criteria = new Criteria(PackagePeer::DATABASE_NAME);
@@ -1171,7 +1219,7 @@ abstract class BasePackage extends BaseObject  implements Persistent {
 
 				$criteria->add(RpmPeer::PACKAGE_ID, $this->id);
 
-				$this->collRpms = RpmPeer::doSelectJoinMgaRelease($criteria, $con, $join_behavior);
+				$this->collRpms = RpmPeer::doSelectJoinDistrelease($criteria, $con, $join_behavior);
 			}
 		} else {
 			// the following code is to determine if a new query is
@@ -1181,7 +1229,7 @@ abstract class BasePackage extends BaseObject  implements Persistent {
 			$criteria->add(RpmPeer::PACKAGE_ID, $this->id);
 
 			if (!isset($this->lastRpmCriteria) || !$this->lastRpmCriteria->equals($criteria)) {
-				$this->collRpms = RpmPeer::doSelectJoinMgaRelease($criteria, $con, $join_behavior);
+				$this->collRpms = RpmPeer::doSelectJoinDistrelease($criteria, $con, $join_behavior);
 			}
 		}
 		$this->lastRpmCriteria = $criteria;
@@ -1281,207 +1329,6 @@ abstract class BasePackage extends BaseObject  implements Persistent {
 		$this->lastRpmCriteria = $criteria;
 
 		return $this->collRpms;
-	}
-
-	/**
-	 * Clears out the collUserFollowsPackages collection (array).
-	 *
-	 * This does not modify the database; however, it will remove any associated objects, causing
-	 * them to be refetched by subsequent calls to accessor method.
-	 *
-	 * @return     void
-	 * @see        addUserFollowsPackages()
-	 */
-	public function clearUserFollowsPackages()
-	{
-		$this->collUserFollowsPackages = null; // important to set this to NULL since that means it is uninitialized
-	}
-
-	/**
-	 * Initializes the collUserFollowsPackages collection (array).
-	 *
-	 * By default this just sets the collUserFollowsPackages collection to an empty array (like clearcollUserFollowsPackages());
-	 * however, you may wish to override this method in your stub class to provide setting appropriate
-	 * to your application -- for example, setting the initial array to the values stored in database.
-	 *
-	 * @return     void
-	 */
-	public function initUserFollowsPackages()
-	{
-		$this->collUserFollowsPackages = array();
-	}
-
-	/**
-	 * Gets an array of UserFollowsPackage objects which contain a foreign key that references this object.
-	 *
-	 * If this collection has already been initialized with an identical Criteria, it returns the collection.
-	 * Otherwise if this Package has previously been saved, it will retrieve
-	 * related UserFollowsPackages from storage. If this Package is new, it will return
-	 * an empty collection or the current collection, the criteria is ignored on a new object.
-	 *
-	 * @param      PropelPDO $con
-	 * @param      Criteria $criteria
-	 * @return     array UserFollowsPackage[]
-	 * @throws     PropelException
-	 */
-	public function getUserFollowsPackages($criteria = null, PropelPDO $con = null)
-	{
-		if ($criteria === null) {
-			$criteria = new Criteria(PackagePeer::DATABASE_NAME);
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		if ($this->collUserFollowsPackages === null) {
-			if ($this->isNew()) {
-			   $this->collUserFollowsPackages = array();
-			} else {
-
-				$criteria->add(UserFollowsPackagePeer::PACKAGE_ID, $this->id);
-
-				UserFollowsPackagePeer::addSelectColumns($criteria);
-				$this->collUserFollowsPackages = UserFollowsPackagePeer::doSelect($criteria, $con);
-			}
-		} else {
-			// criteria has no effect for a new object
-			if (!$this->isNew()) {
-				// the following code is to determine if a new query is
-				// called for.  If the criteria is the same as the last
-				// one, just return the collection.
-
-
-				$criteria->add(UserFollowsPackagePeer::PACKAGE_ID, $this->id);
-
-				UserFollowsPackagePeer::addSelectColumns($criteria);
-				if (!isset($this->lastUserFollowsPackageCriteria) || !$this->lastUserFollowsPackageCriteria->equals($criteria)) {
-					$this->collUserFollowsPackages = UserFollowsPackagePeer::doSelect($criteria, $con);
-				}
-			}
-		}
-		$this->lastUserFollowsPackageCriteria = $criteria;
-		return $this->collUserFollowsPackages;
-	}
-
-	/**
-	 * Returns the number of related UserFollowsPackage objects.
-	 *
-	 * @param      Criteria $criteria
-	 * @param      boolean $distinct
-	 * @param      PropelPDO $con
-	 * @return     int Count of related UserFollowsPackage objects.
-	 * @throws     PropelException
-	 */
-	public function countUserFollowsPackages(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
-	{
-		if ($criteria === null) {
-			$criteria = new Criteria(PackagePeer::DATABASE_NAME);
-		} else {
-			$criteria = clone $criteria;
-		}
-
-		if ($distinct) {
-			$criteria->setDistinct();
-		}
-
-		$count = null;
-
-		if ($this->collUserFollowsPackages === null) {
-			if ($this->isNew()) {
-				$count = 0;
-			} else {
-
-				$criteria->add(UserFollowsPackagePeer::PACKAGE_ID, $this->id);
-
-				$count = UserFollowsPackagePeer::doCount($criteria, false, $con);
-			}
-		} else {
-			// criteria has no effect for a new object
-			if (!$this->isNew()) {
-				// the following code is to determine if a new query is
-				// called for.  If the criteria is the same as the last
-				// one, just return count of the collection.
-
-
-				$criteria->add(UserFollowsPackagePeer::PACKAGE_ID, $this->id);
-
-				if (!isset($this->lastUserFollowsPackageCriteria) || !$this->lastUserFollowsPackageCriteria->equals($criteria)) {
-					$count = UserFollowsPackagePeer::doCount($criteria, false, $con);
-				} else {
-					$count = count($this->collUserFollowsPackages);
-				}
-			} else {
-				$count = count($this->collUserFollowsPackages);
-			}
-		}
-		return $count;
-	}
-
-	/**
-	 * Method called to associate a UserFollowsPackage object to this object
-	 * through the UserFollowsPackage foreign key attribute.
-	 *
-	 * @param      UserFollowsPackage $l UserFollowsPackage
-	 * @return     void
-	 * @throws     PropelException
-	 */
-	public function addUserFollowsPackage(UserFollowsPackage $l)
-	{
-		if ($this->collUserFollowsPackages === null) {
-			$this->initUserFollowsPackages();
-		}
-		if (!in_array($l, $this->collUserFollowsPackages, true)) { // only add it if the **same** object is not already associated
-			array_push($this->collUserFollowsPackages, $l);
-			$l->setPackage($this);
-		}
-	}
-
-
-	/**
-	 * If this collection has already been initialized with
-	 * an identical criteria, it returns the collection.
-	 * Otherwise if this Package is new, it will return
-	 * an empty collection; or if this Package has previously
-	 * been saved, it will retrieve related UserFollowsPackages from storage.
-	 *
-	 * This method is protected by default in order to keep the public
-	 * api reasonable.  You can provide public methods for those you
-	 * actually need in Package.
-	 */
-	public function getUserFollowsPackagesJoinUser($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
-	{
-		if ($criteria === null) {
-			$criteria = new Criteria(PackagePeer::DATABASE_NAME);
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		if ($this->collUserFollowsPackages === null) {
-			if ($this->isNew()) {
-				$this->collUserFollowsPackages = array();
-			} else {
-
-				$criteria->add(UserFollowsPackagePeer::PACKAGE_ID, $this->id);
-
-				$this->collUserFollowsPackages = UserFollowsPackagePeer::doSelectJoinUser($criteria, $con, $join_behavior);
-			}
-		} else {
-			// the following code is to determine if a new query is
-			// called for.  If the criteria is the same as the last
-			// one, just return the collection.
-
-			$criteria->add(UserFollowsPackagePeer::PACKAGE_ID, $this->id);
-
-			if (!isset($this->lastUserFollowsPackageCriteria) || !$this->lastUserFollowsPackageCriteria->equals($criteria)) {
-				$this->collUserFollowsPackages = UserFollowsPackagePeer::doSelectJoinUser($criteria, $con, $join_behavior);
-			}
-		}
-		$this->lastUserFollowsPackageCriteria = $criteria;
-
-		return $this->collUserFollowsPackages;
 	}
 
 	/**
@@ -2454,7 +2301,7 @@ abstract class BasePackage extends BaseObject  implements Persistent {
 	 * api reasonable.  You can provide public methods for those you
 	 * actually need in Package.
 	 */
-	public function getNewVersionRequestsJoinMgaRelease($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public function getNewVersionRequestsJoinDistrelease($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
 		if ($criteria === null) {
 			$criteria = new Criteria(PackagePeer::DATABASE_NAME);
@@ -2471,7 +2318,7 @@ abstract class BasePackage extends BaseObject  implements Persistent {
 
 				$criteria->add(NewVersionRequestPeer::PACKAGE_ID, $this->id);
 
-				$this->collNewVersionRequests = NewVersionRequestPeer::doSelectJoinMgaRelease($criteria, $con, $join_behavior);
+				$this->collNewVersionRequests = NewVersionRequestPeer::doSelectJoinDistrelease($criteria, $con, $join_behavior);
 			}
 		} else {
 			// the following code is to determine if a new query is
@@ -2481,12 +2328,401 @@ abstract class BasePackage extends BaseObject  implements Persistent {
 			$criteria->add(NewVersionRequestPeer::PACKAGE_ID, $this->id);
 
 			if (!isset($this->lastNewVersionRequestCriteria) || !$this->lastNewVersionRequestCriteria->equals($criteria)) {
-				$this->collNewVersionRequests = NewVersionRequestPeer::doSelectJoinMgaRelease($criteria, $con, $join_behavior);
+				$this->collNewVersionRequests = NewVersionRequestPeer::doSelectJoinDistrelease($criteria, $con, $join_behavior);
 			}
 		}
 		$this->lastNewVersionRequestCriteria = $criteria;
 
 		return $this->collNewVersionRequests;
+	}
+
+	/**
+	 * Clears out the collNotificationElements collection (array).
+	 *
+	 * This does not modify the database; however, it will remove any associated objects, causing
+	 * them to be refetched by subsequent calls to accessor method.
+	 *
+	 * @return     void
+	 * @see        addNotificationElements()
+	 */
+	public function clearNotificationElements()
+	{
+		$this->collNotificationElements = null; // important to set this to NULL since that means it is uninitialized
+	}
+
+	/**
+	 * Initializes the collNotificationElements collection (array).
+	 *
+	 * By default this just sets the collNotificationElements collection to an empty array (like clearcollNotificationElements());
+	 * however, you may wish to override this method in your stub class to provide setting appropriate
+	 * to your application -- for example, setting the initial array to the values stored in database.
+	 *
+	 * @return     void
+	 */
+	public function initNotificationElements()
+	{
+		$this->collNotificationElements = array();
+	}
+
+	/**
+	 * Gets an array of NotificationElement objects which contain a foreign key that references this object.
+	 *
+	 * If this collection has already been initialized with an identical Criteria, it returns the collection.
+	 * Otherwise if this Package has previously been saved, it will retrieve
+	 * related NotificationElements from storage. If this Package is new, it will return
+	 * an empty collection or the current collection, the criteria is ignored on a new object.
+	 *
+	 * @param      PropelPDO $con
+	 * @param      Criteria $criteria
+	 * @return     array NotificationElement[]
+	 * @throws     PropelException
+	 */
+	public function getNotificationElements($criteria = null, PropelPDO $con = null)
+	{
+		if ($criteria === null) {
+			$criteria = new Criteria(PackagePeer::DATABASE_NAME);
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collNotificationElements === null) {
+			if ($this->isNew()) {
+			   $this->collNotificationElements = array();
+			} else {
+
+				$criteria->add(NotificationElementPeer::PACKAGE_ID, $this->id);
+
+				NotificationElementPeer::addSelectColumns($criteria);
+				$this->collNotificationElements = NotificationElementPeer::doSelect($criteria, $con);
+			}
+		} else {
+			// criteria has no effect for a new object
+			if (!$this->isNew()) {
+				// the following code is to determine if a new query is
+				// called for.  If the criteria is the same as the last
+				// one, just return the collection.
+
+
+				$criteria->add(NotificationElementPeer::PACKAGE_ID, $this->id);
+
+				NotificationElementPeer::addSelectColumns($criteria);
+				if (!isset($this->lastNotificationElementCriteria) || !$this->lastNotificationElementCriteria->equals($criteria)) {
+					$this->collNotificationElements = NotificationElementPeer::doSelect($criteria, $con);
+				}
+			}
+		}
+		$this->lastNotificationElementCriteria = $criteria;
+		return $this->collNotificationElements;
+	}
+
+	/**
+	 * Returns the number of related NotificationElement objects.
+	 *
+	 * @param      Criteria $criteria
+	 * @param      boolean $distinct
+	 * @param      PropelPDO $con
+	 * @return     int Count of related NotificationElement objects.
+	 * @throws     PropelException
+	 */
+	public function countNotificationElements(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+	{
+		if ($criteria === null) {
+			$criteria = new Criteria(PackagePeer::DATABASE_NAME);
+		} else {
+			$criteria = clone $criteria;
+		}
+
+		if ($distinct) {
+			$criteria->setDistinct();
+		}
+
+		$count = null;
+
+		if ($this->collNotificationElements === null) {
+			if ($this->isNew()) {
+				$count = 0;
+			} else {
+
+				$criteria->add(NotificationElementPeer::PACKAGE_ID, $this->id);
+
+				$count = NotificationElementPeer::doCount($criteria, false, $con);
+			}
+		} else {
+			// criteria has no effect for a new object
+			if (!$this->isNew()) {
+				// the following code is to determine if a new query is
+				// called for.  If the criteria is the same as the last
+				// one, just return count of the collection.
+
+
+				$criteria->add(NotificationElementPeer::PACKAGE_ID, $this->id);
+
+				if (!isset($this->lastNotificationElementCriteria) || !$this->lastNotificationElementCriteria->equals($criteria)) {
+					$count = NotificationElementPeer::doCount($criteria, false, $con);
+				} else {
+					$count = count($this->collNotificationElements);
+				}
+			} else {
+				$count = count($this->collNotificationElements);
+			}
+		}
+		return $count;
+	}
+
+	/**
+	 * Method called to associate a NotificationElement object to this object
+	 * through the NotificationElement foreign key attribute.
+	 *
+	 * @param      NotificationElement $l NotificationElement
+	 * @return     void
+	 * @throws     PropelException
+	 */
+	public function addNotificationElement(NotificationElement $l)
+	{
+		if ($this->collNotificationElements === null) {
+			$this->initNotificationElements();
+		}
+		if (!in_array($l, $this->collNotificationElements, true)) { // only add it if the **same** object is not already associated
+			array_push($this->collNotificationElements, $l);
+			$l->setPackage($this);
+		}
+	}
+
+
+	/**
+	 * If this collection has already been initialized with
+	 * an identical criteria, it returns the collection.
+	 * Otherwise if this Package is new, it will return
+	 * an empty collection; or if this Package has previously
+	 * been saved, it will retrieve related NotificationElements from storage.
+	 *
+	 * This method is protected by default in order to keep the public
+	 * api reasonable.  You can provide public methods for those you
+	 * actually need in Package.
+	 */
+	public function getNotificationElementsJoinNotification($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	{
+		if ($criteria === null) {
+			$criteria = new Criteria(PackagePeer::DATABASE_NAME);
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collNotificationElements === null) {
+			if ($this->isNew()) {
+				$this->collNotificationElements = array();
+			} else {
+
+				$criteria->add(NotificationElementPeer::PACKAGE_ID, $this->id);
+
+				$this->collNotificationElements = NotificationElementPeer::doSelectJoinNotification($criteria, $con, $join_behavior);
+			}
+		} else {
+			// the following code is to determine if a new query is
+			// called for.  If the criteria is the same as the last
+			// one, just return the collection.
+
+			$criteria->add(NotificationElementPeer::PACKAGE_ID, $this->id);
+
+			if (!isset($this->lastNotificationElementCriteria) || !$this->lastNotificationElementCriteria->equals($criteria)) {
+				$this->collNotificationElements = NotificationElementPeer::doSelectJoinNotification($criteria, $con, $join_behavior);
+			}
+		}
+		$this->lastNotificationElementCriteria = $criteria;
+
+		return $this->collNotificationElements;
+	}
+
+
+	/**
+	 * If this collection has already been initialized with
+	 * an identical criteria, it returns the collection.
+	 * Otherwise if this Package is new, it will return
+	 * an empty collection; or if this Package has previously
+	 * been saved, it will retrieve related NotificationElements from storage.
+	 *
+	 * This method is protected by default in order to keep the public
+	 * api reasonable.  You can provide public methods for those you
+	 * actually need in Package.
+	 */
+	public function getNotificationElementsJoinRpmGroup($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	{
+		if ($criteria === null) {
+			$criteria = new Criteria(PackagePeer::DATABASE_NAME);
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collNotificationElements === null) {
+			if ($this->isNew()) {
+				$this->collNotificationElements = array();
+			} else {
+
+				$criteria->add(NotificationElementPeer::PACKAGE_ID, $this->id);
+
+				$this->collNotificationElements = NotificationElementPeer::doSelectJoinRpmGroup($criteria, $con, $join_behavior);
+			}
+		} else {
+			// the following code is to determine if a new query is
+			// called for.  If the criteria is the same as the last
+			// one, just return the collection.
+
+			$criteria->add(NotificationElementPeer::PACKAGE_ID, $this->id);
+
+			if (!isset($this->lastNotificationElementCriteria) || !$this->lastNotificationElementCriteria->equals($criteria)) {
+				$this->collNotificationElements = NotificationElementPeer::doSelectJoinRpmGroup($criteria, $con, $join_behavior);
+			}
+		}
+		$this->lastNotificationElementCriteria = $criteria;
+
+		return $this->collNotificationElements;
+	}
+
+
+	/**
+	 * If this collection has already been initialized with
+	 * an identical criteria, it returns the collection.
+	 * Otherwise if this Package is new, it will return
+	 * an empty collection; or if this Package has previously
+	 * been saved, it will retrieve related NotificationElements from storage.
+	 *
+	 * This method is protected by default in order to keep the public
+	 * api reasonable.  You can provide public methods for those you
+	 * actually need in Package.
+	 */
+	public function getNotificationElementsJoinDistrelease($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	{
+		if ($criteria === null) {
+			$criteria = new Criteria(PackagePeer::DATABASE_NAME);
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collNotificationElements === null) {
+			if ($this->isNew()) {
+				$this->collNotificationElements = array();
+			} else {
+
+				$criteria->add(NotificationElementPeer::PACKAGE_ID, $this->id);
+
+				$this->collNotificationElements = NotificationElementPeer::doSelectJoinDistrelease($criteria, $con, $join_behavior);
+			}
+		} else {
+			// the following code is to determine if a new query is
+			// called for.  If the criteria is the same as the last
+			// one, just return the collection.
+
+			$criteria->add(NotificationElementPeer::PACKAGE_ID, $this->id);
+
+			if (!isset($this->lastNotificationElementCriteria) || !$this->lastNotificationElementCriteria->equals($criteria)) {
+				$this->collNotificationElements = NotificationElementPeer::doSelectJoinDistrelease($criteria, $con, $join_behavior);
+			}
+		}
+		$this->lastNotificationElementCriteria = $criteria;
+
+		return $this->collNotificationElements;
+	}
+
+
+	/**
+	 * If this collection has already been initialized with
+	 * an identical criteria, it returns the collection.
+	 * Otherwise if this Package is new, it will return
+	 * an empty collection; or if this Package has previously
+	 * been saved, it will retrieve related NotificationElements from storage.
+	 *
+	 * This method is protected by default in order to keep the public
+	 * api reasonable.  You can provide public methods for those you
+	 * actually need in Package.
+	 */
+	public function getNotificationElementsJoinArch($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	{
+		if ($criteria === null) {
+			$criteria = new Criteria(PackagePeer::DATABASE_NAME);
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collNotificationElements === null) {
+			if ($this->isNew()) {
+				$this->collNotificationElements = array();
+			} else {
+
+				$criteria->add(NotificationElementPeer::PACKAGE_ID, $this->id);
+
+				$this->collNotificationElements = NotificationElementPeer::doSelectJoinArch($criteria, $con, $join_behavior);
+			}
+		} else {
+			// the following code is to determine if a new query is
+			// called for.  If the criteria is the same as the last
+			// one, just return the collection.
+
+			$criteria->add(NotificationElementPeer::PACKAGE_ID, $this->id);
+
+			if (!isset($this->lastNotificationElementCriteria) || !$this->lastNotificationElementCriteria->equals($criteria)) {
+				$this->collNotificationElements = NotificationElementPeer::doSelectJoinArch($criteria, $con, $join_behavior);
+			}
+		}
+		$this->lastNotificationElementCriteria = $criteria;
+
+		return $this->collNotificationElements;
+	}
+
+
+	/**
+	 * If this collection has already been initialized with
+	 * an identical criteria, it returns the collection.
+	 * Otherwise if this Package is new, it will return
+	 * an empty collection; or if this Package has previously
+	 * been saved, it will retrieve related NotificationElements from storage.
+	 *
+	 * This method is protected by default in order to keep the public
+	 * api reasonable.  You can provide public methods for those you
+	 * actually need in Package.
+	 */
+	public function getNotificationElementsJoinMedia($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	{
+		if ($criteria === null) {
+			$criteria = new Criteria(PackagePeer::DATABASE_NAME);
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collNotificationElements === null) {
+			if ($this->isNew()) {
+				$this->collNotificationElements = array();
+			} else {
+
+				$criteria->add(NotificationElementPeer::PACKAGE_ID, $this->id);
+
+				$this->collNotificationElements = NotificationElementPeer::doSelectJoinMedia($criteria, $con, $join_behavior);
+			}
+		} else {
+			// the following code is to determine if a new query is
+			// called for.  If the criteria is the same as the last
+			// one, just return the collection.
+
+			$criteria->add(NotificationElementPeer::PACKAGE_ID, $this->id);
+
+			if (!isset($this->lastNotificationElementCriteria) || !$this->lastNotificationElementCriteria->equals($criteria)) {
+				$this->collNotificationElements = NotificationElementPeer::doSelectJoinMedia($criteria, $con, $join_behavior);
+			}
+		}
+		$this->lastNotificationElementCriteria = $criteria;
+
+		return $this->collNotificationElements;
 	}
 
 	/**
@@ -2503,11 +2739,6 @@ abstract class BasePackage extends BaseObject  implements Persistent {
 		if ($deep) {
 			if ($this->collRpms) {
 				foreach ((array) $this->collRpms as $o) {
-					$o->clearAllReferences($deep);
-				}
-			}
-			if ($this->collUserFollowsPackages) {
-				foreach ((array) $this->collUserFollowsPackages as $o) {
 					$o->clearAllReferences($deep);
 				}
 			}
@@ -2536,15 +2767,20 @@ abstract class BasePackage extends BaseObject  implements Persistent {
 					$o->clearAllReferences($deep);
 				}
 			}
+			if ($this->collNotificationElements) {
+				foreach ((array) $this->collNotificationElements as $o) {
+					$o->clearAllReferences($deep);
+				}
+			}
 		} // if ($deep)
 
 		$this->collRpms = null;
-		$this->collUserFollowsPackages = null;
 		$this->collUserCommentsPackages = null;
 		$this->collPackageDescriptions = null;
 		$this->collPackageScreenshotss = null;
 		$this->collPackageLinkss = null;
 		$this->collNewVersionRequests = null;
+		$this->collNotificationElements = null;
 	}
 
 	// symfony_behaviors behavior

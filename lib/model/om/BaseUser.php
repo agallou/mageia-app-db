@@ -37,16 +37,6 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 	protected $login;
 
 	/**
-	 * @var        array UserFollowsPackage[] Collection to store aggregation of UserFollowsPackage objects.
-	 */
-	protected $collUserFollowsPackages;
-
-	/**
-	 * @var        Criteria The criteria used to select the current contents of collUserFollowsPackages.
-	 */
-	private $lastUserFollowsPackageCriteria = null;
-
-	/**
 	 * @var        array UserCommentsPackage[] Collection to store aggregation of UserCommentsPackage objects.
 	 */
 	protected $collUserCommentsPackages;
@@ -55,16 +45,6 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 	 * @var        Criteria The criteria used to select the current contents of collUserCommentsPackages.
 	 */
 	private $lastUserCommentsPackageCriteria = null;
-
-	/**
-	 * @var        array UserFollowsMgaReleaseGroup[] Collection to store aggregation of UserFollowsMgaReleaseGroup objects.
-	 */
-	protected $collUserFollowsMgaReleaseGroups;
-
-	/**
-	 * @var        Criteria The criteria used to select the current contents of collUserFollowsMgaReleaseGroups.
-	 */
-	private $lastUserFollowsMgaReleaseGroupCriteria = null;
 
 	/**
 	 * @var        array NewVersionRequest[] Collection to store aggregation of NewVersionRequest objects.
@@ -125,6 +105,16 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 	 * @var        Criteria The criteria used to select the current contents of collUserHasNewVersionRequests.
 	 */
 	private $lastUserHasNewVersionRequestCriteria = null;
+
+	/**
+	 * @var        array Notification[] Collection to store aggregation of Notification objects.
+	 */
+	protected $collNotifications;
+
+	/**
+	 * @var        Criteria The criteria used to select the current contents of collNotifications.
+	 */
+	private $lastNotificationCriteria = null;
 
 	/**
 	 * Flag to prevent endless save loop, if this object is referenced
@@ -340,14 +330,8 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 
 		if ($deep) {  // also de-associate any related objects?
 
-			$this->collUserFollowsPackages = null;
-			$this->lastUserFollowsPackageCriteria = null;
-
 			$this->collUserCommentsPackages = null;
 			$this->lastUserCommentsPackageCriteria = null;
-
-			$this->collUserFollowsMgaReleaseGroups = null;
-			$this->lastUserFollowsMgaReleaseGroupCriteria = null;
 
 			$this->collNewVersionRequests = null;
 			$this->lastNewVersionRequestCriteria = null;
@@ -366,6 +350,9 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 
 			$this->collUserHasNewVersionRequests = null;
 			$this->lastUserHasNewVersionRequestCriteria = null;
+
+			$this->collNotifications = null;
+			$this->lastNotificationCriteria = null;
 
 		} // if (deep)
 	}
@@ -531,24 +518,8 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 				$this->resetModified(); // [HL] After being saved an object is no longer 'modified'
 			}
 
-			if ($this->collUserFollowsPackages !== null) {
-				foreach ($this->collUserFollowsPackages as $referrerFK) {
-					if (!$referrerFK->isDeleted()) {
-						$affectedRows += $referrerFK->save($con);
-					}
-				}
-			}
-
 			if ($this->collUserCommentsPackages !== null) {
 				foreach ($this->collUserCommentsPackages as $referrerFK) {
-					if (!$referrerFK->isDeleted()) {
-						$affectedRows += $referrerFK->save($con);
-					}
-				}
-			}
-
-			if ($this->collUserFollowsMgaReleaseGroups !== null) {
-				foreach ($this->collUserFollowsMgaReleaseGroups as $referrerFK) {
 					if (!$referrerFK->isDeleted()) {
 						$affectedRows += $referrerFK->save($con);
 					}
@@ -597,6 +568,14 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 
 			if ($this->collUserHasNewVersionRequests !== null) {
 				foreach ($this->collUserHasNewVersionRequests as $referrerFK) {
+					if (!$referrerFK->isDeleted()) {
+						$affectedRows += $referrerFK->save($con);
+					}
+				}
+			}
+
+			if ($this->collNotifications !== null) {
+				foreach ($this->collNotifications as $referrerFK) {
 					if (!$referrerFK->isDeleted()) {
 						$affectedRows += $referrerFK->save($con);
 					}
@@ -674,24 +653,8 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 			}
 
 
-				if ($this->collUserFollowsPackages !== null) {
-					foreach ($this->collUserFollowsPackages as $referrerFK) {
-						if (!$referrerFK->validate($columns)) {
-							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
-						}
-					}
-				}
-
 				if ($this->collUserCommentsPackages !== null) {
 					foreach ($this->collUserCommentsPackages as $referrerFK) {
-						if (!$referrerFK->validate($columns)) {
-							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
-						}
-					}
-				}
-
-				if ($this->collUserFollowsMgaReleaseGroups !== null) {
-					foreach ($this->collUserFollowsMgaReleaseGroups as $referrerFK) {
 						if (!$referrerFK->validate($columns)) {
 							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
 						}
@@ -740,6 +703,14 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 
 				if ($this->collUserHasNewVersionRequests !== null) {
 					foreach ($this->collUserHasNewVersionRequests as $referrerFK) {
+						if (!$referrerFK->validate($columns)) {
+							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
+						}
+					}
+				}
+
+				if ($this->collNotifications !== null) {
+					foreach ($this->collNotifications as $referrerFK) {
 						if (!$referrerFK->validate($columns)) {
 							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
 						}
@@ -957,21 +928,9 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 			// the getter/setter methods for fkey referrer objects.
 			$copyObj->setNew(false);
 
-			foreach ($this->getUserFollowsPackages() as $relObj) {
-				if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
-					$copyObj->addUserFollowsPackage($relObj->copy($deepCopy));
-				}
-			}
-
 			foreach ($this->getUserCommentsPackages() as $relObj) {
 				if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
 					$copyObj->addUserCommentsPackage($relObj->copy($deepCopy));
-				}
-			}
-
-			foreach ($this->getUserFollowsMgaReleaseGroups() as $relObj) {
-				if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
-					$copyObj->addUserFollowsMgaReleaseGroup($relObj->copy($deepCopy));
 				}
 			}
 
@@ -1008,6 +967,12 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 			foreach ($this->getUserHasNewVersionRequests() as $relObj) {
 				if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
 					$copyObj->addUserHasNewVersionRequest($relObj->copy($deepCopy));
+				}
+			}
+
+			foreach ($this->getNotifications() as $relObj) {
+				if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+					$copyObj->addNotification($relObj->copy($deepCopy));
 				}
 			}
 
@@ -1056,207 +1021,6 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 			self::$peer = new UserPeer();
 		}
 		return self::$peer;
-	}
-
-	/**
-	 * Clears out the collUserFollowsPackages collection (array).
-	 *
-	 * This does not modify the database; however, it will remove any associated objects, causing
-	 * them to be refetched by subsequent calls to accessor method.
-	 *
-	 * @return     void
-	 * @see        addUserFollowsPackages()
-	 */
-	public function clearUserFollowsPackages()
-	{
-		$this->collUserFollowsPackages = null; // important to set this to NULL since that means it is uninitialized
-	}
-
-	/**
-	 * Initializes the collUserFollowsPackages collection (array).
-	 *
-	 * By default this just sets the collUserFollowsPackages collection to an empty array (like clearcollUserFollowsPackages());
-	 * however, you may wish to override this method in your stub class to provide setting appropriate
-	 * to your application -- for example, setting the initial array to the values stored in database.
-	 *
-	 * @return     void
-	 */
-	public function initUserFollowsPackages()
-	{
-		$this->collUserFollowsPackages = array();
-	}
-
-	/**
-	 * Gets an array of UserFollowsPackage objects which contain a foreign key that references this object.
-	 *
-	 * If this collection has already been initialized with an identical Criteria, it returns the collection.
-	 * Otherwise if this User has previously been saved, it will retrieve
-	 * related UserFollowsPackages from storage. If this User is new, it will return
-	 * an empty collection or the current collection, the criteria is ignored on a new object.
-	 *
-	 * @param      PropelPDO $con
-	 * @param      Criteria $criteria
-	 * @return     array UserFollowsPackage[]
-	 * @throws     PropelException
-	 */
-	public function getUserFollowsPackages($criteria = null, PropelPDO $con = null)
-	{
-		if ($criteria === null) {
-			$criteria = new Criteria(UserPeer::DATABASE_NAME);
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		if ($this->collUserFollowsPackages === null) {
-			if ($this->isNew()) {
-			   $this->collUserFollowsPackages = array();
-			} else {
-
-				$criteria->add(UserFollowsPackagePeer::USER_ID, $this->id);
-
-				UserFollowsPackagePeer::addSelectColumns($criteria);
-				$this->collUserFollowsPackages = UserFollowsPackagePeer::doSelect($criteria, $con);
-			}
-		} else {
-			// criteria has no effect for a new object
-			if (!$this->isNew()) {
-				// the following code is to determine if a new query is
-				// called for.  If the criteria is the same as the last
-				// one, just return the collection.
-
-
-				$criteria->add(UserFollowsPackagePeer::USER_ID, $this->id);
-
-				UserFollowsPackagePeer::addSelectColumns($criteria);
-				if (!isset($this->lastUserFollowsPackageCriteria) || !$this->lastUserFollowsPackageCriteria->equals($criteria)) {
-					$this->collUserFollowsPackages = UserFollowsPackagePeer::doSelect($criteria, $con);
-				}
-			}
-		}
-		$this->lastUserFollowsPackageCriteria = $criteria;
-		return $this->collUserFollowsPackages;
-	}
-
-	/**
-	 * Returns the number of related UserFollowsPackage objects.
-	 *
-	 * @param      Criteria $criteria
-	 * @param      boolean $distinct
-	 * @param      PropelPDO $con
-	 * @return     int Count of related UserFollowsPackage objects.
-	 * @throws     PropelException
-	 */
-	public function countUserFollowsPackages(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
-	{
-		if ($criteria === null) {
-			$criteria = new Criteria(UserPeer::DATABASE_NAME);
-		} else {
-			$criteria = clone $criteria;
-		}
-
-		if ($distinct) {
-			$criteria->setDistinct();
-		}
-
-		$count = null;
-
-		if ($this->collUserFollowsPackages === null) {
-			if ($this->isNew()) {
-				$count = 0;
-			} else {
-
-				$criteria->add(UserFollowsPackagePeer::USER_ID, $this->id);
-
-				$count = UserFollowsPackagePeer::doCount($criteria, false, $con);
-			}
-		} else {
-			// criteria has no effect for a new object
-			if (!$this->isNew()) {
-				// the following code is to determine if a new query is
-				// called for.  If the criteria is the same as the last
-				// one, just return count of the collection.
-
-
-				$criteria->add(UserFollowsPackagePeer::USER_ID, $this->id);
-
-				if (!isset($this->lastUserFollowsPackageCriteria) || !$this->lastUserFollowsPackageCriteria->equals($criteria)) {
-					$count = UserFollowsPackagePeer::doCount($criteria, false, $con);
-				} else {
-					$count = count($this->collUserFollowsPackages);
-				}
-			} else {
-				$count = count($this->collUserFollowsPackages);
-			}
-		}
-		return $count;
-	}
-
-	/**
-	 * Method called to associate a UserFollowsPackage object to this object
-	 * through the UserFollowsPackage foreign key attribute.
-	 *
-	 * @param      UserFollowsPackage $l UserFollowsPackage
-	 * @return     void
-	 * @throws     PropelException
-	 */
-	public function addUserFollowsPackage(UserFollowsPackage $l)
-	{
-		if ($this->collUserFollowsPackages === null) {
-			$this->initUserFollowsPackages();
-		}
-		if (!in_array($l, $this->collUserFollowsPackages, true)) { // only add it if the **same** object is not already associated
-			array_push($this->collUserFollowsPackages, $l);
-			$l->setUser($this);
-		}
-	}
-
-
-	/**
-	 * If this collection has already been initialized with
-	 * an identical criteria, it returns the collection.
-	 * Otherwise if this User is new, it will return
-	 * an empty collection; or if this User has previously
-	 * been saved, it will retrieve related UserFollowsPackages from storage.
-	 *
-	 * This method is protected by default in order to keep the public
-	 * api reasonable.  You can provide public methods for those you
-	 * actually need in User.
-	 */
-	public function getUserFollowsPackagesJoinPackage($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
-	{
-		if ($criteria === null) {
-			$criteria = new Criteria(UserPeer::DATABASE_NAME);
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		if ($this->collUserFollowsPackages === null) {
-			if ($this->isNew()) {
-				$this->collUserFollowsPackages = array();
-			} else {
-
-				$criteria->add(UserFollowsPackagePeer::USER_ID, $this->id);
-
-				$this->collUserFollowsPackages = UserFollowsPackagePeer::doSelectJoinPackage($criteria, $con, $join_behavior);
-			}
-		} else {
-			// the following code is to determine if a new query is
-			// called for.  If the criteria is the same as the last
-			// one, just return the collection.
-
-			$criteria->add(UserFollowsPackagePeer::USER_ID, $this->id);
-
-			if (!isset($this->lastUserFollowsPackageCriteria) || !$this->lastUserFollowsPackageCriteria->equals($criteria)) {
-				$this->collUserFollowsPackages = UserFollowsPackagePeer::doSelectJoinPackage($criteria, $con, $join_behavior);
-			}
-		}
-		$this->lastUserFollowsPackageCriteria = $criteria;
-
-		return $this->collUserFollowsPackages;
 	}
 
 	/**
@@ -1461,207 +1225,6 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 	}
 
 	/**
-	 * Clears out the collUserFollowsMgaReleaseGroups collection (array).
-	 *
-	 * This does not modify the database; however, it will remove any associated objects, causing
-	 * them to be refetched by subsequent calls to accessor method.
-	 *
-	 * @return     void
-	 * @see        addUserFollowsMgaReleaseGroups()
-	 */
-	public function clearUserFollowsMgaReleaseGroups()
-	{
-		$this->collUserFollowsMgaReleaseGroups = null; // important to set this to NULL since that means it is uninitialized
-	}
-
-	/**
-	 * Initializes the collUserFollowsMgaReleaseGroups collection (array).
-	 *
-	 * By default this just sets the collUserFollowsMgaReleaseGroups collection to an empty array (like clearcollUserFollowsMgaReleaseGroups());
-	 * however, you may wish to override this method in your stub class to provide setting appropriate
-	 * to your application -- for example, setting the initial array to the values stored in database.
-	 *
-	 * @return     void
-	 */
-	public function initUserFollowsMgaReleaseGroups()
-	{
-		$this->collUserFollowsMgaReleaseGroups = array();
-	}
-
-	/**
-	 * Gets an array of UserFollowsMgaReleaseGroup objects which contain a foreign key that references this object.
-	 *
-	 * If this collection has already been initialized with an identical Criteria, it returns the collection.
-	 * Otherwise if this User has previously been saved, it will retrieve
-	 * related UserFollowsMgaReleaseGroups from storage. If this User is new, it will return
-	 * an empty collection or the current collection, the criteria is ignored on a new object.
-	 *
-	 * @param      PropelPDO $con
-	 * @param      Criteria $criteria
-	 * @return     array UserFollowsMgaReleaseGroup[]
-	 * @throws     PropelException
-	 */
-	public function getUserFollowsMgaReleaseGroups($criteria = null, PropelPDO $con = null)
-	{
-		if ($criteria === null) {
-			$criteria = new Criteria(UserPeer::DATABASE_NAME);
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		if ($this->collUserFollowsMgaReleaseGroups === null) {
-			if ($this->isNew()) {
-			   $this->collUserFollowsMgaReleaseGroups = array();
-			} else {
-
-				$criteria->add(UserFollowsMgaReleaseGroupPeer::USER_IDUSER, $this->id);
-
-				UserFollowsMgaReleaseGroupPeer::addSelectColumns($criteria);
-				$this->collUserFollowsMgaReleaseGroups = UserFollowsMgaReleaseGroupPeer::doSelect($criteria, $con);
-			}
-		} else {
-			// criteria has no effect for a new object
-			if (!$this->isNew()) {
-				// the following code is to determine if a new query is
-				// called for.  If the criteria is the same as the last
-				// one, just return the collection.
-
-
-				$criteria->add(UserFollowsMgaReleaseGroupPeer::USER_IDUSER, $this->id);
-
-				UserFollowsMgaReleaseGroupPeer::addSelectColumns($criteria);
-				if (!isset($this->lastUserFollowsMgaReleaseGroupCriteria) || !$this->lastUserFollowsMgaReleaseGroupCriteria->equals($criteria)) {
-					$this->collUserFollowsMgaReleaseGroups = UserFollowsMgaReleaseGroupPeer::doSelect($criteria, $con);
-				}
-			}
-		}
-		$this->lastUserFollowsMgaReleaseGroupCriteria = $criteria;
-		return $this->collUserFollowsMgaReleaseGroups;
-	}
-
-	/**
-	 * Returns the number of related UserFollowsMgaReleaseGroup objects.
-	 *
-	 * @param      Criteria $criteria
-	 * @param      boolean $distinct
-	 * @param      PropelPDO $con
-	 * @return     int Count of related UserFollowsMgaReleaseGroup objects.
-	 * @throws     PropelException
-	 */
-	public function countUserFollowsMgaReleaseGroups(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
-	{
-		if ($criteria === null) {
-			$criteria = new Criteria(UserPeer::DATABASE_NAME);
-		} else {
-			$criteria = clone $criteria;
-		}
-
-		if ($distinct) {
-			$criteria->setDistinct();
-		}
-
-		$count = null;
-
-		if ($this->collUserFollowsMgaReleaseGroups === null) {
-			if ($this->isNew()) {
-				$count = 0;
-			} else {
-
-				$criteria->add(UserFollowsMgaReleaseGroupPeer::USER_IDUSER, $this->id);
-
-				$count = UserFollowsMgaReleaseGroupPeer::doCount($criteria, false, $con);
-			}
-		} else {
-			// criteria has no effect for a new object
-			if (!$this->isNew()) {
-				// the following code is to determine if a new query is
-				// called for.  If the criteria is the same as the last
-				// one, just return count of the collection.
-
-
-				$criteria->add(UserFollowsMgaReleaseGroupPeer::USER_IDUSER, $this->id);
-
-				if (!isset($this->lastUserFollowsMgaReleaseGroupCriteria) || !$this->lastUserFollowsMgaReleaseGroupCriteria->equals($criteria)) {
-					$count = UserFollowsMgaReleaseGroupPeer::doCount($criteria, false, $con);
-				} else {
-					$count = count($this->collUserFollowsMgaReleaseGroups);
-				}
-			} else {
-				$count = count($this->collUserFollowsMgaReleaseGroups);
-			}
-		}
-		return $count;
-	}
-
-	/**
-	 * Method called to associate a UserFollowsMgaReleaseGroup object to this object
-	 * through the UserFollowsMgaReleaseGroup foreign key attribute.
-	 *
-	 * @param      UserFollowsMgaReleaseGroup $l UserFollowsMgaReleaseGroup
-	 * @return     void
-	 * @throws     PropelException
-	 */
-	public function addUserFollowsMgaReleaseGroup(UserFollowsMgaReleaseGroup $l)
-	{
-		if ($this->collUserFollowsMgaReleaseGroups === null) {
-			$this->initUserFollowsMgaReleaseGroups();
-		}
-		if (!in_array($l, $this->collUserFollowsMgaReleaseGroups, true)) { // only add it if the **same** object is not already associated
-			array_push($this->collUserFollowsMgaReleaseGroups, $l);
-			$l->setUser($this);
-		}
-	}
-
-
-	/**
-	 * If this collection has already been initialized with
-	 * an identical criteria, it returns the collection.
-	 * Otherwise if this User is new, it will return
-	 * an empty collection; or if this User has previously
-	 * been saved, it will retrieve related UserFollowsMgaReleaseGroups from storage.
-	 *
-	 * This method is protected by default in order to keep the public
-	 * api reasonable.  You can provide public methods for those you
-	 * actually need in User.
-	 */
-	public function getUserFollowsMgaReleaseGroupsJoinMgaReleaseGroup($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
-	{
-		if ($criteria === null) {
-			$criteria = new Criteria(UserPeer::DATABASE_NAME);
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		if ($this->collUserFollowsMgaReleaseGroups === null) {
-			if ($this->isNew()) {
-				$this->collUserFollowsMgaReleaseGroups = array();
-			} else {
-
-				$criteria->add(UserFollowsMgaReleaseGroupPeer::USER_IDUSER, $this->id);
-
-				$this->collUserFollowsMgaReleaseGroups = UserFollowsMgaReleaseGroupPeer::doSelectJoinMgaReleaseGroup($criteria, $con, $join_behavior);
-			}
-		} else {
-			// the following code is to determine if a new query is
-			// called for.  If the criteria is the same as the last
-			// one, just return the collection.
-
-			$criteria->add(UserFollowsMgaReleaseGroupPeer::USER_IDUSER, $this->id);
-
-			if (!isset($this->lastUserFollowsMgaReleaseGroupCriteria) || !$this->lastUserFollowsMgaReleaseGroupCriteria->equals($criteria)) {
-				$this->collUserFollowsMgaReleaseGroups = UserFollowsMgaReleaseGroupPeer::doSelectJoinMgaReleaseGroup($criteria, $con, $join_behavior);
-			}
-		}
-		$this->lastUserFollowsMgaReleaseGroupCriteria = $criteria;
-
-		return $this->collUserFollowsMgaReleaseGroups;
-	}
-
-	/**
 	 * Clears out the collNewVersionRequests collection (array).
 	 *
 	 * This does not modify the database; however, it will remove any associated objects, causing
@@ -1717,7 +1280,7 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 			   $this->collNewVersionRequests = array();
 			} else {
 
-				$criteria->add(NewVersionRequestPeer::USER_IDUSER, $this->id);
+				$criteria->add(NewVersionRequestPeer::USER_ID, $this->id);
 
 				NewVersionRequestPeer::addSelectColumns($criteria);
 				$this->collNewVersionRequests = NewVersionRequestPeer::doSelect($criteria, $con);
@@ -1730,7 +1293,7 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 				// one, just return the collection.
 
 
-				$criteria->add(NewVersionRequestPeer::USER_IDUSER, $this->id);
+				$criteria->add(NewVersionRequestPeer::USER_ID, $this->id);
 
 				NewVersionRequestPeer::addSelectColumns($criteria);
 				if (!isset($this->lastNewVersionRequestCriteria) || !$this->lastNewVersionRequestCriteria->equals($criteria)) {
@@ -1770,7 +1333,7 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 				$count = 0;
 			} else {
 
-				$criteria->add(NewVersionRequestPeer::USER_IDUSER, $this->id);
+				$criteria->add(NewVersionRequestPeer::USER_ID, $this->id);
 
 				$count = NewVersionRequestPeer::doCount($criteria, false, $con);
 			}
@@ -1782,7 +1345,7 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 				// one, just return count of the collection.
 
 
-				$criteria->add(NewVersionRequestPeer::USER_IDUSER, $this->id);
+				$criteria->add(NewVersionRequestPeer::USER_ID, $this->id);
 
 				if (!isset($this->lastNewVersionRequestCriteria) || !$this->lastNewVersionRequestCriteria->equals($criteria)) {
 					$count = NewVersionRequestPeer::doCount($criteria, false, $con);
@@ -1842,7 +1405,7 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 				$this->collNewVersionRequests = array();
 			} else {
 
-				$criteria->add(NewVersionRequestPeer::USER_IDUSER, $this->id);
+				$criteria->add(NewVersionRequestPeer::USER_ID, $this->id);
 
 				$this->collNewVersionRequests = NewVersionRequestPeer::doSelectJoinPackage($criteria, $con, $join_behavior);
 			}
@@ -1851,7 +1414,7 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 			// called for.  If the criteria is the same as the last
 			// one, just return the collection.
 
-			$criteria->add(NewVersionRequestPeer::USER_IDUSER, $this->id);
+			$criteria->add(NewVersionRequestPeer::USER_ID, $this->id);
 
 			if (!isset($this->lastNewVersionRequestCriteria) || !$this->lastNewVersionRequestCriteria->equals($criteria)) {
 				$this->collNewVersionRequests = NewVersionRequestPeer::doSelectJoinPackage($criteria, $con, $join_behavior);
@@ -1874,7 +1437,7 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 	 * api reasonable.  You can provide public methods for those you
 	 * actually need in User.
 	 */
-	public function getNewVersionRequestsJoinMgaRelease($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public function getNewVersionRequestsJoinDistrelease($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
 		if ($criteria === null) {
 			$criteria = new Criteria(UserPeer::DATABASE_NAME);
@@ -1889,19 +1452,19 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 				$this->collNewVersionRequests = array();
 			} else {
 
-				$criteria->add(NewVersionRequestPeer::USER_IDUSER, $this->id);
+				$criteria->add(NewVersionRequestPeer::USER_ID, $this->id);
 
-				$this->collNewVersionRequests = NewVersionRequestPeer::doSelectJoinMgaRelease($criteria, $con, $join_behavior);
+				$this->collNewVersionRequests = NewVersionRequestPeer::doSelectJoinDistrelease($criteria, $con, $join_behavior);
 			}
 		} else {
 			// the following code is to determine if a new query is
 			// called for.  If the criteria is the same as the last
 			// one, just return the collection.
 
-			$criteria->add(NewVersionRequestPeer::USER_IDUSER, $this->id);
+			$criteria->add(NewVersionRequestPeer::USER_ID, $this->id);
 
 			if (!isset($this->lastNewVersionRequestCriteria) || !$this->lastNewVersionRequestCriteria->equals($criteria)) {
-				$this->collNewVersionRequests = NewVersionRequestPeer::doSelectJoinMgaRelease($criteria, $con, $join_behavior);
+				$this->collNewVersionRequests = NewVersionRequestPeer::doSelectJoinDistrelease($criteria, $con, $join_behavior);
 			}
 		}
 		$this->lastNewVersionRequestCriteria = $criteria;
@@ -1965,7 +1528,7 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 			   $this->collSoftwareRequests = array();
 			} else {
 
-				$criteria->add(SoftwareRequestPeer::USER_IDUSER, $this->id);
+				$criteria->add(SoftwareRequestPeer::USER_ID, $this->id);
 
 				SoftwareRequestPeer::addSelectColumns($criteria);
 				$this->collSoftwareRequests = SoftwareRequestPeer::doSelect($criteria, $con);
@@ -1978,7 +1541,7 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 				// one, just return the collection.
 
 
-				$criteria->add(SoftwareRequestPeer::USER_IDUSER, $this->id);
+				$criteria->add(SoftwareRequestPeer::USER_ID, $this->id);
 
 				SoftwareRequestPeer::addSelectColumns($criteria);
 				if (!isset($this->lastSoftwareRequestCriteria) || !$this->lastSoftwareRequestCriteria->equals($criteria)) {
@@ -2018,7 +1581,7 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 				$count = 0;
 			} else {
 
-				$criteria->add(SoftwareRequestPeer::USER_IDUSER, $this->id);
+				$criteria->add(SoftwareRequestPeer::USER_ID, $this->id);
 
 				$count = SoftwareRequestPeer::doCount($criteria, false, $con);
 			}
@@ -2030,7 +1593,7 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 				// one, just return count of the collection.
 
 
-				$criteria->add(SoftwareRequestPeer::USER_IDUSER, $this->id);
+				$criteria->add(SoftwareRequestPeer::USER_ID, $this->id);
 
 				if (!isset($this->lastSoftwareRequestCriteria) || !$this->lastSoftwareRequestCriteria->equals($criteria)) {
 					$count = SoftwareRequestPeer::doCount($criteria, false, $con);
@@ -2119,7 +1682,7 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 			   $this->collUserHasSoftwareRequests = array();
 			} else {
 
-				$criteria->add(UserHasSoftwareRequestPeer::USER_IDUSER, $this->id);
+				$criteria->add(UserHasSoftwareRequestPeer::USER_ID, $this->id);
 
 				UserHasSoftwareRequestPeer::addSelectColumns($criteria);
 				$this->collUserHasSoftwareRequests = UserHasSoftwareRequestPeer::doSelect($criteria, $con);
@@ -2132,7 +1695,7 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 				// one, just return the collection.
 
 
-				$criteria->add(UserHasSoftwareRequestPeer::USER_IDUSER, $this->id);
+				$criteria->add(UserHasSoftwareRequestPeer::USER_ID, $this->id);
 
 				UserHasSoftwareRequestPeer::addSelectColumns($criteria);
 				if (!isset($this->lastUserHasSoftwareRequestCriteria) || !$this->lastUserHasSoftwareRequestCriteria->equals($criteria)) {
@@ -2172,7 +1735,7 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 				$count = 0;
 			} else {
 
-				$criteria->add(UserHasSoftwareRequestPeer::USER_IDUSER, $this->id);
+				$criteria->add(UserHasSoftwareRequestPeer::USER_ID, $this->id);
 
 				$count = UserHasSoftwareRequestPeer::doCount($criteria, false, $con);
 			}
@@ -2184,7 +1747,7 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 				// one, just return count of the collection.
 
 
-				$criteria->add(UserHasSoftwareRequestPeer::USER_IDUSER, $this->id);
+				$criteria->add(UserHasSoftwareRequestPeer::USER_ID, $this->id);
 
 				if (!isset($this->lastUserHasSoftwareRequestCriteria) || !$this->lastUserHasSoftwareRequestCriteria->equals($criteria)) {
 					$count = UserHasSoftwareRequestPeer::doCount($criteria, false, $con);
@@ -2244,7 +1807,7 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 				$this->collUserHasSoftwareRequests = array();
 			} else {
 
-				$criteria->add(UserHasSoftwareRequestPeer::USER_IDUSER, $this->id);
+				$criteria->add(UserHasSoftwareRequestPeer::USER_ID, $this->id);
 
 				$this->collUserHasSoftwareRequests = UserHasSoftwareRequestPeer::doSelectJoinSoftwareRequest($criteria, $con, $join_behavior);
 			}
@@ -2253,7 +1816,7 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 			// called for.  If the criteria is the same as the last
 			// one, just return the collection.
 
-			$criteria->add(UserHasSoftwareRequestPeer::USER_IDUSER, $this->id);
+			$criteria->add(UserHasSoftwareRequestPeer::USER_ID, $this->id);
 
 			if (!isset($this->lastUserHasSoftwareRequestCriteria) || !$this->lastUserHasSoftwareRequestCriteria->equals($criteria)) {
 				$this->collUserHasSoftwareRequests = UserHasSoftwareRequestPeer::doSelectJoinSoftwareRequest($criteria, $con, $join_behavior);
@@ -2320,7 +1883,7 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 			   $this->collUserCommentsSoftwareRequests = array();
 			} else {
 
-				$criteria->add(UserCommentsSoftwareRequestPeer::USER_IDUSER, $this->id);
+				$criteria->add(UserCommentsSoftwareRequestPeer::USER_ID, $this->id);
 
 				UserCommentsSoftwareRequestPeer::addSelectColumns($criteria);
 				$this->collUserCommentsSoftwareRequests = UserCommentsSoftwareRequestPeer::doSelect($criteria, $con);
@@ -2333,7 +1896,7 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 				// one, just return the collection.
 
 
-				$criteria->add(UserCommentsSoftwareRequestPeer::USER_IDUSER, $this->id);
+				$criteria->add(UserCommentsSoftwareRequestPeer::USER_ID, $this->id);
 
 				UserCommentsSoftwareRequestPeer::addSelectColumns($criteria);
 				if (!isset($this->lastUserCommentsSoftwareRequestCriteria) || !$this->lastUserCommentsSoftwareRequestCriteria->equals($criteria)) {
@@ -2373,7 +1936,7 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 				$count = 0;
 			} else {
 
-				$criteria->add(UserCommentsSoftwareRequestPeer::USER_IDUSER, $this->id);
+				$criteria->add(UserCommentsSoftwareRequestPeer::USER_ID, $this->id);
 
 				$count = UserCommentsSoftwareRequestPeer::doCount($criteria, false, $con);
 			}
@@ -2385,7 +1948,7 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 				// one, just return count of the collection.
 
 
-				$criteria->add(UserCommentsSoftwareRequestPeer::USER_IDUSER, $this->id);
+				$criteria->add(UserCommentsSoftwareRequestPeer::USER_ID, $this->id);
 
 				if (!isset($this->lastUserCommentsSoftwareRequestCriteria) || !$this->lastUserCommentsSoftwareRequestCriteria->equals($criteria)) {
 					$count = UserCommentsSoftwareRequestPeer::doCount($criteria, false, $con);
@@ -2445,7 +2008,7 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 				$this->collUserCommentsSoftwareRequests = array();
 			} else {
 
-				$criteria->add(UserCommentsSoftwareRequestPeer::USER_IDUSER, $this->id);
+				$criteria->add(UserCommentsSoftwareRequestPeer::USER_ID, $this->id);
 
 				$this->collUserCommentsSoftwareRequests = UserCommentsSoftwareRequestPeer::doSelectJoinSoftwareRequest($criteria, $con, $join_behavior);
 			}
@@ -2454,7 +2017,7 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 			// called for.  If the criteria is the same as the last
 			// one, just return the collection.
 
-			$criteria->add(UserCommentsSoftwareRequestPeer::USER_IDUSER, $this->id);
+			$criteria->add(UserCommentsSoftwareRequestPeer::USER_ID, $this->id);
 
 			if (!isset($this->lastUserCommentsSoftwareRequestCriteria) || !$this->lastUserCommentsSoftwareRequestCriteria->equals($criteria)) {
 				$this->collUserCommentsSoftwareRequests = UserCommentsSoftwareRequestPeer::doSelectJoinSoftwareRequest($criteria, $con, $join_behavior);
@@ -2521,7 +2084,7 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 			   $this->collUserCommentsNewVersionRequests = array();
 			} else {
 
-				$criteria->add(UserCommentsNewVersionRequestPeer::USER_IDUSER, $this->id);
+				$criteria->add(UserCommentsNewVersionRequestPeer::USER_ID, $this->id);
 
 				UserCommentsNewVersionRequestPeer::addSelectColumns($criteria);
 				$this->collUserCommentsNewVersionRequests = UserCommentsNewVersionRequestPeer::doSelect($criteria, $con);
@@ -2534,7 +2097,7 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 				// one, just return the collection.
 
 
-				$criteria->add(UserCommentsNewVersionRequestPeer::USER_IDUSER, $this->id);
+				$criteria->add(UserCommentsNewVersionRequestPeer::USER_ID, $this->id);
 
 				UserCommentsNewVersionRequestPeer::addSelectColumns($criteria);
 				if (!isset($this->lastUserCommentsNewVersionRequestCriteria) || !$this->lastUserCommentsNewVersionRequestCriteria->equals($criteria)) {
@@ -2574,7 +2137,7 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 				$count = 0;
 			} else {
 
-				$criteria->add(UserCommentsNewVersionRequestPeer::USER_IDUSER, $this->id);
+				$criteria->add(UserCommentsNewVersionRequestPeer::USER_ID, $this->id);
 
 				$count = UserCommentsNewVersionRequestPeer::doCount($criteria, false, $con);
 			}
@@ -2586,7 +2149,7 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 				// one, just return count of the collection.
 
 
-				$criteria->add(UserCommentsNewVersionRequestPeer::USER_IDUSER, $this->id);
+				$criteria->add(UserCommentsNewVersionRequestPeer::USER_ID, $this->id);
 
 				if (!isset($this->lastUserCommentsNewVersionRequestCriteria) || !$this->lastUserCommentsNewVersionRequestCriteria->equals($criteria)) {
 					$count = UserCommentsNewVersionRequestPeer::doCount($criteria, false, $con);
@@ -2646,7 +2209,7 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 				$this->collUserCommentsNewVersionRequests = array();
 			} else {
 
-				$criteria->add(UserCommentsNewVersionRequestPeer::USER_IDUSER, $this->id);
+				$criteria->add(UserCommentsNewVersionRequestPeer::USER_ID, $this->id);
 
 				$this->collUserCommentsNewVersionRequests = UserCommentsNewVersionRequestPeer::doSelectJoinNewVersionRequest($criteria, $con, $join_behavior);
 			}
@@ -2655,7 +2218,7 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 			// called for.  If the criteria is the same as the last
 			// one, just return the collection.
 
-			$criteria->add(UserCommentsNewVersionRequestPeer::USER_IDUSER, $this->id);
+			$criteria->add(UserCommentsNewVersionRequestPeer::USER_ID, $this->id);
 
 			if (!isset($this->lastUserCommentsNewVersionRequestCriteria) || !$this->lastUserCommentsNewVersionRequestCriteria->equals($criteria)) {
 				$this->collUserCommentsNewVersionRequests = UserCommentsNewVersionRequestPeer::doSelectJoinNewVersionRequest($criteria, $con, $join_behavior);
@@ -2868,6 +2431,207 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 	}
 
 	/**
+	 * Clears out the collNotifications collection (array).
+	 *
+	 * This does not modify the database; however, it will remove any associated objects, causing
+	 * them to be refetched by subsequent calls to accessor method.
+	 *
+	 * @return     void
+	 * @see        addNotifications()
+	 */
+	public function clearNotifications()
+	{
+		$this->collNotifications = null; // important to set this to NULL since that means it is uninitialized
+	}
+
+	/**
+	 * Initializes the collNotifications collection (array).
+	 *
+	 * By default this just sets the collNotifications collection to an empty array (like clearcollNotifications());
+	 * however, you may wish to override this method in your stub class to provide setting appropriate
+	 * to your application -- for example, setting the initial array to the values stored in database.
+	 *
+	 * @return     void
+	 */
+	public function initNotifications()
+	{
+		$this->collNotifications = array();
+	}
+
+	/**
+	 * Gets an array of Notification objects which contain a foreign key that references this object.
+	 *
+	 * If this collection has already been initialized with an identical Criteria, it returns the collection.
+	 * Otherwise if this User has previously been saved, it will retrieve
+	 * related Notifications from storage. If this User is new, it will return
+	 * an empty collection or the current collection, the criteria is ignored on a new object.
+	 *
+	 * @param      PropelPDO $con
+	 * @param      Criteria $criteria
+	 * @return     array Notification[]
+	 * @throws     PropelException
+	 */
+	public function getNotifications($criteria = null, PropelPDO $con = null)
+	{
+		if ($criteria === null) {
+			$criteria = new Criteria(UserPeer::DATABASE_NAME);
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collNotifications === null) {
+			if ($this->isNew()) {
+			   $this->collNotifications = array();
+			} else {
+
+				$criteria->add(NotificationPeer::USER_ID, $this->id);
+
+				NotificationPeer::addSelectColumns($criteria);
+				$this->collNotifications = NotificationPeer::doSelect($criteria, $con);
+			}
+		} else {
+			// criteria has no effect for a new object
+			if (!$this->isNew()) {
+				// the following code is to determine if a new query is
+				// called for.  If the criteria is the same as the last
+				// one, just return the collection.
+
+
+				$criteria->add(NotificationPeer::USER_ID, $this->id);
+
+				NotificationPeer::addSelectColumns($criteria);
+				if (!isset($this->lastNotificationCriteria) || !$this->lastNotificationCriteria->equals($criteria)) {
+					$this->collNotifications = NotificationPeer::doSelect($criteria, $con);
+				}
+			}
+		}
+		$this->lastNotificationCriteria = $criteria;
+		return $this->collNotifications;
+	}
+
+	/**
+	 * Returns the number of related Notification objects.
+	 *
+	 * @param      Criteria $criteria
+	 * @param      boolean $distinct
+	 * @param      PropelPDO $con
+	 * @return     int Count of related Notification objects.
+	 * @throws     PropelException
+	 */
+	public function countNotifications(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+	{
+		if ($criteria === null) {
+			$criteria = new Criteria(UserPeer::DATABASE_NAME);
+		} else {
+			$criteria = clone $criteria;
+		}
+
+		if ($distinct) {
+			$criteria->setDistinct();
+		}
+
+		$count = null;
+
+		if ($this->collNotifications === null) {
+			if ($this->isNew()) {
+				$count = 0;
+			} else {
+
+				$criteria->add(NotificationPeer::USER_ID, $this->id);
+
+				$count = NotificationPeer::doCount($criteria, false, $con);
+			}
+		} else {
+			// criteria has no effect for a new object
+			if (!$this->isNew()) {
+				// the following code is to determine if a new query is
+				// called for.  If the criteria is the same as the last
+				// one, just return count of the collection.
+
+
+				$criteria->add(NotificationPeer::USER_ID, $this->id);
+
+				if (!isset($this->lastNotificationCriteria) || !$this->lastNotificationCriteria->equals($criteria)) {
+					$count = NotificationPeer::doCount($criteria, false, $con);
+				} else {
+					$count = count($this->collNotifications);
+				}
+			} else {
+				$count = count($this->collNotifications);
+			}
+		}
+		return $count;
+	}
+
+	/**
+	 * Method called to associate a Notification object to this object
+	 * through the Notification foreign key attribute.
+	 *
+	 * @param      Notification $l Notification
+	 * @return     void
+	 * @throws     PropelException
+	 */
+	public function addNotification(Notification $l)
+	{
+		if ($this->collNotifications === null) {
+			$this->initNotifications();
+		}
+		if (!in_array($l, $this->collNotifications, true)) { // only add it if the **same** object is not already associated
+			array_push($this->collNotifications, $l);
+			$l->setUser($this);
+		}
+	}
+
+
+	/**
+	 * If this collection has already been initialized with
+	 * an identical criteria, it returns the collection.
+	 * Otherwise if this User is new, it will return
+	 * an empty collection; or if this User has previously
+	 * been saved, it will retrieve related Notifications from storage.
+	 *
+	 * This method is protected by default in order to keep the public
+	 * api reasonable.  You can provide public methods for those you
+	 * actually need in User.
+	 */
+	public function getNotificationsJoinRssFeed($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	{
+		if ($criteria === null) {
+			$criteria = new Criteria(UserPeer::DATABASE_NAME);
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collNotifications === null) {
+			if ($this->isNew()) {
+				$this->collNotifications = array();
+			} else {
+
+				$criteria->add(NotificationPeer::USER_ID, $this->id);
+
+				$this->collNotifications = NotificationPeer::doSelectJoinRssFeed($criteria, $con, $join_behavior);
+			}
+		} else {
+			// the following code is to determine if a new query is
+			// called for.  If the criteria is the same as the last
+			// one, just return the collection.
+
+			$criteria->add(NotificationPeer::USER_ID, $this->id);
+
+			if (!isset($this->lastNotificationCriteria) || !$this->lastNotificationCriteria->equals($criteria)) {
+				$this->collNotifications = NotificationPeer::doSelectJoinRssFeed($criteria, $con, $join_behavior);
+			}
+		}
+		$this->lastNotificationCriteria = $criteria;
+
+		return $this->collNotifications;
+	}
+
+	/**
 	 * Resets all collections of referencing foreign keys.
 	 *
 	 * This method is a user-space workaround for PHP's inability to garbage collect objects
@@ -2879,18 +2643,8 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 	public function clearAllReferences($deep = false)
 	{
 		if ($deep) {
-			if ($this->collUserFollowsPackages) {
-				foreach ((array) $this->collUserFollowsPackages as $o) {
-					$o->clearAllReferences($deep);
-				}
-			}
 			if ($this->collUserCommentsPackages) {
 				foreach ((array) $this->collUserCommentsPackages as $o) {
-					$o->clearAllReferences($deep);
-				}
-			}
-			if ($this->collUserFollowsMgaReleaseGroups) {
-				foreach ((array) $this->collUserFollowsMgaReleaseGroups as $o) {
 					$o->clearAllReferences($deep);
 				}
 			}
@@ -2924,17 +2678,21 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 					$o->clearAllReferences($deep);
 				}
 			}
+			if ($this->collNotifications) {
+				foreach ((array) $this->collNotifications as $o) {
+					$o->clearAllReferences($deep);
+				}
+			}
 		} // if ($deep)
 
-		$this->collUserFollowsPackages = null;
 		$this->collUserCommentsPackages = null;
-		$this->collUserFollowsMgaReleaseGroups = null;
 		$this->collNewVersionRequests = null;
 		$this->collSoftwareRequests = null;
 		$this->collUserHasSoftwareRequests = null;
 		$this->collUserCommentsSoftwareRequests = null;
 		$this->collUserCommentsNewVersionRequests = null;
 		$this->collUserHasNewVersionRequests = null;
+		$this->collNotifications = null;
 	}
 
 	// symfony_behaviors behavior

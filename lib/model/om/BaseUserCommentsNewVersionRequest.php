@@ -25,10 +25,10 @@ abstract class BaseUserCommentsNewVersionRequest extends BaseObject  implements 
 	protected $id;
 
 	/**
-	 * The value for the user_iduser field.
+	 * The value for the user_id field.
 	 * @var        int
 	 */
-	protected $user_iduser;
+	protected $user_id;
 
 	/**
 	 * The value for the new_version_request_id field.
@@ -87,13 +87,13 @@ abstract class BaseUserCommentsNewVersionRequest extends BaseObject  implements 
 	}
 
 	/**
-	 * Get the [user_iduser] column value.
+	 * Get the [user_id] column value.
 	 * 
 	 * @return     int
 	 */
-	public function getUserIduser()
+	public function getUserId()
 	{
-		return $this->user_iduser;
+		return $this->user_id;
 	}
 
 	/**
@@ -175,20 +175,20 @@ abstract class BaseUserCommentsNewVersionRequest extends BaseObject  implements 
 	} // setId()
 
 	/**
-	 * Set the value of [user_iduser] column.
+	 * Set the value of [user_id] column.
 	 * 
 	 * @param      int $v new value
 	 * @return     UserCommentsNewVersionRequest The current object (for fluent API support)
 	 */
-	public function setUserIduser($v)
+	public function setUserId($v)
 	{
 		if ($v !== null) {
 			$v = (int) $v;
 		}
 
-		if ($this->user_iduser !== $v) {
-			$this->user_iduser = $v;
-			$this->modifiedColumns[] = UserCommentsNewVersionRequestPeer::USER_IDUSER;
+		if ($this->user_id !== $v) {
+			$this->user_id = $v;
+			$this->modifiedColumns[] = UserCommentsNewVersionRequestPeer::USER_ID;
 		}
 
 		if ($this->aUser !== null && $this->aUser->getId() !== $v) {
@@ -196,7 +196,7 @@ abstract class BaseUserCommentsNewVersionRequest extends BaseObject  implements 
 		}
 
 		return $this;
-	} // setUserIduser()
+	} // setUserId()
 
 	/**
 	 * Set the value of [new_version_request_id] column.
@@ -324,7 +324,7 @@ abstract class BaseUserCommentsNewVersionRequest extends BaseObject  implements 
 		try {
 
 			$this->id = ($row[$startcol + 0] !== null) ? (int) $row[$startcol + 0] : null;
-			$this->user_iduser = ($row[$startcol + 1] !== null) ? (int) $row[$startcol + 1] : null;
+			$this->user_id = ($row[$startcol + 1] !== null) ? (int) $row[$startcol + 1] : null;
 			$this->new_version_request_id = ($row[$startcol + 2] !== null) ? (int) $row[$startcol + 2] : null;
 			$this->comment = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
 			$this->created_at = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
@@ -360,7 +360,7 @@ abstract class BaseUserCommentsNewVersionRequest extends BaseObject  implements 
 	public function ensureConsistency()
 	{
 
-		if ($this->aUser !== null && $this->user_iduser !== $this->aUser->getId()) {
+		if ($this->aUser !== null && $this->user_id !== $this->aUser->getId()) {
 			$this->aUser = null;
 		}
 		if ($this->aNewVersionRequest !== null && $this->new_version_request_id !== $this->aNewVersionRequest->getId()) {
@@ -724,7 +724,7 @@ abstract class BaseUserCommentsNewVersionRequest extends BaseObject  implements 
 				return $this->getId();
 				break;
 			case 1:
-				return $this->getUserIduser();
+				return $this->getUserId();
 				break;
 			case 2:
 				return $this->getNewVersionRequestId();
@@ -757,7 +757,7 @@ abstract class BaseUserCommentsNewVersionRequest extends BaseObject  implements 
 		$keys = UserCommentsNewVersionRequestPeer::getFieldNames($keyType);
 		$result = array(
 			$keys[0] => $this->getId(),
-			$keys[1] => $this->getUserIduser(),
+			$keys[1] => $this->getUserId(),
 			$keys[2] => $this->getNewVersionRequestId(),
 			$keys[3] => $this->getComment(),
 			$keys[4] => $this->getCreatedAt(),
@@ -796,7 +796,7 @@ abstract class BaseUserCommentsNewVersionRequest extends BaseObject  implements 
 				$this->setId($value);
 				break;
 			case 1:
-				$this->setUserIduser($value);
+				$this->setUserId($value);
 				break;
 			case 2:
 				$this->setNewVersionRequestId($value);
@@ -832,7 +832,7 @@ abstract class BaseUserCommentsNewVersionRequest extends BaseObject  implements 
 		$keys = UserCommentsNewVersionRequestPeer::getFieldNames($keyType);
 
 		if (array_key_exists($keys[0], $arr)) $this->setId($arr[$keys[0]]);
-		if (array_key_exists($keys[1], $arr)) $this->setUserIduser($arr[$keys[1]]);
+		if (array_key_exists($keys[1], $arr)) $this->setUserId($arr[$keys[1]]);
 		if (array_key_exists($keys[2], $arr)) $this->setNewVersionRequestId($arr[$keys[2]]);
 		if (array_key_exists($keys[3], $arr)) $this->setComment($arr[$keys[3]]);
 		if (array_key_exists($keys[4], $arr)) $this->setCreatedAt($arr[$keys[4]]);
@@ -848,7 +848,7 @@ abstract class BaseUserCommentsNewVersionRequest extends BaseObject  implements 
 		$criteria = new Criteria(UserCommentsNewVersionRequestPeer::DATABASE_NAME);
 
 		if ($this->isColumnModified(UserCommentsNewVersionRequestPeer::ID)) $criteria->add(UserCommentsNewVersionRequestPeer::ID, $this->id);
-		if ($this->isColumnModified(UserCommentsNewVersionRequestPeer::USER_IDUSER)) $criteria->add(UserCommentsNewVersionRequestPeer::USER_IDUSER, $this->user_iduser);
+		if ($this->isColumnModified(UserCommentsNewVersionRequestPeer::USER_ID)) $criteria->add(UserCommentsNewVersionRequestPeer::USER_ID, $this->user_id);
 		if ($this->isColumnModified(UserCommentsNewVersionRequestPeer::NEW_VERSION_REQUEST_ID)) $criteria->add(UserCommentsNewVersionRequestPeer::NEW_VERSION_REQUEST_ID, $this->new_version_request_id);
 		if ($this->isColumnModified(UserCommentsNewVersionRequestPeer::COMMENT)) $criteria->add(UserCommentsNewVersionRequestPeer::COMMENT, $this->comment);
 		if ($this->isColumnModified(UserCommentsNewVersionRequestPeer::CREATED_AT)) $criteria->add(UserCommentsNewVersionRequestPeer::CREATED_AT, $this->created_at);
@@ -906,7 +906,7 @@ abstract class BaseUserCommentsNewVersionRequest extends BaseObject  implements 
 	public function copyInto($copyObj, $deepCopy = false)
 	{
 
-		$copyObj->setUserIduser($this->user_iduser);
+		$copyObj->setUserId($this->user_id);
 
 		$copyObj->setNewVersionRequestId($this->new_version_request_id);
 
@@ -969,9 +969,9 @@ abstract class BaseUserCommentsNewVersionRequest extends BaseObject  implements 
 	public function setUser(User $v = null)
 	{
 		if ($v === null) {
-			$this->setUserIduser(NULL);
+			$this->setUserId(NULL);
 		} else {
-			$this->setUserIduser($v->getId());
+			$this->setUserId($v->getId());
 		}
 
 		$this->aUser = $v;
@@ -995,8 +995,8 @@ abstract class BaseUserCommentsNewVersionRequest extends BaseObject  implements 
 	 */
 	public function getUser(PropelPDO $con = null)
 	{
-		if ($this->aUser === null && ($this->user_iduser !== null)) {
-			$this->aUser = UserPeer::retrieveByPk($this->user_iduser);
+		if ($this->aUser === null && ($this->user_id !== null)) {
+			$this->aUser = UserPeer::retrieveByPk($this->user_id);
 			/* The following can be used additionally to
 			   guarantee the related object contains a reference
 			   to this object.  This level of coupling may, however, be

@@ -37,9 +37,9 @@ class PackageScreenshotsTableMap extends TableMap {
 		$this->setUseIdGenerator(true);
 		// columns
 		$this->addPrimaryKey('ID', 'Id', 'INTEGER', true, null, null);
-		$this->addColumn('PATH_TO_SCREENSHOT', 'PathToScreenshot', 'VARCHAR', false, 1024, null);
+		$this->addColumn('PATH_TO_SCREENSHOT', 'PathToScreenshot', 'VARCHAR', true, 1024, null);
 		$this->addColumn('VERSION_FROM', 'VersionFrom', 'VARCHAR', false, 45, null);
-		$this->addForeignKey('PACKAGE_ID', 'PackageId', 'INTEGER', 'package', 'ID', false, null, null);
+		$this->addForeignKey('PACKAGE_ID', 'PackageId', 'INTEGER', 'package', 'ID', true, null, null);
 		// validators
 	} // initialize()
 

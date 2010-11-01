@@ -37,6 +37,7 @@ class LanguageTableMap extends TableMap {
 		$this->setUseIdGenerator(true);
 		// columns
 		$this->addPrimaryKey('ID', 'Id', 'INTEGER', true, null, null);
+		$this->addColumn('NAME', 'Name', 'VARCHAR', true, 255, null);
 		// validators
 	} // initialize()
 

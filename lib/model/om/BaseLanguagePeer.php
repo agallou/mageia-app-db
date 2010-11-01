@@ -25,13 +25,16 @@ abstract class BaseLanguagePeer {
 	const TM_CLASS = 'LanguageTableMap';
 	
 	/** The total number of columns. */
-	const NUM_COLUMNS = 1;
+	const NUM_COLUMNS = 2;
 
 	/** The number of lazy-loaded columns. */
 	const NUM_LAZY_LOAD_COLUMNS = 0;
 
 	/** the column name for the ID field */
 	const ID = 'language.ID';
+
+	/** the column name for the NAME field */
+	const NAME = 'language.NAME';
 
 	/**
 	 * An identiy map to hold any loaded instances of Language objects.
@@ -56,11 +59,11 @@ abstract class BaseLanguagePeer {
 	 * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
 	 */
 	private static $fieldNames = array (
-		BasePeer::TYPE_PHPNAME => array ('Id', ),
-		BasePeer::TYPE_STUDLYPHPNAME => array ('id', ),
-		BasePeer::TYPE_COLNAME => array (self::ID, ),
-		BasePeer::TYPE_FIELDNAME => array ('id', ),
-		BasePeer::TYPE_NUM => array (0, )
+		BasePeer::TYPE_PHPNAME => array ('Id', 'Name', ),
+		BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'name', ),
+		BasePeer::TYPE_COLNAME => array (self::ID, self::NAME, ),
+		BasePeer::TYPE_FIELDNAME => array ('id', 'name', ),
+		BasePeer::TYPE_NUM => array (0, 1, )
 	);
 
 	/**
@@ -70,11 +73,11 @@ abstract class BaseLanguagePeer {
 	 * e.g. self::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
 	 */
 	private static $fieldKeys = array (
-		BasePeer::TYPE_PHPNAME => array ('Id' => 0, ),
-		BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, ),
-		BasePeer::TYPE_COLNAME => array (self::ID => 0, ),
-		BasePeer::TYPE_FIELDNAME => array ('id' => 0, ),
-		BasePeer::TYPE_NUM => array (0, )
+		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Name' => 1, ),
+		BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'name' => 1, ),
+		BasePeer::TYPE_COLNAME => array (self::ID => 0, self::NAME => 1, ),
+		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'name' => 1, ),
+		BasePeer::TYPE_NUM => array (0, 1, )
 	);
 
 	/**
@@ -145,6 +148,7 @@ abstract class BaseLanguagePeer {
 	public static function addSelectColumns(Criteria $criteria)
 	{
 		$criteria->addSelectColumn(LanguagePeer::ID);
+		$criteria->addSelectColumn(LanguagePeer::NAME);
 	}
 
 	/**

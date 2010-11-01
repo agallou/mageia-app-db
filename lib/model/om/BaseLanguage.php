@@ -25,6 +25,12 @@ abstract class BaseLanguage extends BaseObject  implements Persistent {
 	protected $id;
 
 	/**
+	 * The value for the name field.
+	 * @var        string
+	 */
+	protected $name;
+
+	/**
 	 * @var        array PackageDescription[] Collection to store aggregation of PackageDescription objects.
 	 */
 	protected $collPackageDescriptions;
@@ -73,6 +79,16 @@ abstract class BaseLanguage extends BaseObject  implements Persistent {
 	}
 
 	/**
+	 * Get the [name] column value.
+	 * 
+	 * @return     string
+	 */
+	public function getName()
+	{
+		return $this->name;
+	}
+
+	/**
 	 * Set the value of [id] column.
 	 * 
 	 * @param      int $v new value
@@ -91,6 +107,26 @@ abstract class BaseLanguage extends BaseObject  implements Persistent {
 
 		return $this;
 	} // setId()
+
+	/**
+	 * Set the value of [name] column.
+	 * 
+	 * @param      string $v new value
+	 * @return     Language The current object (for fluent API support)
+	 */
+	public function setName($v)
+	{
+		if ($v !== null) {
+			$v = (string) $v;
+		}
+
+		if ($this->name !== $v) {
+			$this->name = $v;
+			$this->modifiedColumns[] = LanguagePeer::NAME;
+		}
+
+		return $this;
+	} // setName()
 
 	/**
 	 * Indicates whether the columns in this object are only set to default values.
@@ -125,6 +161,7 @@ abstract class BaseLanguage extends BaseObject  implements Persistent {
 		try {
 
 			$this->id = ($row[$startcol + 0] !== null) ? (int) $row[$startcol + 0] : null;
+			$this->name = ($row[$startcol + 1] !== null) ? (string) $row[$startcol + 1] : null;
 			$this->resetModified();
 
 			$this->setNew(false);
@@ -134,7 +171,7 @@ abstract class BaseLanguage extends BaseObject  implements Persistent {
 			}
 
 			// FIXME - using NUM_COLUMNS may be clearer.
-			return $startcol + 1; // 1 = LanguagePeer::NUM_COLUMNS - LanguagePeer::NUM_LAZY_LOAD_COLUMNS).
+			return $startcol + 2; // 2 = LanguagePeer::NUM_COLUMNS - LanguagePeer::NUM_LAZY_LOAD_COLUMNS).
 
 		} catch (Exception $e) {
 			throw new PropelException("Error populating Language object", $e);
@@ -505,6 +542,9 @@ abstract class BaseLanguage extends BaseObject  implements Persistent {
 			case 0:
 				return $this->getId();
 				break;
+			case 1:
+				return $this->getName();
+				break;
 			default:
 				return null;
 				break;
@@ -527,6 +567,7 @@ abstract class BaseLanguage extends BaseObject  implements Persistent {
 		$keys = LanguagePeer::getFieldNames($keyType);
 		$result = array(
 			$keys[0] => $this->getId(),
+			$keys[1] => $this->getName(),
 		);
 		return $result;
 	}
@@ -561,6 +602,9 @@ abstract class BaseLanguage extends BaseObject  implements Persistent {
 			case 0:
 				$this->setId($value);
 				break;
+			case 1:
+				$this->setName($value);
+				break;
 		} // switch()
 	}
 
@@ -586,6 +630,7 @@ abstract class BaseLanguage extends BaseObject  implements Persistent {
 		$keys = LanguagePeer::getFieldNames($keyType);
 
 		if (array_key_exists($keys[0], $arr)) $this->setId($arr[$keys[0]]);
+		if (array_key_exists($keys[1], $arr)) $this->setName($arr[$keys[1]]);
 	}
 
 	/**
@@ -598,6 +643,7 @@ abstract class BaseLanguage extends BaseObject  implements Persistent {
 		$criteria = new Criteria(LanguagePeer::DATABASE_NAME);
 
 		if ($this->isColumnModified(LanguagePeer::ID)) $criteria->add(LanguagePeer::ID, $this->id);
+		if ($this->isColumnModified(LanguagePeer::NAME)) $criteria->add(LanguagePeer::NAME, $this->name);
 
 		return $criteria;
 	}
@@ -651,6 +697,8 @@ abstract class BaseLanguage extends BaseObject  implements Persistent {
 	 */
 	public function copyInto($copyObj, $deepCopy = false)
 	{
+
+		$copyObj->setName($this->name);
 
 
 		if ($deepCopy) {

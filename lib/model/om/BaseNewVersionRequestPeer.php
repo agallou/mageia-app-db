@@ -33,14 +33,14 @@ abstract class BaseNewVersionRequestPeer {
 	/** the column name for the ID field */
 	const ID = 'new_version_request.ID';
 
-	/** the column name for the USER_IDUSER field */
-	const USER_IDUSER = 'new_version_request.USER_IDUSER';
+	/** the column name for the USER_ID field */
+	const USER_ID = 'new_version_request.USER_ID';
 
 	/** the column name for the PACKAGE_ID field */
 	const PACKAGE_ID = 'new_version_request.PACKAGE_ID';
 
-	/** the column name for the MGA_RELEASE_ID field */
-	const MGA_RELEASE_ID = 'new_version_request.MGA_RELEASE_ID';
+	/** the column name for the DISTRELEASE_ID field */
+	const DISTRELEASE_ID = 'new_version_request.DISTRELEASE_ID';
 
 	/** the column name for the VERSION_NEEDED field */
 	const VERSION_NEEDED = 'new_version_request.VERSION_NEEDED';
@@ -71,10 +71,10 @@ abstract class BaseNewVersionRequestPeer {
 	 * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
 	 */
 	private static $fieldNames = array (
-		BasePeer::TYPE_PHPNAME => array ('Id', 'UserIduser', 'PackageId', 'MgaReleaseId', 'VersionNeeded', 'Status', ),
-		BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'userIduser', 'packageId', 'mgaReleaseId', 'versionNeeded', 'status', ),
-		BasePeer::TYPE_COLNAME => array (self::ID, self::USER_IDUSER, self::PACKAGE_ID, self::MGA_RELEASE_ID, self::VERSION_NEEDED, self::STATUS, ),
-		BasePeer::TYPE_FIELDNAME => array ('id', 'user_iduser', 'package_id', 'mga_release_id', 'version_needed', 'status', ),
+		BasePeer::TYPE_PHPNAME => array ('Id', 'UserId', 'PackageId', 'DistreleaseId', 'VersionNeeded', 'Status', ),
+		BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'userId', 'packageId', 'distreleaseId', 'versionNeeded', 'status', ),
+		BasePeer::TYPE_COLNAME => array (self::ID, self::USER_ID, self::PACKAGE_ID, self::DISTRELEASE_ID, self::VERSION_NEEDED, self::STATUS, ),
+		BasePeer::TYPE_FIELDNAME => array ('id', 'user_id', 'package_id', 'distrelease_id', 'version_needed', 'status', ),
 		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, )
 	);
 
@@ -85,10 +85,10 @@ abstract class BaseNewVersionRequestPeer {
 	 * e.g. self::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
 	 */
 	private static $fieldKeys = array (
-		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'UserIduser' => 1, 'PackageId' => 2, 'MgaReleaseId' => 3, 'VersionNeeded' => 4, 'Status' => 5, ),
-		BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'userIduser' => 1, 'packageId' => 2, 'mgaReleaseId' => 3, 'versionNeeded' => 4, 'status' => 5, ),
-		BasePeer::TYPE_COLNAME => array (self::ID => 0, self::USER_IDUSER => 1, self::PACKAGE_ID => 2, self::MGA_RELEASE_ID => 3, self::VERSION_NEEDED => 4, self::STATUS => 5, ),
-		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'user_iduser' => 1, 'package_id' => 2, 'mga_release_id' => 3, 'version_needed' => 4, 'status' => 5, ),
+		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'UserId' => 1, 'PackageId' => 2, 'DistreleaseId' => 3, 'VersionNeeded' => 4, 'Status' => 5, ),
+		BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'userId' => 1, 'packageId' => 2, 'distreleaseId' => 3, 'versionNeeded' => 4, 'status' => 5, ),
+		BasePeer::TYPE_COLNAME => array (self::ID => 0, self::USER_ID => 1, self::PACKAGE_ID => 2, self::DISTRELEASE_ID => 3, self::VERSION_NEEDED => 4, self::STATUS => 5, ),
+		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'user_id' => 1, 'package_id' => 2, 'distrelease_id' => 3, 'version_needed' => 4, 'status' => 5, ),
 		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, )
 	);
 
@@ -160,9 +160,9 @@ abstract class BaseNewVersionRequestPeer {
 	public static function addSelectColumns(Criteria $criteria)
 	{
 		$criteria->addSelectColumn(NewVersionRequestPeer::ID);
-		$criteria->addSelectColumn(NewVersionRequestPeer::USER_IDUSER);
+		$criteria->addSelectColumn(NewVersionRequestPeer::USER_ID);
 		$criteria->addSelectColumn(NewVersionRequestPeer::PACKAGE_ID);
-		$criteria->addSelectColumn(NewVersionRequestPeer::MGA_RELEASE_ID);
+		$criteria->addSelectColumn(NewVersionRequestPeer::DISTRELEASE_ID);
 		$criteria->addSelectColumn(NewVersionRequestPeer::VERSION_NEEDED);
 		$criteria->addSelectColumn(NewVersionRequestPeer::STATUS);
 	}
@@ -300,7 +300,7 @@ abstract class BaseNewVersionRequestPeer {
 	{
 		if (Propel::isInstancePoolingEnabled()) {
 			if ($key === null) {
-				$key = (string) $obj->getId();
+				$key = serialize(array((string) $obj->getId(), (string) $obj->getDistreleaseId()));
 			} // if key === null
 			self::$instances[$key] = $obj;
 		}
@@ -320,10 +320,10 @@ abstract class BaseNewVersionRequestPeer {
 	{
 		if (Propel::isInstancePoolingEnabled() && $value !== null) {
 			if (is_object($value) && $value instanceof NewVersionRequest) {
-				$key = (string) $value->getId();
-			} elseif (is_scalar($value)) {
+				$key = serialize(array((string) $value->getId(), (string) $value->getDistreleaseId()));
+			} elseif (is_array($value) && count($value) === 2) {
 				// assume we've been passed a primary key
-				$key = (string) $value;
+				$key = serialize(array((string) $value[0], (string) $value[1]));
 			} else {
 				$e = new PropelException("Invalid value passed to removeInstanceFromPool().  Expected primary key or NewVersionRequest object; got " . (is_object($value) ? get_class($value) . ' object.' : var_export($value,true)));
 				throw $e;
@@ -384,10 +384,10 @@ abstract class BaseNewVersionRequestPeer {
 	public static function getPrimaryKeyHashFromRow($row, $startcol = 0)
 	{
 		// If the PK cannot be derived from the row, return NULL.
-		if ($row[$startcol] === null) {
+		if ($row[$startcol] === null && $row[$startcol + 3] === null) {
 			return null;
 		}
-		return (string) $row[$startcol];
+		return serialize(array((string) $row[$startcol], (string) $row[$startcol + 3]));
 	}
 
 	/**
@@ -458,7 +458,7 @@ abstract class BaseNewVersionRequestPeer {
 			$con = Propel::getConnection(NewVersionRequestPeer::DATABASE_NAME, Propel::CONNECTION_READ);
 		}
 
-		$criteria->addJoin(NewVersionRequestPeer::USER_IDUSER, UserPeer::ID, $join_behavior);
+		$criteria->addJoin(NewVersionRequestPeer::USER_ID, UserPeer::ID, $join_behavior);
 
 		// symfony_behaviors behavior
 		foreach (sfMixer::getCallables(self::getMixerPreSelectHook(__FUNCTION__)) as $sf_hook)
@@ -535,7 +535,7 @@ abstract class BaseNewVersionRequestPeer {
 
 
 	/**
-	 * Returns the number of rows matching criteria, joining the related MgaRelease table
+	 * Returns the number of rows matching criteria, joining the related Distrelease table
 	 *
 	 * @param      Criteria $criteria
 	 * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
@@ -543,7 +543,7 @@ abstract class BaseNewVersionRequestPeer {
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
 	 * @return     int Number of matching rows.
 	 */
-	public static function doCountJoinMgaRelease(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public static function doCountJoinDistrelease(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
 		// we're going to modify criteria, so copy it first
 		$criteria = clone $criteria;
@@ -570,7 +570,7 @@ abstract class BaseNewVersionRequestPeer {
 			$con = Propel::getConnection(NewVersionRequestPeer::DATABASE_NAME, Propel::CONNECTION_READ);
 		}
 
-		$criteria->addJoin(NewVersionRequestPeer::MGA_RELEASE_ID, MgaReleasePeer::ID, $join_behavior);
+		$criteria->addJoin(NewVersionRequestPeer::DISTRELEASE_ID, DistreleasePeer::ID, $join_behavior);
 
 		// symfony_behaviors behavior
 		foreach (sfMixer::getCallables(self::getMixerPreSelectHook(__FUNCTION__)) as $sf_hook)
@@ -612,7 +612,7 @@ abstract class BaseNewVersionRequestPeer {
 		$startcol = (NewVersionRequestPeer::NUM_COLUMNS - NewVersionRequestPeer::NUM_LAZY_LOAD_COLUMNS);
 		UserPeer::addSelectColumns($criteria);
 
-		$criteria->addJoin(NewVersionRequestPeer::USER_IDUSER, UserPeer::ID, $join_behavior);
+		$criteria->addJoin(NewVersionRequestPeer::USER_ID, UserPeer::ID, $join_behavior);
 
 		// symfony_behaviors behavior
 		foreach (sfMixer::getCallables(self::getMixerPreSelectHook(__FUNCTION__)) as $sf_hook)
@@ -735,7 +735,7 @@ abstract class BaseNewVersionRequestPeer {
 
 
 	/**
-	 * Selects a collection of NewVersionRequest objects pre-filled with their MgaRelease objects.
+	 * Selects a collection of NewVersionRequest objects pre-filled with their Distrelease objects.
 	 * @param      Criteria  $criteria
 	 * @param      PropelPDO $con
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
@@ -743,7 +743,7 @@ abstract class BaseNewVersionRequestPeer {
 	 * @throws     PropelException Any exceptions caught during processing will be
 	 *		 rethrown wrapped into a PropelException.
 	 */
-	public static function doSelectJoinMgaRelease(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public static function doSelectJoinDistrelease(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
 		$criteria = clone $criteria;
 
@@ -754,9 +754,9 @@ abstract class BaseNewVersionRequestPeer {
 
 		NewVersionRequestPeer::addSelectColumns($criteria);
 		$startcol = (NewVersionRequestPeer::NUM_COLUMNS - NewVersionRequestPeer::NUM_LAZY_LOAD_COLUMNS);
-		MgaReleasePeer::addSelectColumns($criteria);
+		DistreleasePeer::addSelectColumns($criteria);
 
-		$criteria->addJoin(NewVersionRequestPeer::MGA_RELEASE_ID, MgaReleasePeer::ID, $join_behavior);
+		$criteria->addJoin(NewVersionRequestPeer::DISTRELEASE_ID, DistreleasePeer::ID, $join_behavior);
 
 		// symfony_behaviors behavior
 		foreach (sfMixer::getCallables(self::getMixerPreSelectHook(__FUNCTION__)) as $sf_hook)
@@ -782,19 +782,19 @@ abstract class BaseNewVersionRequestPeer {
 				NewVersionRequestPeer::addInstanceToPool($obj1, $key1);
 			} // if $obj1 already loaded
 
-			$key2 = MgaReleasePeer::getPrimaryKeyHashFromRow($row, $startcol);
+			$key2 = DistreleasePeer::getPrimaryKeyHashFromRow($row, $startcol);
 			if ($key2 !== null) {
-				$obj2 = MgaReleasePeer::getInstanceFromPool($key2);
+				$obj2 = DistreleasePeer::getInstanceFromPool($key2);
 				if (!$obj2) {
 
-					$cls = MgaReleasePeer::getOMClass(false);
+					$cls = DistreleasePeer::getOMClass(false);
 
 					$obj2 = new $cls();
 					$obj2->hydrate($row, $startcol);
-					MgaReleasePeer::addInstanceToPool($obj2, $key2);
+					DistreleasePeer::addInstanceToPool($obj2, $key2);
 				} // if obj2 already loaded
 				
-				// Add the $obj1 (NewVersionRequest) to $obj2 (MgaRelease)
+				// Add the $obj1 (NewVersionRequest) to $obj2 (Distrelease)
 				$obj2->addNewVersionRequest($obj1);
 
 			} // if joined row was not null
@@ -842,11 +842,11 @@ abstract class BaseNewVersionRequestPeer {
 			$con = Propel::getConnection(NewVersionRequestPeer::DATABASE_NAME, Propel::CONNECTION_READ);
 		}
 
-		$criteria->addJoin(NewVersionRequestPeer::USER_IDUSER, UserPeer::ID, $join_behavior);
+		$criteria->addJoin(NewVersionRequestPeer::USER_ID, UserPeer::ID, $join_behavior);
 
 		$criteria->addJoin(NewVersionRequestPeer::PACKAGE_ID, PackagePeer::ID, $join_behavior);
 
-		$criteria->addJoin(NewVersionRequestPeer::MGA_RELEASE_ID, MgaReleasePeer::ID, $join_behavior);
+		$criteria->addJoin(NewVersionRequestPeer::DISTRELEASE_ID, DistreleasePeer::ID, $join_behavior);
 
 		// symfony_behaviors behavior
 		foreach (sfMixer::getCallables(self::getMixerPreSelectHook(__FUNCTION__)) as $sf_hook)
@@ -893,14 +893,14 @@ abstract class BaseNewVersionRequestPeer {
 		PackagePeer::addSelectColumns($criteria);
 		$startcol4 = $startcol3 + (PackagePeer::NUM_COLUMNS - PackagePeer::NUM_LAZY_LOAD_COLUMNS);
 
-		MgaReleasePeer::addSelectColumns($criteria);
-		$startcol5 = $startcol4 + (MgaReleasePeer::NUM_COLUMNS - MgaReleasePeer::NUM_LAZY_LOAD_COLUMNS);
+		DistreleasePeer::addSelectColumns($criteria);
+		$startcol5 = $startcol4 + (DistreleasePeer::NUM_COLUMNS - DistreleasePeer::NUM_LAZY_LOAD_COLUMNS);
 
-		$criteria->addJoin(NewVersionRequestPeer::USER_IDUSER, UserPeer::ID, $join_behavior);
+		$criteria->addJoin(NewVersionRequestPeer::USER_ID, UserPeer::ID, $join_behavior);
 
 		$criteria->addJoin(NewVersionRequestPeer::PACKAGE_ID, PackagePeer::ID, $join_behavior);
 
-		$criteria->addJoin(NewVersionRequestPeer::MGA_RELEASE_ID, MgaReleasePeer::ID, $join_behavior);
+		$criteria->addJoin(NewVersionRequestPeer::DISTRELEASE_ID, DistreleasePeer::ID, $join_behavior);
 
 		// symfony_behaviors behavior
 		foreach (sfMixer::getCallables(self::getMixerPreSelectHook(__FUNCTION__)) as $sf_hook)
@@ -961,21 +961,21 @@ abstract class BaseNewVersionRequestPeer {
 				$obj3->addNewVersionRequest($obj1);
 			} // if joined row not null
 
-			// Add objects for joined MgaRelease rows
+			// Add objects for joined Distrelease rows
 
-			$key4 = MgaReleasePeer::getPrimaryKeyHashFromRow($row, $startcol4);
+			$key4 = DistreleasePeer::getPrimaryKeyHashFromRow($row, $startcol4);
 			if ($key4 !== null) {
-				$obj4 = MgaReleasePeer::getInstanceFromPool($key4);
+				$obj4 = DistreleasePeer::getInstanceFromPool($key4);
 				if (!$obj4) {
 
-					$cls = MgaReleasePeer::getOMClass(false);
+					$cls = DistreleasePeer::getOMClass(false);
 
 					$obj4 = new $cls();
 					$obj4->hydrate($row, $startcol4);
-					MgaReleasePeer::addInstanceToPool($obj4, $key4);
+					DistreleasePeer::addInstanceToPool($obj4, $key4);
 				} // if obj4 loaded
 
-				// Add the $obj1 (NewVersionRequest) to the collection in $obj4 (MgaRelease)
+				// Add the $obj1 (NewVersionRequest) to the collection in $obj4 (Distrelease)
 				$obj4->addNewVersionRequest($obj1);
 			} // if joined row not null
 
@@ -1024,7 +1024,7 @@ abstract class BaseNewVersionRequestPeer {
 	
 		$criteria->addJoin(NewVersionRequestPeer::PACKAGE_ID, PackagePeer::ID, $join_behavior);
 
-		$criteria->addJoin(NewVersionRequestPeer::MGA_RELEASE_ID, MgaReleasePeer::ID, $join_behavior);
+		$criteria->addJoin(NewVersionRequestPeer::DISTRELEASE_ID, DistreleasePeer::ID, $join_behavior);
 
 		// symfony_behaviors behavior
 		foreach (sfMixer::getCallables(self::getMixerPreSelectHook(__FUNCTION__)) as $sf_hook)
@@ -1080,9 +1080,9 @@ abstract class BaseNewVersionRequestPeer {
 			$con = Propel::getConnection(NewVersionRequestPeer::DATABASE_NAME, Propel::CONNECTION_READ);
 		}
 	
-		$criteria->addJoin(NewVersionRequestPeer::USER_IDUSER, UserPeer::ID, $join_behavior);
+		$criteria->addJoin(NewVersionRequestPeer::USER_ID, UserPeer::ID, $join_behavior);
 
-		$criteria->addJoin(NewVersionRequestPeer::MGA_RELEASE_ID, MgaReleasePeer::ID, $join_behavior);
+		$criteria->addJoin(NewVersionRequestPeer::DISTRELEASE_ID, DistreleasePeer::ID, $join_behavior);
 
 		// symfony_behaviors behavior
 		foreach (sfMixer::getCallables(self::getMixerPreSelectHook(__FUNCTION__)) as $sf_hook)
@@ -1103,7 +1103,7 @@ abstract class BaseNewVersionRequestPeer {
 
 
 	/**
-	 * Returns the number of rows matching criteria, joining the related MgaRelease table
+	 * Returns the number of rows matching criteria, joining the related Distrelease table
 	 *
 	 * @param      Criteria $criteria
 	 * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
@@ -1111,7 +1111,7 @@ abstract class BaseNewVersionRequestPeer {
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
 	 * @return     int Number of matching rows.
 	 */
-	public static function doCountJoinAllExceptMgaRelease(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public static function doCountJoinAllExceptDistrelease(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
 		// we're going to modify criteria, so copy it first
 		$criteria = clone $criteria;
@@ -1138,7 +1138,7 @@ abstract class BaseNewVersionRequestPeer {
 			$con = Propel::getConnection(NewVersionRequestPeer::DATABASE_NAME, Propel::CONNECTION_READ);
 		}
 	
-		$criteria->addJoin(NewVersionRequestPeer::USER_IDUSER, UserPeer::ID, $join_behavior);
+		$criteria->addJoin(NewVersionRequestPeer::USER_ID, UserPeer::ID, $join_behavior);
 
 		$criteria->addJoin(NewVersionRequestPeer::PACKAGE_ID, PackagePeer::ID, $join_behavior);
 
@@ -1187,12 +1187,12 @@ abstract class BaseNewVersionRequestPeer {
 		PackagePeer::addSelectColumns($criteria);
 		$startcol3 = $startcol2 + (PackagePeer::NUM_COLUMNS - PackagePeer::NUM_LAZY_LOAD_COLUMNS);
 
-		MgaReleasePeer::addSelectColumns($criteria);
-		$startcol4 = $startcol3 + (MgaReleasePeer::NUM_COLUMNS - MgaReleasePeer::NUM_LAZY_LOAD_COLUMNS);
+		DistreleasePeer::addSelectColumns($criteria);
+		$startcol4 = $startcol3 + (DistreleasePeer::NUM_COLUMNS - DistreleasePeer::NUM_LAZY_LOAD_COLUMNS);
 
 		$criteria->addJoin(NewVersionRequestPeer::PACKAGE_ID, PackagePeer::ID, $join_behavior);
 
-		$criteria->addJoin(NewVersionRequestPeer::MGA_RELEASE_ID, MgaReleasePeer::ID, $join_behavior);
+		$criteria->addJoin(NewVersionRequestPeer::DISTRELEASE_ID, DistreleasePeer::ID, $join_behavior);
 
 		// symfony_behaviors behavior
 		foreach (sfMixer::getCallables(self::getMixerPreSelectHook(__FUNCTION__)) as $sf_hook)
@@ -1237,21 +1237,21 @@ abstract class BaseNewVersionRequestPeer {
 
 			} // if joined row is not null
 
-				// Add objects for joined MgaRelease rows
+				// Add objects for joined Distrelease rows
 
-				$key3 = MgaReleasePeer::getPrimaryKeyHashFromRow($row, $startcol3);
+				$key3 = DistreleasePeer::getPrimaryKeyHashFromRow($row, $startcol3);
 				if ($key3 !== null) {
-					$obj3 = MgaReleasePeer::getInstanceFromPool($key3);
+					$obj3 = DistreleasePeer::getInstanceFromPool($key3);
 					if (!$obj3) {
 	
-						$cls = MgaReleasePeer::getOMClass(false);
+						$cls = DistreleasePeer::getOMClass(false);
 
 					$obj3 = new $cls();
 					$obj3->hydrate($row, $startcol3);
-					MgaReleasePeer::addInstanceToPool($obj3, $key3);
+					DistreleasePeer::addInstanceToPool($obj3, $key3);
 				} // if $obj3 already loaded
 
-				// Add the $obj1 (NewVersionRequest) to the collection in $obj3 (MgaRelease)
+				// Add the $obj1 (NewVersionRequest) to the collection in $obj3 (Distrelease)
 				$obj3->addNewVersionRequest($obj1);
 
 			} // if joined row is not null
@@ -1290,12 +1290,12 @@ abstract class BaseNewVersionRequestPeer {
 		UserPeer::addSelectColumns($criteria);
 		$startcol3 = $startcol2 + (UserPeer::NUM_COLUMNS - UserPeer::NUM_LAZY_LOAD_COLUMNS);
 
-		MgaReleasePeer::addSelectColumns($criteria);
-		$startcol4 = $startcol3 + (MgaReleasePeer::NUM_COLUMNS - MgaReleasePeer::NUM_LAZY_LOAD_COLUMNS);
+		DistreleasePeer::addSelectColumns($criteria);
+		$startcol4 = $startcol3 + (DistreleasePeer::NUM_COLUMNS - DistreleasePeer::NUM_LAZY_LOAD_COLUMNS);
 
-		$criteria->addJoin(NewVersionRequestPeer::USER_IDUSER, UserPeer::ID, $join_behavior);
+		$criteria->addJoin(NewVersionRequestPeer::USER_ID, UserPeer::ID, $join_behavior);
 
-		$criteria->addJoin(NewVersionRequestPeer::MGA_RELEASE_ID, MgaReleasePeer::ID, $join_behavior);
+		$criteria->addJoin(NewVersionRequestPeer::DISTRELEASE_ID, DistreleasePeer::ID, $join_behavior);
 
 		// symfony_behaviors behavior
 		foreach (sfMixer::getCallables(self::getMixerPreSelectHook(__FUNCTION__)) as $sf_hook)
@@ -1340,21 +1340,21 @@ abstract class BaseNewVersionRequestPeer {
 
 			} // if joined row is not null
 
-				// Add objects for joined MgaRelease rows
+				// Add objects for joined Distrelease rows
 
-				$key3 = MgaReleasePeer::getPrimaryKeyHashFromRow($row, $startcol3);
+				$key3 = DistreleasePeer::getPrimaryKeyHashFromRow($row, $startcol3);
 				if ($key3 !== null) {
-					$obj3 = MgaReleasePeer::getInstanceFromPool($key3);
+					$obj3 = DistreleasePeer::getInstanceFromPool($key3);
 					if (!$obj3) {
 	
-						$cls = MgaReleasePeer::getOMClass(false);
+						$cls = DistreleasePeer::getOMClass(false);
 
 					$obj3 = new $cls();
 					$obj3->hydrate($row, $startcol3);
-					MgaReleasePeer::addInstanceToPool($obj3, $key3);
+					DistreleasePeer::addInstanceToPool($obj3, $key3);
 				} // if $obj3 already loaded
 
-				// Add the $obj1 (NewVersionRequest) to the collection in $obj3 (MgaRelease)
+				// Add the $obj1 (NewVersionRequest) to the collection in $obj3 (Distrelease)
 				$obj3->addNewVersionRequest($obj1);
 
 			} // if joined row is not null
@@ -1367,7 +1367,7 @@ abstract class BaseNewVersionRequestPeer {
 
 
 	/**
-	 * Selects a collection of NewVersionRequest objects pre-filled with all related objects except MgaRelease.
+	 * Selects a collection of NewVersionRequest objects pre-filled with all related objects except Distrelease.
 	 *
 	 * @param      Criteria  $criteria
 	 * @param      PropelPDO $con
@@ -1376,7 +1376,7 @@ abstract class BaseNewVersionRequestPeer {
 	 * @throws     PropelException Any exceptions caught during processing will be
 	 *		 rethrown wrapped into a PropelException.
 	 */
-	public static function doSelectJoinAllExceptMgaRelease(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public static function doSelectJoinAllExceptDistrelease(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
 		$criteria = clone $criteria;
 
@@ -1396,7 +1396,7 @@ abstract class BaseNewVersionRequestPeer {
 		PackagePeer::addSelectColumns($criteria);
 		$startcol4 = $startcol3 + (PackagePeer::NUM_COLUMNS - PackagePeer::NUM_LAZY_LOAD_COLUMNS);
 
-		$criteria->addJoin(NewVersionRequestPeer::USER_IDUSER, UserPeer::ID, $join_behavior);
+		$criteria->addJoin(NewVersionRequestPeer::USER_ID, UserPeer::ID, $join_behavior);
 
 		$criteria->addJoin(NewVersionRequestPeer::PACKAGE_ID, PackagePeer::ID, $join_behavior);
 
@@ -1598,6 +1598,9 @@ abstract class BaseNewVersionRequestPeer {
 			$comparison = $criteria->getComparison(NewVersionRequestPeer::ID);
 			$selectCriteria->add(NewVersionRequestPeer::ID, $criteria->remove(NewVersionRequestPeer::ID), $comparison);
 
+			$comparison = $criteria->getComparison(NewVersionRequestPeer::DISTRELEASE_ID);
+			$selectCriteria->add(NewVersionRequestPeer::DISTRELEASE_ID, $criteria->remove(NewVersionRequestPeer::DISTRELEASE_ID), $comparison);
+
 		} else { // $values is NewVersionRequest object
 			$criteria = $values->buildCriteria(); // gets full criteria
 			$selectCriteria = $values->buildPkeyCriteria(); // gets criteria w/ primary key(s)
@@ -1677,10 +1680,18 @@ abstract class BaseNewVersionRequestPeer {
 			$criteria = $values->buildPkeyCriteria();
 		} else { // it's a primary key, or an array of pks
 			$criteria = new Criteria(self::DATABASE_NAME);
-			$criteria->add(NewVersionRequestPeer::ID, (array) $values, Criteria::IN);
-			// invalidate the cache for this object(s)
-			foreach ((array) $values as $singleval) {
-				NewVersionRequestPeer::removeInstanceFromPool($singleval);
+			// primary key is composite; we therefore, expect
+			// the primary key passed to be an array of pkey values
+			if (count($values) == count($values, COUNT_RECURSIVE)) {
+				// array is not multi-dimensional
+				$values = array($values);
+			}
+			foreach ($values as $value) {
+				$criterion = $criteria->getNewCriterion(NewVersionRequestPeer::ID, $value[0]);
+				$criterion->addAnd($criteria->getNewCriterion(NewVersionRequestPeer::DISTRELEASE_ID, $value[1]));
+				$criteria->addOr($criterion);
+				// we can invalidate the cache for this single PK
+				NewVersionRequestPeer::removeInstanceFromPool($value);
 			}
 		}
 
@@ -1742,56 +1753,28 @@ abstract class BaseNewVersionRequestPeer {
 	}
 
 	/**
-	 * Retrieve a single object by pkey.
-	 *
-	 * @param      int $pk the primary key.
-	 * @param      PropelPDO $con the connection to use
+	 * Retrieve object using using composite pkey values.
+	 * @param      int $id
+	 * @param      int $distrelease_id
+	 * @param      PropelPDO $con
 	 * @return     NewVersionRequest
 	 */
-	public static function retrieveByPK($pk, PropelPDO $con = null)
-	{
-
-		if (null !== ($obj = NewVersionRequestPeer::getInstanceFromPool((string) $pk))) {
-			return $obj;
+	public static function retrieveByPK($id, $distrelease_id, PropelPDO $con = null) {
+		$key = serialize(array((string) $id, (string) $distrelease_id));
+ 		if (null !== ($obj = NewVersionRequestPeer::getInstanceFromPool($key))) {
+ 			return $obj;
 		}
 
 		if ($con === null) {
 			$con = Propel::getConnection(NewVersionRequestPeer::DATABASE_NAME, Propel::CONNECTION_READ);
 		}
-
 		$criteria = new Criteria(NewVersionRequestPeer::DATABASE_NAME);
-		$criteria->add(NewVersionRequestPeer::ID, $pk);
-
+		$criteria->add(NewVersionRequestPeer::ID, $id);
+		$criteria->add(NewVersionRequestPeer::DISTRELEASE_ID, $distrelease_id);
 		$v = NewVersionRequestPeer::doSelect($criteria, $con);
 
-		return !empty($v) > 0 ? $v[0] : null;
+		return !empty($v) ? $v[0] : null;
 	}
-
-	/**
-	 * Retrieve multiple objects by pkey.
-	 *
-	 * @param      array $pks List of primary keys
-	 * @param      PropelPDO $con the connection to use
-	 * @throws     PropelException Any exceptions caught during processing will be
-	 *		 rethrown wrapped into a PropelException.
-	 */
-	public static function retrieveByPKs($pks, PropelPDO $con = null)
-	{
-		if ($con === null) {
-			$con = Propel::getConnection(NewVersionRequestPeer::DATABASE_NAME, Propel::CONNECTION_READ);
-		}
-
-		$objs = null;
-		if (empty($pks)) {
-			$objs = array();
-		} else {
-			$criteria = new Criteria(NewVersionRequestPeer::DATABASE_NAME);
-			$criteria->add(NewVersionRequestPeer::ID, $pks, Criteria::IN);
-			$objs = NewVersionRequestPeer::doSelect($criteria, $con);
-		}
-		return $objs;
-	}
-
 	// symfony behavior
 	
 	/**

@@ -37,8 +37,8 @@ class UserTableMap extends TableMap {
 		$this->setUseIdGenerator(true);
 		// columns
 		$this->addPrimaryKey('ID', 'Id', 'INTEGER', true, null, null);
-		$this->addColumn('NAME', 'Name', 'VARCHAR', false, 32, null);
-		$this->addColumn('LOGIN', 'Login', 'VARCHAR', false, 50, null);
+		$this->addColumn('NAME', 'Name', 'LONGVARCHAR', true, null, null);
+		$this->addColumn('LOGIN', 'Login', 'VARCHAR', true, 255, null);
 		// validators
 	} // initialize()
 
@@ -47,15 +47,14 @@ class UserTableMap extends TableMap {
 	 */
 	public function buildRelations()
 	{
-    $this->addRelation('UserFollowsPackage', 'UserFollowsPackage', RelationMap::ONE_TO_MANY, array('id' => 'user_id', ), null, null);
     $this->addRelation('UserCommentsPackage', 'UserCommentsPackage', RelationMap::ONE_TO_MANY, array('id' => 'user_id', ), null, null);
-    $this->addRelation('UserFollowsMgaReleaseGroup', 'UserFollowsMgaReleaseGroup', RelationMap::ONE_TO_MANY, array('id' => 'user_iduser', ), null, null);
-    $this->addRelation('NewVersionRequest', 'NewVersionRequest', RelationMap::ONE_TO_MANY, array('id' => 'user_iduser', ), null, null);
-    $this->addRelation('SoftwareRequest', 'SoftwareRequest', RelationMap::ONE_TO_MANY, array('id' => 'user_iduser', ), null, null);
-    $this->addRelation('UserHasSoftwareRequest', 'UserHasSoftwareRequest', RelationMap::ONE_TO_MANY, array('id' => 'user_iduser', ), null, null);
-    $this->addRelation('UserCommentsSoftwareRequest', 'UserCommentsSoftwareRequest', RelationMap::ONE_TO_MANY, array('id' => 'user_iduser', ), null, null);
-    $this->addRelation('UserCommentsNewVersionRequest', 'UserCommentsNewVersionRequest', RelationMap::ONE_TO_MANY, array('id' => 'user_iduser', ), null, null);
+    $this->addRelation('NewVersionRequest', 'NewVersionRequest', RelationMap::ONE_TO_MANY, array('id' => 'user_id', ), null, null);
+    $this->addRelation('SoftwareRequest', 'SoftwareRequest', RelationMap::ONE_TO_MANY, array('id' => 'user_id', ), null, null);
+    $this->addRelation('UserHasSoftwareRequest', 'UserHasSoftwareRequest', RelationMap::ONE_TO_MANY, array('id' => 'user_id', ), null, null);
+    $this->addRelation('UserCommentsSoftwareRequest', 'UserCommentsSoftwareRequest', RelationMap::ONE_TO_MANY, array('id' => 'user_id', ), null, null);
+    $this->addRelation('UserCommentsNewVersionRequest', 'UserCommentsNewVersionRequest', RelationMap::ONE_TO_MANY, array('id' => 'user_id', ), null, null);
     $this->addRelation('UserHasNewVersionRequest', 'UserHasNewVersionRequest', RelationMap::ONE_TO_MANY, array('id' => 'user_id', ), null, null);
+    $this->addRelation('Notification', 'Notification', RelationMap::ONE_TO_MANY, array('id' => 'user_id', ), null, null);
 	} // buildRelations()
 
 	/**

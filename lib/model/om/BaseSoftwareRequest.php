@@ -43,10 +43,10 @@ abstract class BaseSoftwareRequest extends BaseObject  implements Persistent {
 	protected $text;
 
 	/**
-	 * The value for the user_iduser field.
+	 * The value for the user_id field.
 	 * @var        int
 	 */
-	protected $user_iduser;
+	protected $user_id;
 
 	/**
 	 * The value for the backport_to field.
@@ -144,13 +144,13 @@ abstract class BaseSoftwareRequest extends BaseObject  implements Persistent {
 	}
 
 	/**
-	 * Get the [user_iduser] column value.
+	 * Get the [user_id] column value.
 	 * 
 	 * @return     int
 	 */
-	public function getUserIduser()
+	public function getUserId()
 	{
-		return $this->user_iduser;
+		return $this->user_id;
 	}
 
 	/**
@@ -254,20 +254,20 @@ abstract class BaseSoftwareRequest extends BaseObject  implements Persistent {
 	} // setText()
 
 	/**
-	 * Set the value of [user_iduser] column.
+	 * Set the value of [user_id] column.
 	 * 
 	 * @param      int $v new value
 	 * @return     SoftwareRequest The current object (for fluent API support)
 	 */
-	public function setUserIduser($v)
+	public function setUserId($v)
 	{
 		if ($v !== null) {
 			$v = (int) $v;
 		}
 
-		if ($this->user_iduser !== $v) {
-			$this->user_iduser = $v;
-			$this->modifiedColumns[] = SoftwareRequestPeer::USER_IDUSER;
+		if ($this->user_id !== $v) {
+			$this->user_id = $v;
+			$this->modifiedColumns[] = SoftwareRequestPeer::USER_ID;
 		}
 
 		if ($this->aUser !== null && $this->aUser->getId() !== $v) {
@@ -275,7 +275,7 @@ abstract class BaseSoftwareRequest extends BaseObject  implements Persistent {
 		}
 
 		return $this;
-	} // setUserIduser()
+	} // setUserId()
 
 	/**
 	 * Set the value of [backport_to] column.
@@ -353,7 +353,7 @@ abstract class BaseSoftwareRequest extends BaseObject  implements Persistent {
 			$this->name = ($row[$startcol + 1] !== null) ? (string) $row[$startcol + 1] : null;
 			$this->url = ($row[$startcol + 2] !== null) ? (string) $row[$startcol + 2] : null;
 			$this->text = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
-			$this->user_iduser = ($row[$startcol + 4] !== null) ? (int) $row[$startcol + 4] : null;
+			$this->user_id = ($row[$startcol + 4] !== null) ? (int) $row[$startcol + 4] : null;
 			$this->backport_to = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
 			$this->status = ($row[$startcol + 6] !== null) ? (string) $row[$startcol + 6] : null;
 			$this->resetModified();
@@ -388,7 +388,7 @@ abstract class BaseSoftwareRequest extends BaseObject  implements Persistent {
 	public function ensureConsistency()
 	{
 
-		if ($this->aUser !== null && $this->user_iduser !== $this->aUser->getId()) {
+		if ($this->aUser !== null && $this->user_id !== $this->aUser->getId()) {
 			$this->aUser = null;
 		}
 	} // ensureConsistency
@@ -774,7 +774,7 @@ abstract class BaseSoftwareRequest extends BaseObject  implements Persistent {
 				return $this->getText();
 				break;
 			case 4:
-				return $this->getUserIduser();
+				return $this->getUserId();
 				break;
 			case 5:
 				return $this->getBackportTo();
@@ -807,7 +807,7 @@ abstract class BaseSoftwareRequest extends BaseObject  implements Persistent {
 			$keys[1] => $this->getName(),
 			$keys[2] => $this->getUrl(),
 			$keys[3] => $this->getText(),
-			$keys[4] => $this->getUserIduser(),
+			$keys[4] => $this->getUserId(),
 			$keys[5] => $this->getBackportTo(),
 			$keys[6] => $this->getStatus(),
 		);
@@ -854,7 +854,7 @@ abstract class BaseSoftwareRequest extends BaseObject  implements Persistent {
 				$this->setText($value);
 				break;
 			case 4:
-				$this->setUserIduser($value);
+				$this->setUserId($value);
 				break;
 			case 5:
 				$this->setBackportTo($value);
@@ -890,7 +890,7 @@ abstract class BaseSoftwareRequest extends BaseObject  implements Persistent {
 		if (array_key_exists($keys[1], $arr)) $this->setName($arr[$keys[1]]);
 		if (array_key_exists($keys[2], $arr)) $this->setUrl($arr[$keys[2]]);
 		if (array_key_exists($keys[3], $arr)) $this->setText($arr[$keys[3]]);
-		if (array_key_exists($keys[4], $arr)) $this->setUserIduser($arr[$keys[4]]);
+		if (array_key_exists($keys[4], $arr)) $this->setUserId($arr[$keys[4]]);
 		if (array_key_exists($keys[5], $arr)) $this->setBackportTo($arr[$keys[5]]);
 		if (array_key_exists($keys[6], $arr)) $this->setStatus($arr[$keys[6]]);
 	}
@@ -908,7 +908,7 @@ abstract class BaseSoftwareRequest extends BaseObject  implements Persistent {
 		if ($this->isColumnModified(SoftwareRequestPeer::NAME)) $criteria->add(SoftwareRequestPeer::NAME, $this->name);
 		if ($this->isColumnModified(SoftwareRequestPeer::URL)) $criteria->add(SoftwareRequestPeer::URL, $this->url);
 		if ($this->isColumnModified(SoftwareRequestPeer::TEXT)) $criteria->add(SoftwareRequestPeer::TEXT, $this->text);
-		if ($this->isColumnModified(SoftwareRequestPeer::USER_IDUSER)) $criteria->add(SoftwareRequestPeer::USER_IDUSER, $this->user_iduser);
+		if ($this->isColumnModified(SoftwareRequestPeer::USER_ID)) $criteria->add(SoftwareRequestPeer::USER_ID, $this->user_id);
 		if ($this->isColumnModified(SoftwareRequestPeer::BACKPORT_TO)) $criteria->add(SoftwareRequestPeer::BACKPORT_TO, $this->backport_to);
 		if ($this->isColumnModified(SoftwareRequestPeer::STATUS)) $criteria->add(SoftwareRequestPeer::STATUS, $this->status);
 
@@ -971,7 +971,7 @@ abstract class BaseSoftwareRequest extends BaseObject  implements Persistent {
 
 		$copyObj->setText($this->text);
 
-		$copyObj->setUserIduser($this->user_iduser);
+		$copyObj->setUserId($this->user_id);
 
 		$copyObj->setBackportTo($this->backport_to);
 
@@ -1052,9 +1052,9 @@ abstract class BaseSoftwareRequest extends BaseObject  implements Persistent {
 	public function setUser(User $v = null)
 	{
 		if ($v === null) {
-			$this->setUserIduser(NULL);
+			$this->setUserId(NULL);
 		} else {
-			$this->setUserIduser($v->getId());
+			$this->setUserId($v->getId());
 		}
 
 		$this->aUser = $v;
@@ -1078,8 +1078,8 @@ abstract class BaseSoftwareRequest extends BaseObject  implements Persistent {
 	 */
 	public function getUser(PropelPDO $con = null)
 	{
-		if ($this->aUser === null && ($this->user_iduser !== null)) {
-			$this->aUser = UserPeer::retrieveByPk($this->user_iduser);
+		if ($this->aUser === null && ($this->user_id !== null)) {
+			$this->aUser = UserPeer::retrieveByPk($this->user_id);
 			/* The following can be used additionally to
 			   guarantee the related object contains a reference
 			   to this object.  This level of coupling may, however, be

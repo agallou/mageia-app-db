@@ -30,8 +30,8 @@ abstract class BaseUserHasSoftwareRequestPeer {
 	/** The number of lazy-loaded columns. */
 	const NUM_LAZY_LOAD_COLUMNS = 0;
 
-	/** the column name for the USER_IDUSER field */
-	const USER_IDUSER = 'user_has_software_request.USER_IDUSER';
+	/** the column name for the USER_ID field */
+	const USER_ID = 'user_has_software_request.USER_ID';
 
 	/** the column name for the SOFTWARE_REQUEST_ID field */
 	const SOFTWARE_REQUEST_ID = 'user_has_software_request.SOFTWARE_REQUEST_ID';
@@ -59,10 +59,10 @@ abstract class BaseUserHasSoftwareRequestPeer {
 	 * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
 	 */
 	private static $fieldNames = array (
-		BasePeer::TYPE_PHPNAME => array ('UserIduser', 'SoftwareRequestId', ),
-		BasePeer::TYPE_STUDLYPHPNAME => array ('userIduser', 'softwareRequestId', ),
-		BasePeer::TYPE_COLNAME => array (self::USER_IDUSER, self::SOFTWARE_REQUEST_ID, ),
-		BasePeer::TYPE_FIELDNAME => array ('user_iduser', 'software_request_id', ),
+		BasePeer::TYPE_PHPNAME => array ('UserId', 'SoftwareRequestId', ),
+		BasePeer::TYPE_STUDLYPHPNAME => array ('userId', 'softwareRequestId', ),
+		BasePeer::TYPE_COLNAME => array (self::USER_ID, self::SOFTWARE_REQUEST_ID, ),
+		BasePeer::TYPE_FIELDNAME => array ('user_id', 'software_request_id', ),
 		BasePeer::TYPE_NUM => array (0, 1, )
 	);
 
@@ -73,10 +73,10 @@ abstract class BaseUserHasSoftwareRequestPeer {
 	 * e.g. self::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
 	 */
 	private static $fieldKeys = array (
-		BasePeer::TYPE_PHPNAME => array ('UserIduser' => 0, 'SoftwareRequestId' => 1, ),
-		BasePeer::TYPE_STUDLYPHPNAME => array ('userIduser' => 0, 'softwareRequestId' => 1, ),
-		BasePeer::TYPE_COLNAME => array (self::USER_IDUSER => 0, self::SOFTWARE_REQUEST_ID => 1, ),
-		BasePeer::TYPE_FIELDNAME => array ('user_iduser' => 0, 'software_request_id' => 1, ),
+		BasePeer::TYPE_PHPNAME => array ('UserId' => 0, 'SoftwareRequestId' => 1, ),
+		BasePeer::TYPE_STUDLYPHPNAME => array ('userId' => 0, 'softwareRequestId' => 1, ),
+		BasePeer::TYPE_COLNAME => array (self::USER_ID => 0, self::SOFTWARE_REQUEST_ID => 1, ),
+		BasePeer::TYPE_FIELDNAME => array ('user_id' => 0, 'software_request_id' => 1, ),
 		BasePeer::TYPE_NUM => array (0, 1, )
 	);
 
@@ -147,7 +147,7 @@ abstract class BaseUserHasSoftwareRequestPeer {
 	 */
 	public static function addSelectColumns(Criteria $criteria)
 	{
-		$criteria->addSelectColumn(UserHasSoftwareRequestPeer::USER_IDUSER);
+		$criteria->addSelectColumn(UserHasSoftwareRequestPeer::USER_ID);
 		$criteria->addSelectColumn(UserHasSoftwareRequestPeer::SOFTWARE_REQUEST_ID);
 	}
 
@@ -284,7 +284,7 @@ abstract class BaseUserHasSoftwareRequestPeer {
 	{
 		if (Propel::isInstancePoolingEnabled()) {
 			if ($key === null) {
-				$key = serialize(array((string) $obj->getUserIduser(), (string) $obj->getSoftwareRequestId()));
+				$key = serialize(array((string) $obj->getUserId(), (string) $obj->getSoftwareRequestId()));
 			} // if key === null
 			self::$instances[$key] = $obj;
 		}
@@ -304,7 +304,7 @@ abstract class BaseUserHasSoftwareRequestPeer {
 	{
 		if (Propel::isInstancePoolingEnabled() && $value !== null) {
 			if (is_object($value) && $value instanceof UserHasSoftwareRequest) {
-				$key = serialize(array((string) $value->getUserIduser(), (string) $value->getSoftwareRequestId()));
+				$key = serialize(array((string) $value->getUserId(), (string) $value->getSoftwareRequestId()));
 			} elseif (is_array($value) && count($value) === 2) {
 				// assume we've been passed a primary key
 				$key = serialize(array((string) $value[0], (string) $value[1]));
@@ -442,7 +442,7 @@ abstract class BaseUserHasSoftwareRequestPeer {
 			$con = Propel::getConnection(UserHasSoftwareRequestPeer::DATABASE_NAME, Propel::CONNECTION_READ);
 		}
 
-		$criteria->addJoin(UserHasSoftwareRequestPeer::USER_IDUSER, UserPeer::ID, $join_behavior);
+		$criteria->addJoin(UserHasSoftwareRequestPeer::USER_ID, UserPeer::ID, $join_behavior);
 
 		// symfony_behaviors behavior
 		foreach (sfMixer::getCallables(self::getMixerPreSelectHook(__FUNCTION__)) as $sf_hook)
@@ -540,7 +540,7 @@ abstract class BaseUserHasSoftwareRequestPeer {
 		$startcol = (UserHasSoftwareRequestPeer::NUM_COLUMNS - UserHasSoftwareRequestPeer::NUM_LAZY_LOAD_COLUMNS);
 		UserPeer::addSelectColumns($criteria);
 
-		$criteria->addJoin(UserHasSoftwareRequestPeer::USER_IDUSER, UserPeer::ID, $join_behavior);
+		$criteria->addJoin(UserHasSoftwareRequestPeer::USER_ID, UserPeer::ID, $join_behavior);
 
 		// symfony_behaviors behavior
 		foreach (sfMixer::getCallables(self::getMixerPreSelectHook(__FUNCTION__)) as $sf_hook)
@@ -698,7 +698,7 @@ abstract class BaseUserHasSoftwareRequestPeer {
 			$con = Propel::getConnection(UserHasSoftwareRequestPeer::DATABASE_NAME, Propel::CONNECTION_READ);
 		}
 
-		$criteria->addJoin(UserHasSoftwareRequestPeer::USER_IDUSER, UserPeer::ID, $join_behavior);
+		$criteria->addJoin(UserHasSoftwareRequestPeer::USER_ID, UserPeer::ID, $join_behavior);
 
 		$criteria->addJoin(UserHasSoftwareRequestPeer::SOFTWARE_REQUEST_ID, SoftwareRequestPeer::ID, $join_behavior);
 
@@ -747,7 +747,7 @@ abstract class BaseUserHasSoftwareRequestPeer {
 		SoftwareRequestPeer::addSelectColumns($criteria);
 		$startcol4 = $startcol3 + (SoftwareRequestPeer::NUM_COLUMNS - SoftwareRequestPeer::NUM_LAZY_LOAD_COLUMNS);
 
-		$criteria->addJoin(UserHasSoftwareRequestPeer::USER_IDUSER, UserPeer::ID, $join_behavior);
+		$criteria->addJoin(UserHasSoftwareRequestPeer::USER_ID, UserPeer::ID, $join_behavior);
 
 		$criteria->addJoin(UserHasSoftwareRequestPeer::SOFTWARE_REQUEST_ID, SoftwareRequestPeer::ID, $join_behavior);
 
@@ -909,7 +909,7 @@ abstract class BaseUserHasSoftwareRequestPeer {
 			$con = Propel::getConnection(UserHasSoftwareRequestPeer::DATABASE_NAME, Propel::CONNECTION_READ);
 		}
 	
-		$criteria->addJoin(UserHasSoftwareRequestPeer::USER_IDUSER, UserPeer::ID, $join_behavior);
+		$criteria->addJoin(UserHasSoftwareRequestPeer::USER_ID, UserPeer::ID, $join_behavior);
 
 		// symfony_behaviors behavior
 		foreach (sfMixer::getCallables(self::getMixerPreSelectHook(__FUNCTION__)) as $sf_hook)
@@ -1035,7 +1035,7 @@ abstract class BaseUserHasSoftwareRequestPeer {
 		UserPeer::addSelectColumns($criteria);
 		$startcol3 = $startcol2 + (UserPeer::NUM_COLUMNS - UserPeer::NUM_LAZY_LOAD_COLUMNS);
 
-		$criteria->addJoin(UserHasSoftwareRequestPeer::USER_IDUSER, UserPeer::ID, $join_behavior);
+		$criteria->addJoin(UserHasSoftwareRequestPeer::USER_ID, UserPeer::ID, $join_behavior);
 
 		// symfony_behaviors behavior
 		foreach (sfMixer::getCallables(self::getMixerPreSelectHook(__FUNCTION__)) as $sf_hook)
@@ -1209,8 +1209,8 @@ abstract class BaseUserHasSoftwareRequestPeer {
 		if ($values instanceof Criteria) {
 			$criteria = clone $values; // rename for clarity
 
-			$comparison = $criteria->getComparison(UserHasSoftwareRequestPeer::USER_IDUSER);
-			$selectCriteria->add(UserHasSoftwareRequestPeer::USER_IDUSER, $criteria->remove(UserHasSoftwareRequestPeer::USER_IDUSER), $comparison);
+			$comparison = $criteria->getComparison(UserHasSoftwareRequestPeer::USER_ID);
+			$selectCriteria->add(UserHasSoftwareRequestPeer::USER_ID, $criteria->remove(UserHasSoftwareRequestPeer::USER_ID), $comparison);
 
 			$comparison = $criteria->getComparison(UserHasSoftwareRequestPeer::SOFTWARE_REQUEST_ID);
 			$selectCriteria->add(UserHasSoftwareRequestPeer::SOFTWARE_REQUEST_ID, $criteria->remove(UserHasSoftwareRequestPeer::SOFTWARE_REQUEST_ID), $comparison);
@@ -1301,7 +1301,7 @@ abstract class BaseUserHasSoftwareRequestPeer {
 				$values = array($values);
 			}
 			foreach ($values as $value) {
-				$criterion = $criteria->getNewCriterion(UserHasSoftwareRequestPeer::USER_IDUSER, $value[0]);
+				$criterion = $criteria->getNewCriterion(UserHasSoftwareRequestPeer::USER_ID, $value[0]);
 				$criterion->addAnd($criteria->getNewCriterion(UserHasSoftwareRequestPeer::SOFTWARE_REQUEST_ID, $value[1]));
 				$criteria->addOr($criterion);
 				// we can invalidate the cache for this single PK
@@ -1368,13 +1368,13 @@ abstract class BaseUserHasSoftwareRequestPeer {
 
 	/**
 	 * Retrieve object using using composite pkey values.
-	 * @param      int $user_iduser
+	 * @param      int $user_id
 	 * @param      int $software_request_id
 	 * @param      PropelPDO $con
 	 * @return     UserHasSoftwareRequest
 	 */
-	public static function retrieveByPK($user_iduser, $software_request_id, PropelPDO $con = null) {
-		$key = serialize(array((string) $user_iduser, (string) $software_request_id));
+	public static function retrieveByPK($user_id, $software_request_id, PropelPDO $con = null) {
+		$key = serialize(array((string) $user_id, (string) $software_request_id));
  		if (null !== ($obj = UserHasSoftwareRequestPeer::getInstanceFromPool($key))) {
  			return $obj;
 		}
@@ -1383,7 +1383,7 @@ abstract class BaseUserHasSoftwareRequestPeer {
 			$con = Propel::getConnection(UserHasSoftwareRequestPeer::DATABASE_NAME, Propel::CONNECTION_READ);
 		}
 		$criteria = new Criteria(UserHasSoftwareRequestPeer::DATABASE_NAME);
-		$criteria->add(UserHasSoftwareRequestPeer::USER_IDUSER, $user_iduser);
+		$criteria->add(UserHasSoftwareRequestPeer::USER_ID, $user_id);
 		$criteria->add(UserHasSoftwareRequestPeer::SOFTWARE_REQUEST_ID, $software_request_id);
 		$v = UserHasSoftwareRequestPeer::doSelect($criteria, $con);
 
