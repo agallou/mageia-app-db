@@ -15,15 +15,19 @@ create table rpmlinearized
   summary varchar(255),
   description varchar(45),
   buildtime timestamp,
+  url__1 text,
   rpm_size int,
   source_rpm text,
   license varchar(255),
   rpm_group varchar(255),
   arch varchar(45),
   media_name varchar(45), 
+  media_distrib__1 text,
   media_vendor varchar(255),
   version varchar(45),
+  media_arch__1 text,
   rpm_pkgid char(32)
+
 );
 
 load data local infile './tmp/reduced_file' into table rpmlinearized;
