@@ -1,0 +1,24 @@
+SELECT 
+  rpm.filename, 
+  hdrs.evr, 
+  hdrs.summary, 
+  hdrs.description, 
+  hdrs.buildtime, 
+  rpmqueryformat(hdrs.hdr, '\'%{URL}\''),
+  rpm.size, 
+  hdrs.hrpmfname, 
+  hdrs.license, 
+  hdrs.group, 
+  hdrs.arch, 
+  media.name,
+  media.distrib, 
+  media.vendor, 
+  media.version, 
+  media.arch,
+  hdrs.pkgid
+FROM rpm 
+  JOIN media ON rpm.pathkey = media.path
+  JOIN hdrs ON rpm.header = hdrs.key
+WHERE media.vendor = '\'Mandriva\''
+AND media.arch IN ('\'i586\'', '\'x86_64\'')
+LIMIT 100
