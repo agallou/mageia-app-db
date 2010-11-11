@@ -10,3 +10,4 @@ config/databases.yml
 .settings
 .buildpath
 doc/schema_mageia_packagedb.mwb.bak
+tmp/*
