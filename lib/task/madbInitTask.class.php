@@ -1,5 +1,5 @@
 <?php
-class madbInitTask extends sfBaseTask
+class madbInitTask extends madbBaseTask
 {
 
   protected function configure()

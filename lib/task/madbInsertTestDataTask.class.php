@@ -1,6 +1,8 @@
 <?php
-class madbInsertTestDataTask extends sfBaseTask
+class madbInsertTestDataTask extends madbBaseTask
 {
+
+  protected $propel = true;
 
   protected function configure()
   {
@@ -9,6 +11,7 @@ class madbInsertTestDataTask extends sfBaseTask
     $defaultUrl = 'http://stormi.lautre.net/fichiers/mageia/sophie-dump.gz';
     $this->addOption('url', null, sfCommandOption::PARAMETER_OPTIONAL, 'url where test data are stored', $defaultUrl);
     $this->addOption('limit', null, sfCommandOption::PARAMETER_OPTIONAL, 'number of files to keep in the imported file', false);
+    $this->propel = true;
   }
   protected function execute($arguments = array(), $options = array())
   {
@@ -31,9 +34,7 @@ class madbInsertTestDataTask extends sfBaseTask
     {
       $this->getFilesystem()->execute(sprintf('cat %s > tmp/reduced_file', $filenameGunzip));
     }
-    //TODO improve this
-    $this->getFilesystem()->execute('mysql -u root mageiaappdb < doc/import_from_sophie_dump.sql', array($this, 'log'), array($this, 'log'));
-
-   
+    $dbCli = new mysqlCliWrapper(dbInfosFactory::getDefault(), $this->getFilesystem());
+    $dbCli->executeFile('doc/import_from_sophie_dump.sql');
   }
 }
