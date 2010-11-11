@@ -29,7 +29,7 @@ class madbInsertTestDataTask extends sfBaseTask
     }
     else
     {
-      $this->getFilesystem()->execute(sprintf('cat %s > tmp/reducred_file', $filenameGunzip));
+      $this->getFilesystem()->execute(sprintf('cat %s > tmp/reduced_file', $filenameGunzip));
     }
     //TODO improve this
     $this->getFilesystem()->execute('mysql -u root mageiaappdb < doc/import_from_sophie_dump.sql', array($this, 'log'), array($this, 'log'));
