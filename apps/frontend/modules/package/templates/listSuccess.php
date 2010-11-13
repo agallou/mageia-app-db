@@ -1,9 +1,13 @@
 <h2><?php echo $title ?></h2>
+Total <?php echo strtolower($title) ?> : <?php echo $pager->getTotalRecordCount()?>
+</p>
 
-<?php if (count($packages)): ?>
+<?php $module = ($title == 'Packages') ? 'package' : 'application' ?>
+
+<?php include_partial('package/pager', array('pager' => $pager, 'module' => $module)); ?>
 <ul>
-  <?php foreach ($packages as $package): ?>
-    <li><?php echo link_to($package->getName(), ' package/show?id=' . $package->getId()); ?></li>
-  <?php endforeach; ?>
-  </ul>
-<?php endif; ?>
+<?php foreach ($pager as $package): ?>
+  <li><?php echo link_to($package->getName(), $module . '/show?id=' . $package->getid()); ?></li> 
+<?php endforeach; ?>
+</ul>
+<?php include_partial('package/pager', array('pager' => $pager, 'module' => $module)); ?>
