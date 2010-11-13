@@ -67,7 +67,7 @@ class madbInitTask extends madbBaseTask
 
     if ($options['insert-test-data'])
     {
-      $task = new sfPropelDataLoadTask($this->dispatcher, $this->formatter);
+      $task = new madbInsertTestDataTask($this->dispatcher, $this->formatter);
       $task->run();
     }
     $task = new sfCacheClearTask($this->dispatcher, $this->formatter);
