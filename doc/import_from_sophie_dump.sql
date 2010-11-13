@@ -56,6 +56,9 @@ select distinct version from rpmlinearized where version <> '';
 
 insert into package (name, md5_name)
 select distinct package_name, md5(package_name) from rpmlinearized;
+update package 
+set is_application = 1
+where left(name, 3) <> 'lib';
 
 insert into rpm (package_id, distrelease_id, media_id, rpm_group_id, licence, name, evr, version, `release`, `summary`, `description`, `url`, `src_rpm`)
 select package.id, distrelease.id, media.id, rpm_group.id, license, filename, evr, evr, evr, summary, description, NULL, source_rpm
