@@ -7,8 +7,9 @@ class madbInitTask extends madbBaseTask
     $this->namespace = 'madb';
     $this->name      = 'init';
     $this->aliases   = array('init');
-    $this->addOption('insert-test-data', null, sfCommandOption::PARAMETER_NONE, 'insérer les données de test');
-    $this->addOption('reinit', null, sfCommandOption::PARAMETER_NONE, 'reconfigurer bdd');
+    $this->addOption('insert-test-data', null, sfCommandOption::PARAMETER_NONE, 'insert test data');
+    $this->addOption('reinit', null, sfCommandOption::PARAMETER_NONE, 'reconfigure database connection information');
+    $this->addOption('no-confirmation', null, sfCommandOption::PARAMETER_NONE, 'do not ask any confirmation');
   }
   protected function execute($arguments = array(), $options = array())
   {
@@ -63,7 +64,12 @@ class madbInitTask extends madbBaseTask
     $task->run();
 
     $task = new sfPropelInsertSqlTask($this->dispatcher, $this->formatter);
-    $task->run(array(), array());
+    $tOptions = array();
+    if ($options['no-confirmation'])
+    {
+      $tOptions[] = 'no-confirmation';
+    }
+    $task->run(array(), $tOptions);
 
     if ($options['insert-test-data'])
     {
