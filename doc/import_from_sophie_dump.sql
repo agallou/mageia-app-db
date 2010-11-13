@@ -53,8 +53,6 @@ select distinct version from rpmlinearized where version <> '';
 insert into package (name, md5_name)
 select distinct filename, md5(filename) from rpmlinearized;
 
-/* TODO ajouter un index sur package.name */
-/* TODO supprimer index unique_name sur media et en ajouter un unique_media_vendor) */
 insert into rpm (package_id, distrelease_id, media_id, rpm_group_id, licence, name, evr, version, `release`, `summary`, `description`, `url`, `src_rpm`)
 select package.id, distrelease.id, media.id, rpm_group.id, license, filename, evr, evr, evr, summary, description, NULL, source_rpm
 from rpmlinearized, package, distrelease, media, rpm_group
@@ -64,7 +62,6 @@ where rpmlinearized.filename = package.name
   and rpmlinearized.media_vendor = media.vendor
   and rpmlinearized.rpm_group = rpm_group.name
 ;
-/* TODO ajouter index sur rpm.name */
 insert into rpmfile (rpm_pkgid, build_time, arch_id, rpm_id, `size`, arch)
 select rpmlinearized.rpm_pkgid, rpmlinearized.buildtime, arch.id, rpm.id, rpmlinearized.rpm_size, arch.name
 from rpmlinearized, arch, rpm

@@ -742,7 +742,7 @@ abstract class BaseMediaPeer {
 	 */
 	static public function getUniqueColumnNames()
 	{
-	  return array(array('name'));
+	  return array(array('name', 'vendor'));
 	}
 
 	// symfony_behaviors behavior

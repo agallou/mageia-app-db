@@ -4,6 +4,8 @@ propel:
     name:                                                              { type: varchar(1024), required: true }
     md5_name:                                                          { type: char, size:32, required: true }
     is_application:                                                    { type: boolean, required: true }
+    _indexes:
+      unique_name:                                                     [ name ]
     _uniques:
       unique_md5_name:                                                 [ md5_name ]
   rpm:
@@ -26,6 +28,7 @@ propel:
       fk_rpm_package1:                                                 [ package_id ]
       fk_rpm_rpm_group1:                                               [ rpm_group_id ]
       fk_rpm_media1:                                                   [ media_id ]
+      index_name:                                                      [ name ]
   distrelease:
     id:                                                                ~
     name:                                                              { type: varchar(45), required: true }
@@ -139,7 +142,7 @@ propel:
     name:                                                              { type: varchar(45), required: true }
     vendor:                                                            { type: varchar(255), required: true }
     _uniques:
-      unique_name:                                                     [ name ]
+      unique_name:                                                     [ name, vendor ]
   notification:
     id:                                                                ~
     user_id:                                                           { type: integer, required: true, foreignTable: user, foreignReference: id }
