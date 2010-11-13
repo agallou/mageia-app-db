@@ -38,6 +38,10 @@ alter table rpmlinearized add index index_media (media_name, media_vendor);
 alter table rpmlinearized add index index_group (rpm_group);
 alter table rpmlinearized add index index_arch (arch);
 
+alter table rpmlinearized add package_name varchar(255);
+update rpmlinearized
+set package_name = SUBSTRING_INDEX(filename, '-', 1);
+
 insert into rpm_group (name)
 select distinct rpm_group from rpmlinearized where rpm_group <> '';
 
@@ -51,12 +55,12 @@ insert into distrelease (name)
 select distinct version from rpmlinearized where version <> '';
 
 insert into package (name, md5_name)
-select distinct filename, md5(filename) from rpmlinearized;
+select distinct package_name, md5(package_name) from rpmlinearized;
 
 insert into rpm (package_id, distrelease_id, media_id, rpm_group_id, licence, name, evr, version, `release`, `summary`, `description`, `url`, `src_rpm`)
 select package.id, distrelease.id, media.id, rpm_group.id, license, filename, evr, evr, evr, summary, description, NULL, source_rpm
 from rpmlinearized, package, distrelease, media, rpm_group
-where rpmlinearized.filename = package.name
+where rpmlinearized.package_name = package.name
   and rpmlinearized.version = distrelease.name
   and rpmlinearized.media_name = media.name
   and rpmlinearized.media_vendor = media.vendor
