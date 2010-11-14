@@ -15,7 +15,7 @@ create table rpmlinearized
   summary varchar(255),
   description varchar(45),
   buildtime timestamp,
-  url__1 text,
+  url text,
   rpm_size int,
   source_rpm text,
   license varchar(255),
@@ -67,7 +67,7 @@ where left(name, 3) <> 'lib'
 
 
 insert into rpm (package_id, distrelease_id, media_id, rpm_group_id, licence, name, evr, version, `release`, `summary`, `description`, `url`, `src_rpm`)
-select package.id, distrelease.id, media.id, rpm_group.id, license, filename, evr, evr, evr, summary, description, NULL, source_rpm
+select package.id, distrelease.id, media.id, rpm_group.id, license, filename, evr, evr, evr, summary, description, url, source_rpm
 from rpmlinearized, package, distrelease, media, rpm_group
 where rpmlinearized.package_name = package.name
   and rpmlinearized.version = distrelease.name
