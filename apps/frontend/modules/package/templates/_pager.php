@@ -16,7 +16,7 @@
 <?php endforeach; ?>
     </td>
     <td>
-      <?php $pager->getPage()?></td>
+      <?php echo $pager->getPage()?></td>
     <td>
 <?php foreach ($pager->getNextLinks() as $link): ?>
       - <?php echo link_to($link, $module . '/list?page=' . $link) ?>
