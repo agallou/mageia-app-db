@@ -10,7 +10,7 @@ class madbInsertTestDataTask extends madbBaseTask
     $this->name      = 'insert-test-data';
     $defaultUrl = 'http://stormi.lautre.net/fichiers/mageia/sophie-dump.gz';
     $this->addOption('url', null, sfCommandOption::PARAMETER_OPTIONAL, 'url where test data are stored', $defaultUrl);
-    $this->addOption('limit', null, sfCommandOption::PARAMETER_OPTIONAL, 'number of files to keep in the imported file', false);
+    $this->addOption('limit', null, sfCommandOption::PARAMETER_OPTIONAL, 'number of lines to keep in the imported file', false);
     $this->propel = true;
   }
   protected function execute($arguments = array(), $options = array())
