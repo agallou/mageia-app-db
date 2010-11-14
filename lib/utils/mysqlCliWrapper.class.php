@@ -38,4 +38,9 @@ class mysqlCliWrapper
   {
     $this->getFilesystem()->execute(sprintf('mysql %s < %s', $this->getArgs(), $filePath));
   }
+
+  public function execute($sql)
+  {
+    $this->getFilesystem()->execute(sprintf('mysql %s -e "%s"', $this->getArgs(), $sql));
+  }
 }
