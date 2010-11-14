@@ -40,7 +40,7 @@ alter table rpmlinearized add index index_arch (arch);
 
 alter table rpmlinearized add package_name varchar(255);
 update rpmlinearized
-set package_name = SUBSTRING_INDEX(filename, '-', 1);
+set package_name = LCASE(SUBSTRING(filename, 1, LENGTH(filename) - (LENGTH(SUBSTRING_INDEX(filename, '-', -2))+1)));
 
 insert into rpm_group (name)
 select distinct rpm_group from rpmlinearized where rpm_group <> '';
