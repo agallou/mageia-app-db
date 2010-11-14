@@ -3,34 +3,34 @@
     <td>
 <?php if ($link = $pager->getFirstPage()): ?>
       <?php echo link_to($link, $module . '/list?page=' . $link) ?>
-<?endif ?>
+<?php endif; ?>
     </td>
     <td>
 <?php if ($link = $pager->getPrev()):?>
       <?php echo link_to('Previous', $module . '/list?page=' . $link) ?>
-<?php endif?>
+<?php endif; ?>
     </td>
     <td>
 <?php foreach ($pager->getPrevLinks() as $link): ?>
       <?php echo link_to($link, $module . '/list?page=' . $link) ?> - 
-<?php endforeach?>
+<?php endforeach; ?>
     </td>
     <td>
       <?php $pager->getPage()?></td>
     <td>
-<?php foreach ($pager->getNextLinks() as $link):?>
+<?php foreach ($pager->getNextLinks() as $link): ?>
       - <?php echo link_to($link, $module . '/list?page=' . $link) ?>
-<?php endforeach?>
+<?php endforeach; ?>
     </td>
     <td>
-<?php if ($link = $pager->getNext()):?>
+<?php if ($link = $pager->getNext()): ?>
       <?php echo link_to('Next', $module . '/list?page=' . $link) ?>
-<?php endif ?>
+<?php endif; ?>
     </td>
     <td>
-<?php if ($link = $pager->getLastPage()):?>
+<?php if ($link = $pager->getLastPage()): ?>
       <?php echo link_to($link, $module . '/list?page=' . $link) ?>   
-<?php endif?>
+<?php endif; ?>
     </td>
   </tr>
 </table>
