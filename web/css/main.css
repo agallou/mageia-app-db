@@ -17,8 +17,14 @@ body
   position:absolute;
   top:60;
   left:0;
-  width:15%;
+  width:20%;
   height:100%;
+}
+
+#menu li
+{
+  font-family:verdana;
+  font-size:x-small;
 }
 
 #content
@@ -26,7 +32,7 @@ body
   position:absolute;
   top:60;
   right:0;
-  width:85%;
+  width:80%;
   height:100%;
 }
 
