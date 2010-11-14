@@ -16,21 +16,21 @@
 <?php endforeach?>
     </td>
     <td>
-      <?=$pager->getPage()?></td>
+      <?php $pager->getPage()?></td>
     <td>
-<?foreach ($pager->getNextLinks() as $link):?>
+<?php foreach ($pager->getNextLinks() as $link):?>
       - <?php echo link_to($link, $module . '/list?page=' . $link) ?>
-<?endforeach?>
+<?php endforeach?>
     </td>
     <td>
-<?if ($link = $pager->getNext()):?>
+<?php if ($link = $pager->getNext()):?>
       <?php echo link_to('Next', $module . '/list?page=' . $link) ?>
 <?php endif ?>
     </td>
     <td>
-<?if ($link = $pager->getLastPage()):?>
+<?php if ($link = $pager->getLastPage()):?>
       <?php echo link_to($link, $module . '/list?page=' . $link) ?>   
-<?endif?>
+<?php endif?>
     </td>
   </tr>
 </table>
