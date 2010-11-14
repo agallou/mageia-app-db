@@ -13,6 +13,7 @@ class listAction extends sfActions
     }
     $criteria = new Criteria();
     $criteria->add(PackagePeer::IS_APPLICATION, true);
+    $criteria->addAscendingOrderByColumn(PackagePeer::NAME);
     $this->pager = new PropelPager($criteria, Package::PEER, 'doSelect', $page, 50);
     $this->title = 'Applications';
     $this->setTemplate('list', 'package');

@@ -11,7 +11,9 @@ class listAction extends sfActions
     {
       $page = 1;
     }
-    $this->pager = new PropelPager(new Criteria(), Package::PEER, 'doSelect', $page, 50);
+    $criteria = new Criteria();
+    $criteria->addAscendingOrderByColumn(PackagePeer::NAME);
+    $this->pager = new PropelPager($criteria, Package::PEER, 'doSelect', $page, 50);
     $this->title = 'Packages';
   }
 
