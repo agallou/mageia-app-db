@@ -15,6 +15,7 @@ class madbInsertTestDataTask extends madbBaseTask
   }
   protected function execute($arguments = array(), $options = array())
   {
+    sfContext::createInstance($this->createConfiguration('frontend', 'prod'));
     $this->getFilesystem()->mkdirs('tmp/');
     $filename = 'tmp/tmp_dump_sophie.gz';
     if (!file_exists($filename))
