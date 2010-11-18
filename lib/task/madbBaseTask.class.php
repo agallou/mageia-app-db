@@ -5,10 +5,12 @@ abstract class madbBaseTask extends sfBaseTask
 
   public function initialize(sfEventDispatcher $dispatcher, sfFormatter $formatter)
   {
-    if ($this->propel)
+    /*
+    if ($this->propel === true)
     {
       sfContext::createInstance($this->createConfiguration('frontend', 'prod'));
     }
+    */
     parent::initialize($dispatcher, $formatter);
   }
 
