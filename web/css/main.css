@@ -7,6 +7,7 @@ body
 {
   position:relative;
   height:60px;
+  background-color:#4156F2;
 }
 
 #global
@@ -44,6 +45,83 @@ body
   right:5px;
   text-align:right;
 }
+
+
+
+
+
+
+
+
+
+
+#user_infos a
+{
+  color:black;
+  font-weight:bold;
+  font-family:verdana;
+  font-size:small;
+}
+
+h1
+{
+  font-family:verdana;
+  border-bottom: 1px solid black;
+  font-size:x-large;
+}
+
+div.pager
+{
+/*  margin-left:auto;
+  margin-right:auto;
+  width:100%*/
+  text-align:center;
+}
+
+.pager li
+{
+  display: inline;
+  border : 1px solid #B6BADB;
+  padding: 2px;
+  font-family:verdana;
+  font-size:small;
+}
+
+.pager li.current
+{
+  color:#4156F2;
+  font-weight:bold;
+}
+
+.pager li:hover
+{
+  background-color:#4156F2;
+}
+
+.pager a, .pager a:visited
+{
+  text-decoration:none;
+  color:black;
+}
+
+.pager p
+{
+  font-style:italic;
+  font-family:verdana;
+  font-size:x-small;
+  margin-top:-5px;
+}
+
+
+
+
+
+
+
+
+
+
+
 
 
 

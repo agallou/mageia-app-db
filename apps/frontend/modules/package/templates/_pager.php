@@ -1,37 +1,26 @@
-<table>
-  <tr>
-    <td>
+<div class="pager">
+<ul>
 <?php if ($link = $pager->getFirstPage()): ?>
-      <?php echo link_to($link, $module . '/list?page=' . $link . '&' . http_build_query(array('application' => $madbcontext->getParameter('application')))) ?>
+  <li><?php echo link_to(htmlentities('<<') . 'First', $module . '/list?page=' . $link) ?></li>
 <?php endif; ?>
-    </td>
-    <td>
 <?php if ($link = $pager->getPrev()):?>
-      <?php echo link_to('Previous', $module . '/list?page=' . $link . '&' . http_build_query(array('application' => $madbcontext->getParameter('application')))) ?>
+  <li><?php echo link_to(htmlentities('<') . 'Previous', $module . '/list?page=' . $link) ?></li>
 <?php endif; ?>
-    </td>
-    <td>
 <?php foreach ($pager->getPrevLinks() as $link): ?>
-      <?php echo link_to($link, $module . '/list?page=' . $link . '&'  . http_build_query(array('application' => $madbcontext->getParameter('application'))))  ?> - 
+  <li><?php echo link_to($link, $module . '/list?page=' . $link) ?></li>
 <?php endforeach; ?>
-    </td>
-    <td>
-      <?php echo $pager->getPage()?></td>
-    <td>
+  <li class="current"><?php echo $pager->getPage()?></li>
 <?php foreach ($pager->getNextLinks() as $link): ?>
-      - <?php echo link_to($link, $module . '/list?page=' . $link . '&' . http_build_query(array('application' => $madbcontext->getParameter('application')))) ?>
+  <li><?php echo link_to($link, $module . '/list?page=' . $link) ?></li>
 <?php endforeach; ?>
-    </td>
-    <td>
 <?php if ($link = $pager->getNext()): ?>
-      <?php echo link_to('Next', $module . '/list?page=' . $link .'&' .  http_build_query(array('application' => $madbcontext->getParameter('application')))) ?>
+  <li><?php echo link_to('Next' . htmlentities('>'), $module . '/list?page=' . $link) ?></li>
 <?php endif; ?>
-    </td>
-    <td>
 <?php if ($link = $pager->getLastPage()): ?>
-      <?php echo link_to($link, $module . '/list?page=' . $link .'&' .  http_build_query(array('application' => $madbcontext->getParameter('application')))) ?>   
+  <li><?php echo link_to('Last' . htmlentities('>>') ,$module . '/list?page=' . $link) ?></li>
 <?php endif; ?>
-    </td>
-  </tr>
-</table>
-
+</ul>
+<?php if (isset($message)): ?>
+  <p><?php echo sprintf($message, $pager->getTotalRecordCount()) ?></p>
+<?php endif; ?>
+</div>
