@@ -3,13 +3,13 @@
   <li>
     Latest
     <ul>
-      <li>Updates</li>
-      <li>Backports</li>
-      <li>Testing</li>
+      <li>Updates (security and bugfix)</li>
+      <li>Backports (new soft versions)</li>
+      <li>Packages awaiting testing</li>
     </ul>
   </li>
   <li>
-    Browse
+    Browse applications/packages
     <ul>
       <li>By group</li>
       <li>By popularity</li>
@@ -22,7 +22,7 @@
     Requests
     <ul>
       <li>Backports requests</li>
-      <li>New soft requests</li>
+      <li>New soft request</li>
     </ul>
   </li>
 <?php if($sf_user->isAuthenticated()) : ?>
