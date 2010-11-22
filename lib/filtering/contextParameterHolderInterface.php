@@ -1,7 +1,6 @@
-<php 
+<?php 
 interface contextParameterHolderInterface
 {
 
-  public function getParameter();
-    public function
+//  public function getParameter();
 }

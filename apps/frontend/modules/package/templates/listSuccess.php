@@ -1,4 +1,10 @@
 <h2><?php echo $title ?></h2>
+
+<form>
+<?php echo $form ?>
+<input type="submit" value="Filter" />
+</form>
+
 Total <?php echo strtolower($title) ?> : <?php echo $pager->getTotalRecordCount()?>
 </p>
 

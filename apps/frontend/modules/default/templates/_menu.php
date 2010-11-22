@@ -13,9 +13,7 @@
     <ul>
       <li>By group</li>
       <li>By popularity</li>
-      <li>By name</li>
-      <li><?php echo link_to('Packages', 'package/list'); ?></li>
-      <li><?php echo link_to('Applications', 'application/list'); ?></li> 
+      <li><?php echo link_to('By name', 'package/list'); ?></li>
     </ul>
   </li>
   <li>
