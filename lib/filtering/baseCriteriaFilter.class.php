@@ -56,4 +56,5 @@ abstract class baseCriteriaFilter
 
   abstract public function configureForm(sfForm $form);
 
+  abstract public function getPerimeter();
 }

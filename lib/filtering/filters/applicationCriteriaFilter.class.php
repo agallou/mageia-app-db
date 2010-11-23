@@ -2,6 +2,11 @@
 class applicationCriteriaFilter extends baseCriteriaFilterChoice
 {
 
+  public function getPerimeter()
+  {
+    return filterPerimeters::PACKAGE;
+  }
+
   public function getValues()
   {
     return array(
@@ -23,7 +28,10 @@ class applicationCriteriaFilter extends baseCriteriaFilterChoice
     //TODO liste avec opérandes ????
     //plusieurs fois le même parameterHolder ??? pas de context ???
     $value = $context->getParameter('application');
-    $criteria->addAnd(PackagePeer::IS_APPLICATION, $value);
+    if (null !== $value && $value != '_no_')
+    {
+      $criteria->addAnd(PackagePeer::IS_APPLICATION, $value);
+    }
     return $criteria;
   }
 

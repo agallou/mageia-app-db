@@ -8,7 +8,8 @@ abstract class baseCriteriaFilterChoice extends baseCriteriaFilter
   {
     $values = array();
     $values['_no_'] = 'Choice...';
-    $values = array_merge($values, $this->getValues());
+//    $values = array_merge($values, $this->getValues());
+    $values = $values + $this->getValues();
     $form->setWidget($this->getCode(), new sfWidgetFormChoice(array('choices' => $values)));
     return $form;
   }
