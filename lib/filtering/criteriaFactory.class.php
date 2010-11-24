@@ -27,13 +27,26 @@ class criteriaFactory
         $criteria = self::applyFilterOnOtherPerimeter($filter, $criteria);
       }
     }
-
     return $criteria;
   }
 
   protected static function applyFilterOnOtherPerimeter($filter, $criteria)
   {
-    return $filter->getFilteredCriteria();
+    $criteriaOrig = $criteria;
+    $criteria = clone $criteria;
+    $criteria->clearSelectColumns();
+    //TODO by perimeter select
+    $criteria->addSelectColumn(PackagePeer::ID);
+    $criteria->setDistinct();
+    $filter->setCriteria($criteria);
+    $filter->getFilteredCriteria();
+    $toTmp = new criteriaToTemporaryTable($criteria, 'tmp_filtrage');
+    $toTmp->setConnection(Propel::getConnection());
+    $toTmp->execute();
+    $criteria = $criteriaOrig;
+    //TODO by perumeter join
+    $criteria->addJoin(PackagePeer::ID, $toTmp->getField('id'), Criteria::JOIN);
+    return $criteria;
   }
 
 }

@@ -10,8 +10,8 @@ class applicationCriteriaFilter extends baseCriteriaFilterChoice
   public function getValues()
   {
     return array(
-      '0' => 'Oui',
-      '1' => 'Non',
+      '1' => 'Oui',
+      '0' => 'Non',
     );
   }
 

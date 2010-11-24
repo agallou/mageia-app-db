@@ -14,7 +14,7 @@ class listAction extends madbActions
     $criteria = $this->getCriteria(filterPerimeters::PACKAGE);
     $criteria->addAscendingOrderByColumn(PackagePeer::NAME);
     $this->pager = new PropelPager($criteria, Package::PEER, 'doSelect', $page, 50);
-    $this->form  = formFactory::create();
+    $this->form  = formFactory::create($this->getMadbContext());
   }
 
 }

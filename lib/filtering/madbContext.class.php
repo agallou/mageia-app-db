@@ -12,7 +12,6 @@ class madbContext
   public function getParameter($name)
   {
     return $this->parameterHolder->get($name);
-
   }
 
 }

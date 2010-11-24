@@ -34,20 +34,9 @@ class groupCriteriaFilter extends baseCriteriaFilterChoice
     $value = $context->getParameter('group');
     if (null !== $value)
     { 
-      $criteriaOrig = $criteria;
-      $criteria = clone $criteria;
-      $criteria->clearSelectColumns();
-      $criteria->addSelectColumn(PackagePeer::ID);
       $criteria->addJoin(PackagePeer::ID, RpmPeer::PACKAGE_ID, Criteria::JOIN);
       $criteria->addJoin(RpmPeer::RPM_GROUP_ID, RpmGroupPeer::ID, Criteria::JOIN);
       $criteria->addAnd(RpmGroupPeer::ID, $value);
-
-      $toTmp = new criteriaToTemporaryTable($criteria, 'tmp_filtrage');
-      $toTmp->setConnection(Propel::getConnection());
-      $toTmp->execute();
-
-      $criteria = $criteriaOrig;
-      $criteria->addJoin(PackagePeer::ID, $toTmp->getField('id'), Criteria::JOIN);
     }
     return $criteria;
   }
