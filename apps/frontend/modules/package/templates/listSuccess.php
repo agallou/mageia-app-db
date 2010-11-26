@@ -4,6 +4,7 @@
 <?php echo $form ?>
 <input type="submit" value="Filter" />
 </form>
+<div id="newgroup1"><p id="newgroup"></p></div>
 
 Total : <?php echo $pager->getTotalRecordCount()?>
 </p>

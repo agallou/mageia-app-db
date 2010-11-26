@@ -44,3 +44,12 @@ body
   right:5px;
   text-align:right;
 }
+
+
+#newgroup1
+{
+  position:absolute;
+  height:150px;
+  background-color:green;
+  overflow:auto;
+}
