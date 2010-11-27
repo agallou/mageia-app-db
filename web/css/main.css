@@ -46,26 +46,47 @@ body
 }
 
 
-#newgroup1
+
+
+.new1
 {
 /*  position:absolute;*/
   height:150px;
-  background-color:green;
+  background-color:#ccc;
   overflow:auto;
+/*  border:1px solid black;*/
 /*  width:300px;*/
 
   position:absolute;
 /*  left:10px;*/
 }
 
-#newgroup1 span
+.new1 span
 {
   font-family:verdana;
   font-size:small;
 }
 
-#spangroup
+.span
 {
-  border:1px solid black;
-  padding:1px;
+  border:1px solid;
+  padding:2px 5px 2px 5px ;
+  font-size:small;
+  border-color: #ccc #666 #666 #ccc; 
+  color:#000;
+}
+
+.span:hover
+{
+  border-color: #666; 
+}
+
+.new
+{
+  margin-top:4px;
+}
+
+.fleche
+{
+  font-weight:bold;
 }
