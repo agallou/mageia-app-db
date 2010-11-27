@@ -48,8 +48,24 @@ body
 
 #newgroup1
 {
-  position:absolute;
+/*  position:absolute;*/
   height:150px;
   background-color:green;
   overflow:auto;
+/*  width:300px;*/
+
+  position:absolute;
+/*  left:10px;*/
+}
+
+#newgroup1 span
+{
+  font-family:verdana;
+  font-size:small;
+}
+
+#spangroup
+{
+  border:1px solid black;
+  padding:1px;
 }
