@@ -50,21 +50,25 @@ body
 
 .new1
 {
-/*  position:absolute;*/
   height:150px;
   background-color:#ccc;
   overflow:auto;
-/*  border:1px solid black;*/
-/*  width:300px;*/
-
+  border:1px solid #996A75;
   position:absolute;
-/*  left:10px;*/
 }
 
 .new1 span
 {
   font-family:verdana;
   font-size:small;
+}
+
+.new1 input
+{
+  width:95%;
+  margin-left:2px;
+  margin-top:2px;
+  
 }
 
 .span
@@ -86,7 +90,19 @@ body
   margin-top:4px;
 }
 
+div.apply
+{
+  text-align:center;
+  font-weight:bold;
+  margin:1px 5px 1px 5px;
+}
+
+div.apply:hover
+{
+  background-color:#666;
+  cursor:pointer;
+}
 .fleche
 {
-  font-weight:bold;
+  font-weight:bolder;
 }

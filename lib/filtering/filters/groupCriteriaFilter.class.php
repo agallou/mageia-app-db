@@ -34,9 +34,10 @@ class groupCriteriaFilter extends baseCriteriaFilterChoice
     $value = $context->getParameter('group');
     if (null !== $value)
     { 
+      $value = explode(',', $value);
       $criteria->addJoin(PackagePeer::ID, RpmPeer::PACKAGE_ID, Criteria::JOIN);
       $criteria->addJoin(RpmPeer::RPM_GROUP_ID, RpmGroupPeer::ID, Criteria::JOIN);
-      $criteria->addAnd(RpmGroupPeer::ID, $value);
+      $criteria->addAnd(RpmGroupPeer::ID, $value, Criteria::IN);
     }
     return $criteria;
   }

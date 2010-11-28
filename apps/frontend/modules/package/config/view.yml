@@ -1,3 +1,6 @@
 showSuccess:
   stylesheets:
     - package.css
+listSuccess:
+  javascripts:
+    - list.js

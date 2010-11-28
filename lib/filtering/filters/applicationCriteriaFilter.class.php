@@ -28,9 +28,23 @@ class applicationCriteriaFilter extends baseCriteriaFilterChoice
     //TODO liste avec opérandes ????
     //plusieurs fois le même parameterHolder ??? pas de context ???
     $value = $context->getParameter('application');
-    if (null !== $value && $value != '_no_')
+    if (null !== $value)
     {
-      $criteria->addAnd(PackagePeer::IS_APPLICATION, $value);
+      $value = explode(',', $value);
+      $criterion = null;
+      foreach ($value as $val)
+      {
+        $unCriterion = $criteria->getNewCriterion(PackagePeer::IS_APPLICATION, (bool)$val);
+        if (is_null($criterion))
+        {
+          $criterion = $unCriterion;
+        }
+        else
+        {
+          $criterion->addOr($unCriterion);
+        }
+      }
+      $criteria->addAnd($criterion);
     }
     return $criteria;
   }
