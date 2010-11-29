@@ -1,7 +1,8 @@
 (function($){
   $.fn.selectToCheckboxes = function(options) {
     var settings = {
-      apply: function(){}
+      apply: function(){},
+      defaults: [],
     }
     if (options)
     {
@@ -51,7 +52,12 @@
       });
       $.each(foo, function(key, value)
       {
-        div.append('<span id="span_' + value[0] + '"><input type="checkbox" name="' + selectId+  '" value="' + value[0] + '" id="inp_'+ value[0] + '" /><label for="inp_' + value[0] + '">' + value[1] + '</label><br /></span>');
+        var checked = '';
+        if (jQuery.inArray(value[0], settings.defaults) > -1)
+        {
+          checked = 'checked="checked"'
+        }
+        div.append('<span id="span_' + value[0] + '"><input type="checkbox" name="' + selectId+  '" value="' + value[0] + '" ' + checked  + ' id="inp_'+ value[0] + '" /><label for="inp_' + value[0] + '">' + value[1] + '</label><br /></span>');
       });
       ng1.toggle();
       select.remove();

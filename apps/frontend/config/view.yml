@@ -14,7 +14,10 @@ default:
 
   stylesheets:    [main.css]
 
-  javascripts:    ['jquery-1.4.4.js', 'jquery.base64.min.js' , 'selectToCheckboxes.js']
+  javascripts:
+    - jquery-1.4.4.js
+    - jquery.base64.min.js
+    - jquery.selectToCheckboxes.js
 
   has_layout:     true
   layout:         layout

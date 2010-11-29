@@ -1,9 +1,14 @@
 $(document).ready(function(){
 
   filtering = hashToFiltering(document.location.hash);
-  //TODO apply filtering.
-  $('#application').selectToCheckboxes({apply: function(d){afterCheckboxChange(d)}} );
-  $('#group').selectToCheckboxes({apply: function(d){afterCheckboxChange(d)}});
+  $('#application').selectToCheckboxes({
+    apply: function(d){afterCheckboxChange(d)},
+    defaults: filtering.application,
+  });
+  $('#group').selectToCheckboxes({
+    apply: function(d){afterCheckboxChange(d)},
+    defaults: filtering.group,
+  });
   $('form input[type=submit]').remove();
   updateResults(filtering);
 });
@@ -72,10 +77,6 @@ function filteringToLink(filtering)
     }
   });
   return 'http://mageia-app-db.localhost/frontend_dev.php/package/dolist' + link;
-}
-
-function updateFiltering(type, values, filtering)
-{
 }
 
 function updateResults(filtering)
