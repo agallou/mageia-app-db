@@ -1,7 +1,7 @@
 <ul>
   <li><?php echo link_to('Homepage', '@homepage'); ?></li>
   <li>
-    Latest
+      <h2>Latest</h2>
     <ul>
       <li>Updates (security and bugfix)</li>
       <li>Backports (new soft versions)</li>
@@ -9,7 +9,7 @@
     </ul>
   </li>
   <li>
-    Browse applications/packages
+      <h2>Browse applications/packages</h2>
     <ul>
       <li>By group</li>
       <li>By popularity</li>
@@ -19,13 +19,13 @@
     </ul>
   </li>
   <li>
-    Requests
+      <h2>Requests</h2>
     <ul>
       <li>Backports requests</li>
       <li>New soft request</li>
     </ul>
   </li>
 <?php if($sf_user->isAuthenticated()) : ?>
-  <li>My Account</li>
+  <li><h2>My Account</h2></li>
 <?php endif; ?>
 </ul>

@@ -5,7 +5,7 @@
 <?php include_partial('package/pager', array('pager' => $pager, 'module' => $module, 'message' => sprintf('(Total %s : %%s)', strtolower($title)))); ?>
 
 
-<ul>
+<ul class="packlist">
 <?php foreach ($pager as $package): ?>
   <li><?php echo link_to($package->getName(), 'package/show?id=' . $package->getid()); ?></li> 
 <?php endforeach; ?>
