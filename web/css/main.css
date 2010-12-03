@@ -13,7 +13,7 @@ html, body
 body
 {
     font: 14px "Lucida Grande", Lucida, Verdana, sans-serif;
-    background-color: black;
+
 }
 
 h1
@@ -25,11 +25,14 @@ h1
 {
     display: block;
 
-
-    background-color: red;
+    background-color: #EEEEEE;
+    
 
     min-height: 100%;
     height: 100%;
+
+    overflow: auto;
+
 }
 
 /* HEADER STUFF */
@@ -79,6 +82,7 @@ h1
 }
 */
 
+
 #menu
 {
   position: relative;
@@ -88,13 +92,14 @@ h1
   width: 17em;
   background-color: #EEEEEE;
 
-  border-right-width: 1px;
-  border-right-style: solid;
-  border-right-color: #DDDDDD;
+
   padding: 0.5em;
+
 
   min-height: 82%;
   height: 82%;
+
+  
 }
 
 #menu ul
@@ -129,10 +134,16 @@ h1
     width: auto;
     padding: 0.5em;
 
+    height:auto !important;
+
     min-height: 82%;
     height: 82%;
 
     display: block;
+
+    border-left-width: 1px;
+    border-left-style: solid;
+    border-left-color: #DDDDDD;
 }
 
 
