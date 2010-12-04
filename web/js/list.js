@@ -76,7 +76,8 @@ function filteringToLink(filtering)
       link += '/' + key + '/' + encodeURIComponent(value.join(','));
     }
   });
-  return 'http://mageia-app-db.localhost/frontend_dev.php/package/dolist' + link;
+  var baseUri = window.location.href.substr(0, (window.location.href.lastIndexOf('.php') + 4));
+  return baseUri + '/package/dolist' + link;
 }
 
 function updateResults(filtering)
