@@ -1,9 +1,11 @@
-<h2>Packages/Applications</h2>
+<h1>Packages/Applications</h1>
 
 <form>
 <?php echo $form ?>
 <input type="submit" value="Filter" />
 </form>
 
-<div id="results">
+<div>
+  <ul id="results">
+  </ul>
 </div>

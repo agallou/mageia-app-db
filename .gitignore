@@ -11,3 +11,4 @@ config/databases.yml
 .buildpath
 doc/schema_mageia_packagedb.mwb.bak
 tmp/*
+nbproject
