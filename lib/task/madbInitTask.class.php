@@ -48,7 +48,7 @@ class madbInitTask extends madbBaseTask
 
       if (!$options['db_pass'])
       {
-        $options['db_pass'] = $this->ask('database paswword (""):', 'QUESTION_LARGE', '');
+        $options['db_pass'] = $this->ask('database password (""):', 'QUESTION_LARGE', '');
       }
       $databases = str_replace('%%pass%%', $options['db_pass'], $databases);
       $propel    = str_replace('%%pass%%', $options['db_pass'], $propel);
