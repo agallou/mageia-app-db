@@ -76,10 +76,10 @@
           name    : selectId,
           val     : value[0],
           checked : (jQuery.inArray(value[0], settings.defaults) > -1),
-          id      : 'inp_' + value[0],
+          id      : 'inp_' + selectId + '_' + value[0],
          }).appendTo(jSpan);
         $('<label>', {
-          'for' : 'inp_' + value[0],
+          'for' : 'inp_' + selectId + '_' + value[0],
           text   : value[1],
         }).appendTo(jSpan);
         $('<br>').appendTo(jSpan);

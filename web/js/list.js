@@ -86,11 +86,28 @@ function updateResults(filtering)
     url: filteringToLink(filtering),
     dataType: 'json',
     success: function(datas){
+      updateFilteringInfos(filtering);
       $('#results').empty();
       $('#count').text(datas.total);
       $.each(datas.results, function (key, value){
         $('#results').append('<li><a href="' + value.link + '">' + value.name +  '</a></li>');
       });
     }
+  });
+}
+
+
+function updateFilteringInfos(filtering)
+{
+  $('#filtersInfo').empty();
+  $.each(filtering, function (key, value) {
+    var val = [];
+    $.each(value, function (key2, value2) {
+      var id = $('input:checkbox[name=' + key + '][value=' + value2 + ']').attr('id');
+      val[key2] = $('label[for="' + id + '"]').text();
+    });
+    $('#filtersInfo').append(
+      key + ' : ' + val.join(', ') + '<br />'
+    );
   });
 }
