@@ -19,19 +19,30 @@
       });
       var selectId = select.attr('id');
       var label = $('label[for=' + selectId + ']');
-      select.after('<span id="global_' + selectId + '"></span>');
-      var global = $('#global_' + selectId);
-      global.append('<span id="span' + selectId + '" class="span">' + label.text() + '<span class="fleche">&darr;</span></span>');
-      var spangroup = $('#span' + selectId);
-      $('#span' + selectId).click(function(){
+
+      var global = $('<span>', {id : 'global_' + selectId, });
+      select.after(global);
+
+      var spangroup = $('<span>', {
+        id      : 'span' + selectId,
+        'class' : 'span',
+        text    : label.text(),
+      });
+      $('<span>', { 'class' : 'fleche', html: '&darr;', }).appendTo(spangroup);
+      spangroup.appendTo(global);
+
+      spangroup.click(function(){
         document.getElementById('new' + selectId + '1').style.left = spangroup.position().left + 'px';
         $('#new' + selectId + '1').toggle();
       });
-      global.append('<div id="new' + selectId + '1" class="new1"><span id="new' + selectId  +  '" class="new"></span></div>');
-      var ng1 = $('#new' + selectId + '1');
-      var div = $('#new' + selectId);
-      div.append('<input type="text" id="recherche_' + selectId +  '" /><br />');
-      var recherche = $('#recherche_' + selectId);
+
+      var ng1 = $('<div>', { id : 'new' + selectId + '1', 'class' : 'new1', });
+      var div = $('<span>', { id: 'new' + selectId, 'class' : 'new' });
+      ng1.append(div);
+      global.append(ng1);
+      var recherche = $('<input>', { type: 'text', id: 'recherche_' + selectId});
+      div.append(recherche);
+      div.append('<br>');
       recherche.keyup(function(e){
         var letext = $(e.target).val();
         var regepx = new RegExp('/.*' + letext + '.*/');
@@ -44,20 +55,36 @@
           }
         });
       });
-      div.append('<div id="apply' + selectId + '" class="apply">Apply</div>');
-      var app = $('#apply' + selectId);
-      app.click(function(){
+
+      var jApply = $('<div>', {
+        id      : 'apply' + selectId,
+        'class' : 'apply',
+        text    : 'Apply',
+      });
+      jApply.appendTo(div);
+
+      jApply.click(function(){
         ng1.hide();
         settings.apply.apply(this, [$('input[name=' + selectId + ']:checked')]);
       });
       $.each(foo, function(key, value)
       {
-        var checked = '';
-        if (jQuery.inArray(value[0], settings.defaults) > -1)
-        {
-          checked = 'checked="checked"'
-        }
-        div.append('<span id="span_' + value[0] + '"><input type="checkbox" name="' + selectId+  '" value="' + value[0] + '" ' + checked  + ' id="inp_'+ value[0] + '" /><label for="inp_' + value[0] + '">' + value[1] + '</label><br /></span>');
+        var jSpan = $('<span>', { id: 'span_' + value[0], });
+
+        $("<input>", {
+          type    : "checkbox",
+          name    : selectId,
+          val     : value[0],
+          checked : (jQuery.inArray(value[0], settings.defaults) > -1),
+          id      : 'inp_' + value[0],
+         }).appendTo(jSpan);
+        $('<label>', {
+          'for' : 'inp_' + value[0],
+          text   : value[1],
+        }).appendTo(jSpan);
+        $('<br>').appendTo(jSpan);
+
+        div.append(jSpan);
       });
       ng1.toggle();
       select.remove();
