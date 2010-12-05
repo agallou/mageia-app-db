@@ -6,6 +6,7 @@
 </form>
 
 <div>
+  Total results : <span id="count"></span>
   <ul id="results">
   </ul>
 </div>

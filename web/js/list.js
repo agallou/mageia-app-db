@@ -87,7 +87,8 @@ function updateResults(filtering)
     dataType: 'json',
     success: function(datas){
       $('#results').empty();
-      $.each(datas, function (key, value){
+      $('#count').text(datas.total);
+      $.each(datas.results, function (key, value){
         $('#results').append('<li><a href="' + value.link + '">' + value.name +  '</a></li>');
       });
     }
