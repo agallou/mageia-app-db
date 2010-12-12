@@ -321,3 +321,9 @@ div.apply:hover
 {
   font-weight:bolder;
 }
+
+.todo 
+{
+  background-color:yellow;
+  font-weight:bold;
+}
