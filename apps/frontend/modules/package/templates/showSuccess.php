@@ -3,7 +3,7 @@
 <h2>Package details</h2>
 <p><span class='todo'>TODO : Add summary and description in DB so that we can print them</span></p>
 <h2>List of RPMs</h2>
-<p><br/><span class='todo'>TODO : apply global filters to the list + keep only binary RPMs + order by descending EVR version. + differentiate "release" packages, updates and backports, and from which media they come</span>
+<p><br/><span class='todo'>TODO : apply global filters to the list + keep only binary RPMs + order by descending EVR version. + differentiate "release" packages, updates and backports, and from which media they come. Show also distrelease (the one in package name is not good enough for that).</span>
 <br/><span class='todo'>TODO : show also RPM versions from other distreleases (you're browsing the 2011.0 release, 2011.1 has a newer version...).</span>
 </p>
 <ul>
