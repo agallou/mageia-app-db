@@ -53,7 +53,7 @@ h1
     right: 0;
 }
 
-#user_infos a, span
+#user_infos a, #user_infos span
 {
     text-decoration:none;
     color: white;
