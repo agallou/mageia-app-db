@@ -20,6 +20,6 @@ FROM rpm
   JOIN media ON rpm.pathkey = media.path
   JOIN hdrs ON rpm.header = hdrs.key
 WHERE media.vendor = '\'Mandriva\''
-AND (media.version = '\'cooker\'' OR (media.version >= '\'2007.0\'' AND media.version <= '\'2100\''))
+AND media.version <> '\'current\''
 AND media.arch IN ('\'i586\'', '\'x86_64\'')
-LIMIT 100
+LIMIT 10000

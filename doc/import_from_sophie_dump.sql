@@ -38,6 +38,25 @@ alter table rpmlinearized add index index_media (media_name, media_vendor);
 alter table rpmlinearized add index index_group (rpm_group);
 alter table rpmlinearized add index index_arch (arch);
 
+delete from rpmlinearized where version NOT IN (
+	'cooker', 
+	'2007.0',
+	'2007.1',
+	'2008.0',
+	'2008.1',
+	'2009.0',
+	'2009.1',
+	'2010.0',
+	'2010.1',
+	'2010.2',
+	'2011.0',
+	'2011.1',
+	'2012.0',
+	'2012.1',
+	'2013.0',
+	'2013.1'
+);
+
 alter table rpmlinearized add package_name varchar(255);
 update rpmlinearized
 set package_name = LCASE(SUBSTRING(filename, 1, LENGTH(filename) - (LENGTH(SUBSTRING_INDEX(filename, '-', -2))+1)));
