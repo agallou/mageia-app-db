@@ -10,7 +10,6 @@ $(document).ready(function(){
     defaults: filtering.group,
   });
   $('form input[type=submit]').remove();
-  updateResults(filtering);
 });
 
 
@@ -24,7 +23,6 @@ function afterCheckboxChange(changed)
     tmp = $(value).attr('name');
   });
   filtering[tmp] = vals;
-  document.location.hash = filteringToHash(filtering);
   updateResults(filtering);
 }
 
@@ -77,37 +75,12 @@ function filteringToLink(filtering)
     }
   });
   var baseUri = window.location.href.substr(0, (window.location.href.lastIndexOf('.php') + 4));
-  return baseUri + '/package/dolist' + link;
+  return baseUri + '/package/list' + link;
 }
 
 function updateResults(filtering)
 {
-  $.ajax({
-    url: filteringToLink(filtering),
-    dataType: 'json',
-    success: function(datas){
-      updateFilteringInfos(filtering);
-      $('#results').empty();
-      $('#count').text(datas.total);
-      $.each(datas.results, function (key, value){
-        $('#results').append('<li><a href="' + value.link + '">' + value.name +  '</a></li>');
-      });
-    }
-  });
+  window.location = filteringToLink(filtering);
 }
 
 
-function updateFilteringInfos(filtering)
-{
-  $('#filtersInfo').empty();
-  $.each(filtering, function (key, value) {
-    var val = [];
-    $.each(value, function (key2, value2) {
-      var id = $('input:checkbox[name=' + key + '][value=' + value2 + ']').attr('id');
-      val[key2] = $('label[for="' + id + '"]').text();
-    });
-    $('#filtersInfo').append(
-      key + ' : ' + val.join(', ') + '<br />'
-    );
-  });
-}
