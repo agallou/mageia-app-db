@@ -20,19 +20,27 @@ propel:
     version:                                                           { type: varchar(255), required: true }
     release:                                                           { type: varchar(255), required: true }
     summary:                                                           { type: varchar(255), required: true }
-    description:                                                       { type: varchar(45), required: true }
-    url:                                                               longvarchar
+    description:                                                       { type: longvarchar, required: true }
+    url:                                                               { type: longvarchar, required: true }
     src_rpm:                                                           { type: longvarchar, required: true }
+    rpm_pkgid:                                                         { type: char, size:32, required: true }
+    build_time:                                                        { type: timestamp, required: true }
+    size:                                                              { type: integer, required: true }
+    arch:                                                              { type: varchar(45), required: true }
+    arch_id:                                                           { type: integer, required: true, foreignTable: arch, foreignReference: id }
     _indexes:
       fk_rpm_distrelease1:                                             [ distrelease_id ]
       fk_rpm_package1:                                                 [ package_id ]
       fk_rpm_rpm_group1:                                               [ rpm_group_id ]
       fk_rpm_media1:                                                   [ media_id ]
       index_name:                                                      [ name ]
+      fk_rpm_arch1:                                                    [ arch_id ]
   distrelease:
     id:                                                                ~
     name:                                                              { type: varchar(45), required: true }
     is_meta:                                                           { type: boolean, required: true, default: false }
+    is_latest:                                                         { type: boolean, required: true, default: false }
+    is_dev_version:                                                    { type: boolean, required: true, default: false }
     _uniques:
       unique_name:                                                     [ name ]
   user:
@@ -180,14 +188,3 @@ propel:
     hash:                                                              { type: varchar(45), required: true }
     _uniques:
       hash_UNIQUE:                                                     [ hash ]
-  rpmfile:
-    id:                                                                ~
-    rpm_pkgid:                                                         { type: char, size:32, required: true }
-    build_time:                                                        timestamp
-    arch_id:                                                           { type: integer, required: true, foreignTable: arch, foreignReference: id }
-    rpm_id:                                                            { type: integer, required: true, foreignTable: rpm, foreignReference: id }
-    size:                                                              { type: integer, required: true }
-    arch:                                                              { type: varchar(45) }
-    _indexes:
-      fk_rpmfile_arch1:                                                [ arch_id ]
-      fk_rpmfile_rpm1:                                                 [ rpm_id ]

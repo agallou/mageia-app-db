@@ -47,9 +47,14 @@ class RpmTableMap extends TableMap {
 		$this->addColumn('VERSION', 'Version', 'VARCHAR', true, 255, null);
 		$this->addColumn('RELEASE', 'Release', 'VARCHAR', true, 255, null);
 		$this->addColumn('SUMMARY', 'Summary', 'VARCHAR', true, 255, null);
-		$this->addColumn('DESCRIPTION', 'Description', 'VARCHAR', true, 45, null);
-		$this->addColumn('URL', 'Url', 'LONGVARCHAR', false, null, null);
+		$this->addColumn('DESCRIPTION', 'Description', 'LONGVARCHAR', true, null, null);
+		$this->addColumn('URL', 'Url', 'LONGVARCHAR', true, null, null);
 		$this->addColumn('SRC_RPM', 'SrcRpm', 'LONGVARCHAR', true, null, null);
+		$this->addColumn('RPM_PKGID', 'RpmPkgid', 'CHAR', true, 32, null);
+		$this->addColumn('BUILD_TIME', 'BuildTime', 'TIMESTAMP', true, null, null);
+		$this->addColumn('SIZE', 'Size', 'INTEGER', true, null, null);
+		$this->addColumn('ARCH', 'Arch', 'VARCHAR', true, 45, null);
+		$this->addForeignKey('ARCH_ID', 'ArchId', 'INTEGER', 'arch', 'ID', true, null, null);
 		// validators
 	} // initialize()
 
@@ -62,7 +67,7 @@ class RpmTableMap extends TableMap {
     $this->addRelation('Distrelease', 'Distrelease', RelationMap::MANY_TO_ONE, array('distrelease_id' => 'id', ), null, null);
     $this->addRelation('Media', 'Media', RelationMap::MANY_TO_ONE, array('media_id' => 'id', ), null, null);
     $this->addRelation('RpmGroup', 'RpmGroup', RelationMap::MANY_TO_ONE, array('rpm_group_id' => 'id', ), null, null);
-    $this->addRelation('Rpmfile', 'Rpmfile', RelationMap::ONE_TO_MANY, array('id' => 'rpm_id', ), null, null);
+    $this->addRelation('ArchRelatedByArchId', 'Arch', RelationMap::MANY_TO_ONE, array('arch_id' => 'id', ), null, null);
 	} // buildRelations()
 
 	/**

@@ -46,8 +46,8 @@ class ArchTableMap extends TableMap {
 	 */
 	public function buildRelations()
 	{
+    $this->addRelation('Rpm', 'Rpm', RelationMap::ONE_TO_MANY, array('id' => 'arch_id', ), null, null);
     $this->addRelation('NotificationElement', 'NotificationElement', RelationMap::ONE_TO_MANY, array('id' => 'arch_id', ), null, null);
-    $this->addRelation('Rpmfile', 'Rpmfile', RelationMap::ONE_TO_MANY, array('id' => 'arch_id', ), null, null);
 	} // buildRelations()
 
 	/**

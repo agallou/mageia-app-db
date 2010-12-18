@@ -39,6 +39,8 @@ class DistreleaseTableMap extends TableMap {
 		$this->addPrimaryKey('ID', 'Id', 'INTEGER', true, null, null);
 		$this->addColumn('NAME', 'Name', 'VARCHAR', true, 45, null);
 		$this->addColumn('IS_META', 'IsMeta', 'BOOLEAN', true, null, false);
+		$this->addColumn('IS_LATEST', 'IsLatest', 'BOOLEAN', true, null, false);
+		$this->addColumn('IS_DEV_VERSION', 'IsDevVersion', 'BOOLEAN', true, null, false);
 		// validators
 	} // initialize()
 

@@ -103,6 +103,36 @@ abstract class BaseRpm extends BaseObject  implements Persistent {
 	protected $src_rpm;
 
 	/**
+	 * The value for the rpm_pkgid field.
+	 * @var        string
+	 */
+	protected $rpm_pkgid;
+
+	/**
+	 * The value for the build_time field.
+	 * @var        string
+	 */
+	protected $build_time;
+
+	/**
+	 * The value for the size field.
+	 * @var        int
+	 */
+	protected $size;
+
+	/**
+	 * The value for the arch field.
+	 * @var        string
+	 */
+	protected $arch;
+
+	/**
+	 * The value for the arch_id field.
+	 * @var        int
+	 */
+	protected $arch_id;
+
+	/**
 	 * @var        Package
 	 */
 	protected $aPackage;
@@ -123,14 +153,9 @@ abstract class BaseRpm extends BaseObject  implements Persistent {
 	protected $aRpmGroup;
 
 	/**
-	 * @var        array Rpmfile[] Collection to store aggregation of Rpmfile objects.
+	 * @var        Arch
 	 */
-	protected $collRpmfiles;
-
-	/**
-	 * @var        Criteria The criteria used to select the current contents of collRpmfiles.
-	 */
-	private $lastRpmfileCriteria = null;
+	protected $aArchRelatedByArchId;
 
 	/**
 	 * Flag to prevent endless save loop, if this object is referenced
@@ -288,6 +313,84 @@ abstract class BaseRpm extends BaseObject  implements Persistent {
 	public function getSrcRpm()
 	{
 		return $this->src_rpm;
+	}
+
+	/**
+	 * Get the [rpm_pkgid] column value.
+	 * 
+	 * @return     string
+	 */
+	public function getRpmPkgid()
+	{
+		return $this->rpm_pkgid;
+	}
+
+	/**
+	 * Get the [optionally formatted] temporal [build_time] column value.
+	 * 
+	 *
+	 * @param      string $format The date/time format string (either date()-style or strftime()-style).
+	 *							If format is NULL, then the raw DateTime object will be returned.
+	 * @return     mixed Formatted date/time value as string or DateTime object (if format is NULL), NULL if column is NULL, and 0 if column value is 0000-00-00 00:00:00
+	 * @throws     PropelException - if unable to parse/validate the date/time value.
+	 */
+	public function getBuildTime($format = 'Y-m-d H:i:s')
+	{
+		if ($this->build_time === null) {
+			return null;
+		}
+
+
+		if ($this->build_time === '0000-00-00 00:00:00') {
+			// while technically this is not a default value of NULL,
+			// this seems to be closest in meaning.
+			return null;
+		} else {
+			try {
+				$dt = new DateTime($this->build_time);
+			} catch (Exception $x) {
+				throw new PropelException("Internally stored date/time/timestamp value could not be converted to DateTime: " . var_export($this->build_time, true), $x);
+			}
+		}
+
+		if ($format === null) {
+			// Because propel.useDateTimeClass is TRUE, we return a DateTime object.
+			return $dt;
+		} elseif (strpos($format, '%') !== false) {
+			return strftime($format, $dt->format('U'));
+		} else {
+			return $dt->format($format);
+		}
+	}
+
+	/**
+	 * Get the [size] column value.
+	 * 
+	 * @return     int
+	 */
+	public function getSize()
+	{
+		return $this->size;
+	}
+
+	/**
+	 * Get the [arch] column value.
+	 * 
+	 * @return     string
+	 */
+	public function getArch()
+	{
+		return $this->arch;
+	}
+
+	/**
+	 * Get the [arch_id] column value.
+	 * 
+	 * @return     int
+	 */
+	public function getArchId()
+	{
+		return $this->arch_id;
 	}
 
 	/**
@@ -587,6 +690,139 @@ abstract class BaseRpm extends BaseObject  implements Persistent {
 	} // setSrcRpm()
 
 	/**
+	 * Set the value of [rpm_pkgid] column.
+	 * 
+	 * @param      string $v new value
+	 * @return     Rpm The current object (for fluent API support)
+	 */
+	public function setRpmPkgid($v)
+	{
+		if ($v !== null) {
+			$v = (string) $v;
+		}
+
+		if ($this->rpm_pkgid !== $v) {
+			$this->rpm_pkgid = $v;
+			$this->modifiedColumns[] = RpmPeer::RPM_PKGID;
+		}
+
+		return $this;
+	} // setRpmPkgid()
+
+	/**
+	 * Sets the value of [build_time] column to a normalized version of the date/time value specified.
+	 * 
+	 * @param      mixed $v string, integer (timestamp), or DateTime value.  Empty string will
+	 *						be treated as NULL for temporal objects.
+	 * @return     Rpm The current object (for fluent API support)
+	 */
+	public function setBuildTime($v)
+	{
+		// we treat '' as NULL for temporal objects because DateTime('') == DateTime('now')
+		// -- which is unexpected, to say the least.
+		if ($v === null || $v === '') {
+			$dt = null;
+		} elseif ($v instanceof DateTime) {
+			$dt = $v;
+		} else {
+			// some string/numeric value passed; we normalize that so that we can
+			// validate it.
+			try {
+				if (is_numeric($v)) { // if it's a unix timestamp
+					$dt = new DateTime('@'.$v, new DateTimeZone('UTC'));
+					// We have to explicitly specify and then change the time zone because of a
+					// DateTime bug: http://bugs.php.net/bug.php?id=43003
+					$dt->setTimeZone(new DateTimeZone(date_default_timezone_get()));
+				} else {
+					$dt = new DateTime($v);
+				}
+			} catch (Exception $x) {
+				throw new PropelException('Error parsing date/time value: ' . var_export($v, true), $x);
+			}
+		}
+
+		if ( $this->build_time !== null || $dt !== null ) {
+			// (nested ifs are a little easier to read in this case)
+
+			$currNorm = ($this->build_time !== null && $tmpDt = new DateTime($this->build_time)) ? $tmpDt->format('Y-m-d H:i:s') : null;
+			$newNorm = ($dt !== null) ? $dt->format('Y-m-d H:i:s') : null;
+
+			if ( ($currNorm !== $newNorm) // normalized values don't match 
+					)
+			{
+				$this->build_time = ($dt ? $dt->format('Y-m-d H:i:s') : null);
+				$this->modifiedColumns[] = RpmPeer::BUILD_TIME;
+			}
+		} // if either are not null
+
+		return $this;
+	} // setBuildTime()
+
+	/**
+	 * Set the value of [size] column.
+	 * 
+	 * @param      int $v new value
+	 * @return     Rpm The current object (for fluent API support)
+	 */
+	public function setSize($v)
+	{
+		if ($v !== null) {
+			$v = (int) $v;
+		}
+
+		if ($this->size !== $v) {
+			$this->size = $v;
+			$this->modifiedColumns[] = RpmPeer::SIZE;
+		}
+
+		return $this;
+	} // setSize()
+
+	/**
+	 * Set the value of [arch] column.
+	 * 
+	 * @param      string $v new value
+	 * @return     Rpm The current object (for fluent API support)
+	 */
+	public function setArch($v)
+	{
+		if ($v !== null) {
+			$v = (string) $v;
+		}
+
+		if ($this->arch !== $v) {
+			$this->arch = $v;
+			$this->modifiedColumns[] = RpmPeer::ARCH;
+		}
+
+		return $this;
+	} // setArch()
+
+	/**
+	 * Set the value of [arch_id] column.
+	 * 
+	 * @param      int $v new value
+	 * @return     Rpm The current object (for fluent API support)
+	 */
+	public function setArchId($v)
+	{
+		if ($v !== null) {
+			$v = (int) $v;
+		}
+
+		if ($this->arch_id !== $v) {
+			$this->arch_id = $v;
+			$this->modifiedColumns[] = RpmPeer::ARCH_ID;
+		}
+
+		if ($this->aArchRelatedByArchId !== null && $this->aArchRelatedByArchId->getId() !== $v) {
+			$this->aArchRelatedByArchId = null;
+		}
+
+		return $this;
+	} // setArchId()
+
+	/**
 	 * Indicates whether the columns in this object are only set to default values.
 	 *
 	 * This method can be used in conjunction with isModified() to indicate whether an object is both
@@ -632,6 +868,11 @@ abstract class BaseRpm extends BaseObject  implements Persistent {
 			$this->description = ($row[$startcol + 11] !== null) ? (string) $row[$startcol + 11] : null;
 			$this->url = ($row[$startcol + 12] !== null) ? (string) $row[$startcol + 12] : null;
 			$this->src_rpm = ($row[$startcol + 13] !== null) ? (string) $row[$startcol + 13] : null;
+			$this->rpm_pkgid = ($row[$startcol + 14] !== null) ? (string) $row[$startcol + 14] : null;
+			$this->build_time = ($row[$startcol + 15] !== null) ? (string) $row[$startcol + 15] : null;
+			$this->size = ($row[$startcol + 16] !== null) ? (int) $row[$startcol + 16] : null;
+			$this->arch = ($row[$startcol + 17] !== null) ? (string) $row[$startcol + 17] : null;
+			$this->arch_id = ($row[$startcol + 18] !== null) ? (int) $row[$startcol + 18] : null;
 			$this->resetModified();
 
 			$this->setNew(false);
@@ -641,7 +882,7 @@ abstract class BaseRpm extends BaseObject  implements Persistent {
 			}
 
 			// FIXME - using NUM_COLUMNS may be clearer.
-			return $startcol + 14; // 14 = RpmPeer::NUM_COLUMNS - RpmPeer::NUM_LAZY_LOAD_COLUMNS).
+			return $startcol + 19; // 19 = RpmPeer::NUM_COLUMNS - RpmPeer::NUM_LAZY_LOAD_COLUMNS).
 
 		} catch (Exception $e) {
 			throw new PropelException("Error populating Rpm object", $e);
@@ -675,6 +916,9 @@ abstract class BaseRpm extends BaseObject  implements Persistent {
 		}
 		if ($this->aRpmGroup !== null && $this->rpm_group_id !== $this->aRpmGroup->getId()) {
 			$this->aRpmGroup = null;
+		}
+		if ($this->aArchRelatedByArchId !== null && $this->arch_id !== $this->aArchRelatedByArchId->getId()) {
+			$this->aArchRelatedByArchId = null;
 		}
 	} // ensureConsistency
 
@@ -719,9 +963,7 @@ abstract class BaseRpm extends BaseObject  implements Persistent {
 			$this->aDistrelease = null;
 			$this->aMedia = null;
 			$this->aRpmGroup = null;
-			$this->collRpmfiles = null;
-			$this->lastRpmfileCriteria = null;
-
+			$this->aArchRelatedByArchId = null;
 		} // if (deep)
 	}
 
@@ -897,6 +1139,13 @@ abstract class BaseRpm extends BaseObject  implements Persistent {
 				$this->setRpmGroup($this->aRpmGroup);
 			}
 
+			if ($this->aArchRelatedByArchId !== null) {
+				if ($this->aArchRelatedByArchId->isModified() || $this->aArchRelatedByArchId->isNew()) {
+					$affectedRows += $this->aArchRelatedByArchId->save($con);
+				}
+				$this->setArchRelatedByArchId($this->aArchRelatedByArchId);
+			}
+
 			if ($this->isNew() ) {
 				$this->modifiedColumns[] = RpmPeer::ID;
 			}
@@ -917,14 +1166,6 @@ abstract class BaseRpm extends BaseObject  implements Persistent {
 				}
 
 				$this->resetModified(); // [HL] After being saved an object is no longer 'modified'
-			}
-
-			if ($this->collRpmfiles !== null) {
-				foreach ($this->collRpmfiles as $referrerFK) {
-					if (!$referrerFK->isDeleted()) {
-						$affectedRows += $referrerFK->save($con);
-					}
-				}
 			}
 
 			$this->alreadyInSave = false;
@@ -1022,19 +1263,17 @@ abstract class BaseRpm extends BaseObject  implements Persistent {
 				}
 			}
 
+			if ($this->aArchRelatedByArchId !== null) {
+				if (!$this->aArchRelatedByArchId->validate($columns)) {
+					$failureMap = array_merge($failureMap, $this->aArchRelatedByArchId->getValidationFailures());
+				}
+			}
+
 
 			if (($retval = RpmPeer::doValidate($this, $columns)) !== true) {
 				$failureMap = array_merge($failureMap, $retval);
 			}
 
-
-				if ($this->collRpmfiles !== null) {
-					foreach ($this->collRpmfiles as $referrerFK) {
-						if (!$referrerFK->validate($columns)) {
-							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
-						}
-					}
-				}
 
 
 			$this->alreadyInValidation = false;
@@ -1111,6 +1350,21 @@ abstract class BaseRpm extends BaseObject  implements Persistent {
 			case 13:
 				return $this->getSrcRpm();
 				break;
+			case 14:
+				return $this->getRpmPkgid();
+				break;
+			case 15:
+				return $this->getBuildTime();
+				break;
+			case 16:
+				return $this->getSize();
+				break;
+			case 17:
+				return $this->getArch();
+				break;
+			case 18:
+				return $this->getArchId();
+				break;
 			default:
 				return null;
 				break;
@@ -1146,6 +1400,11 @@ abstract class BaseRpm extends BaseObject  implements Persistent {
 			$keys[11] => $this->getDescription(),
 			$keys[12] => $this->getUrl(),
 			$keys[13] => $this->getSrcRpm(),
+			$keys[14] => $this->getRpmPkgid(),
+			$keys[15] => $this->getBuildTime(),
+			$keys[16] => $this->getSize(),
+			$keys[17] => $this->getArch(),
+			$keys[18] => $this->getArchId(),
 		);
 		return $result;
 	}
@@ -1219,6 +1478,21 @@ abstract class BaseRpm extends BaseObject  implements Persistent {
 			case 13:
 				$this->setSrcRpm($value);
 				break;
+			case 14:
+				$this->setRpmPkgid($value);
+				break;
+			case 15:
+				$this->setBuildTime($value);
+				break;
+			case 16:
+				$this->setSize($value);
+				break;
+			case 17:
+				$this->setArch($value);
+				break;
+			case 18:
+				$this->setArchId($value);
+				break;
 		} // switch()
 	}
 
@@ -1257,6 +1531,11 @@ abstract class BaseRpm extends BaseObject  implements Persistent {
 		if (array_key_exists($keys[11], $arr)) $this->setDescription($arr[$keys[11]]);
 		if (array_key_exists($keys[12], $arr)) $this->setUrl($arr[$keys[12]]);
 		if (array_key_exists($keys[13], $arr)) $this->setSrcRpm($arr[$keys[13]]);
+		if (array_key_exists($keys[14], $arr)) $this->setRpmPkgid($arr[$keys[14]]);
+		if (array_key_exists($keys[15], $arr)) $this->setBuildTime($arr[$keys[15]]);
+		if (array_key_exists($keys[16], $arr)) $this->setSize($arr[$keys[16]]);
+		if (array_key_exists($keys[17], $arr)) $this->setArch($arr[$keys[17]]);
+		if (array_key_exists($keys[18], $arr)) $this->setArchId($arr[$keys[18]]);
 	}
 
 	/**
@@ -1282,6 +1561,11 @@ abstract class BaseRpm extends BaseObject  implements Persistent {
 		if ($this->isColumnModified(RpmPeer::DESCRIPTION)) $criteria->add(RpmPeer::DESCRIPTION, $this->description);
 		if ($this->isColumnModified(RpmPeer::URL)) $criteria->add(RpmPeer::URL, $this->url);
 		if ($this->isColumnModified(RpmPeer::SRC_RPM)) $criteria->add(RpmPeer::SRC_RPM, $this->src_rpm);
+		if ($this->isColumnModified(RpmPeer::RPM_PKGID)) $criteria->add(RpmPeer::RPM_PKGID, $this->rpm_pkgid);
+		if ($this->isColumnModified(RpmPeer::BUILD_TIME)) $criteria->add(RpmPeer::BUILD_TIME, $this->build_time);
+		if ($this->isColumnModified(RpmPeer::SIZE)) $criteria->add(RpmPeer::SIZE, $this->size);
+		if ($this->isColumnModified(RpmPeer::ARCH)) $criteria->add(RpmPeer::ARCH, $this->arch);
+		if ($this->isColumnModified(RpmPeer::ARCH_ID)) $criteria->add(RpmPeer::ARCH_ID, $this->arch_id);
 
 		return $criteria;
 	}
@@ -1362,19 +1646,15 @@ abstract class BaseRpm extends BaseObject  implements Persistent {
 
 		$copyObj->setSrcRpm($this->src_rpm);
 
+		$copyObj->setRpmPkgid($this->rpm_pkgid);
 
-		if ($deepCopy) {
-			// important: temporarily setNew(false) because this affects the behavior of
-			// the getter/setter methods for fkey referrer objects.
-			$copyObj->setNew(false);
+		$copyObj->setBuildTime($this->build_time);
 
-			foreach ($this->getRpmfiles() as $relObj) {
-				if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
-					$copyObj->addRpmfile($relObj->copy($deepCopy));
-				}
-			}
+		$copyObj->setSize($this->size);
 
-		} // if ($deepCopy)
+		$copyObj->setArch($this->arch);
+
+		$copyObj->setArchId($this->arch_id);
 
 
 		$copyObj->setNew(true);
@@ -1618,204 +1898,52 @@ abstract class BaseRpm extends BaseObject  implements Persistent {
 	}
 
 	/**
-	 * Clears out the collRpmfiles collection (array).
+	 * Declares an association between this object and a Arch object.
 	 *
-	 * This does not modify the database; however, it will remove any associated objects, causing
-	 * them to be refetched by subsequent calls to accessor method.
-	 *
-	 * @return     void
-	 * @see        addRpmfiles()
-	 */
-	public function clearRpmfiles()
-	{
-		$this->collRpmfiles = null; // important to set this to NULL since that means it is uninitialized
-	}
-
-	/**
-	 * Initializes the collRpmfiles collection (array).
-	 *
-	 * By default this just sets the collRpmfiles collection to an empty array (like clearcollRpmfiles());
-	 * however, you may wish to override this method in your stub class to provide setting appropriate
-	 * to your application -- for example, setting the initial array to the values stored in database.
-	 *
-	 * @return     void
-	 */
-	public function initRpmfiles()
-	{
-		$this->collRpmfiles = array();
-	}
-
-	/**
-	 * Gets an array of Rpmfile objects which contain a foreign key that references this object.
-	 *
-	 * If this collection has already been initialized with an identical Criteria, it returns the collection.
-	 * Otherwise if this Rpm has previously been saved, it will retrieve
-	 * related Rpmfiles from storage. If this Rpm is new, it will return
-	 * an empty collection or the current collection, the criteria is ignored on a new object.
-	 *
-	 * @param      PropelPDO $con
-	 * @param      Criteria $criteria
-	 * @return     array Rpmfile[]
+	 * @param      Arch $v
+	 * @return     Rpm The current object (for fluent API support)
 	 * @throws     PropelException
 	 */
-	public function getRpmfiles($criteria = null, PropelPDO $con = null)
+	public function setArchRelatedByArchId(Arch $v = null)
 	{
-		if ($criteria === null) {
-			$criteria = new Criteria(RpmPeer::DATABASE_NAME);
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		if ($this->collRpmfiles === null) {
-			if ($this->isNew()) {
-			   $this->collRpmfiles = array();
-			} else {
-
-				$criteria->add(RpmfilePeer::RPM_ID, $this->id);
-
-				RpmfilePeer::addSelectColumns($criteria);
-				$this->collRpmfiles = RpmfilePeer::doSelect($criteria, $con);
-			}
+		if ($v === null) {
+			$this->setArchId(NULL);
 		} else {
-			// criteria has no effect for a new object
-			if (!$this->isNew()) {
-				// the following code is to determine if a new query is
-				// called for.  If the criteria is the same as the last
-				// one, just return the collection.
-
-
-				$criteria->add(RpmfilePeer::RPM_ID, $this->id);
-
-				RpmfilePeer::addSelectColumns($criteria);
-				if (!isset($this->lastRpmfileCriteria) || !$this->lastRpmfileCriteria->equals($criteria)) {
-					$this->collRpmfiles = RpmfilePeer::doSelect($criteria, $con);
-				}
-			}
+			$this->setArchId($v->getId());
 		}
-		$this->lastRpmfileCriteria = $criteria;
-		return $this->collRpmfiles;
+
+		$this->aArchRelatedByArchId = $v;
+
+		// Add binding for other direction of this n:n relationship.
+		// If this object has already been added to the Arch object, it will not be re-added.
+		if ($v !== null) {
+			$v->addRpm($this);
+		}
+
+		return $this;
 	}
 
+
 	/**
-	 * Returns the number of related Rpmfile objects.
+	 * Get the associated Arch object
 	 *
-	 * @param      Criteria $criteria
-	 * @param      boolean $distinct
-	 * @param      PropelPDO $con
-	 * @return     int Count of related Rpmfile objects.
+	 * @param      PropelPDO Optional Connection object.
+	 * @return     Arch The associated Arch object.
 	 * @throws     PropelException
 	 */
-	public function countRpmfiles(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+	public function getArchRelatedByArchId(PropelPDO $con = null)
 	{
-		if ($criteria === null) {
-			$criteria = new Criteria(RpmPeer::DATABASE_NAME);
-		} else {
-			$criteria = clone $criteria;
+		if ($this->aArchRelatedByArchId === null && ($this->arch_id !== null)) {
+			$this->aArchRelatedByArchId = ArchPeer::retrieveByPk($this->arch_id);
+			/* The following can be used additionally to
+			   guarantee the related object contains a reference
+			   to this object.  This level of coupling may, however, be
+			   undesirable since it could result in an only partially populated collection
+			   in the referenced object.
+			   $this->aArchRelatedByArchId->addRpms($this);
+			 */
 		}
-
-		if ($distinct) {
-			$criteria->setDistinct();
-		}
-
-		$count = null;
-
-		if ($this->collRpmfiles === null) {
-			if ($this->isNew()) {
-				$count = 0;
-			} else {
-
-				$criteria->add(RpmfilePeer::RPM_ID, $this->id);
-
-				$count = RpmfilePeer::doCount($criteria, false, $con);
-			}
-		} else {
-			// criteria has no effect for a new object
-			if (!$this->isNew()) {
-				// the following code is to determine if a new query is
-				// called for.  If the criteria is the same as the last
-				// one, just return count of the collection.
-
-
-				$criteria->add(RpmfilePeer::RPM_ID, $this->id);
-
-				if (!isset($this->lastRpmfileCriteria) || !$this->lastRpmfileCriteria->equals($criteria)) {
-					$count = RpmfilePeer::doCount($criteria, false, $con);
-				} else {
-					$count = count($this->collRpmfiles);
-				}
-			} else {
-				$count = count($this->collRpmfiles);
-			}
-		}
-		return $count;
-	}
-
-	/**
-	 * Method called to associate a Rpmfile object to this object
-	 * through the Rpmfile foreign key attribute.
-	 *
-	 * @param      Rpmfile $l Rpmfile
-	 * @return     void
-	 * @throws     PropelException
-	 */
-	public function addRpmfile(Rpmfile $l)
-	{
-		if ($this->collRpmfiles === null) {
-			$this->initRpmfiles();
-		}
-		if (!in_array($l, $this->collRpmfiles, true)) { // only add it if the **same** object is not already associated
-			array_push($this->collRpmfiles, $l);
-			$l->setRpm($this);
-		}
-	}
-
-
-	/**
-	 * If this collection has already been initialized with
-	 * an identical criteria, it returns the collection.
-	 * Otherwise if this Rpm is new, it will return
-	 * an empty collection; or if this Rpm has previously
-	 * been saved, it will retrieve related Rpmfiles from storage.
-	 *
-	 * This method is protected by default in order to keep the public
-	 * api reasonable.  You can provide public methods for those you
-	 * actually need in Rpm.
-	 */
-	public function getRpmfilesJoinArchRelatedByArchId($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
-	{
-		if ($criteria === null) {
-			$criteria = new Criteria(RpmPeer::DATABASE_NAME);
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		if ($this->collRpmfiles === null) {
-			if ($this->isNew()) {
-				$this->collRpmfiles = array();
-			} else {
-
-				$criteria->add(RpmfilePeer::RPM_ID, $this->id);
-
-				$this->collRpmfiles = RpmfilePeer::doSelectJoinArchRelatedByArchId($criteria, $con, $join_behavior);
-			}
-		} else {
-			// the following code is to determine if a new query is
-			// called for.  If the criteria is the same as the last
-			// one, just return the collection.
-
-			$criteria->add(RpmfilePeer::RPM_ID, $this->id);
-
-			if (!isset($this->lastRpmfileCriteria) || !$this->lastRpmfileCriteria->equals($criteria)) {
-				$this->collRpmfiles = RpmfilePeer::doSelectJoinArchRelatedByArchId($criteria, $con, $join_behavior);
-			}
-		}
-		$this->lastRpmfileCriteria = $criteria;
-
-		return $this->collRpmfiles;
+		return $this->aArchRelatedByArchId;
 	}
 
 	/**
@@ -1830,18 +1958,13 @@ abstract class BaseRpm extends BaseObject  implements Persistent {
 	public function clearAllReferences($deep = false)
 	{
 		if ($deep) {
-			if ($this->collRpmfiles) {
-				foreach ((array) $this->collRpmfiles as $o) {
-					$o->clearAllReferences($deep);
-				}
-			}
 		} // if ($deep)
 
-		$this->collRpmfiles = null;
 			$this->aPackage = null;
 			$this->aDistrelease = null;
 			$this->aMedia = null;
 			$this->aRpmGroup = null;
+			$this->aArchRelatedByArchId = null;
 	}
 
 	// symfony_behaviors behavior

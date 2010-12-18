@@ -31,6 +31,16 @@ abstract class BaseArch extends BaseObject  implements Persistent {
 	protected $name;
 
 	/**
+	 * @var        array Rpm[] Collection to store aggregation of Rpm objects.
+	 */
+	protected $collRpms;
+
+	/**
+	 * @var        Criteria The criteria used to select the current contents of collRpms.
+	 */
+	private $lastRpmCriteria = null;
+
+	/**
 	 * @var        array NotificationElement[] Collection to store aggregation of NotificationElement objects.
 	 */
 	protected $collNotificationElements;
@@ -39,16 +49,6 @@ abstract class BaseArch extends BaseObject  implements Persistent {
 	 * @var        Criteria The criteria used to select the current contents of collNotificationElements.
 	 */
 	private $lastNotificationElementCriteria = null;
-
-	/**
-	 * @var        array Rpmfile[] Collection to store aggregation of Rpmfile objects.
-	 */
-	protected $collRpmfiles;
-
-	/**
-	 * @var        Criteria The criteria used to select the current contents of collRpmfiles.
-	 */
-	private $lastRpmfileCriteria = null;
 
 	/**
 	 * Flag to prevent endless save loop, if this object is referenced
@@ -233,11 +233,11 @@ abstract class BaseArch extends BaseObject  implements Persistent {
 
 		if ($deep) {  // also de-associate any related objects?
 
+			$this->collRpms = null;
+			$this->lastRpmCriteria = null;
+
 			$this->collNotificationElements = null;
 			$this->lastNotificationElementCriteria = null;
-
-			$this->collRpmfiles = null;
-			$this->lastRpmfileCriteria = null;
 
 		} // if (deep)
 	}
@@ -403,16 +403,16 @@ abstract class BaseArch extends BaseObject  implements Persistent {
 				$this->resetModified(); // [HL] After being saved an object is no longer 'modified'
 			}
 
-			if ($this->collNotificationElements !== null) {
-				foreach ($this->collNotificationElements as $referrerFK) {
+			if ($this->collRpms !== null) {
+				foreach ($this->collRpms as $referrerFK) {
 					if (!$referrerFK->isDeleted()) {
 						$affectedRows += $referrerFK->save($con);
 					}
 				}
 			}
 
-			if ($this->collRpmfiles !== null) {
-				foreach ($this->collRpmfiles as $referrerFK) {
+			if ($this->collNotificationElements !== null) {
+				foreach ($this->collNotificationElements as $referrerFK) {
 					if (!$referrerFK->isDeleted()) {
 						$affectedRows += $referrerFK->save($con);
 					}
@@ -490,16 +490,16 @@ abstract class BaseArch extends BaseObject  implements Persistent {
 			}
 
 
-				if ($this->collNotificationElements !== null) {
-					foreach ($this->collNotificationElements as $referrerFK) {
+				if ($this->collRpms !== null) {
+					foreach ($this->collRpms as $referrerFK) {
 						if (!$referrerFK->validate($columns)) {
 							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
 						}
 					}
 				}
 
-				if ($this->collRpmfiles !== null) {
-					foreach ($this->collRpmfiles as $referrerFK) {
+				if ($this->collNotificationElements !== null) {
+					foreach ($this->collNotificationElements as $referrerFK) {
 						if (!$referrerFK->validate($columns)) {
 							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
 						}
@@ -706,15 +706,15 @@ abstract class BaseArch extends BaseObject  implements Persistent {
 			// the getter/setter methods for fkey referrer objects.
 			$copyObj->setNew(false);
 
-			foreach ($this->getNotificationElements() as $relObj) {
+			foreach ($this->getRpms() as $relObj) {
 				if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
-					$copyObj->addNotificationElement($relObj->copy($deepCopy));
+					$copyObj->addRpm($relObj->copy($deepCopy));
 				}
 			}
 
-			foreach ($this->getRpmfiles() as $relObj) {
+			foreach ($this->getNotificationElements() as $relObj) {
 				if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
-					$copyObj->addRpmfile($relObj->copy($deepCopy));
+					$copyObj->addNotificationElement($relObj->copy($deepCopy));
 				}
 			}
 
@@ -763,6 +763,348 @@ abstract class BaseArch extends BaseObject  implements Persistent {
 			self::$peer = new ArchPeer();
 		}
 		return self::$peer;
+	}
+
+	/**
+	 * Clears out the collRpms collection (array).
+	 *
+	 * This does not modify the database; however, it will remove any associated objects, causing
+	 * them to be refetched by subsequent calls to accessor method.
+	 *
+	 * @return     void
+	 * @see        addRpms()
+	 */
+	public function clearRpms()
+	{
+		$this->collRpms = null; // important to set this to NULL since that means it is uninitialized
+	}
+
+	/**
+	 * Initializes the collRpms collection (array).
+	 *
+	 * By default this just sets the collRpms collection to an empty array (like clearcollRpms());
+	 * however, you may wish to override this method in your stub class to provide setting appropriate
+	 * to your application -- for example, setting the initial array to the values stored in database.
+	 *
+	 * @return     void
+	 */
+	public function initRpms()
+	{
+		$this->collRpms = array();
+	}
+
+	/**
+	 * Gets an array of Rpm objects which contain a foreign key that references this object.
+	 *
+	 * If this collection has already been initialized with an identical Criteria, it returns the collection.
+	 * Otherwise if this Arch has previously been saved, it will retrieve
+	 * related Rpms from storage. If this Arch is new, it will return
+	 * an empty collection or the current collection, the criteria is ignored on a new object.
+	 *
+	 * @param      PropelPDO $con
+	 * @param      Criteria $criteria
+	 * @return     array Rpm[]
+	 * @throws     PropelException
+	 */
+	public function getRpms($criteria = null, PropelPDO $con = null)
+	{
+		if ($criteria === null) {
+			$criteria = new Criteria(ArchPeer::DATABASE_NAME);
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collRpms === null) {
+			if ($this->isNew()) {
+			   $this->collRpms = array();
+			} else {
+
+				$criteria->add(RpmPeer::ARCH_ID, $this->id);
+
+				RpmPeer::addSelectColumns($criteria);
+				$this->collRpms = RpmPeer::doSelect($criteria, $con);
+			}
+		} else {
+			// criteria has no effect for a new object
+			if (!$this->isNew()) {
+				// the following code is to determine if a new query is
+				// called for.  If the criteria is the same as the last
+				// one, just return the collection.
+
+
+				$criteria->add(RpmPeer::ARCH_ID, $this->id);
+
+				RpmPeer::addSelectColumns($criteria);
+				if (!isset($this->lastRpmCriteria) || !$this->lastRpmCriteria->equals($criteria)) {
+					$this->collRpms = RpmPeer::doSelect($criteria, $con);
+				}
+			}
+		}
+		$this->lastRpmCriteria = $criteria;
+		return $this->collRpms;
+	}
+
+	/**
+	 * Returns the number of related Rpm objects.
+	 *
+	 * @param      Criteria $criteria
+	 * @param      boolean $distinct
+	 * @param      PropelPDO $con
+	 * @return     int Count of related Rpm objects.
+	 * @throws     PropelException
+	 */
+	public function countRpms(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+	{
+		if ($criteria === null) {
+			$criteria = new Criteria(ArchPeer::DATABASE_NAME);
+		} else {
+			$criteria = clone $criteria;
+		}
+
+		if ($distinct) {
+			$criteria->setDistinct();
+		}
+
+		$count = null;
+
+		if ($this->collRpms === null) {
+			if ($this->isNew()) {
+				$count = 0;
+			} else {
+
+				$criteria->add(RpmPeer::ARCH_ID, $this->id);
+
+				$count = RpmPeer::doCount($criteria, false, $con);
+			}
+		} else {
+			// criteria has no effect for a new object
+			if (!$this->isNew()) {
+				// the following code is to determine if a new query is
+				// called for.  If the criteria is the same as the last
+				// one, just return count of the collection.
+
+
+				$criteria->add(RpmPeer::ARCH_ID, $this->id);
+
+				if (!isset($this->lastRpmCriteria) || !$this->lastRpmCriteria->equals($criteria)) {
+					$count = RpmPeer::doCount($criteria, false, $con);
+				} else {
+					$count = count($this->collRpms);
+				}
+			} else {
+				$count = count($this->collRpms);
+			}
+		}
+		return $count;
+	}
+
+	/**
+	 * Method called to associate a Rpm object to this object
+	 * through the Rpm foreign key attribute.
+	 *
+	 * @param      Rpm $l Rpm
+	 * @return     void
+	 * @throws     PropelException
+	 */
+	public function addRpm(Rpm $l)
+	{
+		if ($this->collRpms === null) {
+			$this->initRpms();
+		}
+		if (!in_array($l, $this->collRpms, true)) { // only add it if the **same** object is not already associated
+			array_push($this->collRpms, $l);
+			$l->setArchRelatedByArchId($this);
+		}
+	}
+
+
+	/**
+	 * If this collection has already been initialized with
+	 * an identical criteria, it returns the collection.
+	 * Otherwise if this Arch is new, it will return
+	 * an empty collection; or if this Arch has previously
+	 * been saved, it will retrieve related Rpms from storage.
+	 *
+	 * This method is protected by default in order to keep the public
+	 * api reasonable.  You can provide public methods for those you
+	 * actually need in Arch.
+	 */
+	public function getRpmsJoinPackage($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	{
+		if ($criteria === null) {
+			$criteria = new Criteria(ArchPeer::DATABASE_NAME);
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collRpms === null) {
+			if ($this->isNew()) {
+				$this->collRpms = array();
+			} else {
+
+				$criteria->add(RpmPeer::ARCH_ID, $this->id);
+
+				$this->collRpms = RpmPeer::doSelectJoinPackage($criteria, $con, $join_behavior);
+			}
+		} else {
+			// the following code is to determine if a new query is
+			// called for.  If the criteria is the same as the last
+			// one, just return the collection.
+
+			$criteria->add(RpmPeer::ARCH_ID, $this->id);
+
+			if (!isset($this->lastRpmCriteria) || !$this->lastRpmCriteria->equals($criteria)) {
+				$this->collRpms = RpmPeer::doSelectJoinPackage($criteria, $con, $join_behavior);
+			}
+		}
+		$this->lastRpmCriteria = $criteria;
+
+		return $this->collRpms;
+	}
+
+
+	/**
+	 * If this collection has already been initialized with
+	 * an identical criteria, it returns the collection.
+	 * Otherwise if this Arch is new, it will return
+	 * an empty collection; or if this Arch has previously
+	 * been saved, it will retrieve related Rpms from storage.
+	 *
+	 * This method is protected by default in order to keep the public
+	 * api reasonable.  You can provide public methods for those you
+	 * actually need in Arch.
+	 */
+	public function getRpmsJoinDistrelease($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	{
+		if ($criteria === null) {
+			$criteria = new Criteria(ArchPeer::DATABASE_NAME);
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collRpms === null) {
+			if ($this->isNew()) {
+				$this->collRpms = array();
+			} else {
+
+				$criteria->add(RpmPeer::ARCH_ID, $this->id);
+
+				$this->collRpms = RpmPeer::doSelectJoinDistrelease($criteria, $con, $join_behavior);
+			}
+		} else {
+			// the following code is to determine if a new query is
+			// called for.  If the criteria is the same as the last
+			// one, just return the collection.
+
+			$criteria->add(RpmPeer::ARCH_ID, $this->id);
+
+			if (!isset($this->lastRpmCriteria) || !$this->lastRpmCriteria->equals($criteria)) {
+				$this->collRpms = RpmPeer::doSelectJoinDistrelease($criteria, $con, $join_behavior);
+			}
+		}
+		$this->lastRpmCriteria = $criteria;
+
+		return $this->collRpms;
+	}
+
+
+	/**
+	 * If this collection has already been initialized with
+	 * an identical criteria, it returns the collection.
+	 * Otherwise if this Arch is new, it will return
+	 * an empty collection; or if this Arch has previously
+	 * been saved, it will retrieve related Rpms from storage.
+	 *
+	 * This method is protected by default in order to keep the public
+	 * api reasonable.  You can provide public methods for those you
+	 * actually need in Arch.
+	 */
+	public function getRpmsJoinMedia($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	{
+		if ($criteria === null) {
+			$criteria = new Criteria(ArchPeer::DATABASE_NAME);
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collRpms === null) {
+			if ($this->isNew()) {
+				$this->collRpms = array();
+			} else {
+
+				$criteria->add(RpmPeer::ARCH_ID, $this->id);
+
+				$this->collRpms = RpmPeer::doSelectJoinMedia($criteria, $con, $join_behavior);
+			}
+		} else {
+			// the following code is to determine if a new query is
+			// called for.  If the criteria is the same as the last
+			// one, just return the collection.
+
+			$criteria->add(RpmPeer::ARCH_ID, $this->id);
+
+			if (!isset($this->lastRpmCriteria) || !$this->lastRpmCriteria->equals($criteria)) {
+				$this->collRpms = RpmPeer::doSelectJoinMedia($criteria, $con, $join_behavior);
+			}
+		}
+		$this->lastRpmCriteria = $criteria;
+
+		return $this->collRpms;
+	}
+
+
+	/**
+	 * If this collection has already been initialized with
+	 * an identical criteria, it returns the collection.
+	 * Otherwise if this Arch is new, it will return
+	 * an empty collection; or if this Arch has previously
+	 * been saved, it will retrieve related Rpms from storage.
+	 *
+	 * This method is protected by default in order to keep the public
+	 * api reasonable.  You can provide public methods for those you
+	 * actually need in Arch.
+	 */
+	public function getRpmsJoinRpmGroup($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	{
+		if ($criteria === null) {
+			$criteria = new Criteria(ArchPeer::DATABASE_NAME);
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collRpms === null) {
+			if ($this->isNew()) {
+				$this->collRpms = array();
+			} else {
+
+				$criteria->add(RpmPeer::ARCH_ID, $this->id);
+
+				$this->collRpms = RpmPeer::doSelectJoinRpmGroup($criteria, $con, $join_behavior);
+			}
+		} else {
+			// the following code is to determine if a new query is
+			// called for.  If the criteria is the same as the last
+			// one, just return the collection.
+
+			$criteria->add(RpmPeer::ARCH_ID, $this->id);
+
+			if (!isset($this->lastRpmCriteria) || !$this->lastRpmCriteria->equals($criteria)) {
+				$this->collRpms = RpmPeer::doSelectJoinRpmGroup($criteria, $con, $join_behavior);
+			}
+		}
+		$this->lastRpmCriteria = $criteria;
+
+		return $this->collRpms;
 	}
 
 	/**
@@ -1155,207 +1497,6 @@ abstract class BaseArch extends BaseObject  implements Persistent {
 	}
 
 	/**
-	 * Clears out the collRpmfiles collection (array).
-	 *
-	 * This does not modify the database; however, it will remove any associated objects, causing
-	 * them to be refetched by subsequent calls to accessor method.
-	 *
-	 * @return     void
-	 * @see        addRpmfiles()
-	 */
-	public function clearRpmfiles()
-	{
-		$this->collRpmfiles = null; // important to set this to NULL since that means it is uninitialized
-	}
-
-	/**
-	 * Initializes the collRpmfiles collection (array).
-	 *
-	 * By default this just sets the collRpmfiles collection to an empty array (like clearcollRpmfiles());
-	 * however, you may wish to override this method in your stub class to provide setting appropriate
-	 * to your application -- for example, setting the initial array to the values stored in database.
-	 *
-	 * @return     void
-	 */
-	public function initRpmfiles()
-	{
-		$this->collRpmfiles = array();
-	}
-
-	/**
-	 * Gets an array of Rpmfile objects which contain a foreign key that references this object.
-	 *
-	 * If this collection has already been initialized with an identical Criteria, it returns the collection.
-	 * Otherwise if this Arch has previously been saved, it will retrieve
-	 * related Rpmfiles from storage. If this Arch is new, it will return
-	 * an empty collection or the current collection, the criteria is ignored on a new object.
-	 *
-	 * @param      PropelPDO $con
-	 * @param      Criteria $criteria
-	 * @return     array Rpmfile[]
-	 * @throws     PropelException
-	 */
-	public function getRpmfiles($criteria = null, PropelPDO $con = null)
-	{
-		if ($criteria === null) {
-			$criteria = new Criteria(ArchPeer::DATABASE_NAME);
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		if ($this->collRpmfiles === null) {
-			if ($this->isNew()) {
-			   $this->collRpmfiles = array();
-			} else {
-
-				$criteria->add(RpmfilePeer::ARCH_ID, $this->id);
-
-				RpmfilePeer::addSelectColumns($criteria);
-				$this->collRpmfiles = RpmfilePeer::doSelect($criteria, $con);
-			}
-		} else {
-			// criteria has no effect for a new object
-			if (!$this->isNew()) {
-				// the following code is to determine if a new query is
-				// called for.  If the criteria is the same as the last
-				// one, just return the collection.
-
-
-				$criteria->add(RpmfilePeer::ARCH_ID, $this->id);
-
-				RpmfilePeer::addSelectColumns($criteria);
-				if (!isset($this->lastRpmfileCriteria) || !$this->lastRpmfileCriteria->equals($criteria)) {
-					$this->collRpmfiles = RpmfilePeer::doSelect($criteria, $con);
-				}
-			}
-		}
-		$this->lastRpmfileCriteria = $criteria;
-		return $this->collRpmfiles;
-	}
-
-	/**
-	 * Returns the number of related Rpmfile objects.
-	 *
-	 * @param      Criteria $criteria
-	 * @param      boolean $distinct
-	 * @param      PropelPDO $con
-	 * @return     int Count of related Rpmfile objects.
-	 * @throws     PropelException
-	 */
-	public function countRpmfiles(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
-	{
-		if ($criteria === null) {
-			$criteria = new Criteria(ArchPeer::DATABASE_NAME);
-		} else {
-			$criteria = clone $criteria;
-		}
-
-		if ($distinct) {
-			$criteria->setDistinct();
-		}
-
-		$count = null;
-
-		if ($this->collRpmfiles === null) {
-			if ($this->isNew()) {
-				$count = 0;
-			} else {
-
-				$criteria->add(RpmfilePeer::ARCH_ID, $this->id);
-
-				$count = RpmfilePeer::doCount($criteria, false, $con);
-			}
-		} else {
-			// criteria has no effect for a new object
-			if (!$this->isNew()) {
-				// the following code is to determine if a new query is
-				// called for.  If the criteria is the same as the last
-				// one, just return count of the collection.
-
-
-				$criteria->add(RpmfilePeer::ARCH_ID, $this->id);
-
-				if (!isset($this->lastRpmfileCriteria) || !$this->lastRpmfileCriteria->equals($criteria)) {
-					$count = RpmfilePeer::doCount($criteria, false, $con);
-				} else {
-					$count = count($this->collRpmfiles);
-				}
-			} else {
-				$count = count($this->collRpmfiles);
-			}
-		}
-		return $count;
-	}
-
-	/**
-	 * Method called to associate a Rpmfile object to this object
-	 * through the Rpmfile foreign key attribute.
-	 *
-	 * @param      Rpmfile $l Rpmfile
-	 * @return     void
-	 * @throws     PropelException
-	 */
-	public function addRpmfile(Rpmfile $l)
-	{
-		if ($this->collRpmfiles === null) {
-			$this->initRpmfiles();
-		}
-		if (!in_array($l, $this->collRpmfiles, true)) { // only add it if the **same** object is not already associated
-			array_push($this->collRpmfiles, $l);
-			$l->setArchRelatedByArchId($this);
-		}
-	}
-
-
-	/**
-	 * If this collection has already been initialized with
-	 * an identical criteria, it returns the collection.
-	 * Otherwise if this Arch is new, it will return
-	 * an empty collection; or if this Arch has previously
-	 * been saved, it will retrieve related Rpmfiles from storage.
-	 *
-	 * This method is protected by default in order to keep the public
-	 * api reasonable.  You can provide public methods for those you
-	 * actually need in Arch.
-	 */
-	public function getRpmfilesJoinRpm($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
-	{
-		if ($criteria === null) {
-			$criteria = new Criteria(ArchPeer::DATABASE_NAME);
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		if ($this->collRpmfiles === null) {
-			if ($this->isNew()) {
-				$this->collRpmfiles = array();
-			} else {
-
-				$criteria->add(RpmfilePeer::ARCH_ID, $this->id);
-
-				$this->collRpmfiles = RpmfilePeer::doSelectJoinRpm($criteria, $con, $join_behavior);
-			}
-		} else {
-			// the following code is to determine if a new query is
-			// called for.  If the criteria is the same as the last
-			// one, just return the collection.
-
-			$criteria->add(RpmfilePeer::ARCH_ID, $this->id);
-
-			if (!isset($this->lastRpmfileCriteria) || !$this->lastRpmfileCriteria->equals($criteria)) {
-				$this->collRpmfiles = RpmfilePeer::doSelectJoinRpm($criteria, $con, $join_behavior);
-			}
-		}
-		$this->lastRpmfileCriteria = $criteria;
-
-		return $this->collRpmfiles;
-	}
-
-	/**
 	 * Resets all collections of referencing foreign keys.
 	 *
 	 * This method is a user-space workaround for PHP's inability to garbage collect objects
@@ -1367,20 +1508,20 @@ abstract class BaseArch extends BaseObject  implements Persistent {
 	public function clearAllReferences($deep = false)
 	{
 		if ($deep) {
+			if ($this->collRpms) {
+				foreach ((array) $this->collRpms as $o) {
+					$o->clearAllReferences($deep);
+				}
+			}
 			if ($this->collNotificationElements) {
 				foreach ((array) $this->collNotificationElements as $o) {
 					$o->clearAllReferences($deep);
 				}
 			}
-			if ($this->collRpmfiles) {
-				foreach ((array) $this->collRpmfiles as $o) {
-					$o->clearAllReferences($deep);
-				}
-			}
 		} // if ($deep)
 
+		$this->collRpms = null;
 		$this->collNotificationElements = null;
-		$this->collRpmfiles = null;
 	}
 
 	// symfony_behaviors behavior

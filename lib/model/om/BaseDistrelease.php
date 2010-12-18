@@ -38,6 +38,20 @@ abstract class BaseDistrelease extends BaseObject  implements Persistent {
 	protected $is_meta;
 
 	/**
+	 * The value for the is_latest field.
+	 * Note: this column has a database default value of: false
+	 * @var        boolean
+	 */
+	protected $is_latest;
+
+	/**
+	 * The value for the is_dev_version field.
+	 * Note: this column has a database default value of: false
+	 * @var        boolean
+	 */
+	protected $is_dev_version;
+
+	/**
 	 * @var        array Rpm[] Collection to store aggregation of Rpm objects.
 	 */
 	protected $collRpms;
@@ -94,6 +108,8 @@ abstract class BaseDistrelease extends BaseObject  implements Persistent {
 	public function applyDefaultValues()
 	{
 		$this->is_meta = false;
+		$this->is_latest = false;
+		$this->is_dev_version = false;
 	}
 
 	/**
@@ -134,6 +150,26 @@ abstract class BaseDistrelease extends BaseObject  implements Persistent {
 	public function getIsMeta()
 	{
 		return $this->is_meta;
+	}
+
+	/**
+	 * Get the [is_latest] column value.
+	 * 
+	 * @return     boolean
+	 */
+	public function getIsLatest()
+	{
+		return $this->is_latest;
+	}
+
+	/**
+	 * Get the [is_dev_version] column value.
+	 * 
+	 * @return     boolean
+	 */
+	public function getIsDevVersion()
+	{
+		return $this->is_dev_version;
 	}
 
 	/**
@@ -197,6 +233,46 @@ abstract class BaseDistrelease extends BaseObject  implements Persistent {
 	} // setIsMeta()
 
 	/**
+	 * Set the value of [is_latest] column.
+	 * 
+	 * @param      boolean $v new value
+	 * @return     Distrelease The current object (for fluent API support)
+	 */
+	public function setIsLatest($v)
+	{
+		if ($v !== null) {
+			$v = (boolean) $v;
+		}
+
+		if ($this->is_latest !== $v || $this->isNew()) {
+			$this->is_latest = $v;
+			$this->modifiedColumns[] = DistreleasePeer::IS_LATEST;
+		}
+
+		return $this;
+	} // setIsLatest()
+
+	/**
+	 * Set the value of [is_dev_version] column.
+	 * 
+	 * @param      boolean $v new value
+	 * @return     Distrelease The current object (for fluent API support)
+	 */
+	public function setIsDevVersion($v)
+	{
+		if ($v !== null) {
+			$v = (boolean) $v;
+		}
+
+		if ($this->is_dev_version !== $v || $this->isNew()) {
+			$this->is_dev_version = $v;
+			$this->modifiedColumns[] = DistreleasePeer::IS_DEV_VERSION;
+		}
+
+		return $this;
+	} // setIsDevVersion()
+
+	/**
 	 * Indicates whether the columns in this object are only set to default values.
 	 *
 	 * This method can be used in conjunction with isModified() to indicate whether an object is both
@@ -207,6 +283,14 @@ abstract class BaseDistrelease extends BaseObject  implements Persistent {
 	public function hasOnlyDefaultValues()
 	{
 			if ($this->is_meta !== false) {
+				return false;
+			}
+
+			if ($this->is_latest !== false) {
+				return false;
+			}
+
+			if ($this->is_dev_version !== false) {
 				return false;
 			}
 
@@ -235,6 +319,8 @@ abstract class BaseDistrelease extends BaseObject  implements Persistent {
 			$this->id = ($row[$startcol + 0] !== null) ? (int) $row[$startcol + 0] : null;
 			$this->name = ($row[$startcol + 1] !== null) ? (string) $row[$startcol + 1] : null;
 			$this->is_meta = ($row[$startcol + 2] !== null) ? (boolean) $row[$startcol + 2] : null;
+			$this->is_latest = ($row[$startcol + 3] !== null) ? (boolean) $row[$startcol + 3] : null;
+			$this->is_dev_version = ($row[$startcol + 4] !== null) ? (boolean) $row[$startcol + 4] : null;
 			$this->resetModified();
 
 			$this->setNew(false);
@@ -244,7 +330,7 @@ abstract class BaseDistrelease extends BaseObject  implements Persistent {
 			}
 
 			// FIXME - using NUM_COLUMNS may be clearer.
-			return $startcol + 3; // 3 = DistreleasePeer::NUM_COLUMNS - DistreleasePeer::NUM_LAZY_LOAD_COLUMNS).
+			return $startcol + 5; // 5 = DistreleasePeer::NUM_COLUMNS - DistreleasePeer::NUM_LAZY_LOAD_COLUMNS).
 
 		} catch (Exception $e) {
 			throw new PropelException("Error populating Distrelease object", $e);
@@ -640,6 +726,12 @@ abstract class BaseDistrelease extends BaseObject  implements Persistent {
 			case 2:
 				return $this->getIsMeta();
 				break;
+			case 3:
+				return $this->getIsLatest();
+				break;
+			case 4:
+				return $this->getIsDevVersion();
+				break;
 			default:
 				return null;
 				break;
@@ -664,6 +756,8 @@ abstract class BaseDistrelease extends BaseObject  implements Persistent {
 			$keys[0] => $this->getId(),
 			$keys[1] => $this->getName(),
 			$keys[2] => $this->getIsMeta(),
+			$keys[3] => $this->getIsLatest(),
+			$keys[4] => $this->getIsDevVersion(),
 		);
 		return $result;
 	}
@@ -704,6 +798,12 @@ abstract class BaseDistrelease extends BaseObject  implements Persistent {
 			case 2:
 				$this->setIsMeta($value);
 				break;
+			case 3:
+				$this->setIsLatest($value);
+				break;
+			case 4:
+				$this->setIsDevVersion($value);
+				break;
 		} // switch()
 	}
 
@@ -731,6 +831,8 @@ abstract class BaseDistrelease extends BaseObject  implements Persistent {
 		if (array_key_exists($keys[0], $arr)) $this->setId($arr[$keys[0]]);
 		if (array_key_exists($keys[1], $arr)) $this->setName($arr[$keys[1]]);
 		if (array_key_exists($keys[2], $arr)) $this->setIsMeta($arr[$keys[2]]);
+		if (array_key_exists($keys[3], $arr)) $this->setIsLatest($arr[$keys[3]]);
+		if (array_key_exists($keys[4], $arr)) $this->setIsDevVersion($arr[$keys[4]]);
 	}
 
 	/**
@@ -745,6 +847,8 @@ abstract class BaseDistrelease extends BaseObject  implements Persistent {
 		if ($this->isColumnModified(DistreleasePeer::ID)) $criteria->add(DistreleasePeer::ID, $this->id);
 		if ($this->isColumnModified(DistreleasePeer::NAME)) $criteria->add(DistreleasePeer::NAME, $this->name);
 		if ($this->isColumnModified(DistreleasePeer::IS_META)) $criteria->add(DistreleasePeer::IS_META, $this->is_meta);
+		if ($this->isColumnModified(DistreleasePeer::IS_LATEST)) $criteria->add(DistreleasePeer::IS_LATEST, $this->is_latest);
+		if ($this->isColumnModified(DistreleasePeer::IS_DEV_VERSION)) $criteria->add(DistreleasePeer::IS_DEV_VERSION, $this->is_dev_version);
 
 		return $criteria;
 	}
@@ -802,6 +906,10 @@ abstract class BaseDistrelease extends BaseObject  implements Persistent {
 		$copyObj->setName($this->name);
 
 		$copyObj->setIsMeta($this->is_meta);
+
+		$copyObj->setIsLatest($this->is_latest);
+
+		$copyObj->setIsDevVersion($this->is_dev_version);
 
 
 		if ($deepCopy) {
@@ -1162,6 +1270,53 @@ abstract class BaseDistrelease extends BaseObject  implements Persistent {
 
 			if (!isset($this->lastRpmCriteria) || !$this->lastRpmCriteria->equals($criteria)) {
 				$this->collRpms = RpmPeer::doSelectJoinRpmGroup($criteria, $con, $join_behavior);
+			}
+		}
+		$this->lastRpmCriteria = $criteria;
+
+		return $this->collRpms;
+	}
+
+
+	/**
+	 * If this collection has already been initialized with
+	 * an identical criteria, it returns the collection.
+	 * Otherwise if this Distrelease is new, it will return
+	 * an empty collection; or if this Distrelease has previously
+	 * been saved, it will retrieve related Rpms from storage.
+	 *
+	 * This method is protected by default in order to keep the public
+	 * api reasonable.  You can provide public methods for those you
+	 * actually need in Distrelease.
+	 */
+	public function getRpmsJoinArchRelatedByArchId($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	{
+		if ($criteria === null) {
+			$criteria = new Criteria(DistreleasePeer::DATABASE_NAME);
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collRpms === null) {
+			if ($this->isNew()) {
+				$this->collRpms = array();
+			} else {
+
+				$criteria->add(RpmPeer::DISTRELEASE_ID, $this->id);
+
+				$this->collRpms = RpmPeer::doSelectJoinArchRelatedByArchId($criteria, $con, $join_behavior);
+			}
+		} else {
+			// the following code is to determine if a new query is
+			// called for.  If the criteria is the same as the last
+			// one, just return the collection.
+
+			$criteria->add(RpmPeer::DISTRELEASE_ID, $this->id);
+
+			if (!isset($this->lastRpmCriteria) || !$this->lastRpmCriteria->equals($criteria)) {
+				$this->collRpms = RpmPeer::doSelectJoinArchRelatedByArchId($criteria, $con, $join_behavior);
 			}
 		}
 		$this->lastRpmCriteria = $criteria;

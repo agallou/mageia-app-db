@@ -25,7 +25,7 @@ abstract class BaseDistreleasePeer {
 	const TM_CLASS = 'DistreleaseTableMap';
 	
 	/** The total number of columns. */
-	const NUM_COLUMNS = 3;
+	const NUM_COLUMNS = 5;
 
 	/** The number of lazy-loaded columns. */
 	const NUM_LAZY_LOAD_COLUMNS = 0;
@@ -38,6 +38,12 @@ abstract class BaseDistreleasePeer {
 
 	/** the column name for the IS_META field */
 	const IS_META = 'distrelease.IS_META';
+
+	/** the column name for the IS_LATEST field */
+	const IS_LATEST = 'distrelease.IS_LATEST';
+
+	/** the column name for the IS_DEV_VERSION field */
+	const IS_DEV_VERSION = 'distrelease.IS_DEV_VERSION';
 
 	/**
 	 * An identiy map to hold any loaded instances of Distrelease objects.
@@ -62,11 +68,11 @@ abstract class BaseDistreleasePeer {
 	 * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
 	 */
 	private static $fieldNames = array (
-		BasePeer::TYPE_PHPNAME => array ('Id', 'Name', 'IsMeta', ),
-		BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'name', 'isMeta', ),
-		BasePeer::TYPE_COLNAME => array (self::ID, self::NAME, self::IS_META, ),
-		BasePeer::TYPE_FIELDNAME => array ('id', 'name', 'is_meta', ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, )
+		BasePeer::TYPE_PHPNAME => array ('Id', 'Name', 'IsMeta', 'IsLatest', 'IsDevVersion', ),
+		BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'name', 'isMeta', 'isLatest', 'isDevVersion', ),
+		BasePeer::TYPE_COLNAME => array (self::ID, self::NAME, self::IS_META, self::IS_LATEST, self::IS_DEV_VERSION, ),
+		BasePeer::TYPE_FIELDNAME => array ('id', 'name', 'is_meta', 'is_latest', 'is_dev_version', ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, )
 	);
 
 	/**
@@ -76,11 +82,11 @@ abstract class BaseDistreleasePeer {
 	 * e.g. self::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
 	 */
 	private static $fieldKeys = array (
-		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Name' => 1, 'IsMeta' => 2, ),
-		BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'name' => 1, 'isMeta' => 2, ),
-		BasePeer::TYPE_COLNAME => array (self::ID => 0, self::NAME => 1, self::IS_META => 2, ),
-		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'name' => 1, 'is_meta' => 2, ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, )
+		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Name' => 1, 'IsMeta' => 2, 'IsLatest' => 3, 'IsDevVersion' => 4, ),
+		BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'name' => 1, 'isMeta' => 2, 'isLatest' => 3, 'isDevVersion' => 4, ),
+		BasePeer::TYPE_COLNAME => array (self::ID => 0, self::NAME => 1, self::IS_META => 2, self::IS_LATEST => 3, self::IS_DEV_VERSION => 4, ),
+		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'name' => 1, 'is_meta' => 2, 'is_latest' => 3, 'is_dev_version' => 4, ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, )
 	);
 
 	/**
@@ -153,6 +159,8 @@ abstract class BaseDistreleasePeer {
 		$criteria->addSelectColumn(DistreleasePeer::ID);
 		$criteria->addSelectColumn(DistreleasePeer::NAME);
 		$criteria->addSelectColumn(DistreleasePeer::IS_META);
+		$criteria->addSelectColumn(DistreleasePeer::IS_LATEST);
+		$criteria->addSelectColumn(DistreleasePeer::IS_DEV_VERSION);
 	}
 
 	/**

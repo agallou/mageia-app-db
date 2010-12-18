@@ -13,7 +13,7 @@ create table rpmlinearized
   filename varchar(255),
   evr varchar(255),
   summary varchar(255),
-  description varchar(45),
+  description text,
   buildtime timestamp,
   url text,
   rpm_size int,
@@ -54,6 +54,12 @@ select distinct media_name, media_vendor from rpmlinearized where media_name <> 
 insert into distrelease (name)
 select distinct version from rpmlinearized where version <> '';
 
+update distrelease
+set is_latest = true where name = '2010.1';
+
+update distrelease
+set is_dev_version = true where name = 'cooker';
+
 insert into package (name, md5_name)
 select distinct package_name, md5(package_name) from rpmlinearized;
 update package 
@@ -66,21 +72,15 @@ where left(name, 3) <> 'lib'
 
 
 
-insert into rpm (package_id, distrelease_id, media_id, rpm_group_id, licence, name, evr, version, `release`, `summary`, `description`, `url`, `src_rpm`)
-select package.id, distrelease.id, media.id, rpm_group.id, license, filename, evr, evr, evr, summary, description, url, source_rpm
-from rpmlinearized, package, distrelease, media, rpm_group
+insert into rpm (package_id, distrelease_id, media_id, rpm_group_id, licence, name, evr, version, `release`, `summary`, `description`, `url`, `src_rpm`, `rpm_pkgid`, `build_time`, `size`, `arch`, `arch_id`)
+select package.id, distrelease.id, media.id, rpm_group.id, license, filename, evr, evr, evr, summary, description, url, source_rpm, rpm_pkgid, buildtime, rpm_size, 'TODO', arch.id
+from rpmlinearized, package, distrelease, media, rpm_group, arch
 where rpmlinearized.package_name = package.name
   and rpmlinearized.version = distrelease.name
   and rpmlinearized.media_name = media.name
   and rpmlinearized.media_vendor = media.vendor
   and rpmlinearized.rpm_group = rpm_group.name
-;
-insert into rpmfile (rpm_pkgid, build_time, arch_id, rpm_id, `size`, arch)
-select rpmlinearized.rpm_pkgid, rpmlinearized.buildtime, arch.id, rpm.id, rpmlinearized.rpm_size, arch.name
-from rpmlinearized, arch, rpm
-where rpmlinearized.filename = rpm.name
   and rpmlinearized.arch = arch.name
 ;
 
 drop table rpmlinearized;
-
