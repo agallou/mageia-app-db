@@ -1,4 +1,4 @@
-<h1><?php Package : echo $package->getName() ?></h1>
+<h1>Package : <?php echo $package->getName() ?></h1>
 <div>
 <h2>Package details</h2>
 <p><span class='todo'>TODO : Add summary and description in DB so that we can print them</span></p>
