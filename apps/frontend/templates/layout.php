@@ -16,6 +16,7 @@
                     <?php if ($sf_user->isAuthenticated()): ?>
                         <?php echo link_to('Logout', url_for('@logout')); ?>
                     <?php else: ?>
+                        <span>Register? |</span>
                         <?php echo link_to('Login', url_for('@login')) ?>
                     <?php endif; ?>
                 </div>
@@ -27,6 +28,8 @@
                 <div id="content">
                     <?php echo $sf_content ?>
                 </div>
+
+                    
                 <div id="footer">
                 <div class="content">
                  <!--   <span class="symfony">
