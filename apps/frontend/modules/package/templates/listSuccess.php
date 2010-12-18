@@ -11,7 +11,7 @@
 
 <div>
   Total results : <span id="count"></span>
-  <ul id="results">
+  <ul id="results" class="packlist">
 <ul>
 <?php foreach ($pager as $package): ?>
   <li><?php echo link_to($package->getName(), 'package/show?id=' . $package->getid()); ?></li> 
