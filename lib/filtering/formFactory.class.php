@@ -19,7 +19,7 @@ class formFactory
       {
         $filter = new $filterName;
         $key    = $filter->getCode();
-        $bindParams[$key] = $context->getParameter($key);
+        $bindParams[$key] = $filter->getValueFromContext($context);
       }
       $form->bind($bindParams);
     }

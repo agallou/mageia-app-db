@@ -54,6 +54,8 @@ abstract class baseCriteriaFilter
    return $this->filter($this->getCriteria(), $this->getMadbContext());
   }
 
+  abstract public function getValueFromContext(madbContext $context);
+
   abstract public function configureForm(sfForm $form);
 
   abstract public function getPerimeter();

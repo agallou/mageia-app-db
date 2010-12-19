@@ -1,74 +1,53 @@
 $(document).ready(function(){
 
-  filtering = hashToFiltering(document.location.hash);
   $('#application').selectToCheckboxes({
     apply: function(d){afterCheckboxChange(d)},
-    defaults: filtering.application,
+    defaults: getAllVals($('#application option[selected=selected]')),
   });
   $('#group').selectToCheckboxes({
     apply: function(d){afterCheckboxChange(d)},
-    defaults: filtering.group,
+    defaults: getAllVals($('#group option[selected=selected]')),
   });
   $('#distrelease').selectToCheckboxes({
     apply: function(d){afterCheckboxChange(d)},
-    defaults: filtering.group,
+    defaults: getAllVals($('#distrelease option[selected=selected]')),
   });
   $('form input[type=submit]').remove();
 });
 
 
+function getAllVals(options)
+{
+  var vals = [];
+  $.each(options, function(key, value) {
+    vals[key] = $(value).val();
+  });
+  return vals;
+}
+
 function afterCheckboxChange(changed)
 {
-  var filtering = hashToFiltering(document.location.hash);
-  var vals = [];
-  var tmp = '';
-  $.each(changed, function(key, value) {
-    vals[key] = $(value).attr('value');
-    tmp = $(value).attr('name');
-  });
-  filtering[tmp] = vals;
+  filtering = getFiltering();
   updateResults(filtering);
 }
 
-function hashToFiltering(hash)
+function getFiltering()
 {
   var filtering = new Object;
-  hash = hash.substring(1);
-  var str = $.base64.decode(hash);
-  var tab = str.split('§');
-  $.each(tab, function(key, value) {
-    if (value.length) {
-      var tab2 = value.split('|');
-      var name = tab2[0];
-      if (tab2[1])
-      {
-        var tab3 = tab2[1].split(',');
-        var letab = [];
-        $.each(tab3, function(key2, value2) {
-          if (value2.length) {
-            letab[key2] = value2;
-          }
-        });
-        filtering[name] = letab;
-      }
-    }
-  });
+  filtering['distrelease'] = getValuesFromCheckboxes($('input[type=checkbox][name=distrelease]:checked'));
+  filtering['application'] = getValuesFromCheckboxes($('input[type=checkbox][name=application]:checked'));
+  filtering['group'] = getValuesFromCheckboxes($('input[type=checkbox][name=group]:checked'));
   return filtering;
 }
 
-function filteringToHash(obj)
+function getValuesFromCheckboxes(checkboxes)
 {
-  var str = '';
-  $.each(obj, function(key, value){
-    str += key + '|';
-    $.each(value, function(key2, val2){
-      str += val2 + ','
-    });
-    str += '§';
+ var vals = [];
+ $.each(checkboxes, function(key, value) {
+    vals[key] = $(value).attr('value');
   });
-  return $.base64.encode(str);
+  return vals;
 }
-
 
 function filteringToLink(filtering)
 {

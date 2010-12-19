@@ -29,12 +29,11 @@ class distreleaseCriteriaFilter extends baseCriteriaFilterChoice
    */
   protected function filter(Criteria $criteria, madbContext $context)
   {
+    $value = $this->getValueFromContext($context);
     //TODO liste avec opérandes ????
     //plusieurs fois le même parameterHolder ??? pas de context ???
-    $value = $context->getParameter('distrelease');
-    if ( null !== $value)
+    if (count($value))
     {
-      $value = explode(',', $value);
       $criterion = null;
       $criteria->addJoin(PackagePeer::ID, RpmPeer::PACKAGE_ID, Criteria::JOIN);
       $criteria->addJoin(RpmPeer::DISTRELEASE_ID, DistreleasePeer::ID, Criteria::JOIN);

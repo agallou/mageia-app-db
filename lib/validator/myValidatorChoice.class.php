@@ -10,10 +10,13 @@ class myValidatorChoice extends sfValidatorChoice
 
   public function clean($value)
   {
-    //TODO coma in configure
-    if (strpos($value, ','))
+    if (is_string($value))
     {
-      $value = explode(',', $value);
+      //TODO coma in configure
+      if (strpos($value, ','))
+      {
+        $value = explode(',', $value);
+      }
     }
     return parent::clean($value);
   }
