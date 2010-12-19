@@ -7,6 +7,9 @@ class showAction extends madbActions
     $id = $request->getParameter('id');
     $this->rpm = RpmPeer::retrieveByPk($id);
     $this->forward404Unless($this->rpm, 'Erroneous RPM id');
+    
+    // get more information from sophie
+    $this->sophie_info = Sophie::rpmsInfo($this->rpm->getRpmPkgid());
   }
 
 }

@@ -33,4 +33,8 @@
   <li>installed size : <span class='todo'>TODO : how do we get it ?</span></li>
 </ul>
 
+<pre>
+<?php print_r ($sophie_info) ?>
+</pre>
+
 </div>
