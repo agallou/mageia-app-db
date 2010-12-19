@@ -58,6 +58,7 @@ delete from rpmlinearized where version NOT IN (
 );
 
 alter table rpmlinearized add package_name varchar(255);
+
 update rpmlinearized
 set package_name = LCASE(SUBSTRING(filename, 1, LENGTH(filename) - (LENGTH(SUBSTRING_INDEX(filename, '-', -2))+1)));
 
@@ -92,7 +93,24 @@ where left(name, 3) <> 'lib'
 
 
 insert into rpm (package_id, distrelease_id, media_id, rpm_group_id, licence, name, evr, version, `release`, `summary`, `description`, `url`, `src_rpm`, `rpm_pkgid`, `build_time`, `size`, `arch`, `arch_id`)
-select package.id, distrelease.id, media.id, rpm_group.id, license, filename, evr, evr, evr, summary, description, url, source_rpm, rpm_pkgid, buildtime, rpm_size, 'TODO', arch.id
+select  package.id, 
+        distrelease.id, 
+        media.id, 
+        rpm_group.id, 
+        license, 
+        filename, 
+        evr, 
+        SUBSTRING(evr, 1, LENGTH(SUBSTRING_INDEX(evr, '-', 1))),
+        SUBSTRING(evr, LENGTH(SUBSTRING_INDEX(evr, '-', 1))+2),
+        summary, 
+        description, 
+        url, 
+        source_rpm,
+        rpm_pkgid, 
+        buildtime, 
+        rpm_size, 
+        'TODO', 
+        arch.id
 from rpmlinearized, package, distrelease, media, rpm_group, arch
 where rpmlinearized.package_name = package.name
   and rpmlinearized.version = distrelease.name
@@ -101,5 +119,8 @@ where rpmlinearized.package_name = package.name
   and rpmlinearized.rpm_group = rpm_group.name
   and rpmlinearized.arch = arch.name
 ;
+
+
+
 
 drop table rpmlinearized;

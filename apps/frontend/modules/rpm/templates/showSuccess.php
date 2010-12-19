@@ -5,8 +5,8 @@
 <h2>Basic items</h2>
 <ul>
   <li>Name : <?php echo $rpm->getPackage()->getName() ?> <span class='todo'>TODO : Use a short_name field directly from rpm table ?</span></li>
-  <li>Version : <?php echo $rpm->getVersion() ?><span class='todo'>TODO : Fix version storage in DB.</span></li>
-  <li>Release : <?php echo $rpm->getRelease() ?><span class='todo'>TODO : Fix release storage in DB</span></li>
+  <li>Version : <?php echo $rpm->getVersion() ?></li>
+  <li>Release : <?php echo $rpm->getRelease() ?></li>
   <li>Distribution release : <?php echo $rpm->getDistrelease()->getName() ?></li>
   <li>URL : <?php echo link_to($rpm->getUrl(), $rpm->getUrl()) ?></li>
   <li>Group : <?php echo $rpm->getRpmGroup()->getName() ?></li>
