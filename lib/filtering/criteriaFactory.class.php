@@ -40,9 +40,13 @@ class criteriaFactory
     $criteria->setDistinct();
     $filter->setCriteria($criteria);
     $filter->getFilteredCriteria();
-    $toTmp = new criteriaToTemporaryTable($criteria, 'tmp_filtrage_' . md5(get_class($filter)));
+    $tablename = 'tmp_filtrage_' . md5(get_class($filter));
+    $toTmp = new criteriaToTemporaryTable($criteria, $tablename);
+    $pdo = Propel::getConnection();
     $toTmp->setConnection(Propel::getConnection());
     $toTmp->execute();
+    $sql = 'ALTER TABLE %s ADD INDEX (id)';
+    $pdo->exec(sprintf($sql, $tablename));
     $criteria = $criteriaOrig;
     //TODO by perumeter join
     $criteria->addJoin(PackagePeer::ID, $toTmp->getField('id'), Criteria::JOIN);
