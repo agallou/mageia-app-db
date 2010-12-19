@@ -1,5 +1,5 @@
 <?php
-class showAction extends sfActions
+class showAction extends madbActions
 {
   public function execute($request)
   {
