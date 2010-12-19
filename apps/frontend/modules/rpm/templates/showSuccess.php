@@ -11,11 +11,10 @@
   <li>URL : <?php echo link_to($rpm->getUrl(), $rpm->getUrl()) ?></li>
   <li>Group : <?php echo $rpm->getRpmGroup()->getName() ?></li>
   <li>Summary : <?php echo $rpm->getSummary() ?></li>
-  <li>Description : <br/><?php echo $rpm->getDescription() ?><span class='todo'>TODO : Fix description storage (truncated)</span></li>
+  <li>Description : <br/><?php echo $rpm->getDescription() ?></li>
+  <li>Size : <?php echo $rpm->getSize() ?></li>
+  <li>Arch : <?php echo $rpm->getArch() ?></li>
 </ul>
-
-<h2>Rpm files</h2>
-<p class='todo'>TODO : Query rpmfile table for this RPM. Get size and arch from it for each file. Apply global filters : show only filtered archs. Store size also in rpm table so that we can easily display it ? Does size vary much from arch to arch ? If not we can do it.</p>
 
 <h2>Advanced items</h2>
 <ul>
