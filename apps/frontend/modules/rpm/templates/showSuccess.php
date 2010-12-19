@@ -7,13 +7,19 @@
   <li>Name : <?php echo $rpm->getPackage()->getName() ?> <span class='todo'>TODO : Use a short_name field directly from rpm table ?</span></li>
   <li>Version : <?php echo $rpm->getVersion() ?></li>
   <li>Release : <?php echo $rpm->getRelease() ?></li>
-  <li>Distribution release : <?php echo $rpm->getDistrelease()->getName() ?></li>
   <li>URL : <?php echo link_to($rpm->getUrl(), $rpm->getUrl()) ?></li>
   <li>Group : <?php echo $rpm->getRpmGroup()->getName() ?></li>
   <li>Summary : <?php echo $rpm->getSummary() ?></li>
   <li>Description : <br/><?php echo $rpm->getDescription() ?></li>
   <li>Size : <?php echo $rpm->getSize() ?></li>
   <li>Arch : <?php echo $rpm->getRealarch() ?></li>
+</ul>
+
+<h2>Media information</h2>
+<ul>
+  <li>Distribution release : <?php echo $rpm->getDistrelease()->getName() ?></li>
+  <li>Media name : <?php echo $rpm->getMedia()->getName() ?></li>
+  <li>Media arch : <?php echo $rpm->getArch()->getName() ?></li>
 </ul>
 
 <h2>Advanced items</h2>
