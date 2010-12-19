@@ -12,7 +12,6 @@ class formFactory
       $filter = new $filterName;
       $form = $filter->configureForm($form);
     }
-
     if (null !== $context)
     {
       $bindParams = array();

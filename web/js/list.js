@@ -9,6 +9,10 @@ $(document).ready(function(){
     apply: function(d){afterCheckboxChange(d)},
     defaults: filtering.group,
   });
+  $('#distrelease').selectToCheckboxes({
+    apply: function(d){afterCheckboxChange(d)},
+    defaults: filtering.group,
+  });
   $('form input[type=submit]').remove();
 });
 

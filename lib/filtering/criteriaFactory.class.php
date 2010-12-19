@@ -40,7 +40,7 @@ class criteriaFactory
     $criteria->setDistinct();
     $filter->setCriteria($criteria);
     $filter->getFilteredCriteria();
-    $toTmp = new criteriaToTemporaryTable($criteria, 'tmp_filtrage');
+    $toTmp = new criteriaToTemporaryTable($criteria, 'tmp_filtrage_' . md5(get_class($filter)));
     $toTmp->setConnection(Propel::getConnection());
     $toTmp->execute();
     $criteria = $criteriaOrig;
