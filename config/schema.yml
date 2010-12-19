@@ -26,7 +26,7 @@ propel:
     rpm_pkgid:                                                         { type: char, size:32, required: true }
     build_time:                                                        { type: timestamp, required: true }
     size:                                                              { type: integer, required: true }
-    arch:                                                              { type: varchar(45), required: true }
+    realarch:                                                          { type: varchar(45), required: true }
     arch_id:                                                           { type: integer, required: true, foreignTable: arch, foreignReference: id }
     _indexes:
       fk_rpm_distrelease1:                                             [ distrelease_id ]

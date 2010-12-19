@@ -1343,7 +1343,7 @@ abstract class BasePackage extends BaseObject  implements Persistent {
 	 * api reasonable.  You can provide public methods for those you
 	 * actually need in Package.
 	 */
-	public function getRpmsJoinArchRelatedByArchId($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public function getRpmsJoinArch($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
 		if ($criteria === null) {
 			$criteria = new Criteria(PackagePeer::DATABASE_NAME);
@@ -1360,7 +1360,7 @@ abstract class BasePackage extends BaseObject  implements Persistent {
 
 				$criteria->add(RpmPeer::PACKAGE_ID, $this->id);
 
-				$this->collRpms = RpmPeer::doSelectJoinArchRelatedByArchId($criteria, $con, $join_behavior);
+				$this->collRpms = RpmPeer::doSelectJoinArch($criteria, $con, $join_behavior);
 			}
 		} else {
 			// the following code is to determine if a new query is
@@ -1370,7 +1370,7 @@ abstract class BasePackage extends BaseObject  implements Persistent {
 			$criteria->add(RpmPeer::PACKAGE_ID, $this->id);
 
 			if (!isset($this->lastRpmCriteria) || !$this->lastRpmCriteria->equals($criteria)) {
-				$this->collRpms = RpmPeer::doSelectJoinArchRelatedByArchId($criteria, $con, $join_behavior);
+				$this->collRpms = RpmPeer::doSelectJoinArch($criteria, $con, $join_behavior);
 			}
 		}
 		$this->lastRpmCriteria = $criteria;

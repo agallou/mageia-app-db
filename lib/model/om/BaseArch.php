@@ -915,7 +915,7 @@ abstract class BaseArch extends BaseObject  implements Persistent {
 		}
 		if (!in_array($l, $this->collRpms, true)) { // only add it if the **same** object is not already associated
 			array_push($this->collRpms, $l);
-			$l->setArchRelatedByArchId($this);
+			$l->setArch($this);
 		}
 	}
 

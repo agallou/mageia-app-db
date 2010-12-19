@@ -81,8 +81,8 @@ abstract class BaseRpmPeer {
 	/** the column name for the SIZE field */
 	const SIZE = 'rpm.SIZE';
 
-	/** the column name for the ARCH field */
-	const ARCH = 'rpm.ARCH';
+	/** the column name for the REALARCH field */
+	const REALARCH = 'rpm.REALARCH';
 
 	/** the column name for the ARCH_ID field */
 	const ARCH_ID = 'rpm.ARCH_ID';
@@ -110,10 +110,10 @@ abstract class BaseRpmPeer {
 	 * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
 	 */
 	private static $fieldNames = array (
-		BasePeer::TYPE_PHPNAME => array ('Id', 'PackageId', 'DistreleaseId', 'MediaId', 'RpmGroupId', 'Licence', 'Name', 'Evr', 'Version', 'Release', 'Summary', 'Description', 'Url', 'SrcRpm', 'RpmPkgid', 'BuildTime', 'Size', 'Arch', 'ArchId', ),
-		BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'packageId', 'distreleaseId', 'mediaId', 'rpmGroupId', 'licence', 'name', 'evr', 'version', 'release', 'summary', 'description', 'url', 'srcRpm', 'rpmPkgid', 'buildTime', 'size', 'arch', 'archId', ),
-		BasePeer::TYPE_COLNAME => array (self::ID, self::PACKAGE_ID, self::DISTRELEASE_ID, self::MEDIA_ID, self::RPM_GROUP_ID, self::LICENCE, self::NAME, self::EVR, self::VERSION, self::RELEASE, self::SUMMARY, self::DESCRIPTION, self::URL, self::SRC_RPM, self::RPM_PKGID, self::BUILD_TIME, self::SIZE, self::ARCH, self::ARCH_ID, ),
-		BasePeer::TYPE_FIELDNAME => array ('id', 'package_id', 'distrelease_id', 'media_id', 'rpm_group_id', 'licence', 'name', 'evr', 'version', 'release', 'summary', 'description', 'url', 'src_rpm', 'rpm_pkgid', 'build_time', 'size', 'arch', 'arch_id', ),
+		BasePeer::TYPE_PHPNAME => array ('Id', 'PackageId', 'DistreleaseId', 'MediaId', 'RpmGroupId', 'Licence', 'Name', 'Evr', 'Version', 'Release', 'Summary', 'Description', 'Url', 'SrcRpm', 'RpmPkgid', 'BuildTime', 'Size', 'Realarch', 'ArchId', ),
+		BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'packageId', 'distreleaseId', 'mediaId', 'rpmGroupId', 'licence', 'name', 'evr', 'version', 'release', 'summary', 'description', 'url', 'srcRpm', 'rpmPkgid', 'buildTime', 'size', 'realarch', 'archId', ),
+		BasePeer::TYPE_COLNAME => array (self::ID, self::PACKAGE_ID, self::DISTRELEASE_ID, self::MEDIA_ID, self::RPM_GROUP_ID, self::LICENCE, self::NAME, self::EVR, self::VERSION, self::RELEASE, self::SUMMARY, self::DESCRIPTION, self::URL, self::SRC_RPM, self::RPM_PKGID, self::BUILD_TIME, self::SIZE, self::REALARCH, self::ARCH_ID, ),
+		BasePeer::TYPE_FIELDNAME => array ('id', 'package_id', 'distrelease_id', 'media_id', 'rpm_group_id', 'licence', 'name', 'evr', 'version', 'release', 'summary', 'description', 'url', 'src_rpm', 'rpm_pkgid', 'build_time', 'size', 'realarch', 'arch_id', ),
 		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, )
 	);
 
@@ -124,10 +124,10 @@ abstract class BaseRpmPeer {
 	 * e.g. self::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
 	 */
 	private static $fieldKeys = array (
-		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'PackageId' => 1, 'DistreleaseId' => 2, 'MediaId' => 3, 'RpmGroupId' => 4, 'Licence' => 5, 'Name' => 6, 'Evr' => 7, 'Version' => 8, 'Release' => 9, 'Summary' => 10, 'Description' => 11, 'Url' => 12, 'SrcRpm' => 13, 'RpmPkgid' => 14, 'BuildTime' => 15, 'Size' => 16, 'Arch' => 17, 'ArchId' => 18, ),
-		BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'packageId' => 1, 'distreleaseId' => 2, 'mediaId' => 3, 'rpmGroupId' => 4, 'licence' => 5, 'name' => 6, 'evr' => 7, 'version' => 8, 'release' => 9, 'summary' => 10, 'description' => 11, 'url' => 12, 'srcRpm' => 13, 'rpmPkgid' => 14, 'buildTime' => 15, 'size' => 16, 'arch' => 17, 'archId' => 18, ),
-		BasePeer::TYPE_COLNAME => array (self::ID => 0, self::PACKAGE_ID => 1, self::DISTRELEASE_ID => 2, self::MEDIA_ID => 3, self::RPM_GROUP_ID => 4, self::LICENCE => 5, self::NAME => 6, self::EVR => 7, self::VERSION => 8, self::RELEASE => 9, self::SUMMARY => 10, self::DESCRIPTION => 11, self::URL => 12, self::SRC_RPM => 13, self::RPM_PKGID => 14, self::BUILD_TIME => 15, self::SIZE => 16, self::ARCH => 17, self::ARCH_ID => 18, ),
-		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'package_id' => 1, 'distrelease_id' => 2, 'media_id' => 3, 'rpm_group_id' => 4, 'licence' => 5, 'name' => 6, 'evr' => 7, 'version' => 8, 'release' => 9, 'summary' => 10, 'description' => 11, 'url' => 12, 'src_rpm' => 13, 'rpm_pkgid' => 14, 'build_time' => 15, 'size' => 16, 'arch' => 17, 'arch_id' => 18, ),
+		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'PackageId' => 1, 'DistreleaseId' => 2, 'MediaId' => 3, 'RpmGroupId' => 4, 'Licence' => 5, 'Name' => 6, 'Evr' => 7, 'Version' => 8, 'Release' => 9, 'Summary' => 10, 'Description' => 11, 'Url' => 12, 'SrcRpm' => 13, 'RpmPkgid' => 14, 'BuildTime' => 15, 'Size' => 16, 'Realarch' => 17, 'ArchId' => 18, ),
+		BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'packageId' => 1, 'distreleaseId' => 2, 'mediaId' => 3, 'rpmGroupId' => 4, 'licence' => 5, 'name' => 6, 'evr' => 7, 'version' => 8, 'release' => 9, 'summary' => 10, 'description' => 11, 'url' => 12, 'srcRpm' => 13, 'rpmPkgid' => 14, 'buildTime' => 15, 'size' => 16, 'realarch' => 17, 'archId' => 18, ),
+		BasePeer::TYPE_COLNAME => array (self::ID => 0, self::PACKAGE_ID => 1, self::DISTRELEASE_ID => 2, self::MEDIA_ID => 3, self::RPM_GROUP_ID => 4, self::LICENCE => 5, self::NAME => 6, self::EVR => 7, self::VERSION => 8, self::RELEASE => 9, self::SUMMARY => 10, self::DESCRIPTION => 11, self::URL => 12, self::SRC_RPM => 13, self::RPM_PKGID => 14, self::BUILD_TIME => 15, self::SIZE => 16, self::REALARCH => 17, self::ARCH_ID => 18, ),
+		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'package_id' => 1, 'distrelease_id' => 2, 'media_id' => 3, 'rpm_group_id' => 4, 'licence' => 5, 'name' => 6, 'evr' => 7, 'version' => 8, 'release' => 9, 'summary' => 10, 'description' => 11, 'url' => 12, 'src_rpm' => 13, 'rpm_pkgid' => 14, 'build_time' => 15, 'size' => 16, 'realarch' => 17, 'arch_id' => 18, ),
 		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, )
 	);
 
@@ -215,7 +215,7 @@ abstract class BaseRpmPeer {
 		$criteria->addSelectColumn(RpmPeer::RPM_PKGID);
 		$criteria->addSelectColumn(RpmPeer::BUILD_TIME);
 		$criteria->addSelectColumn(RpmPeer::SIZE);
-		$criteria->addSelectColumn(RpmPeer::ARCH);
+		$criteria->addSelectColumn(RpmPeer::REALARCH);
 		$criteria->addSelectColumn(RpmPeer::ARCH_ID);
 	}
 
@@ -699,7 +699,7 @@ abstract class BaseRpmPeer {
 
 
 	/**
-	 * Returns the number of rows matching criteria, joining the related ArchRelatedByArchId table
+	 * Returns the number of rows matching criteria, joining the related Arch table
 	 *
 	 * @param      Criteria $criteria
 	 * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
@@ -707,7 +707,7 @@ abstract class BaseRpmPeer {
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
 	 * @return     int Number of matching rows.
 	 */
-	public static function doCountJoinArchRelatedByArchId(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public static function doCountJoinArch(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
 		// we're going to modify criteria, so copy it first
 		$criteria = clone $criteria;
@@ -1051,7 +1051,7 @@ abstract class BaseRpmPeer {
 	 * @throws     PropelException Any exceptions caught during processing will be
 	 *		 rethrown wrapped into a PropelException.
 	 */
-	public static function doSelectJoinArchRelatedByArchId(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public static function doSelectJoinArch(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
 		$criteria = clone $criteria;
 
@@ -1593,7 +1593,7 @@ abstract class BaseRpmPeer {
 
 
 	/**
-	 * Returns the number of rows matching criteria, joining the related ArchRelatedByArchId table
+	 * Returns the number of rows matching criteria, joining the related Arch table
 	 *
 	 * @param      Criteria $criteria
 	 * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
@@ -1601,7 +1601,7 @@ abstract class BaseRpmPeer {
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
 	 * @return     int Number of matching rows.
 	 */
-	public static function doCountJoinAllExceptArchRelatedByArchId(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public static function doCountJoinAllExceptArch(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
 		// we're going to modify criteria, so copy it first
 		$criteria = clone $criteria;
@@ -2259,7 +2259,7 @@ abstract class BaseRpmPeer {
 
 
 	/**
-	 * Selects a collection of Rpm objects pre-filled with all related objects except ArchRelatedByArchId.
+	 * Selects a collection of Rpm objects pre-filled with all related objects except Arch.
 	 *
 	 * @param      Criteria  $criteria
 	 * @param      PropelPDO $con
@@ -2268,7 +2268,7 @@ abstract class BaseRpmPeer {
 	 * @throws     PropelException Any exceptions caught during processing will be
 	 *		 rethrown wrapped into a PropelException.
 	 */
-	public static function doSelectJoinAllExceptArchRelatedByArchId(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public static function doSelectJoinAllExceptArch(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
 		$criteria = clone $criteria;
 

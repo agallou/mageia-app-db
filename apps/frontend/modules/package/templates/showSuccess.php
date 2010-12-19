@@ -8,7 +8,7 @@
 </p>
 <ul>
   <?php foreach ($package->getRpms() as $rpm) : ?>
-  <li>Name : <?php echo link_to($rpm->getName(), 'rpm/show?id=' . $rpm->getId()); ?></li>
+  <li>Name : <?php echo link_to($rpm->getName(), 'rpm/show?id=' . $rpm->getId()); ?> (<?php echo $rpm->getDistrelease()->getName() ?>, <?php echo $rpm->getArch()->getName()?> media)</li>
   <?php endforeach; ?>
 </ul>
 </div>

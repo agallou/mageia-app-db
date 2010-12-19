@@ -20,12 +20,12 @@ create table rpmlinearized
   source_rpm text,
   license varchar(255),
   rpm_group varchar(255),
-  arch varchar(45),
+  realarch varchar(45),
   media_name varchar(45), 
   media_distrib__1 text,
   media_vendor varchar(255),
   version varchar(45),
-  media_arch__1 text,
+  media_arch varchar(45),
   rpm_pkgid char(32)
 
 );
@@ -36,7 +36,7 @@ alter table rpmlinearized add index index_filename (filename);
 alter table rpmlinearized add index index_version (version);
 alter table rpmlinearized add index index_media (media_name, media_vendor);
 alter table rpmlinearized add index index_group (rpm_group);
-alter table rpmlinearized add index index_arch (arch);
+alter table rpmlinearized add index index_media_arch (media_arch);
 
 delete from rpmlinearized where version NOT IN (
 	'cooker', 
@@ -66,7 +66,7 @@ insert into rpm_group (name)
 select distinct rpm_group from rpmlinearized where rpm_group <> '';
 
 insert into arch(name)
-select distinct arch from rpmlinearized where arch <> '';
+select distinct media_arch from rpmlinearized where media_arch <> '';
 
 insert into media(name, vendor)
 select distinct media_name, media_vendor from rpmlinearized where media_name <> '';
@@ -92,7 +92,7 @@ where left(name, 3) <> 'lib'
 
 
 
-insert into rpm (package_id, distrelease_id, media_id, rpm_group_id, licence, name, evr, version, `release`, `summary`, `description`, `url`, `src_rpm`, `rpm_pkgid`, `build_time`, `size`, `arch`, `arch_id`)
+insert into rpm (package_id, distrelease_id, media_id, rpm_group_id, licence, name, evr, version, `release`, `summary`, `description`, `url`, `src_rpm`, `rpm_pkgid`, `build_time`, `size`, `realarch`, `arch_id`)
 select  package.id, 
         distrelease.id, 
         media.id, 
@@ -109,7 +109,7 @@ select  package.id,
         rpm_pkgid, 
         buildtime, 
         rpm_size, 
-        'TODO', 
+        realarch, 
         arch.id
 from rpmlinearized, package, distrelease, media, rpm_group, arch
 where rpmlinearized.package_name = package.name
@@ -117,7 +117,7 @@ where rpmlinearized.package_name = package.name
   and rpmlinearized.media_name = media.name
   and rpmlinearized.media_vendor = media.vendor
   and rpmlinearized.rpm_group = rpm_group.name
-  and rpmlinearized.arch = arch.name
+  and rpmlinearized.media_arch = arch.name
 ;
 
 

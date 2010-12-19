@@ -121,10 +121,10 @@ abstract class BaseRpm extends BaseObject  implements Persistent {
 	protected $size;
 
 	/**
-	 * The value for the arch field.
+	 * The value for the realarch field.
 	 * @var        string
 	 */
-	protected $arch;
+	protected $realarch;
 
 	/**
 	 * The value for the arch_id field.
@@ -155,7 +155,7 @@ abstract class BaseRpm extends BaseObject  implements Persistent {
 	/**
 	 * @var        Arch
 	 */
-	protected $aArchRelatedByArchId;
+	protected $aArch;
 
 	/**
 	 * Flag to prevent endless save loop, if this object is referenced
@@ -374,13 +374,13 @@ abstract class BaseRpm extends BaseObject  implements Persistent {
 	}
 
 	/**
-	 * Get the [arch] column value.
+	 * Get the [realarch] column value.
 	 * 
 	 * @return     string
 	 */
-	public function getArch()
+	public function getRealarch()
 	{
-		return $this->arch;
+		return $this->realarch;
 	}
 
 	/**
@@ -779,24 +779,24 @@ abstract class BaseRpm extends BaseObject  implements Persistent {
 	} // setSize()
 
 	/**
-	 * Set the value of [arch] column.
+	 * Set the value of [realarch] column.
 	 * 
 	 * @param      string $v new value
 	 * @return     Rpm The current object (for fluent API support)
 	 */
-	public function setArch($v)
+	public function setRealarch($v)
 	{
 		if ($v !== null) {
 			$v = (string) $v;
 		}
 
-		if ($this->arch !== $v) {
-			$this->arch = $v;
-			$this->modifiedColumns[] = RpmPeer::ARCH;
+		if ($this->realarch !== $v) {
+			$this->realarch = $v;
+			$this->modifiedColumns[] = RpmPeer::REALARCH;
 		}
 
 		return $this;
-	} // setArch()
+	} // setRealarch()
 
 	/**
 	 * Set the value of [arch_id] column.
@@ -815,8 +815,8 @@ abstract class BaseRpm extends BaseObject  implements Persistent {
 			$this->modifiedColumns[] = RpmPeer::ARCH_ID;
 		}
 
-		if ($this->aArchRelatedByArchId !== null && $this->aArchRelatedByArchId->getId() !== $v) {
-			$this->aArchRelatedByArchId = null;
+		if ($this->aArch !== null && $this->aArch->getId() !== $v) {
+			$this->aArch = null;
 		}
 
 		return $this;
@@ -871,7 +871,7 @@ abstract class BaseRpm extends BaseObject  implements Persistent {
 			$this->rpm_pkgid = ($row[$startcol + 14] !== null) ? (string) $row[$startcol + 14] : null;
 			$this->build_time = ($row[$startcol + 15] !== null) ? (string) $row[$startcol + 15] : null;
 			$this->size = ($row[$startcol + 16] !== null) ? (int) $row[$startcol + 16] : null;
-			$this->arch = ($row[$startcol + 17] !== null) ? (string) $row[$startcol + 17] : null;
+			$this->realarch = ($row[$startcol + 17] !== null) ? (string) $row[$startcol + 17] : null;
 			$this->arch_id = ($row[$startcol + 18] !== null) ? (int) $row[$startcol + 18] : null;
 			$this->resetModified();
 
@@ -917,8 +917,8 @@ abstract class BaseRpm extends BaseObject  implements Persistent {
 		if ($this->aRpmGroup !== null && $this->rpm_group_id !== $this->aRpmGroup->getId()) {
 			$this->aRpmGroup = null;
 		}
-		if ($this->aArchRelatedByArchId !== null && $this->arch_id !== $this->aArchRelatedByArchId->getId()) {
-			$this->aArchRelatedByArchId = null;
+		if ($this->aArch !== null && $this->arch_id !== $this->aArch->getId()) {
+			$this->aArch = null;
 		}
 	} // ensureConsistency
 
@@ -963,7 +963,7 @@ abstract class BaseRpm extends BaseObject  implements Persistent {
 			$this->aDistrelease = null;
 			$this->aMedia = null;
 			$this->aRpmGroup = null;
-			$this->aArchRelatedByArchId = null;
+			$this->aArch = null;
 		} // if (deep)
 	}
 
@@ -1139,11 +1139,11 @@ abstract class BaseRpm extends BaseObject  implements Persistent {
 				$this->setRpmGroup($this->aRpmGroup);
 			}
 
-			if ($this->aArchRelatedByArchId !== null) {
-				if ($this->aArchRelatedByArchId->isModified() || $this->aArchRelatedByArchId->isNew()) {
-					$affectedRows += $this->aArchRelatedByArchId->save($con);
+			if ($this->aArch !== null) {
+				if ($this->aArch->isModified() || $this->aArch->isNew()) {
+					$affectedRows += $this->aArch->save($con);
 				}
-				$this->setArchRelatedByArchId($this->aArchRelatedByArchId);
+				$this->setArch($this->aArch);
 			}
 
 			if ($this->isNew() ) {
@@ -1263,9 +1263,9 @@ abstract class BaseRpm extends BaseObject  implements Persistent {
 				}
 			}
 
-			if ($this->aArchRelatedByArchId !== null) {
-				if (!$this->aArchRelatedByArchId->validate($columns)) {
-					$failureMap = array_merge($failureMap, $this->aArchRelatedByArchId->getValidationFailures());
+			if ($this->aArch !== null) {
+				if (!$this->aArch->validate($columns)) {
+					$failureMap = array_merge($failureMap, $this->aArch->getValidationFailures());
 				}
 			}
 
@@ -1360,7 +1360,7 @@ abstract class BaseRpm extends BaseObject  implements Persistent {
 				return $this->getSize();
 				break;
 			case 17:
-				return $this->getArch();
+				return $this->getRealarch();
 				break;
 			case 18:
 				return $this->getArchId();
@@ -1403,7 +1403,7 @@ abstract class BaseRpm extends BaseObject  implements Persistent {
 			$keys[14] => $this->getRpmPkgid(),
 			$keys[15] => $this->getBuildTime(),
 			$keys[16] => $this->getSize(),
-			$keys[17] => $this->getArch(),
+			$keys[17] => $this->getRealarch(),
 			$keys[18] => $this->getArchId(),
 		);
 		return $result;
@@ -1488,7 +1488,7 @@ abstract class BaseRpm extends BaseObject  implements Persistent {
 				$this->setSize($value);
 				break;
 			case 17:
-				$this->setArch($value);
+				$this->setRealarch($value);
 				break;
 			case 18:
 				$this->setArchId($value);
@@ -1534,7 +1534,7 @@ abstract class BaseRpm extends BaseObject  implements Persistent {
 		if (array_key_exists($keys[14], $arr)) $this->setRpmPkgid($arr[$keys[14]]);
 		if (array_key_exists($keys[15], $arr)) $this->setBuildTime($arr[$keys[15]]);
 		if (array_key_exists($keys[16], $arr)) $this->setSize($arr[$keys[16]]);
-		if (array_key_exists($keys[17], $arr)) $this->setArch($arr[$keys[17]]);
+		if (array_key_exists($keys[17], $arr)) $this->setRealarch($arr[$keys[17]]);
 		if (array_key_exists($keys[18], $arr)) $this->setArchId($arr[$keys[18]]);
 	}
 
@@ -1564,7 +1564,7 @@ abstract class BaseRpm extends BaseObject  implements Persistent {
 		if ($this->isColumnModified(RpmPeer::RPM_PKGID)) $criteria->add(RpmPeer::RPM_PKGID, $this->rpm_pkgid);
 		if ($this->isColumnModified(RpmPeer::BUILD_TIME)) $criteria->add(RpmPeer::BUILD_TIME, $this->build_time);
 		if ($this->isColumnModified(RpmPeer::SIZE)) $criteria->add(RpmPeer::SIZE, $this->size);
-		if ($this->isColumnModified(RpmPeer::ARCH)) $criteria->add(RpmPeer::ARCH, $this->arch);
+		if ($this->isColumnModified(RpmPeer::REALARCH)) $criteria->add(RpmPeer::REALARCH, $this->realarch);
 		if ($this->isColumnModified(RpmPeer::ARCH_ID)) $criteria->add(RpmPeer::ARCH_ID, $this->arch_id);
 
 		return $criteria;
@@ -1652,7 +1652,7 @@ abstract class BaseRpm extends BaseObject  implements Persistent {
 
 		$copyObj->setSize($this->size);
 
-		$copyObj->setArch($this->arch);
+		$copyObj->setRealarch($this->realarch);
 
 		$copyObj->setArchId($this->arch_id);
 
@@ -1904,7 +1904,7 @@ abstract class BaseRpm extends BaseObject  implements Persistent {
 	 * @return     Rpm The current object (for fluent API support)
 	 * @throws     PropelException
 	 */
-	public function setArchRelatedByArchId(Arch $v = null)
+	public function setArch(Arch $v = null)
 	{
 		if ($v === null) {
 			$this->setArchId(NULL);
@@ -1912,7 +1912,7 @@ abstract class BaseRpm extends BaseObject  implements Persistent {
 			$this->setArchId($v->getId());
 		}
 
-		$this->aArchRelatedByArchId = $v;
+		$this->aArch = $v;
 
 		// Add binding for other direction of this n:n relationship.
 		// If this object has already been added to the Arch object, it will not be re-added.
@@ -1931,19 +1931,19 @@ abstract class BaseRpm extends BaseObject  implements Persistent {
 	 * @return     Arch The associated Arch object.
 	 * @throws     PropelException
 	 */
-	public function getArchRelatedByArchId(PropelPDO $con = null)
+	public function getArch(PropelPDO $con = null)
 	{
-		if ($this->aArchRelatedByArchId === null && ($this->arch_id !== null)) {
-			$this->aArchRelatedByArchId = ArchPeer::retrieveByPk($this->arch_id);
+		if ($this->aArch === null && ($this->arch_id !== null)) {
+			$this->aArch = ArchPeer::retrieveByPk($this->arch_id);
 			/* The following can be used additionally to
 			   guarantee the related object contains a reference
 			   to this object.  This level of coupling may, however, be
 			   undesirable since it could result in an only partially populated collection
 			   in the referenced object.
-			   $this->aArchRelatedByArchId->addRpms($this);
+			   $this->aArch->addRpms($this);
 			 */
 		}
-		return $this->aArchRelatedByArchId;
+		return $this->aArch;
 	}
 
 	/**
@@ -1964,7 +1964,7 @@ abstract class BaseRpm extends BaseObject  implements Persistent {
 			$this->aDistrelease = null;
 			$this->aMedia = null;
 			$this->aRpmGroup = null;
-			$this->aArchRelatedByArchId = null;
+			$this->aArch = null;
 	}
 
 	// symfony_behaviors behavior

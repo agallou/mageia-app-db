@@ -13,7 +13,7 @@
   <li>Summary : <?php echo $rpm->getSummary() ?></li>
   <li>Description : <br/><?php echo $rpm->getDescription() ?></li>
   <li>Size : <?php echo $rpm->getSize() ?></li>
-  <li>Arch : <?php echo $rpm->getArch() ?></li>
+  <li>Arch : <?php echo $rpm->getRealarch() ?></li>
 </ul>
 
 <h2>Advanced items</h2>

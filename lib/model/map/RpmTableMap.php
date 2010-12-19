@@ -53,7 +53,7 @@ class RpmTableMap extends TableMap {
 		$this->addColumn('RPM_PKGID', 'RpmPkgid', 'CHAR', true, 32, null);
 		$this->addColumn('BUILD_TIME', 'BuildTime', 'TIMESTAMP', true, null, null);
 		$this->addColumn('SIZE', 'Size', 'INTEGER', true, null, null);
-		$this->addColumn('ARCH', 'Arch', 'VARCHAR', true, 45, null);
+		$this->addColumn('REALARCH', 'Realarch', 'VARCHAR', true, 45, null);
 		$this->addForeignKey('ARCH_ID', 'ArchId', 'INTEGER', 'arch', 'ID', true, null, null);
 		// validators
 	} // initialize()
@@ -67,7 +67,7 @@ class RpmTableMap extends TableMap {
     $this->addRelation('Distrelease', 'Distrelease', RelationMap::MANY_TO_ONE, array('distrelease_id' => 'id', ), null, null);
     $this->addRelation('Media', 'Media', RelationMap::MANY_TO_ONE, array('media_id' => 'id', ), null, null);
     $this->addRelation('RpmGroup', 'RpmGroup', RelationMap::MANY_TO_ONE, array('rpm_group_id' => 'id', ), null, null);
-    $this->addRelation('ArchRelatedByArchId', 'Arch', RelationMap::MANY_TO_ONE, array('arch_id' => 'id', ), null, null);
+    $this->addRelation('Arch', 'Arch', RelationMap::MANY_TO_ONE, array('arch_id' => 'id', ), null, null);
 	} // buildRelations()
 
 	/**
