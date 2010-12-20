@@ -12,9 +12,8 @@ class criteriaFactory
 
     $criteria = $perimeter->addSelectColumns($criteria);
 
-    foreach ($filterList as $filterName)
+    foreach ($filterList as $filter)
     {
-      $filter = new $filterName();
       $filter->setCriteria($criteria);
       $filter->setMadbContext($context);
       if ($filter->getPerimeter() == $perimeter)
