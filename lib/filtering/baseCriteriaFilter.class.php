@@ -1,12 +1,4 @@
 <?php
-/**
-  Methods that can be implemened : 
-  getOrderByColumns();
-  getGroupByColumns();
-  getSelectColumns();
-  getAsColumns();
-  getJoins();
-*/
 abstract class baseCriteriaFilter
 {
   protected $criteria = null;
