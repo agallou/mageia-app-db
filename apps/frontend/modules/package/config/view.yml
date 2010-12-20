@@ -3,4 +3,3 @@ showSuccess:
     - package.css
 listSuccess:
   javascripts:
-    - list.js

@@ -58,7 +58,12 @@ function filteringToLink(filtering)
     }
   });
   var baseUri = window.location.href.substr(0, (window.location.href.lastIndexOf('.php') + 4));
-  return baseUri + '/package/list' + link;
+  var route = window.location.href.match('^.*\.php/(.*)/(.*)[/]*(.*)$');
+  if (null == route)
+  {
+    return baseUri;
+  }
+  return baseUri + '/' + route[1] + '/' + route[2] + link;
 }
 
 function updateResults(filtering)

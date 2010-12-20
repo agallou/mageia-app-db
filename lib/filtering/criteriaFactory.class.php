@@ -2,13 +2,13 @@
 class criteriaFactory
 {
 
-  public function createFromContext(madbContext $context, $perimeter)
+  public function createFromContext(madbContext $context, $targetPerimeter)
   {
     $criteria   = new Criteria();
     $filterList = filterCollection::getAll();
 
     $perimeters = new filterPerimeters();
-    $perimeter  = $perimeters->get($perimeter);
+    $perimeter  = $perimeters->get($targetPerimeter);
 
     $criteria = $perimeter->addSelectColumns($criteria);
 
@@ -16,25 +16,24 @@ class criteriaFactory
     {
       $filter->setCriteria($criteria);
       $filter->setMadbContext($context);
-      if ($filter->getPerimeter() == $perimeter)
+      if ($filter->getPerimeter() == $targetPerimeter)
       {
         $criteria = $filter->getFilteredCriteria();
       }
       else
       {
-        $criteria = $this->applyFilterOnOtherPerimeter($filter, $criteria);
+        $criteria = $this->applyFilterOnOtherPerimeter($filter, $criteria, $perimeter);
       }
     }
     return $criteria;
   }
 
-  protected function applyFilterOnOtherPerimeter($filter, $criteria)
+  protected function applyFilterOnOtherPerimeter($filter, $criteria, basePerimeter $perimeter)
   {
     $criteriaOrig = $criteria;
     $criteria = clone $criteria;
     $criteria->clearSelectColumns();
-    //TODO by perimeter select
-    $criteria->addSelectColumn(PackagePeer::ID);
+    $criteria = $perimeter->addTemporayTableColumns($criteria);
     $criteria->setDistinct();
     $filter->setCriteria($criteria);
     $filter->getFilteredCriteria();
@@ -47,7 +46,14 @@ class criteriaFactory
     $pdo->exec(sprintf($sql, $tablename));
     $criteria = $criteriaOrig;
     //TODO by perumeter join
-    $criteria->addJoin(PackagePeer::ID, $toTmp->getField('id'), Criteria::JOIN);
+    if (get_class($perimeter) == 'rpmPerimeter')
+    {
+      $criteria->addJoin(RpmPeer::ID, $toTmp->getField('id'), Criteria::JOIN);
+    }
+    else
+    {
+      $criteria->addJoin(PackagePeer::ID, $toTmp->getField('id'), Criteria::JOIN);
+    }
     return $criteria;
   }
 

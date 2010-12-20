@@ -9,7 +9,7 @@ class contextFactory
     {
       $parameterHolder->set($key, $value);
     }
-    $context         = new madbContext($parameterHolder);
+    $context = new madbContext($parameterHolder);
     return $context;
   }
 }
