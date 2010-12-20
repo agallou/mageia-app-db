@@ -7,12 +7,11 @@ class criteriaFactory
     $criteria   = new Criteria();
     $filterList = filterCollection::getAll();
 
-    //TODO rpm
-    if ($perimeter == filterPerimeters::PACKAGE)
-    {
-      PackagePeer::addSelectColumns($criteria);
-    }
-   
+    $perimeters = new filterPerimeters();
+    $perimeter  = $perimeters->get($perimeter);
+
+    $criteria = $perimeter->addSelectColumns($criteria);
+
     foreach ($filterList as $filterName)
     {
       $filter = new $filterName();

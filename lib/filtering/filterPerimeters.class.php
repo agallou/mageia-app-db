@@ -2,7 +2,18 @@
 class filterPerimeters 
 {
 
-  const RPM = 'rpm';
+  const RPM     = 'rpm';
   const PACKAGE = 'package';
+
+  public function get($name)
+  {
+    $classname = $this->getClassname($name);
+    return new $classname;
+  }
+
+  protected function getClassname($name)
+  {
+    return $name . 'Perimeter';
+  }
 
 }
