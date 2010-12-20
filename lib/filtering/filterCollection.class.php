@@ -12,7 +12,12 @@ class filterCollection
       $classes[] = substr($file, 0, -10);
     }
     $classes = array_filter($classes, 'class_exists');
-    return $classes;
+    $filters = array();
+    foreach ($classes as $class)
+    {
+      $filters[] = new $class;
+    }
+    return $filters;
   }
 
 }

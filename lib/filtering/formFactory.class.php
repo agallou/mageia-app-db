@@ -15,9 +15,8 @@ class formFactory
     if (null !== $context)
     {
       $bindParams = array();
-      foreach ($filterList as $filterName)
+      foreach ($filterList as $filter)
       {
-        $filter = new $filterName;
         $key    = $filter->getCode();
         $bindParams[$key] = $filter->getValueFromContext($context);
       }
