@@ -9,12 +9,14 @@ class madbActions extends sfActions
 
   protected function getMadbContext()
   {
-    return contextFactory::createFromRequest($this->getRequest());
+    $contextFactory = new contextFactory();
+    return $contextFactory->createFromRequest($this->getRequest());
   }
 
   protected function getCriteria($perimeter)
   {
-    return criteriaFactory::createFromContext($this->getMadbContext(), $perimeter);
+    $criteriaFactory = new criteriaFactory();
+    return $criteriaFactory->createFromContext($this->getMadbContext(), $perimeter);
   }
 
 

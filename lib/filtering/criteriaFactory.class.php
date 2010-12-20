@@ -2,7 +2,7 @@
 class criteriaFactory
 {
 
-  public static function createFromContext(madbContext $context, $perimeter)
+  public function createFromContext(madbContext $context, $perimeter)
   {
     $criteria   = new Criteria();
     $filterList = filterCollection::getAll();
@@ -22,13 +22,13 @@ class criteriaFactory
       }
       else
       {
-        $criteria = self::applyFilterOnOtherPerimeter($filter, $criteria);
+        $criteria = $this->applyFilterOnOtherPerimeter($filter, $criteria);
       }
     }
     return $criteria;
   }
 
-  protected static function applyFilterOnOtherPerimeter($filter, $criteria)
+  protected function applyFilterOnOtherPerimeter($filter, $criteria)
   {
     $criteriaOrig = $criteria;
     $criteria = clone $criteria;
