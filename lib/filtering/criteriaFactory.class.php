@@ -28,16 +28,20 @@ class criteriaFactory
     return $criteria;
   }
 
-  protected function applyFilterOnOtherPerimeter($filter, $criteria, basePerimeter $perimeter)
+  protected function applyFilterOnOtherPerimeter($filter, $criteria, basePerimeter $targetPerimeter)
   {
+    $perimeters = new filterPerimeters();
+    $filterPerimeter = $perimeters->get($filter->getPerimeter());
+
     $criteriaOrig = $criteria;
-    $criteria = clone $criteria;
+    $criteria = new Criteria();
     $criteria->clearSelectColumns();
-    $criteria = $perimeter->addTemporayTableColumns($criteria);
+    $criteria = $filterPerimeter->addTemporayTableColumns($criteria);
     $criteria->setDistinct();
     $filter->setCriteria($criteria);
-    $filter->getFilteredCriteria();
+    $criteria = $filter->getFilteredCriteria();
     $tablename = 'tmp_filtrage_' . md5(get_class($filter));
+
     $toTmp = new criteriaToTemporaryTable($criteria, $tablename);
     $pdo = Propel::getConnection();
     $toTmp->setConnection(Propel::getConnection());
@@ -46,7 +50,7 @@ class criteriaFactory
     $pdo->exec(sprintf($sql, $tablename));
     $criteria = $criteriaOrig;
     //TODO by perumeter join
-    if (get_class($perimeter) == 'rpmPerimeter')
+    if (get_class($targetPerimeter) == 'rpmPerimeter')
     {
       $criteria->addJoin(RpmPeer::ID, $toTmp->getField('id'), Criteria::JOIN);
     }
