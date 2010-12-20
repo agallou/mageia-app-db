@@ -7,7 +7,7 @@
 <br/><span class='todo'>TODO : show also RPM versions from other distreleases (you're browsing the 2011.0 release, 2011.1 has a newer version...).</span>
 </p>
 <ul>
-  <?php foreach ($package->getRpms() as $rpm) : ?>
+  <?php foreach ($rpms as $rpm) : ?>
   <li>Name : <?php echo link_to($rpm->getName(), 'rpm/show?id=' . $rpm->getId()); ?> (<?php echo $rpm->getDistrelease()->getName() ?>, <?php echo $rpm->getArch()->getName()?> media, <?php echo $rpm->getMedia()->getName()?>)</li>
   <?php endforeach; ?>
 </ul>
