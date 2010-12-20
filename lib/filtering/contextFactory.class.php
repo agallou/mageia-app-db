@@ -2,7 +2,7 @@
 class contextFactory
 {
 
-  public static function createFromRequest(sfRequest $request)
+  public function createFromRequest(sfRequest $request)
   {
     $parameterHolder = new madbParameterHolder();
     foreach ($request->getParameterHolder()->getAll() as $key => $value)
