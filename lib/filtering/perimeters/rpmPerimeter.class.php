@@ -1,5 +1,5 @@
 <?php
-class rpmPerimeter extends basePerimeters
+class rpmPerimeter extends basePerimeter
 {
   public function addSelectColumns(Criteria $criteria)
   {
@@ -7,4 +7,9 @@ class rpmPerimeter extends basePerimeters
     return $criteria;
   }
 
+  public function addTemporayTableColumns(Criteria $criteria)
+  {
+    $criteria->addSelectColumn(RpmPeer::ID);
+    return $criteria;
+  }
 }
