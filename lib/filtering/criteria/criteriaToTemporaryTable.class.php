@@ -48,6 +48,14 @@ class criteriaToTemporaryTable
     {
        $stmt->bindValue($name, $p);
     }
-    return $stmt->execute();
+    try
+    {
+      $ret = $stmt->execute();
+    }
+    catch (PDOException $e)
+    {
+      throw new sfException(sprintf('temporay table not created : "%s" (%s)', $this->criteria->toString(), $e->getMessage()));
+    }
+    return $ret;
   }
 }
