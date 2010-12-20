@@ -7,6 +7,9 @@ class showAction extends madbActions
     $id = $request->getParameter('id');
     $this->package = PackagePeer::retrieveByPk($id);
     $this->forward404Unless($this->package, 'Erroneous package id');
+    
+    $criteria = $this->getCriteria(filterPerimeters::RPM);
+    $this->rpms = $this->package->getRpms($criteria);
   }
 
 }
