@@ -18,6 +18,11 @@ default:
     - jquery-1.4.4.js
     - jquery.base64.min.js
     - jquery.selectToCheckboxes.js
+    - filtering.js
 
   has_layout:     true
+  
   layout:         layout
+
+  components:
+    filtering: [ default, filtering ]

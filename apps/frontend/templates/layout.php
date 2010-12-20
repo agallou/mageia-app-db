@@ -24,8 +24,11 @@
       <!--      <div id="global"> -->
                 <div id="menu">
                     <?php include_component('default', 'menu') ?>
-                </div>
+                </div>                
                 <div id="content">
+                    <div id="filtering">
+                      <?php include_component_slot('filtering') ?>
+                    </div>
                     <?php echo $sf_content ?>
                 </div>
 
