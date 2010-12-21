@@ -9,7 +9,8 @@ class rpmPerimeter extends basePerimeter
 
   public function addTemporayTableColumns(Criteria $criteria)
   {
-    $criteria->addSelectColumn(RpmPeer::ID);
+    $criteria->addAsColumn('id', RpmPeer::PACKAGE_ID);
+    $criteria->setPrimaryTableName(RpmPeer::TABLE_NAME);
     return $criteria;
   }
 }
