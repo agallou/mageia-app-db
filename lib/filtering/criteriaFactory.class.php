@@ -4,61 +4,78 @@ class criteriaFactory
 
   public function createFromContext(madbContext $context, $targetPerimeter)
   {
-    $criteria   = new Criteria();
-    $filterList = filterCollection::getAll();
+    $criteria              = new Criteria();
+    $filterIteratorFactory = new filterIteratorFactory();
+    $filterIterator        = $filterIteratorFactory->create();
 
-    $perimeters = new filterPerimeters();
-    $perimeter  = $perimeters->get($targetPerimeter);
+    $perimeters            = new filterPerimeters();
+    $perimeter             = $perimeters->get($targetPerimeter);
 
-    $criteria = $perimeter->addSelectColumns($criteria);
+    $criteria              = $perimeter->addSelectColumns($criteria);
 
-    foreach ($filterList as $filter)
+    foreach ($perimeters->getAll() as $perimeter)
     {
-      $filter->setCriteria($criteria);
-      $filter->setMadbContext($context);
-      if ($filter->getPerimeter() == $targetPerimeter)
+      $perimeterFilters = $filterIterator->getByPerimeter($perimeter);
+      if ($perimeter == $targetPerimeter)
       {
-        $criteria = $filter->getFilteredCriteria();
+        $criteria = $this->applyCurrentPerimeterFilters($perimeterFilters, $criteria, $context);
       }
       else
       {
-        $criteria = $this->applyFilterOnOtherPerimeter($filter, $criteria, $perimeter);
+        $criteria = $this->applyOtherPerimeterFilters($perimeterFilters, $criteria, $context, $perimeters->get($perimeter));
       }
+    }
+
+    return $criteria;
+  }
+
+  private function applyCurrentPerimeterFilters(filtersIterator $filters, $criteria, $context)
+  {
+    $criteria = clone $criteria;
+    foreach ($filters as $filter)
+    {
+      $filter->setCriteria($criteria);
+      $filter->setMadbContext($context);
+      $criteria = $filter->getFilteredCriteria();
     }
     return $criteria;
   }
 
-  protected function applyFilterOnOtherPerimeter($filter, $criteria, basePerimeter $targetPerimeter)
+  protected function getConnection()
   {
-    $perimeters = new filterPerimeters();
-    $filterPerimeter = $perimeters->get($filter->getPerimeter());
+    return Propel::getConnection();
+  }
 
-    $criteriaOrig = $criteria;
-    $criteria = new Criteria();
-    $criteria->clearSelectColumns();
-    $criteria = $filterPerimeter->addTemporayTableColumns($criteria);
+  private function applyOtherPerimeterFilters(filtersIterator $filters, Criteria $criteria, $context, basePerimeter $perimeter)
+  {
+    $criteriaOrig = clone $criteria;
+    $criteria     = new Criteria();
     $criteria->setDistinct();
-    $filter->setCriteria($criteria);
-    $criteria = $filter->getFilteredCriteria();
-    $tablename = 'tmp_filtrage_' . md5(get_class($filter));
+    $criteria = $perimeter->addTemporayTableColumns($criteria);
+    $criteria = $this->applyCurrentPerimeterFilters($filters, $criteria, $context);
 
-    $toTmp = new criteriaToTemporaryTable($criteria, $tablename);
-    $pdo = Propel::getConnection();
-    $toTmp->setConnection(Propel::getConnection());
+    $tablename = 'tmp_filtrage_' . md5(serialize($filters));//TODO better filtertablename
+    $toTmp     = new criteriaToTemporaryTable($criteria, $tablename);
+    $toTmp->setConnection($this->getConnection());
     $toTmp->execute();
     $sql = 'ALTER TABLE %s ADD INDEX (id)';
-    $pdo->exec(sprintf($sql, $tablename));
+    $this->getConnection()->exec(sprintf($sql, $tablename));
+
     $criteria = $criteriaOrig;
+
     //TODO by perumeter join
-    if (get_class($targetPerimeter) == 'rpmPerimeter')
+
+    //deux mthodes getTargetId ?
+    if (get_class($perimeter) != 'rpmPerimeter')
     {
-      $criteria->addJoin(RpmPeer::ID, $toTmp->getField('id'), Criteria::JOIN);
+      $criteria->addJoin(RpmPeer::PACKAGE_ID, $toTmp->getField('id'), Criteria::JOIN);
     }
     else
     {
       $criteria->addJoin(PackagePeer::ID, $toTmp->getField('id'), Criteria::JOIN);
     }
-    return $criteria;
+
+     return $criteria;
   }
 
 }
