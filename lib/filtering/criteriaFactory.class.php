@@ -64,9 +64,11 @@ class criteriaFactory
     $criteria = $criteriaOrig;
 
     //TODO by perumeter join
+
+    //deux mthodes getTargetId ?
     if (get_class($perimeter) != 'rpmPerimeter')
     {
-      $criteria->addJoin(RpmPeer::ID, $toTmp->getField('id'), Criteria::JOIN);
+      $criteria->addJoin(RpmPeer::PACKAGE_ID, $toTmp->getField('id'), Criteria::JOIN);
     }
     else
     {
