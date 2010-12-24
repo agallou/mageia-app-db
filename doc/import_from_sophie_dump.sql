@@ -14,7 +14,7 @@ create table rpmlinearized
   evr varchar(255),
   summary varchar(255),
   description text,
-  buildtime timestamp,
+  buildtime datetime,
   url text,
   rpm_size int,
   source_rpm text,
