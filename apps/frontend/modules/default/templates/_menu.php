@@ -3,9 +3,9 @@
   <li>
       <h2>Latest</h2>
     <ul>
-      <li>Updates (security and bugfix)</li>
-      <li>Backports (new soft versions)</li>
-      <li>Packages awaiting testing</li>
+      <li><?php echo link_to('Updates (security and bugfix)', 'rpm/list?listtype=updates'); ?></li>
+      <li><?php echo link_to('Backports (new soft versions)', 'rpm/list?listtype=backports'); ?></li>
+      <li><?php echo link_to('Packages awaiting your testing', 'rpm/list?listtype=testing'); ?></li>
     </ul>
   </li>
   <li>
