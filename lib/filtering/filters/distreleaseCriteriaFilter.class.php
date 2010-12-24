@@ -35,11 +35,9 @@ class distreleaseCriteriaFilter extends baseCriteriaFilterChoice
     if (count($value))
     {
       $criterion = null;
-    //  $criteria->addJoin(PackagePeer::ID, RpmPeer::PACKAGE_ID, Criteria::JOIN);
-      $criteria->addJoin(RpmPeer::DISTRELEASE_ID, DistreleasePeer::ID, Criteria::JOIN);
       foreach ($value as $val)
       {
-        $unCriterion = $criteria->getNewCriterion(DistreleasePeer::ID, $val);
+        $unCriterion = $criteria->getNewCriterion(RpmPeer::DISTRELEASE_ID, $val);
         if (is_null($criterion))
         {
           $criterion = $unCriterion;

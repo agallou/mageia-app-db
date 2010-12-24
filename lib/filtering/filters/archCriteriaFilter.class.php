@@ -1,5 +1,5 @@
 <?php 
-class groupCriteriaFilter extends baseCriteriaFilterChoice
+class archCriteriaFilter extends baseCriteriaFilterChoice
 {
 
   public function getPerimeter()
@@ -10,11 +10,11 @@ class groupCriteriaFilter extends baseCriteriaFilterChoice
   public function getValues()
   {
     $values = array();
-    $groups = RpmGroupPeer::doSelect(new Criteria);
+    $archs = ArchPeer::doSelect(new Criteria);
     //TODO some callback to a statement.
-    foreach ($groups as $group)
+    foreach ($archs as $arch)
     {
-      $values[$group->getId()] = $group->getName();
+      $values[$arch->getId()] = $arch->getName();
     }
     return $values;
   }
@@ -31,18 +31,18 @@ class groupCriteriaFilter extends baseCriteriaFilterChoice
   {
     //TODO liste avec opérandes ????
     //plusieurs fois le même parameterHolder ??? pas de context ???
-    $value = $context->getParameter('group');
+    $value = $context->getParameter('arch');
     if (null !== $value)
     { 
       $value = explode(',', $value);
-      $criteria->addAnd(RpmPeer::RPM_GROUP_ID, $value, Criteria::IN);
+      $criteria->addAnd(RpmPeer::ARCH_ID, $value, Criteria::IN);
     }
     return $criteria;
   }
 
   public function getCode()
   {
-    return 'group';
+    return 'arch';
   }
 
   /**
@@ -52,7 +52,7 @@ class groupCriteriaFilter extends baseCriteriaFilterChoice
    */
   public function getName()
   {
-    return 'Group'; //Internationalisation ? outside, allways in english here.
+    return 'Arch'; //Internationalisation ? outside, allways in english here.
   }
 
 }
