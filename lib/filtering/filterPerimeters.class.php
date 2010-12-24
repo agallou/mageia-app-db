@@ -16,4 +16,12 @@ class filterPerimeters
     return $name . 'Perimeter';
   }
 
+  public function getAll()
+  {
+    return array(
+      self::RPM,
+      self::PACKAGE
+    );
+  }
+
 }

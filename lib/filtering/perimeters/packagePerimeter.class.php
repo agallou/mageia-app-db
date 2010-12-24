@@ -8,10 +8,17 @@ class packagePerimeter extends basePerimeter
     return $criteria;
   }
 
-public function addTemporayTableColumns(Criteria $criteria)
+  public function addTemporayTableColumns(Criteria $criteria)
   {
     $criteria->addSelectColumn(PackagePeer::ID);
     return $criteria;
+  }
+
+  public function getJoinToTemporaryTable()
+  {
+    $join = new Join();
+ //   echo 
+    return $join;
   }
 
 

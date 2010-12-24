@@ -13,4 +13,10 @@ class rpmPerimeter extends basePerimeter
     $criteria->setPrimaryTableName(RpmPeer::TABLE_NAME);
     return $criteria;
   }
+
+  public function getJoinToTemporaryTable()
+  {
+    return new Join();
+  }
+
 }

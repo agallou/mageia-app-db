@@ -1,11 +1,11 @@
 <?php
-class filterCollection
+class filterIteratorFactory
 {
 
-  public static function getAll()
+  public function create()
   {
-    $files = sfFinder::type('file')->in(sfConfig::get('sf_lib_dir') . DIRECTORY_SEPARATOR . 'filtering/filters');
-    $files = array_map('basename', $files);
+    $files   = sfFinder::type('file')->in(sfConfig::get('sf_lib_dir') . DIRECTORY_SEPARATOR . 'filtering/filters');
+    $files   = array_map('basename', $files);
     $classes = array();
     foreach ($files as $file)
     {
@@ -17,7 +17,6 @@ class filterCollection
     {
       $filters[] = new $class;
     }
-    return $filters;
+    return new filtersIterator($filters);
   }
-
 }

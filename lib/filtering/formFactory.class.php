@@ -4,20 +4,20 @@ class formFactory
 
   public static function create(madbContext $context= null)
   {
-    $form = new sfForm();
+    $form                  = new sfForm();
+    $filterIteratorFactory = new filterIteratorFactory();
+    $filterIterator        = $filterIteratorFactory->create();
 
-    $filterList = filterCollection::getAll();
-    foreach ($filterList as $filterName)
+    foreach ($filterIterator as $filter)
     {
-      $filter = new $filterName;
       $form = $filter->configureForm($form);
     }
     if (null !== $context)
     {
       $bindParams = array();
-      foreach ($filterList as $filter)
+      foreach ($filterIterator as $filter)
       {
-        $key    = $filter->getCode();
+        $key              = $filter->getCode();
         $bindParams[$key] = $filter->getValueFromContext($context);
       }
       $form->bind($bindParams);
