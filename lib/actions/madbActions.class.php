@@ -5,6 +5,7 @@ class madbActions extends sfActions
   public function preExecute()
   {
     $this->madbcontext = $this->getMadbContext();
+    $this->madburl     = $this->getMadbUrl();
   }
 
   protected function getMadbContext()
