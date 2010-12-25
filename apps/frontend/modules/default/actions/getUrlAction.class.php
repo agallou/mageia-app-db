@@ -25,11 +25,12 @@ class getUrlAction extends madbActions
       }
     }
 
-    $newUrl = sprintf('%s/%s?%s', $parsedUrl['module'], $parsedUrl['action'], http_build_query($parameters));
-    $this->getContext()->getConfiguration()->loadHelpers('Url');
-    $this->newUrl = url_for($newUrl, true);
-    $this->getResponse()->sethttpHeader('Content-type','application/json');
+    $this->newUrl = $this->getMadbUrl()->urlFor(sprintf('%s/%s', $parsedUrl['module'], $parsedUrl['action']), null, array(
+      'extra_parameters' => $parameters,
+      'absolute'         => true,
+    ));
 
+    $this->getResponse()->sethttpHeader('Content-type','application/json');
   }
 
 }

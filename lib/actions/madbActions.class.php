@@ -19,6 +19,11 @@ class madbActions extends sfActions
     return $criteriaFactory->createFromContext($this->getMadbContext(), $perimeter);
   }
 
+  protected function getMadbUrl()
+  {
+    return new madbUrl($this->getContext());
+  }
+
 
 
 }
