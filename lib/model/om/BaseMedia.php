@@ -37,6 +37,24 @@ abstract class BaseMedia extends BaseObject  implements Persistent {
 	protected $vendor;
 
 	/**
+	 * The value for the is_updates field.
+	 * @var        boolean
+	 */
+	protected $is_updates;
+
+	/**
+	 * The value for the is_backports field.
+	 * @var        boolean
+	 */
+	protected $is_backports;
+
+	/**
+	 * The value for the is_testing field.
+	 * @var        boolean
+	 */
+	protected $is_testing;
+
+	/**
 	 * @var        array Rpm[] Collection to store aggregation of Rpm objects.
 	 */
 	protected $collRpms;
@@ -105,6 +123,36 @@ abstract class BaseMedia extends BaseObject  implements Persistent {
 	}
 
 	/**
+	 * Get the [is_updates] column value.
+	 * 
+	 * @return     boolean
+	 */
+	public function getIsUpdates()
+	{
+		return $this->is_updates;
+	}
+
+	/**
+	 * Get the [is_backports] column value.
+	 * 
+	 * @return     boolean
+	 */
+	public function getIsBackports()
+	{
+		return $this->is_backports;
+	}
+
+	/**
+	 * Get the [is_testing] column value.
+	 * 
+	 * @return     boolean
+	 */
+	public function getIsTesting()
+	{
+		return $this->is_testing;
+	}
+
+	/**
 	 * Set the value of [id] column.
 	 * 
 	 * @param      int $v new value
@@ -165,6 +213,66 @@ abstract class BaseMedia extends BaseObject  implements Persistent {
 	} // setVendor()
 
 	/**
+	 * Set the value of [is_updates] column.
+	 * 
+	 * @param      boolean $v new value
+	 * @return     Media The current object (for fluent API support)
+	 */
+	public function setIsUpdates($v)
+	{
+		if ($v !== null) {
+			$v = (boolean) $v;
+		}
+
+		if ($this->is_updates !== $v) {
+			$this->is_updates = $v;
+			$this->modifiedColumns[] = MediaPeer::IS_UPDATES;
+		}
+
+		return $this;
+	} // setIsUpdates()
+
+	/**
+	 * Set the value of [is_backports] column.
+	 * 
+	 * @param      boolean $v new value
+	 * @return     Media The current object (for fluent API support)
+	 */
+	public function setIsBackports($v)
+	{
+		if ($v !== null) {
+			$v = (boolean) $v;
+		}
+
+		if ($this->is_backports !== $v) {
+			$this->is_backports = $v;
+			$this->modifiedColumns[] = MediaPeer::IS_BACKPORTS;
+		}
+
+		return $this;
+	} // setIsBackports()
+
+	/**
+	 * Set the value of [is_testing] column.
+	 * 
+	 * @param      boolean $v new value
+	 * @return     Media The current object (for fluent API support)
+	 */
+	public function setIsTesting($v)
+	{
+		if ($v !== null) {
+			$v = (boolean) $v;
+		}
+
+		if ($this->is_testing !== $v) {
+			$this->is_testing = $v;
+			$this->modifiedColumns[] = MediaPeer::IS_TESTING;
+		}
+
+		return $this;
+	} // setIsTesting()
+
+	/**
 	 * Indicates whether the columns in this object are only set to default values.
 	 *
 	 * This method can be used in conjunction with isModified() to indicate whether an object is both
@@ -199,6 +307,9 @@ abstract class BaseMedia extends BaseObject  implements Persistent {
 			$this->id = ($row[$startcol + 0] !== null) ? (int) $row[$startcol + 0] : null;
 			$this->name = ($row[$startcol + 1] !== null) ? (string) $row[$startcol + 1] : null;
 			$this->vendor = ($row[$startcol + 2] !== null) ? (string) $row[$startcol + 2] : null;
+			$this->is_updates = ($row[$startcol + 3] !== null) ? (boolean) $row[$startcol + 3] : null;
+			$this->is_backports = ($row[$startcol + 4] !== null) ? (boolean) $row[$startcol + 4] : null;
+			$this->is_testing = ($row[$startcol + 5] !== null) ? (boolean) $row[$startcol + 5] : null;
 			$this->resetModified();
 
 			$this->setNew(false);
@@ -208,7 +319,7 @@ abstract class BaseMedia extends BaseObject  implements Persistent {
 			}
 
 			// FIXME - using NUM_COLUMNS may be clearer.
-			return $startcol + 3; // 3 = MediaPeer::NUM_COLUMNS - MediaPeer::NUM_LAZY_LOAD_COLUMNS).
+			return $startcol + 6; // 6 = MediaPeer::NUM_COLUMNS - MediaPeer::NUM_LAZY_LOAD_COLUMNS).
 
 		} catch (Exception $e) {
 			throw new PropelException("Error populating Media object", $e);
@@ -585,6 +696,15 @@ abstract class BaseMedia extends BaseObject  implements Persistent {
 			case 2:
 				return $this->getVendor();
 				break;
+			case 3:
+				return $this->getIsUpdates();
+				break;
+			case 4:
+				return $this->getIsBackports();
+				break;
+			case 5:
+				return $this->getIsTesting();
+				break;
 			default:
 				return null;
 				break;
@@ -609,6 +729,9 @@ abstract class BaseMedia extends BaseObject  implements Persistent {
 			$keys[0] => $this->getId(),
 			$keys[1] => $this->getName(),
 			$keys[2] => $this->getVendor(),
+			$keys[3] => $this->getIsUpdates(),
+			$keys[4] => $this->getIsBackports(),
+			$keys[5] => $this->getIsTesting(),
 		);
 		return $result;
 	}
@@ -649,6 +772,15 @@ abstract class BaseMedia extends BaseObject  implements Persistent {
 			case 2:
 				$this->setVendor($value);
 				break;
+			case 3:
+				$this->setIsUpdates($value);
+				break;
+			case 4:
+				$this->setIsBackports($value);
+				break;
+			case 5:
+				$this->setIsTesting($value);
+				break;
 		} // switch()
 	}
 
@@ -676,6 +808,9 @@ abstract class BaseMedia extends BaseObject  implements Persistent {
 		if (array_key_exists($keys[0], $arr)) $this->setId($arr[$keys[0]]);
 		if (array_key_exists($keys[1], $arr)) $this->setName($arr[$keys[1]]);
 		if (array_key_exists($keys[2], $arr)) $this->setVendor($arr[$keys[2]]);
+		if (array_key_exists($keys[3], $arr)) $this->setIsUpdates($arr[$keys[3]]);
+		if (array_key_exists($keys[4], $arr)) $this->setIsBackports($arr[$keys[4]]);
+		if (array_key_exists($keys[5], $arr)) $this->setIsTesting($arr[$keys[5]]);
 	}
 
 	/**
@@ -690,6 +825,9 @@ abstract class BaseMedia extends BaseObject  implements Persistent {
 		if ($this->isColumnModified(MediaPeer::ID)) $criteria->add(MediaPeer::ID, $this->id);
 		if ($this->isColumnModified(MediaPeer::NAME)) $criteria->add(MediaPeer::NAME, $this->name);
 		if ($this->isColumnModified(MediaPeer::VENDOR)) $criteria->add(MediaPeer::VENDOR, $this->vendor);
+		if ($this->isColumnModified(MediaPeer::IS_UPDATES)) $criteria->add(MediaPeer::IS_UPDATES, $this->is_updates);
+		if ($this->isColumnModified(MediaPeer::IS_BACKPORTS)) $criteria->add(MediaPeer::IS_BACKPORTS, $this->is_backports);
+		if ($this->isColumnModified(MediaPeer::IS_TESTING)) $criteria->add(MediaPeer::IS_TESTING, $this->is_testing);
 
 		return $criteria;
 	}
@@ -747,6 +885,12 @@ abstract class BaseMedia extends BaseObject  implements Persistent {
 		$copyObj->setName($this->name);
 
 		$copyObj->setVendor($this->vendor);
+
+		$copyObj->setIsUpdates($this->is_updates);
+
+		$copyObj->setIsBackports($this->is_backports);
+
+		$copyObj->setIsTesting($this->is_testing);
 
 
 		if ($deepCopy) {

@@ -14,27 +14,33 @@ class listAction extends madbActions
 
     $this->forward404Unless($request->hasParameter('listtype'), 'listtype parameter is required.');
     $this->listtype = $request->getParameter('listtype');
-    $this->forward404Unless(in_array($this->listtype, array('updates', 'testing', 'backports')), 'listtype value \'' . $this->listtype . '\' is not valid.');
+    $this->forward404Unless(in_array($this->listtype, array('updates', 'updates_testing', 'backports', 'backports_testing')), 'listtype value \'' . $this->listtype . '\' is not valid.');
     
     $criteria = $this->getCriteria(filterPerimeters::RPM);
     switch ($this->listtype)
     {
       case 'updates':
         $criteria->addJoin(RpmPeer::MEDIA_ID, MediaPeer::ID, Criteria::JOIN);
-        // TODO : use media.is_updates when the field will be available
-        $criteria->add(MediaPeer::NAME, '%updates', Criteria::LIKE);
+        $criteria->add(MediaPeer::IS_UPDATES, true, Criteria::EQUAL);
+        $criteria->add(MediaPeer::IS_TESTING, false, Criteria::EQUAL);
+        $criteria->addDescendingOrderByColumn(RpmPeer::BUILD_TIME);
+        break;
+      case 'updates_testing':
+        $criteria->addJoin(RpmPeer::MEDIA_ID, MediaPeer::ID, Criteria::JOIN);
+        $criteria->add(MediaPeer::IS_UPDATES, true, Criteria::EQUAL);
+        $criteria->add(MediaPeer::IS_TESTING, true, Criteria::EQUAL);
         $criteria->addDescendingOrderByColumn(RpmPeer::BUILD_TIME);
         break;
       case 'backports':
         $criteria->addJoin(RpmPeer::MEDIA_ID, MediaPeer::ID, Criteria::JOIN);
-        // TODO : use media.is_backport when the field will be available
-        $criteria->add(MediaPeer::NAME, '%backports', Criteria::LIKE);
+        $criteria->add(MediaPeer::IS_BACKPORTS, true, Criteria::EQUAL);
+        $criteria->add(MediaPeer::IS_TESTING, false, Criteria::EQUAL);
         $criteria->addDescendingOrderByColumn(RpmPeer::BUILD_TIME);
         break;
-      case 'testing':
+      case 'backports_testing':
         $criteria->addJoin(RpmPeer::MEDIA_ID, MediaPeer::ID, Criteria::JOIN);
-        // TODO : use media.is_testing when the field will be available
-        $criteria->add(MediaPeer::NAME, '%testing', Criteria::LIKE);
+        $criteria->add(MediaPeer::IS_BACKPORTS, true, Criteria::EQUAL);
+        $criteria->add(MediaPeer::IS_TESTING, true, Criteria::EQUAL);
         $criteria->addDescendingOrderByColumn(RpmPeer::BUILD_TIME);
         break;
       default : 

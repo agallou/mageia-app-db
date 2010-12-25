@@ -25,7 +25,7 @@ abstract class BaseMediaPeer {
 	const TM_CLASS = 'MediaTableMap';
 	
 	/** The total number of columns. */
-	const NUM_COLUMNS = 3;
+	const NUM_COLUMNS = 6;
 
 	/** The number of lazy-loaded columns. */
 	const NUM_LAZY_LOAD_COLUMNS = 0;
@@ -38,6 +38,15 @@ abstract class BaseMediaPeer {
 
 	/** the column name for the VENDOR field */
 	const VENDOR = 'media.VENDOR';
+
+	/** the column name for the IS_UPDATES field */
+	const IS_UPDATES = 'media.IS_UPDATES';
+
+	/** the column name for the IS_BACKPORTS field */
+	const IS_BACKPORTS = 'media.IS_BACKPORTS';
+
+	/** the column name for the IS_TESTING field */
+	const IS_TESTING = 'media.IS_TESTING';
 
 	/**
 	 * An identiy map to hold any loaded instances of Media objects.
@@ -62,11 +71,11 @@ abstract class BaseMediaPeer {
 	 * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
 	 */
 	private static $fieldNames = array (
-		BasePeer::TYPE_PHPNAME => array ('Id', 'Name', 'Vendor', ),
-		BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'name', 'vendor', ),
-		BasePeer::TYPE_COLNAME => array (self::ID, self::NAME, self::VENDOR, ),
-		BasePeer::TYPE_FIELDNAME => array ('id', 'name', 'vendor', ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, )
+		BasePeer::TYPE_PHPNAME => array ('Id', 'Name', 'Vendor', 'IsUpdates', 'IsBackports', 'IsTesting', ),
+		BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'name', 'vendor', 'isUpdates', 'isBackports', 'isTesting', ),
+		BasePeer::TYPE_COLNAME => array (self::ID, self::NAME, self::VENDOR, self::IS_UPDATES, self::IS_BACKPORTS, self::IS_TESTING, ),
+		BasePeer::TYPE_FIELDNAME => array ('id', 'name', 'vendor', 'is_updates', 'is_backports', 'is_testing', ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, )
 	);
 
 	/**
@@ -76,11 +85,11 @@ abstract class BaseMediaPeer {
 	 * e.g. self::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
 	 */
 	private static $fieldKeys = array (
-		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Name' => 1, 'Vendor' => 2, ),
-		BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'name' => 1, 'vendor' => 2, ),
-		BasePeer::TYPE_COLNAME => array (self::ID => 0, self::NAME => 1, self::VENDOR => 2, ),
-		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'name' => 1, 'vendor' => 2, ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, )
+		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Name' => 1, 'Vendor' => 2, 'IsUpdates' => 3, 'IsBackports' => 4, 'IsTesting' => 5, ),
+		BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'name' => 1, 'vendor' => 2, 'isUpdates' => 3, 'isBackports' => 4, 'isTesting' => 5, ),
+		BasePeer::TYPE_COLNAME => array (self::ID => 0, self::NAME => 1, self::VENDOR => 2, self::IS_UPDATES => 3, self::IS_BACKPORTS => 4, self::IS_TESTING => 5, ),
+		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'name' => 1, 'vendor' => 2, 'is_updates' => 3, 'is_backports' => 4, 'is_testing' => 5, ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, )
 	);
 
 	/**
@@ -153,6 +162,9 @@ abstract class BaseMediaPeer {
 		$criteria->addSelectColumn(MediaPeer::ID);
 		$criteria->addSelectColumn(MediaPeer::NAME);
 		$criteria->addSelectColumn(MediaPeer::VENDOR);
+		$criteria->addSelectColumn(MediaPeer::IS_UPDATES);
+		$criteria->addSelectColumn(MediaPeer::IS_BACKPORTS);
+		$criteria->addSelectColumn(MediaPeer::IS_TESTING);
 	}
 
 	/**

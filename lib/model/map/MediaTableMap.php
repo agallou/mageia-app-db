@@ -39,6 +39,9 @@ class MediaTableMap extends TableMap {
 		$this->addPrimaryKey('ID', 'Id', 'INTEGER', true, null, null);
 		$this->addColumn('NAME', 'Name', 'VARCHAR', true, 45, null);
 		$this->addColumn('VENDOR', 'Vendor', 'VARCHAR', true, 255, null);
+		$this->addColumn('IS_UPDATES', 'IsUpdates', 'BOOLEAN', true, null, null);
+		$this->addColumn('IS_BACKPORTS', 'IsBackports', 'BOOLEAN', true, null, null);
+		$this->addColumn('IS_TESTING', 'IsTesting', 'BOOLEAN', true, null, null);
 		// validators
 	} // initialize()
 
