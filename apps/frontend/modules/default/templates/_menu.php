@@ -4,8 +4,9 @@
       <h2>Latest</h2>
     <ul>
       <li><?php echo link_to('Updates (security and bugfix)', 'rpm/list?listtype=updates'); ?></li>
+      <li><?php echo link_to('Updates awaiting your testing', 'rpm/list?listtype=updates_testing'); ?></li>
       <li><?php echo link_to('Backports (new soft versions)', 'rpm/list?listtype=backports'); ?></li>
-      <li><?php echo link_to('Packages awaiting your testing', 'rpm/list?listtype=testing'); ?></li>
+      <li><?php echo link_to('Backports awaiting your testing', 'rpm/list?listtype=backports_testing'); ?></li>
     </ul>
   </li>
   <li>

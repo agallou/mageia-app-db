@@ -149,6 +149,9 @@ propel:
     id:                                                                ~
     name:                                                              { type: varchar(45), required: true }
     vendor:                                                            { type: varchar(255), required: true }
+    is_updates:                                                        { type: boolean, required: true }
+    is_backports:                                                      { type: boolean, required: true }
+    is_testing:                                                        { type: boolean, required: true }
     _uniques:
       unique_name:                                                     [ name, vendor ]
   notification:
