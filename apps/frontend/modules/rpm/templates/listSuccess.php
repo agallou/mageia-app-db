@@ -2,7 +2,6 @@
 <h1><?php echo $listtype ?> RPM</h1>
 
 <p class='todo'>TODO : fix pager</p>
-<p class='todo'>TODO : fix build time in database</p>
 <p class='todo'>TODO : fix h1</p>
 
 
