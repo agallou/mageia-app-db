@@ -12,3 +12,5 @@ config/databases.yml
 doc/schema_mageia_packagedb.mwb.bak
 tmp/*
 nbproject
+*.swp
+*.swo
