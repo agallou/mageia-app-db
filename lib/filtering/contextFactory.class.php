@@ -5,7 +5,10 @@ class contextFactory
   public function createFromRequest(sfRequest $request)
   {
     $parameterHolder = new madbParameterHolder();
-    foreach ($request->getParameterHolder()->getAll() as $key => $value)
+    $allParameters   = $request->getParameterHolder()->getAll();
+    unset($allParameters['module']);
+    unset($allParameters['action']);
+    foreach ($allParameters as $key => $value)
     {
       $parameterHolder->set($key, $value);
     }

@@ -11,7 +11,33 @@ class madbContext
 
   public function getParameter($name)
   {
-    return $this->parameterHolder->get($name);
+    return $this->getParameterHolder()->get($name);
+  }
+
+  protected function getParameterHolder()
+  {
+    return $this->parameterHolder;
+  }
+
+  public function getFiltersParameters()
+  {
+    $filtersIteratorFactory = new filterIteratorFactory();
+    $filtersIterator = $filtersIteratorFactory->create();
+    $allParameters = $this->getParameterHolder()->getAll();
+    $filtersNames  = array();
+    foreach ($filtersIterator as $filter)
+    {
+      $filtersNames[] = $filter->getCode();
+    }
+    $filtersParameters = array();
+    foreach ($allParameters as $name => $parameter)
+    {
+      if (in_array($name, $filtersNames))
+      {
+        $filtersParameters[$name] = $parameter;
+      }
+    }
+    return $filtersParameters;
   }
 
 }

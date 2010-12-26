@@ -59,26 +59,14 @@ function getValuesFromCheckboxes(checkboxes)
   return vals;
 }
 
-function filteringToLink(filtering)
-{
-  var link = '';
-  $.each(filtering, function (key, value){
-    if (value.length) {
-      link += '/' + key + '/' + encodeURIComponent(value.join(','));
-    }
-  });
-  var baseUri = window.location.href.substr(0, (window.location.href.lastIndexOf('.php') + 4));
-  var route = window.location.href.match('^.*\.php/(.*)/(.*)[/]*(.*)$');
-  if (null == route)
-  {
-    return baseUri;
-  }
-  return baseUri + '/' + route[1] + '/' + route[2] + link;
-}
 
 function updateResults(filtering)
 {
-  window.location = filteringToLink(filtering);
+  var baseUri = window.location.href.substr(0, (window.location.href.lastIndexOf('.php') + 4));   
+   $.post(baseUri + '/default/getUrl', { baseurl: $.base64.encode(window.location.href), extraParams: filtering},
+   function(data){
+     window.location = data.url;
+   });
 }
 
 

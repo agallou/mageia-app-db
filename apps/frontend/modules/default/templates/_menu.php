@@ -3,10 +3,10 @@
   <li>
       <h2>Latest</h2>
     <ul>
-      <li><?php echo link_to('Updates (security and bugfix)', 'rpm/list?listtype=updates'); ?></li>
-      <li><?php echo link_to('Updates awaiting your testing', 'rpm/list?listtype=updates_testing'); ?></li>
-      <li><?php echo link_to('Backports (new soft versions)', 'rpm/list?listtype=backports'); ?></li>
-      <li><?php echo link_to('Backports awaiting your testing', 'rpm/list?listtype=backports_testing'); ?></li>
+      <li><?php echo link_to('Updates (security and bugfix)', $madburl->urlFor('rpm/list', $madbcontext, array('extra_parameters' => array('listtype' => 'updates')))) ?></li>
+      <li><?php echo link_to('Updates awaiting your testing', $madburl->urlFor('rpm/list', $madbcontext, array('extra_parameters' => array('listtype' => 'updates_testing')))) ?></li>
+      <li><?php echo link_to('Backports (new soft versions)', $madburl->urlFor('rpm/list', $madbcontext, array('extra_parameters' => array('listtype' => 'backports')))) ?></li>
+      <li><?php echo link_to('Backports awaiting your testing', $madburl->urlFor('rpm/list', $madbcontext, array('extra_parameters' => array('listtype' => 'backports_testing')))) ?></li>
     </ul>
   </li>
   <li>
@@ -14,7 +14,7 @@
     <ul>
       <li>By group</li>
       <li>By popularity</li>
-      <li><?php echo link_to('By name', 'package/list'); ?></li>
+      <li><?php echo link_to('By name', $madburl->urlFor('package/list', $madbcontext)) ?></li>
     </ul>
   </li>
   <li>

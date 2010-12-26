@@ -5,6 +5,7 @@ class madbActions extends sfActions
   public function preExecute()
   {
     $this->madbcontext = $this->getMadbContext();
+    $this->madburl     = $this->getMadbUrl();
   }
 
   protected function getMadbContext()
@@ -17,6 +18,11 @@ class madbActions extends sfActions
   {
     $criteriaFactory = new criteriaFactory();
     return $criteriaFactory->createFromContext($this->getMadbContext(), $perimeter);
+  }
+
+  protected function getMadbUrl()
+  {
+    return new madbUrl($this->getContext());
   }
 
 
