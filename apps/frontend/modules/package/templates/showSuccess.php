@@ -8,7 +8,7 @@
 </p>
 <ul>
   <?php foreach ($rpms as $rpm) : ?>
-  <li>Name : <?php echo link_to($rpm->getName(), 'rpm/show?id=' . $rpm->getId()); ?> (<?php echo $rpm->getDistrelease()->getName() ?>, <?php echo $rpm->getArch()->getName()?> media, <?php echo $rpm->getMedia()->getName()?>)</li>
+  <li>Name : <?php echo link_to($rpm->getName(), $madburl->urlFor('rpm/show', $madbcontext, array('extra_parameters' => array('id' => $rpm->getid())))); ?> (<?php echo $rpm->getDistrelease()->getName() ?>, <?php echo $rpm->getArch()->getName()?> media, <?php echo $rpm->getMedia()->getName()?>)</li>
   <?php endforeach; ?>
 </ul>
 </div>
