@@ -1,7 +1,12 @@
-
 <h1>Packages/Applications</h1>
 
-<?php include_partial('package/pager', array('pager' => $pager, 'module' => 'package', 'madbcontext' => $madbcontext, 'madburl' => $madburl)); ?>
+<?php include_partial('default/pager', array(
+  'pager'       => $pager, 
+  'module'      => 'package', 
+  'action'      => 'list',
+  'madbcontext' => $madbcontext, 
+  'madburl'     => $madburl,
+)); ?>
 
 <div>
 Total results : <span id="count"></span>
@@ -12,7 +17,13 @@ Total results : <span id="count"></span>
 </ul>
 </div>
 
-<?php include_partial('package/pager', array('pager' => $pager, 'module' => 'package', 'madbcontext' => $madbcontext, 'madburl' => $madburl)); ?>
+<?php include_partial('default/pager', array(
+  'pager'       => $pager, 
+  'module'      => 'package',
+  'action'      => 'list',
+  'madbcontext' => $madbcontext, 
+  'madburl'     => $madburl,
+)) ?>
 
 
 

@@ -14,7 +14,7 @@ class madbContext
     return $this->getParameterHolder()->get($name);
   }
 
-  protected function getParameterHolder()
+  public function getParameterHolder()
   {
     return $this->parameterHolder;
   }
