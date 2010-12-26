@@ -1,6 +1,4 @@
-<h1><?php echo $listtype ?> RPM</h1>
-
-<p class='todo'>TODO : fix h1</p>
+<h1><?php echo $title ?></h1>
 
 <?php include_partial('default/pager', array(
   'pager'       => $pager, 
