@@ -24,8 +24,7 @@ class madbUrl
    */
   public function urlFor($internalUri, madbContext $madbContext = null, $options = array())
   {
-    $absolute = isset($options['absolute']) && $options['absolute'];
-    //TODO get context parameters
+    $absolute   = isset($options['absolute']) && $options['absolute'];
     $parameters = array();
     if (isset($options['extra_parameters']) && is_array($options['extra_parameters']))
     {
@@ -33,7 +32,14 @@ class madbUrl
     }
     if (null !== $madbContext)
     {
-      $parameters = array_merge($parameters, $madbContext->getFiltersParameters());
+      if (isset($options['filters_parameters']) && $options['filters_parameters'])
+      {
+        $parameters = array_merge($madbContext->getFiltersParameters(), $parameters);
+      }
+      else
+      {
+        $parameters = array_merge($madbContext->getParameterHolder()->getAll(), $parameters);
+      }
     }
     $uri = $internalUri . '?' . http_build_query($parameters);
     return $this->controller->genUrl($uri, $absolute);

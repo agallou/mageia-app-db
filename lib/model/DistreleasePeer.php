@@ -14,4 +14,16 @@
  */
 class DistreleasePeer extends BaseDistreleasePeer {
 
+  public static function getLatest()
+  {
+    $criteria = new Criteria();
+    $criteria->add(DistreleasePeer::IS_LATEST, true);
+    $distrelease = DistreleasePeer::doSelectOne($criteria);
+    if (null === $distrelease)
+    {
+      throw new sfException('lastest distrelease not found');
+    }
+    return $distrelease;
+  }
+
 } // DistreleasePeer

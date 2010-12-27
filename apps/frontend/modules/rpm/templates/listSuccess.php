@@ -1,11 +1,12 @@
+<h1><?php echo $title ?></h1>
 
-<h1><?php echo $listtype ?> RPM</h1>
-
-<p class='todo'>TODO : fix pager</p>
-<p class='todo'>TODO : fix h1</p>
-
-
-<?php include_partial('rpm/pager', array('pager' => $pager, 'module' => 'rpm', 'madbcontext' => $madbcontext)); ?>
+<?php include_partial('default/pager', array(
+  'pager'       => $pager, 
+  'module'      => 'rpm', 
+  'action'      => 'list', 
+  'madbcontext' => $madbcontext, 
+  'madburl'     => $madburl,
+)) ?>
 
 <div>
 Total results : <span id="count"></span>
@@ -16,4 +17,10 @@ Total results : <span id="count"></span>
 </ul>
 </div>
 
-<?php include_partial('rpm/pager', array('pager' => $pager, 'module' => 'rpm', 'madbcontext' => $madbcontext)); ?>
+<?php include_partial('default/pager', array(
+  'pager'       => $pager, 
+  'module'      => 'rpm', 
+  'action'      => 'list', 
+  'madbcontext' => $madbcontext, 
+  'madburl'     => $madburl,
+)) ?>

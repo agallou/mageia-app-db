@@ -5,10 +5,18 @@ class getUrlAction extends madbActions
   public function execute($request)
   {
     $url         = $request->getParameter('baseurl');
-    $extraParams = $request->getParameter('extraParams');
+    if ($request->hasParameter('extraParams'))
+    {
+      $extraParams = $request->getParameter('extraParams');
+    }
+    else
+    {
+      $extraParams = array();
+    }
 
     $url         = base64_decode($url);
     $url         = substr($url , strpos($url, '.php') + 4);
+
     $parsedUrl   = $this->getContext()->getRouting()->parse($url);
     $routing     = $parsedUrl['_sf_route'];
     $parameters  = $routing->getParameters();
@@ -29,8 +37,12 @@ class getUrlAction extends madbActions
       'extra_parameters' => $parameters,
       'absolute'         => true,
     ));
-
     $this->getResponse()->sethttpHeader('Content-type','application/json');
+  }
+
+  public function getDefaultParameters()
+  {
+    return array();
   }
 
 }
