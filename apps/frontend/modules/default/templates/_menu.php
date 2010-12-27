@@ -12,7 +12,7 @@
   <li>
       <h2>Browse applications/packages</h2>
     <ul>
-      <li>By group</li>
+      <li><?php echo link_to('By group', $madburl->urlFor('group/list', $madbcontext, array('filters_parameters' => true))) ?></li>
       <li>By popularity</li>
       <li><?php echo link_to('By name', $madburl->urlFor('package/list', $madbcontext, array('filters_parameters' => true))) ?></li>
     </ul>
