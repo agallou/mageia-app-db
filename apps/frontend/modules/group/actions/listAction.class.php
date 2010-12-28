@@ -10,7 +10,6 @@ class listAction extends madbActions
     
     $criteria->addAsColumn( 'the_name',
                             sprintf("SUBSTRING_INDEX(%s, '/',1)", 
-                                    RpmGroupPeer::NAME,
                                     RpmGroupPeer::NAME
                             )
     );
