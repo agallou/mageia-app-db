@@ -55,6 +55,13 @@ abstract class BaseMedia extends BaseObject  implements Persistent {
 	protected $is_testing;
 
 	/**
+	 * The value for the is_third_party field.
+	 * Note: this column has a database default value of: false
+	 * @var        boolean
+	 */
+	protected $is_third_party;
+
+	/**
 	 * @var        array Rpm[] Collection to store aggregation of Rpm objects.
 	 */
 	protected $collRpms;
@@ -91,6 +98,27 @@ abstract class BaseMedia extends BaseObject  implements Persistent {
 	// symfony behavior
 	
 	const PEER = 'MediaPeer';
+
+	/**
+	 * Applies default values to this object.
+	 * This method should be called from the object's constructor (or
+	 * equivalent initialization method).
+	 * @see        __construct()
+	 */
+	public function applyDefaultValues()
+	{
+		$this->is_third_party = false;
+	}
+
+	/**
+	 * Initializes internal state of BaseMedia object.
+	 * @see        applyDefaults()
+	 */
+	public function __construct()
+	{
+		parent::__construct();
+		$this->applyDefaultValues();
+	}
 
 	/**
 	 * Get the [id] column value.
@@ -150,6 +178,16 @@ abstract class BaseMedia extends BaseObject  implements Persistent {
 	public function getIsTesting()
 	{
 		return $this->is_testing;
+	}
+
+	/**
+	 * Get the [is_third_party] column value.
+	 * 
+	 * @return     boolean
+	 */
+	public function getIsThirdParty()
+	{
+		return $this->is_third_party;
 	}
 
 	/**
@@ -273,6 +311,26 @@ abstract class BaseMedia extends BaseObject  implements Persistent {
 	} // setIsTesting()
 
 	/**
+	 * Set the value of [is_third_party] column.
+	 * 
+	 * @param      boolean $v new value
+	 * @return     Media The current object (for fluent API support)
+	 */
+	public function setIsThirdParty($v)
+	{
+		if ($v !== null) {
+			$v = (boolean) $v;
+		}
+
+		if ($this->is_third_party !== $v || $this->isNew()) {
+			$this->is_third_party = $v;
+			$this->modifiedColumns[] = MediaPeer::IS_THIRD_PARTY;
+		}
+
+		return $this;
+	} // setIsThirdParty()
+
+	/**
 	 * Indicates whether the columns in this object are only set to default values.
 	 *
 	 * This method can be used in conjunction with isModified() to indicate whether an object is both
@@ -282,6 +340,10 @@ abstract class BaseMedia extends BaseObject  implements Persistent {
 	 */
 	public function hasOnlyDefaultValues()
 	{
+			if ($this->is_third_party !== false) {
+				return false;
+			}
+
 		// otherwise, everything was equal, so return TRUE
 		return true;
 	} // hasOnlyDefaultValues()
@@ -310,6 +372,7 @@ abstract class BaseMedia extends BaseObject  implements Persistent {
 			$this->is_updates = ($row[$startcol + 3] !== null) ? (boolean) $row[$startcol + 3] : null;
 			$this->is_backports = ($row[$startcol + 4] !== null) ? (boolean) $row[$startcol + 4] : null;
 			$this->is_testing = ($row[$startcol + 5] !== null) ? (boolean) $row[$startcol + 5] : null;
+			$this->is_third_party = ($row[$startcol + 6] !== null) ? (boolean) $row[$startcol + 6] : null;
 			$this->resetModified();
 
 			$this->setNew(false);
@@ -319,7 +382,7 @@ abstract class BaseMedia extends BaseObject  implements Persistent {
 			}
 
 			// FIXME - using NUM_COLUMNS may be clearer.
-			return $startcol + 6; // 6 = MediaPeer::NUM_COLUMNS - MediaPeer::NUM_LAZY_LOAD_COLUMNS).
+			return $startcol + 7; // 7 = MediaPeer::NUM_COLUMNS - MediaPeer::NUM_LAZY_LOAD_COLUMNS).
 
 		} catch (Exception $e) {
 			throw new PropelException("Error populating Media object", $e);
@@ -705,6 +768,9 @@ abstract class BaseMedia extends BaseObject  implements Persistent {
 			case 5:
 				return $this->getIsTesting();
 				break;
+			case 6:
+				return $this->getIsThirdParty();
+				break;
 			default:
 				return null;
 				break;
@@ -732,6 +798,7 @@ abstract class BaseMedia extends BaseObject  implements Persistent {
 			$keys[3] => $this->getIsUpdates(),
 			$keys[4] => $this->getIsBackports(),
 			$keys[5] => $this->getIsTesting(),
+			$keys[6] => $this->getIsThirdParty(),
 		);
 		return $result;
 	}
@@ -781,6 +848,9 @@ abstract class BaseMedia extends BaseObject  implements Persistent {
 			case 5:
 				$this->setIsTesting($value);
 				break;
+			case 6:
+				$this->setIsThirdParty($value);
+				break;
 		} // switch()
 	}
 
@@ -811,6 +881,7 @@ abstract class BaseMedia extends BaseObject  implements Persistent {
 		if (array_key_exists($keys[3], $arr)) $this->setIsUpdates($arr[$keys[3]]);
 		if (array_key_exists($keys[4], $arr)) $this->setIsBackports($arr[$keys[4]]);
 		if (array_key_exists($keys[5], $arr)) $this->setIsTesting($arr[$keys[5]]);
+		if (array_key_exists($keys[6], $arr)) $this->setIsThirdParty($arr[$keys[6]]);
 	}
 
 	/**
@@ -828,6 +899,7 @@ abstract class BaseMedia extends BaseObject  implements Persistent {
 		if ($this->isColumnModified(MediaPeer::IS_UPDATES)) $criteria->add(MediaPeer::IS_UPDATES, $this->is_updates);
 		if ($this->isColumnModified(MediaPeer::IS_BACKPORTS)) $criteria->add(MediaPeer::IS_BACKPORTS, $this->is_backports);
 		if ($this->isColumnModified(MediaPeer::IS_TESTING)) $criteria->add(MediaPeer::IS_TESTING, $this->is_testing);
+		if ($this->isColumnModified(MediaPeer::IS_THIRD_PARTY)) $criteria->add(MediaPeer::IS_THIRD_PARTY, $this->is_third_party);
 
 		return $criteria;
 	}
@@ -891,6 +963,8 @@ abstract class BaseMedia extends BaseObject  implements Persistent {
 		$copyObj->setIsBackports($this->is_backports);
 
 		$copyObj->setIsTesting($this->is_testing);
+
+		$copyObj->setIsThirdParty($this->is_third_party);
 
 
 		if ($deepCopy) {

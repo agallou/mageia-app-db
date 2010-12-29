@@ -25,7 +25,7 @@ abstract class BasePackagePeer {
 	const TM_CLASS = 'PackageTableMap';
 	
 	/** The total number of columns. */
-	const NUM_COLUMNS = 4;
+	const NUM_COLUMNS = 6;
 
 	/** The number of lazy-loaded columns. */
 	const NUM_LAZY_LOAD_COLUMNS = 0;
@@ -41,6 +41,12 @@ abstract class BasePackagePeer {
 
 	/** the column name for the IS_APPLICATION field */
 	const IS_APPLICATION = 'package.IS_APPLICATION';
+
+	/** the column name for the SUMMARY field */
+	const SUMMARY = 'package.SUMMARY';
+
+	/** the column name for the DESCRIPTION field */
+	const DESCRIPTION = 'package.DESCRIPTION';
 
 	/**
 	 * An identiy map to hold any loaded instances of Package objects.
@@ -65,11 +71,11 @@ abstract class BasePackagePeer {
 	 * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
 	 */
 	private static $fieldNames = array (
-		BasePeer::TYPE_PHPNAME => array ('Id', 'Name', 'Md5Name', 'IsApplication', ),
-		BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'name', 'md5Name', 'isApplication', ),
-		BasePeer::TYPE_COLNAME => array (self::ID, self::NAME, self::MD5_NAME, self::IS_APPLICATION, ),
-		BasePeer::TYPE_FIELDNAME => array ('id', 'name', 'md5_name', 'is_application', ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, 3, )
+		BasePeer::TYPE_PHPNAME => array ('Id', 'Name', 'Md5Name', 'IsApplication', 'Summary', 'Description', ),
+		BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'name', 'md5Name', 'isApplication', 'summary', 'description', ),
+		BasePeer::TYPE_COLNAME => array (self::ID, self::NAME, self::MD5_NAME, self::IS_APPLICATION, self::SUMMARY, self::DESCRIPTION, ),
+		BasePeer::TYPE_FIELDNAME => array ('id', 'name', 'md5_name', 'is_application', 'summary', 'description', ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, )
 	);
 
 	/**
@@ -79,11 +85,11 @@ abstract class BasePackagePeer {
 	 * e.g. self::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
 	 */
 	private static $fieldKeys = array (
-		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Name' => 1, 'Md5Name' => 2, 'IsApplication' => 3, ),
-		BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'name' => 1, 'md5Name' => 2, 'isApplication' => 3, ),
-		BasePeer::TYPE_COLNAME => array (self::ID => 0, self::NAME => 1, self::MD5_NAME => 2, self::IS_APPLICATION => 3, ),
-		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'name' => 1, 'md5_name' => 2, 'is_application' => 3, ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, 3, )
+		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'Name' => 1, 'Md5Name' => 2, 'IsApplication' => 3, 'Summary' => 4, 'Description' => 5, ),
+		BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'name' => 1, 'md5Name' => 2, 'isApplication' => 3, 'summary' => 4, 'description' => 5, ),
+		BasePeer::TYPE_COLNAME => array (self::ID => 0, self::NAME => 1, self::MD5_NAME => 2, self::IS_APPLICATION => 3, self::SUMMARY => 4, self::DESCRIPTION => 5, ),
+		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'name' => 1, 'md5_name' => 2, 'is_application' => 3, 'summary' => 4, 'description' => 5, ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, )
 	);
 
 	/**
@@ -157,6 +163,8 @@ abstract class BasePackagePeer {
 		$criteria->addSelectColumn(PackagePeer::NAME);
 		$criteria->addSelectColumn(PackagePeer::MD5_NAME);
 		$criteria->addSelectColumn(PackagePeer::IS_APPLICATION);
+		$criteria->addSelectColumn(PackagePeer::SUMMARY);
+		$criteria->addSelectColumn(PackagePeer::DESCRIPTION);
 	}
 
 	/**

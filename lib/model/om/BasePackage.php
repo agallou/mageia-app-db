@@ -43,6 +43,18 @@ abstract class BasePackage extends BaseObject  implements Persistent {
 	protected $is_application;
 
 	/**
+	 * The value for the summary field.
+	 * @var        string
+	 */
+	protected $summary;
+
+	/**
+	 * The value for the description field.
+	 * @var        string
+	 */
+	protected $description;
+
+	/**
 	 * @var        array Rpm[] Collection to store aggregation of Rpm objects.
 	 */
 	protected $collRpms;
@@ -171,6 +183,26 @@ abstract class BasePackage extends BaseObject  implements Persistent {
 	}
 
 	/**
+	 * Get the [summary] column value.
+	 * 
+	 * @return     string
+	 */
+	public function getSummary()
+	{
+		return $this->summary;
+	}
+
+	/**
+	 * Get the [description] column value.
+	 * 
+	 * @return     string
+	 */
+	public function getDescription()
+	{
+		return $this->description;
+	}
+
+	/**
 	 * Set the value of [id] column.
 	 * 
 	 * @param      int $v new value
@@ -251,6 +283,46 @@ abstract class BasePackage extends BaseObject  implements Persistent {
 	} // setIsApplication()
 
 	/**
+	 * Set the value of [summary] column.
+	 * 
+	 * @param      string $v new value
+	 * @return     Package The current object (for fluent API support)
+	 */
+	public function setSummary($v)
+	{
+		if ($v !== null) {
+			$v = (string) $v;
+		}
+
+		if ($this->summary !== $v) {
+			$this->summary = $v;
+			$this->modifiedColumns[] = PackagePeer::SUMMARY;
+		}
+
+		return $this;
+	} // setSummary()
+
+	/**
+	 * Set the value of [description] column.
+	 * 
+	 * @param      string $v new value
+	 * @return     Package The current object (for fluent API support)
+	 */
+	public function setDescription($v)
+	{
+		if ($v !== null) {
+			$v = (string) $v;
+		}
+
+		if ($this->description !== $v) {
+			$this->description = $v;
+			$this->modifiedColumns[] = PackagePeer::DESCRIPTION;
+		}
+
+		return $this;
+	} // setDescription()
+
+	/**
 	 * Indicates whether the columns in this object are only set to default values.
 	 *
 	 * This method can be used in conjunction with isModified() to indicate whether an object is both
@@ -286,6 +358,8 @@ abstract class BasePackage extends BaseObject  implements Persistent {
 			$this->name = ($row[$startcol + 1] !== null) ? (string) $row[$startcol + 1] : null;
 			$this->md5_name = ($row[$startcol + 2] !== null) ? (string) $row[$startcol + 2] : null;
 			$this->is_application = ($row[$startcol + 3] !== null) ? (boolean) $row[$startcol + 3] : null;
+			$this->summary = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
+			$this->description = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
 			$this->resetModified();
 
 			$this->setNew(false);
@@ -295,7 +369,7 @@ abstract class BasePackage extends BaseObject  implements Persistent {
 			}
 
 			// FIXME - using NUM_COLUMNS may be clearer.
-			return $startcol + 4; // 4 = PackagePeer::NUM_COLUMNS - PackagePeer::NUM_LAZY_LOAD_COLUMNS).
+			return $startcol + 6; // 6 = PackagePeer::NUM_COLUMNS - PackagePeer::NUM_LAZY_LOAD_COLUMNS).
 
 		} catch (Exception $e) {
 			throw new PropelException("Error populating Package object", $e);
@@ -770,6 +844,12 @@ abstract class BasePackage extends BaseObject  implements Persistent {
 			case 3:
 				return $this->getIsApplication();
 				break;
+			case 4:
+				return $this->getSummary();
+				break;
+			case 5:
+				return $this->getDescription();
+				break;
 			default:
 				return null;
 				break;
@@ -795,6 +875,8 @@ abstract class BasePackage extends BaseObject  implements Persistent {
 			$keys[1] => $this->getName(),
 			$keys[2] => $this->getMd5Name(),
 			$keys[3] => $this->getIsApplication(),
+			$keys[4] => $this->getSummary(),
+			$keys[5] => $this->getDescription(),
 		);
 		return $result;
 	}
@@ -838,6 +920,12 @@ abstract class BasePackage extends BaseObject  implements Persistent {
 			case 3:
 				$this->setIsApplication($value);
 				break;
+			case 4:
+				$this->setSummary($value);
+				break;
+			case 5:
+				$this->setDescription($value);
+				break;
 		} // switch()
 	}
 
@@ -866,6 +954,8 @@ abstract class BasePackage extends BaseObject  implements Persistent {
 		if (array_key_exists($keys[1], $arr)) $this->setName($arr[$keys[1]]);
 		if (array_key_exists($keys[2], $arr)) $this->setMd5Name($arr[$keys[2]]);
 		if (array_key_exists($keys[3], $arr)) $this->setIsApplication($arr[$keys[3]]);
+		if (array_key_exists($keys[4], $arr)) $this->setSummary($arr[$keys[4]]);
+		if (array_key_exists($keys[5], $arr)) $this->setDescription($arr[$keys[5]]);
 	}
 
 	/**
@@ -881,6 +971,8 @@ abstract class BasePackage extends BaseObject  implements Persistent {
 		if ($this->isColumnModified(PackagePeer::NAME)) $criteria->add(PackagePeer::NAME, $this->name);
 		if ($this->isColumnModified(PackagePeer::MD5_NAME)) $criteria->add(PackagePeer::MD5_NAME, $this->md5_name);
 		if ($this->isColumnModified(PackagePeer::IS_APPLICATION)) $criteria->add(PackagePeer::IS_APPLICATION, $this->is_application);
+		if ($this->isColumnModified(PackagePeer::SUMMARY)) $criteria->add(PackagePeer::SUMMARY, $this->summary);
+		if ($this->isColumnModified(PackagePeer::DESCRIPTION)) $criteria->add(PackagePeer::DESCRIPTION, $this->description);
 
 		return $criteria;
 	}
@@ -940,6 +1032,10 @@ abstract class BasePackage extends BaseObject  implements Persistent {
 		$copyObj->setMd5Name($this->md5_name);
 
 		$copyObj->setIsApplication($this->is_application);
+
+		$copyObj->setSummary($this->summary);
+
+		$copyObj->setDescription($this->description);
 
 
 		if ($deepCopy) {

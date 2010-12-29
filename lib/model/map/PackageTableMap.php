@@ -40,6 +40,8 @@ class PackageTableMap extends TableMap {
 		$this->addColumn('NAME', 'Name', 'VARCHAR', true, 1024, null);
 		$this->addColumn('MD5_NAME', 'Md5Name', 'CHAR', true, 32, null);
 		$this->addColumn('IS_APPLICATION', 'IsApplication', 'BOOLEAN', true, null, null);
+		$this->addColumn('SUMMARY', 'Summary', 'VARCHAR', false, 255, null);
+		$this->addColumn('DESCRIPTION', 'Description', 'LONGVARCHAR', false, null, null);
 		// validators
 	} // initialize()
 
