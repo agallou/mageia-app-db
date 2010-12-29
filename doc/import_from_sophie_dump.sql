@@ -6,7 +6,6 @@ truncate table distrelease;
 truncate table package;
 truncate table rpm;
 truncate table rpm_group;
-truncate table rpmfile;
 
 create table rpmlinearized
 (
