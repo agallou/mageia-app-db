@@ -15,7 +15,15 @@
 Total results : <span id="count"></span>
 <ul id="results" class="packlist">
 <?php foreach ($pager as $package): ?>
-  <li><?php echo link_to($package->getName(),  $madburl->urlFor('package/show', $madbcontext, array('extra_parameters' => array('id' => $package->getid())))); ?></li> 
+  <li><?php echo link_to(
+                   $package->getName(),  
+                   $madburl->urlFor(
+                     'package/show', 
+                     $madbcontext, 
+                     array('extra_parameters' => array('id' => $package->getid()))
+                   )
+                 );
+  ?> : <?php echo $package->getSummary(); ?></li> 
 <?php endforeach; ?>
 </ul>
 </div>

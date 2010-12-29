@@ -42,6 +42,7 @@ class MediaTableMap extends TableMap {
 		$this->addColumn('IS_UPDATES', 'IsUpdates', 'BOOLEAN', true, null, null);
 		$this->addColumn('IS_BACKPORTS', 'IsBackports', 'BOOLEAN', true, null, null);
 		$this->addColumn('IS_TESTING', 'IsTesting', 'BOOLEAN', true, null, null);
+		$this->addColumn('IS_THIRD_PARTY', 'IsThirdParty', 'BOOLEAN', true, null, false);
 		// validators
 	} // initialize()
 

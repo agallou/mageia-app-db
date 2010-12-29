@@ -6,7 +6,6 @@ truncate table distrelease;
 truncate table package;
 truncate table rpm;
 truncate table rpm_group;
-truncate table rpmfile;
 
 create table rpmlinearized
 (
@@ -74,6 +73,8 @@ select distinct media_name, media_vendor from rpmlinearized where media_name <> 
 update media set is_updates=true where name like '%updates%';
 update media set is_backports=true where name like '%backports%';
 update media set is_updates=true, is_testing=true where name like '%testing%';
+update media set is_third_party=true where name like 'plf%';
+
 
 insert into distrelease (name)
 select distinct version from rpmlinearized where version <> '';
@@ -106,8 +107,8 @@ select  package.id,
         evr, 
         SUBSTRING(evr, 1, LENGTH(SUBSTRING_INDEX(evr, '-', 1))),
         SUBSTRING(evr, LENGTH(SUBSTRING_INDEX(evr, '-', 1))+2),
-        summary, 
-        description, 
+        rpmlinearized.summary, 
+        rpmlinearized.description, 
         url, 
         source_rpm,
         rpm_pkgid, 

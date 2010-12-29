@@ -4,6 +4,8 @@ propel:
     name:                                                              { type: varchar(1024), required: true }
     md5_name:                                                          { type: char, size:32, required: true }
     is_application:                                                    { type: boolean, required: true }
+    summary:                                                           { type: varchar(255) }
+    description:                                                       longvarchar
     _indexes:
       unique_name:                                                     [ name ]
     _uniques:
@@ -152,6 +154,7 @@ propel:
     is_updates:                                                        { type: boolean, required: true }
     is_backports:                                                      { type: boolean, required: true }
     is_testing:                                                        { type: boolean, required: true }
+    is_third_party:                                                    { type: boolean, required: true, default: false }
     _uniques:
       unique_name:                                                     [ name, vendor ]
   notification:
