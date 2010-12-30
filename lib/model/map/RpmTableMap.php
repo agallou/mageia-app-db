@@ -43,18 +43,20 @@ class RpmTableMap extends TableMap {
 		$this->addForeignKey('RPM_GROUP_ID', 'RpmGroupId', 'INTEGER', 'rpm_group', 'ID', true, null, null);
 		$this->addColumn('LICENCE', 'Licence', 'VARCHAR', true, 255, null);
 		$this->addColumn('NAME', 'Name', 'VARCHAR', true, 255, null);
+		$this->addColumn('SHORT_NAME', 'ShortName', 'VARCHAR', true, 255, null);
 		$this->addColumn('EVR', 'Evr', 'VARCHAR', true, 255, null);
 		$this->addColumn('VERSION', 'Version', 'VARCHAR', true, 255, null);
 		$this->addColumn('RELEASE', 'Release', 'VARCHAR', true, 255, null);
 		$this->addColumn('SUMMARY', 'Summary', 'VARCHAR', true, 255, null);
 		$this->addColumn('DESCRIPTION', 'Description', 'LONGVARCHAR', true, null, null);
 		$this->addColumn('URL', 'Url', 'LONGVARCHAR', true, null, null);
-		$this->addColumn('SRC_RPM', 'SrcRpm', 'LONGVARCHAR', true, null, null);
 		$this->addColumn('RPM_PKGID', 'RpmPkgid', 'CHAR', true, 32, null);
 		$this->addColumn('BUILD_TIME', 'BuildTime', 'TIMESTAMP', true, null, null);
 		$this->addColumn('SIZE', 'Size', 'INTEGER', true, null, null);
 		$this->addColumn('REALARCH', 'Realarch', 'VARCHAR', true, 45, null);
 		$this->addForeignKey('ARCH_ID', 'ArchId', 'INTEGER', 'arch', 'ID', true, null, null);
+		$this->addColumn('IS_SOURCE', 'IsSource', 'BOOLEAN', true, null, null);
+		$this->addForeignKey('SOURCE_RPM_ID', 'SourceRpmId', 'INTEGER', 'rpm', 'ID', true, null, null);
 		// validators
 	} // initialize()
 
@@ -68,6 +70,8 @@ class RpmTableMap extends TableMap {
     $this->addRelation('Media', 'Media', RelationMap::MANY_TO_ONE, array('media_id' => 'id', ), null, null);
     $this->addRelation('RpmGroup', 'RpmGroup', RelationMap::MANY_TO_ONE, array('rpm_group_id' => 'id', ), null, null);
     $this->addRelation('Arch', 'Arch', RelationMap::MANY_TO_ONE, array('arch_id' => 'id', ), null, null);
+    $this->addRelation('RpmRelatedBySourceRpmId', 'Rpm', RelationMap::MANY_TO_ONE, array('source_rpm_id' => 'id', ), null, null);
+    $this->addRelation('RpmRelatedBySourceRpmId', 'Rpm', RelationMap::ONE_TO_MANY, array('id' => 'source_rpm_id', ), null, null);
 	} // buildRelations()
 
 	/**

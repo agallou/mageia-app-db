@@ -16,7 +16,7 @@ create table rpmlinearized
   buildtime datetime,
   url text,
   rpm_size int,
-  source_rpm text,
+  source_rpm varchar(255),
   license varchar(255),
   rpm_group varchar(255),
   realarch varchar(45),
@@ -36,6 +36,7 @@ alter table rpmlinearized add index index_version (version);
 alter table rpmlinearized add index index_media (media_name, media_vendor);
 alter table rpmlinearized add index index_group (rpm_group);
 alter table rpmlinearized add index index_media_arch (media_arch);
+alter table rpmlinearized add index index_source_rpm (source_rpm);
 
 delete from rpmlinearized where version NOT IN (
 	'cooker', 
@@ -75,7 +76,6 @@ update media set is_backports=true where name like '%backports%';
 update media set is_updates=true, is_testing=true where name like '%testing%';
 update media set is_third_party=true where name like 'plf%';
 
-
 insert into distrelease (name)
 select distinct version from rpmlinearized where version <> '';
 
@@ -85,8 +85,55 @@ set is_latest = true where name = '2010.1';
 update distrelease
 set is_dev_version = true where name = 'cooker';
 
-insert into package (name, md5_name)
-select distinct package_name, md5(package_name) from rpmlinearized;
+
+
+insert into rpm (distrelease_id, media_id, rpm_group_id, licence, name, short_name, evr, version, `release`, `summary`, `description`, `url`, `rpm_pkgid`, `build_time`, `size`, `realarch`, `arch_id`)
+select  distrelease.id, 
+        media.id, 
+        rpm_group.id, 
+        license, 
+        filename, 
+        package_name, 
+        evr, 
+        SUBSTRING(evr, 1, LENGTH(SUBSTRING_INDEX(evr, '-', 1))),
+        SUBSTRING(evr, LENGTH(SUBSTRING_INDEX(evr, '-', 1))+2),
+        rpmlinearized.summary, 
+        rpmlinearized.description, 
+        url, 
+        rpm_pkgid, 
+        buildtime, 
+        rpm_size, 
+        realarch, 
+        arch.id
+from rpmlinearized, distrelease, media, rpm_group, arch
+where rpmlinearized.version = distrelease.name
+  and rpmlinearized.media_name = media.name
+  and rpmlinearized.media_vendor = media.vendor
+  and rpmlinearized.rpm_group = rpm_group.name
+  and rpmlinearized.media_arch = arch.name
+;
+
+UPDATE rpm 
+SET is_source=true,
+    source_rpm_id = id
+WHERE name LIKE '%.src.rpm'; 
+
+UPDATE rpm
+JOIN media ON rpm.media_id = media.ID
+JOIN arch ON rpm.arch_id = arch.ID
+JOIN rpmlinearized ON rpm.name=rpmlinearized.filename AND media.name = rpmlinearized.media_name AND arch.name = rpmlinearized.media_arch
+JOIN rpm as sourcerpm ON rpmlinearized.source_rpm = sourcerpm.name AND rpm.media_id = sourcerpm.media_id AND rpm.arch_id = sourcerpm.arch_id
+SET rpm.source_rpm_id = sourcerpm.id;
+
+
+
+insert into package (name, md5_name, is_source)
+select distinct short_name, md5(CONCAT(short_name, '-', is_source)), is_source from rpm;
+
+UPDATE rpm
+JOIN package ON rpm.short_name = package.name AND rpm.is_source = package.is_source
+SET rpm.PACKAGE_ID = package.ID;
+
 update package 
 set is_application = 1
 where left(name, 3) <> 'lib'
@@ -95,37 +142,13 @@ where left(name, 3) <> 'lib'
   and name not like 'locales-__'
 ;
 
-
-
-insert into rpm (package_id, distrelease_id, media_id, rpm_group_id, licence, name, evr, version, `release`, `summary`, `description`, `url`, `src_rpm`, `rpm_pkgid`, `build_time`, `size`, `realarch`, `arch_id`)
-select  package.id, 
-        distrelease.id, 
-        media.id, 
-        rpm_group.id, 
-        license, 
-        filename, 
-        evr, 
-        SUBSTRING(evr, 1, LENGTH(SUBSTRING_INDEX(evr, '-', 1))),
-        SUBSTRING(evr, LENGTH(SUBSTRING_INDEX(evr, '-', 1))+2),
-        rpmlinearized.summary, 
-        rpmlinearized.description, 
-        url, 
-        source_rpm,
-        rpm_pkgid, 
-        buildtime, 
-        rpm_size, 
-        realarch, 
-        arch.id
-from rpmlinearized, package, distrelease, media, rpm_group, arch
-where rpmlinearized.package_name = package.name
-  and rpmlinearized.version = distrelease.name
-  and rpmlinearized.media_name = media.name
-  and rpmlinearized.media_vendor = media.vendor
-  and rpmlinearized.rpm_group = rpm_group.name
-  and rpmlinearized.media_arch = arch.name
-;
-
-
+-- source packages of applications are flagged as applications too
+update package as source_package
+JOIN rpm as source_rpm ON source_package.ID = source_rpm.PACKAGE_ID
+JOIN rpm ON source_rpm.ID = rpm.SOURCE_RPM_ID AND rpm.is_source = FALSE
+JOIN package ON rpm.PACKAGE_ID = package.ID
+SET source_package.is_application = 1
+WHERE package.is_application = 1;
 
 
 drop table rpmlinearized;

@@ -20,6 +20,10 @@ $(document).ready(function(){
 	    apply: function(d){afterCheckboxChange(d)},
 	    defaults: getAllVals($('#media option[selected=selected]')),
 	  });
+  $('#source').selectToCheckboxes({
+	    apply: function(d){afterCheckboxChange(d)},
+	    defaults: getAllVals($('#source option[selected=selected]')),
+	  });
   $('form input[type=submit]').remove();
 });
 
@@ -47,6 +51,7 @@ function getFiltering()
   filtering['group'] = getValuesFromCheckboxes($('input[type=checkbox][name=group]:checked'));
   filtering['arch'] = getValuesFromCheckboxes($('input[type=checkbox][name=arch]:checked'));
   filtering['media'] = getValuesFromCheckboxes($('input[type=checkbox][name=media]:checked'));
+  filtering['source'] = getValuesFromCheckboxes($('input[type=checkbox][name=source]:checked'));
   return filtering;
 }
 

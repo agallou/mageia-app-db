@@ -25,7 +25,7 @@ abstract class BaseRpmPeer {
 	const TM_CLASS = 'RpmTableMap';
 	
 	/** The total number of columns. */
-	const NUM_COLUMNS = 19;
+	const NUM_COLUMNS = 21;
 
 	/** The number of lazy-loaded columns. */
 	const NUM_LAZY_LOAD_COLUMNS = 0;
@@ -51,6 +51,9 @@ abstract class BaseRpmPeer {
 	/** the column name for the NAME field */
 	const NAME = 'rpm.NAME';
 
+	/** the column name for the SHORT_NAME field */
+	const SHORT_NAME = 'rpm.SHORT_NAME';
+
 	/** the column name for the EVR field */
 	const EVR = 'rpm.EVR';
 
@@ -69,9 +72,6 @@ abstract class BaseRpmPeer {
 	/** the column name for the URL field */
 	const URL = 'rpm.URL';
 
-	/** the column name for the SRC_RPM field */
-	const SRC_RPM = 'rpm.SRC_RPM';
-
 	/** the column name for the RPM_PKGID field */
 	const RPM_PKGID = 'rpm.RPM_PKGID';
 
@@ -86,6 +86,12 @@ abstract class BaseRpmPeer {
 
 	/** the column name for the ARCH_ID field */
 	const ARCH_ID = 'rpm.ARCH_ID';
+
+	/** the column name for the IS_SOURCE field */
+	const IS_SOURCE = 'rpm.IS_SOURCE';
+
+	/** the column name for the SOURCE_RPM_ID field */
+	const SOURCE_RPM_ID = 'rpm.SOURCE_RPM_ID';
 
 	/**
 	 * An identiy map to hold any loaded instances of Rpm objects.
@@ -110,11 +116,11 @@ abstract class BaseRpmPeer {
 	 * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
 	 */
 	private static $fieldNames = array (
-		BasePeer::TYPE_PHPNAME => array ('Id', 'PackageId', 'DistreleaseId', 'MediaId', 'RpmGroupId', 'Licence', 'Name', 'Evr', 'Version', 'Release', 'Summary', 'Description', 'Url', 'SrcRpm', 'RpmPkgid', 'BuildTime', 'Size', 'Realarch', 'ArchId', ),
-		BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'packageId', 'distreleaseId', 'mediaId', 'rpmGroupId', 'licence', 'name', 'evr', 'version', 'release', 'summary', 'description', 'url', 'srcRpm', 'rpmPkgid', 'buildTime', 'size', 'realarch', 'archId', ),
-		BasePeer::TYPE_COLNAME => array (self::ID, self::PACKAGE_ID, self::DISTRELEASE_ID, self::MEDIA_ID, self::RPM_GROUP_ID, self::LICENCE, self::NAME, self::EVR, self::VERSION, self::RELEASE, self::SUMMARY, self::DESCRIPTION, self::URL, self::SRC_RPM, self::RPM_PKGID, self::BUILD_TIME, self::SIZE, self::REALARCH, self::ARCH_ID, ),
-		BasePeer::TYPE_FIELDNAME => array ('id', 'package_id', 'distrelease_id', 'media_id', 'rpm_group_id', 'licence', 'name', 'evr', 'version', 'release', 'summary', 'description', 'url', 'src_rpm', 'rpm_pkgid', 'build_time', 'size', 'realarch', 'arch_id', ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, )
+		BasePeer::TYPE_PHPNAME => array ('Id', 'PackageId', 'DistreleaseId', 'MediaId', 'RpmGroupId', 'Licence', 'Name', 'ShortName', 'Evr', 'Version', 'Release', 'Summary', 'Description', 'Url', 'RpmPkgid', 'BuildTime', 'Size', 'Realarch', 'ArchId', 'IsSource', 'SourceRpmId', ),
+		BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'packageId', 'distreleaseId', 'mediaId', 'rpmGroupId', 'licence', 'name', 'shortName', 'evr', 'version', 'release', 'summary', 'description', 'url', 'rpmPkgid', 'buildTime', 'size', 'realarch', 'archId', 'isSource', 'sourceRpmId', ),
+		BasePeer::TYPE_COLNAME => array (self::ID, self::PACKAGE_ID, self::DISTRELEASE_ID, self::MEDIA_ID, self::RPM_GROUP_ID, self::LICENCE, self::NAME, self::SHORT_NAME, self::EVR, self::VERSION, self::RELEASE, self::SUMMARY, self::DESCRIPTION, self::URL, self::RPM_PKGID, self::BUILD_TIME, self::SIZE, self::REALARCH, self::ARCH_ID, self::IS_SOURCE, self::SOURCE_RPM_ID, ),
+		BasePeer::TYPE_FIELDNAME => array ('id', 'package_id', 'distrelease_id', 'media_id', 'rpm_group_id', 'licence', 'name', 'short_name', 'evr', 'version', 'release', 'summary', 'description', 'url', 'rpm_pkgid', 'build_time', 'size', 'realarch', 'arch_id', 'is_source', 'source_rpm_id', ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, )
 	);
 
 	/**
@@ -124,11 +130,11 @@ abstract class BaseRpmPeer {
 	 * e.g. self::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
 	 */
 	private static $fieldKeys = array (
-		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'PackageId' => 1, 'DistreleaseId' => 2, 'MediaId' => 3, 'RpmGroupId' => 4, 'Licence' => 5, 'Name' => 6, 'Evr' => 7, 'Version' => 8, 'Release' => 9, 'Summary' => 10, 'Description' => 11, 'Url' => 12, 'SrcRpm' => 13, 'RpmPkgid' => 14, 'BuildTime' => 15, 'Size' => 16, 'Realarch' => 17, 'ArchId' => 18, ),
-		BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'packageId' => 1, 'distreleaseId' => 2, 'mediaId' => 3, 'rpmGroupId' => 4, 'licence' => 5, 'name' => 6, 'evr' => 7, 'version' => 8, 'release' => 9, 'summary' => 10, 'description' => 11, 'url' => 12, 'srcRpm' => 13, 'rpmPkgid' => 14, 'buildTime' => 15, 'size' => 16, 'realarch' => 17, 'archId' => 18, ),
-		BasePeer::TYPE_COLNAME => array (self::ID => 0, self::PACKAGE_ID => 1, self::DISTRELEASE_ID => 2, self::MEDIA_ID => 3, self::RPM_GROUP_ID => 4, self::LICENCE => 5, self::NAME => 6, self::EVR => 7, self::VERSION => 8, self::RELEASE => 9, self::SUMMARY => 10, self::DESCRIPTION => 11, self::URL => 12, self::SRC_RPM => 13, self::RPM_PKGID => 14, self::BUILD_TIME => 15, self::SIZE => 16, self::REALARCH => 17, self::ARCH_ID => 18, ),
-		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'package_id' => 1, 'distrelease_id' => 2, 'media_id' => 3, 'rpm_group_id' => 4, 'licence' => 5, 'name' => 6, 'evr' => 7, 'version' => 8, 'release' => 9, 'summary' => 10, 'description' => 11, 'url' => 12, 'src_rpm' => 13, 'rpm_pkgid' => 14, 'build_time' => 15, 'size' => 16, 'realarch' => 17, 'arch_id' => 18, ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, )
+		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'PackageId' => 1, 'DistreleaseId' => 2, 'MediaId' => 3, 'RpmGroupId' => 4, 'Licence' => 5, 'Name' => 6, 'ShortName' => 7, 'Evr' => 8, 'Version' => 9, 'Release' => 10, 'Summary' => 11, 'Description' => 12, 'Url' => 13, 'RpmPkgid' => 14, 'BuildTime' => 15, 'Size' => 16, 'Realarch' => 17, 'ArchId' => 18, 'IsSource' => 19, 'SourceRpmId' => 20, ),
+		BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'packageId' => 1, 'distreleaseId' => 2, 'mediaId' => 3, 'rpmGroupId' => 4, 'licence' => 5, 'name' => 6, 'shortName' => 7, 'evr' => 8, 'version' => 9, 'release' => 10, 'summary' => 11, 'description' => 12, 'url' => 13, 'rpmPkgid' => 14, 'buildTime' => 15, 'size' => 16, 'realarch' => 17, 'archId' => 18, 'isSource' => 19, 'sourceRpmId' => 20, ),
+		BasePeer::TYPE_COLNAME => array (self::ID => 0, self::PACKAGE_ID => 1, self::DISTRELEASE_ID => 2, self::MEDIA_ID => 3, self::RPM_GROUP_ID => 4, self::LICENCE => 5, self::NAME => 6, self::SHORT_NAME => 7, self::EVR => 8, self::VERSION => 9, self::RELEASE => 10, self::SUMMARY => 11, self::DESCRIPTION => 12, self::URL => 13, self::RPM_PKGID => 14, self::BUILD_TIME => 15, self::SIZE => 16, self::REALARCH => 17, self::ARCH_ID => 18, self::IS_SOURCE => 19, self::SOURCE_RPM_ID => 20, ),
+		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'package_id' => 1, 'distrelease_id' => 2, 'media_id' => 3, 'rpm_group_id' => 4, 'licence' => 5, 'name' => 6, 'short_name' => 7, 'evr' => 8, 'version' => 9, 'release' => 10, 'summary' => 11, 'description' => 12, 'url' => 13, 'rpm_pkgid' => 14, 'build_time' => 15, 'size' => 16, 'realarch' => 17, 'arch_id' => 18, 'is_source' => 19, 'source_rpm_id' => 20, ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, )
 	);
 
 	/**
@@ -205,18 +211,20 @@ abstract class BaseRpmPeer {
 		$criteria->addSelectColumn(RpmPeer::RPM_GROUP_ID);
 		$criteria->addSelectColumn(RpmPeer::LICENCE);
 		$criteria->addSelectColumn(RpmPeer::NAME);
+		$criteria->addSelectColumn(RpmPeer::SHORT_NAME);
 		$criteria->addSelectColumn(RpmPeer::EVR);
 		$criteria->addSelectColumn(RpmPeer::VERSION);
 		$criteria->addSelectColumn(RpmPeer::RELEASE);
 		$criteria->addSelectColumn(RpmPeer::SUMMARY);
 		$criteria->addSelectColumn(RpmPeer::DESCRIPTION);
 		$criteria->addSelectColumn(RpmPeer::URL);
-		$criteria->addSelectColumn(RpmPeer::SRC_RPM);
 		$criteria->addSelectColumn(RpmPeer::RPM_PKGID);
 		$criteria->addSelectColumn(RpmPeer::BUILD_TIME);
 		$criteria->addSelectColumn(RpmPeer::SIZE);
 		$criteria->addSelectColumn(RpmPeer::REALARCH);
 		$criteria->addSelectColumn(RpmPeer::ARCH_ID);
+		$criteria->addSelectColumn(RpmPeer::IS_SOURCE);
+		$criteria->addSelectColumn(RpmPeer::SOURCE_RPM_ID);
 	}
 
 	/**
@@ -1655,6 +1663,70 @@ abstract class BaseRpmPeer {
 
 
 	/**
+	 * Returns the number of rows matching criteria, joining the related RpmRelatedBySourceRpmId table
+	 *
+	 * @param      Criteria $criteria
+	 * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
+	 * @param      PropelPDO $con
+	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+	 * @return     int Number of matching rows.
+	 */
+	public static function doCountJoinAllExceptRpmRelatedBySourceRpmId(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	{
+		// we're going to modify criteria, so copy it first
+		$criteria = clone $criteria;
+
+		// We need to set the primary table name, since in the case that there are no WHERE columns
+		// it will be impossible for the BasePeer::createSelectSql() method to determine which
+		// tables go into the FROM clause.
+		$criteria->setPrimaryTableName(RpmPeer::TABLE_NAME);
+		
+		if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
+			$criteria->setDistinct();
+		}
+
+		if (!$criteria->hasSelectClause()) {
+			RpmPeer::addSelectColumns($criteria);
+		}
+		
+		$criteria->clearOrderByColumns(); // ORDER BY should not affect count
+		
+		// Set the correct dbName
+		$criteria->setDbName(self::DATABASE_NAME);
+
+		if ($con === null) {
+			$con = Propel::getConnection(RpmPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+		}
+	
+		$criteria->addJoin(RpmPeer::PACKAGE_ID, PackagePeer::ID, $join_behavior);
+
+		$criteria->addJoin(RpmPeer::DISTRELEASE_ID, DistreleasePeer::ID, $join_behavior);
+
+		$criteria->addJoin(RpmPeer::MEDIA_ID, MediaPeer::ID, $join_behavior);
+
+		$criteria->addJoin(RpmPeer::RPM_GROUP_ID, RpmGroupPeer::ID, $join_behavior);
+
+		$criteria->addJoin(RpmPeer::ARCH_ID, ArchPeer::ID, $join_behavior);
+
+		// symfony_behaviors behavior
+		foreach (sfMixer::getCallables(self::getMixerPreSelectHook(__FUNCTION__)) as $sf_hook)
+		{
+		  call_user_func($sf_hook, 'BaseRpmPeer', $criteria, $con);
+		}
+
+		$stmt = BasePeer::doCount($criteria, $con);
+
+		if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+			$count = (int) $row[0];
+		} else {
+			$count = 0; // no rows returned; we infer that means 0 matches.
+		}
+		$stmt->closeCursor();
+		return $count;
+	}
+
+
+	/**
 	 * Selects a collection of Rpm objects pre-filled with all related objects except Package.
 	 *
 	 * @param      Criteria  $criteria
@@ -2399,6 +2471,181 @@ abstract class BaseRpmPeer {
 
 				// Add the $obj1 (Rpm) to the collection in $obj5 (RpmGroup)
 				$obj5->addRpm($obj1);
+
+			} // if joined row is not null
+
+			$results[] = $obj1;
+		}
+		$stmt->closeCursor();
+		return $results;
+	}
+
+
+	/**
+	 * Selects a collection of Rpm objects pre-filled with all related objects except RpmRelatedBySourceRpmId.
+	 *
+	 * @param      Criteria  $criteria
+	 * @param      PropelPDO $con
+	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
+	 * @return     array Array of Rpm objects.
+	 * @throws     PropelException Any exceptions caught during processing will be
+	 *		 rethrown wrapped into a PropelException.
+	 */
+	public static function doSelectJoinAllExceptRpmRelatedBySourceRpmId(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	{
+		$criteria = clone $criteria;
+
+		// Set the correct dbName if it has not been overridden
+		// $criteria->getDbName() will return the same object if not set to another value
+		// so == check is okay and faster
+		if ($criteria->getDbName() == Propel::getDefaultDB()) {
+			$criteria->setDbName(self::DATABASE_NAME);
+		}
+
+		RpmPeer::addSelectColumns($criteria);
+		$startcol2 = (RpmPeer::NUM_COLUMNS - RpmPeer::NUM_LAZY_LOAD_COLUMNS);
+
+		PackagePeer::addSelectColumns($criteria);
+		$startcol3 = $startcol2 + (PackagePeer::NUM_COLUMNS - PackagePeer::NUM_LAZY_LOAD_COLUMNS);
+
+		DistreleasePeer::addSelectColumns($criteria);
+		$startcol4 = $startcol3 + (DistreleasePeer::NUM_COLUMNS - DistreleasePeer::NUM_LAZY_LOAD_COLUMNS);
+
+		MediaPeer::addSelectColumns($criteria);
+		$startcol5 = $startcol4 + (MediaPeer::NUM_COLUMNS - MediaPeer::NUM_LAZY_LOAD_COLUMNS);
+
+		RpmGroupPeer::addSelectColumns($criteria);
+		$startcol6 = $startcol5 + (RpmGroupPeer::NUM_COLUMNS - RpmGroupPeer::NUM_LAZY_LOAD_COLUMNS);
+
+		ArchPeer::addSelectColumns($criteria);
+		$startcol7 = $startcol6 + (ArchPeer::NUM_COLUMNS - ArchPeer::NUM_LAZY_LOAD_COLUMNS);
+
+		$criteria->addJoin(RpmPeer::PACKAGE_ID, PackagePeer::ID, $join_behavior);
+
+		$criteria->addJoin(RpmPeer::DISTRELEASE_ID, DistreleasePeer::ID, $join_behavior);
+
+		$criteria->addJoin(RpmPeer::MEDIA_ID, MediaPeer::ID, $join_behavior);
+
+		$criteria->addJoin(RpmPeer::RPM_GROUP_ID, RpmGroupPeer::ID, $join_behavior);
+
+		$criteria->addJoin(RpmPeer::ARCH_ID, ArchPeer::ID, $join_behavior);
+
+		// symfony_behaviors behavior
+		foreach (sfMixer::getCallables(self::getMixerPreSelectHook(__FUNCTION__)) as $sf_hook)
+		{
+		  call_user_func($sf_hook, 'BaseRpmPeer', $criteria, $con);
+		}
+
+
+		$stmt = BasePeer::doSelect($criteria, $con);
+		$results = array();
+
+		while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
+			$key1 = RpmPeer::getPrimaryKeyHashFromRow($row, 0);
+			if (null !== ($obj1 = RpmPeer::getInstanceFromPool($key1))) {
+				// We no longer rehydrate the object, since this can cause data loss.
+				// See http://propel.phpdb.org/trac/ticket/509
+				// $obj1->hydrate($row, 0, true); // rehydrate
+			} else {
+				$cls = RpmPeer::getOMClass(false);
+
+				$obj1 = new $cls();
+				$obj1->hydrate($row);
+				RpmPeer::addInstanceToPool($obj1, $key1);
+			} // if obj1 already loaded
+
+				// Add objects for joined Package rows
+
+				$key2 = PackagePeer::getPrimaryKeyHashFromRow($row, $startcol2);
+				if ($key2 !== null) {
+					$obj2 = PackagePeer::getInstanceFromPool($key2);
+					if (!$obj2) {
+	
+						$cls = PackagePeer::getOMClass(false);
+
+					$obj2 = new $cls();
+					$obj2->hydrate($row, $startcol2);
+					PackagePeer::addInstanceToPool($obj2, $key2);
+				} // if $obj2 already loaded
+
+				// Add the $obj1 (Rpm) to the collection in $obj2 (Package)
+				$obj2->addRpm($obj1);
+
+			} // if joined row is not null
+
+				// Add objects for joined Distrelease rows
+
+				$key3 = DistreleasePeer::getPrimaryKeyHashFromRow($row, $startcol3);
+				if ($key3 !== null) {
+					$obj3 = DistreleasePeer::getInstanceFromPool($key3);
+					if (!$obj3) {
+	
+						$cls = DistreleasePeer::getOMClass(false);
+
+					$obj3 = new $cls();
+					$obj3->hydrate($row, $startcol3);
+					DistreleasePeer::addInstanceToPool($obj3, $key3);
+				} // if $obj3 already loaded
+
+				// Add the $obj1 (Rpm) to the collection in $obj3 (Distrelease)
+				$obj3->addRpm($obj1);
+
+			} // if joined row is not null
+
+				// Add objects for joined Media rows
+
+				$key4 = MediaPeer::getPrimaryKeyHashFromRow($row, $startcol4);
+				if ($key4 !== null) {
+					$obj4 = MediaPeer::getInstanceFromPool($key4);
+					if (!$obj4) {
+	
+						$cls = MediaPeer::getOMClass(false);
+
+					$obj4 = new $cls();
+					$obj4->hydrate($row, $startcol4);
+					MediaPeer::addInstanceToPool($obj4, $key4);
+				} // if $obj4 already loaded
+
+				// Add the $obj1 (Rpm) to the collection in $obj4 (Media)
+				$obj4->addRpm($obj1);
+
+			} // if joined row is not null
+
+				// Add objects for joined RpmGroup rows
+
+				$key5 = RpmGroupPeer::getPrimaryKeyHashFromRow($row, $startcol5);
+				if ($key5 !== null) {
+					$obj5 = RpmGroupPeer::getInstanceFromPool($key5);
+					if (!$obj5) {
+	
+						$cls = RpmGroupPeer::getOMClass(false);
+
+					$obj5 = new $cls();
+					$obj5->hydrate($row, $startcol5);
+					RpmGroupPeer::addInstanceToPool($obj5, $key5);
+				} // if $obj5 already loaded
+
+				// Add the $obj1 (Rpm) to the collection in $obj5 (RpmGroup)
+				$obj5->addRpm($obj1);
+
+			} // if joined row is not null
+
+				// Add objects for joined Arch rows
+
+				$key6 = ArchPeer::getPrimaryKeyHashFromRow($row, $startcol6);
+				if ($key6 !== null) {
+					$obj6 = ArchPeer::getInstanceFromPool($key6);
+					if (!$obj6) {
+	
+						$cls = ArchPeer::getOMClass(false);
+
+					$obj6 = new $cls();
+					$obj6->hydrate($row, $startcol6);
+					ArchPeer::addInstanceToPool($obj6, $key6);
+				} // if $obj6 already loaded
+
+				// Add the $obj1 (Rpm) to the collection in $obj6 (Arch)
+				$obj6->addRpm($obj1);
 
 			} // if joined row is not null
 
