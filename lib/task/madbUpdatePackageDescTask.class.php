@@ -12,22 +12,19 @@ class madbUpdatePackageDesc extends madbBaseTask
   protected function execute($arguments = array(), $options = array())
   {
     sfContext::createInstance($this->createConfiguration('frontend', 'prod'));
-    $con = Propel::getConnection(); 
+    $con = Propel::getConnection();
+
+    Propel::disableInstancePooling();
     
     $sql = "UPDATE package SET description=NULL, summary=NULL;";
     $con->exec($sql);
-/*    
-    for ($i=1; $i<11;$i++)
-    {
-    $package = PackagePeer::doSelectOne(new Criteria());
-var_dump($package->getName());    
-    $package->updateSummaryAndDescription();
-    }
-    */
     
-    echo memory_get_usage() . "\n";
-    foreach (PackagePeer::doSelect(new Criteria()) as $package)
+    $stmt = PackagePeer::doSelectStmt(new Criteria());
+    while($rs = $stmt->fetch())
     {
+      $package = new Package();
+      $package->hydrate($rs);
+      
       try
       {
         $package->updateSummaryAndDescription();
@@ -36,10 +33,8 @@ var_dump($package->getName());
       {
         echo $e->getMessage() . "\n";
       }
+//      $package->clearAllReferences(true);
+//      unset($package);
     }
-    
-    echo memory_get_usage() . "\n";
-    
-    
   }
 }
