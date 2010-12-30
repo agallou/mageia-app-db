@@ -62,6 +62,9 @@ alter table rpmlinearized add package_name varchar(255);
 update rpmlinearized
 set package_name = LCASE(SUBSTRING(filename, 1, LENGTH(filename) - (LENGTH(SUBSTRING_INDEX(filename, '-', -2))+1)));
 
+delete from rpmlinearized where package_name LIKE '%-debug';
+
+
 insert into rpm_group (name)
 select distinct rpm_group from rpmlinearized where rpm_group <> '';
 
@@ -138,7 +141,6 @@ update package
 set is_application = 1
 where left(name, 3) <> 'lib'
   and name not like '%-devel'
-  and name not like '%-debug'
   and name not like 'locales-__'
 ;
 
