@@ -6,7 +6,7 @@ SELECT
   hdrs.buildtime, 
   rpmqueryformat(hdrs.hdr, '\'%{URL}\''),
   rpm.size, 
-  hdrs.hrpmfname, 
+  hdrs.sourcerpm, 
   hdrs.license, 
   hdrs.group, 
   hdrs.arch, 
