@@ -9,7 +9,7 @@ class showAction extends madbActions
     $this->forward404Unless($this->package, 'Erroneous package id');
     
     $criteria = $this->getCriteria(filterPerimeters::RPM);
-    $this->rpms = $this->package->getRpms($criteria);
+    $this->rpms = RpmPeer::sortByEvrAndDistrelease($this->package->getRpms($criteria));
   }
 
 }

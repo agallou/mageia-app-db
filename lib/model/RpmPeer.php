@@ -78,7 +78,6 @@ class RpmPeer extends BaseRpmPeer {
   {
     // TODO : unit-test this function
     $tab = explode(':', $evr);
-    if (count($tab) > 1)
     $epoch = count($tab) > 1 ? $tab[0] : 0;
     $vr = count($tab) > 1 ? $tab[1] : $evr;
     
@@ -86,4 +85,34 @@ class RpmPeer extends BaseRpmPeer {
     
     return array($epoch, $version, $release);
   }
+  
+  /**
+   * 
+   * Compares 2 RPMs using RpmPeer::evrCompare
+   * 
+   * @param string $rpm1
+   * @param string $rpm2
+   */
+  public static function rpmEvrAndDistreleaseCompare($rpm1, $rpm2)
+  {
+    $compare = self::evrCompare($rpm1->getEvr(), $rpm2->getEvr());
+echo ($compare);    
+    if ($compare == 0)
+    {
+      $compare = DistreleasePeer::compare($rpm1->getDistrelease(), $rpm2->getDistrelease());
+    }
+    return($compare);
+  }
+  
+  
+  public static function sortByEvrAndDistrelease($rpms, $descending=true)
+  {
+    usort($rpms, 'self::rpmEvrAndDistreleaseCompare');
+    if ($descending) 
+    {
+      $rpms = array_reverse($rpms);
+    }
+    return $rpms;
+  }
+  
 } // RpmPeer

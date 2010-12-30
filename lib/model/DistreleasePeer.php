@@ -26,4 +26,19 @@ class DistreleasePeer extends BaseDistreleasePeer {
     return $distrelease;
   }
 
+  /**
+   * 
+   * Compares 2 distreleases :
+   * Returns : 1 if $distrelease1 is more recent than $distrelease2, 0 if equal, -1 otherwise
+   * 
+   * @param Distrelease $distrelease1
+   * @param Distrelease $distrelease2
+   */
+  public static function compare(Distrelease $distrelease1, Distrelease $distrelease2)
+  {
+    // TODO : better comparison, because name comparison will not always work
+    if ($distrelease1->getName() > $distrelease2->getName()) return 1;
+    if ($distrelease1->getName() < $distrelease2->getName()) return -1;
+    return 0;
+  }
 } // DistreleasePeer
