@@ -20,7 +20,7 @@ class madbUpdatePackageDesc extends madbBaseTask
     $con->exec($sql);
     
     $stmt = PackagePeer::doSelectStmt(new Criteria());
-    while($rs = $stmt->fetch())
+    foreach ($stmt as $rs)
     {
       $package = new Package();
       $package->hydrate($rs);
