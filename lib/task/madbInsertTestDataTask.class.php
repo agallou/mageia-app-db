@@ -37,6 +37,10 @@ class madbInsertTestDataTask extends madbBaseTask
     }
     $dbCli = new mysqlCliWrapper(dbInfosFactory::getDefault(), $this->getFilesystem());
     $dbCli->executeFile('doc/import_from_sophie_dump.sql');
+    
+    $task = new madbUpdatePackageDesc($this->dispatcher, $this->formatter);
+    $task->run();
+    
     $dbCli->execute("insert into user(name, login) values ('admin', 'admin');");
   }
 }
