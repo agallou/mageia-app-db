@@ -29,7 +29,7 @@ create table rpmlinearized
 
 );
 
-load data local infile './tmp/reduced_file' into table rpmlinearized;
+load data local infile './tmp/reduced_file' into table rpmlinearized character set latin1;
 
 alter table rpmlinearized add index index_filename (filename);
 alter table rpmlinearized add index index_version (version);
