@@ -33,8 +33,6 @@ class madbUpdatePackageDesc extends madbBaseTask
       {
         echo $e->getMessage() . "\n";
       }
-//      $package->clearAllReferences(true);
-//      unset($package);
     }
   }
 }
