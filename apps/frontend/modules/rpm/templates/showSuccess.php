@@ -24,7 +24,7 @@
 
 <h2>Advanced items</h2>
 <ul>
-  <li>Source RPM : <?php echo $rpm->getSrcRpm() ?><span class='todo'>TODO : link to SRC.RPM page.</span></li>
+  <li>Source RPM : <?php //echo $rpm->getSrcRpm() ?><span class='todo'>TODO : link to SRC.RPM page.</span></li>
   <li>Build time : <?php echo $rpm->getBuildtime() ?></li>
   <li>Files : <span class='todo'>TODO : query Sophie2</span></li>
   <li>Provides : <span class='todo'>TODO : query Sophie2</span></li>
