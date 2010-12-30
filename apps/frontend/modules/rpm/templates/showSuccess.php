@@ -42,7 +42,7 @@
   <li>Requires : <span class='todo'>TODO : query Sophie</span></li>
   <li>Obsoletes : <span class='todo'>TODO : query Sophie</span></li>
   <li>Suggests : <span class='todo'>TODO : query Sophie</span></li>
-  <li>installed size : <span class='todo'>TODO : how do we get it ?</span></li>
+  <li>installed size : <span class='todo'>TODO</span></li>
 </ul>
 
 </div>
