@@ -29,7 +29,7 @@ class madbUpdatePackageDesc extends madbBaseTask
       {
         $package->updateSummaryAndDescription();
       }
-      catch (Exception $e)
+      catch (PackageException $e)
       {
         echo $e->getMessage() . "\n";
       }
