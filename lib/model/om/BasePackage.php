@@ -43,6 +43,12 @@ abstract class BasePackage extends BaseObject  implements Persistent {
 	protected $is_application;
 
 	/**
+	 * The value for the is_source field.
+	 * @var        boolean
+	 */
+	protected $is_source;
+
+	/**
 	 * The value for the summary field.
 	 * @var        string
 	 */
@@ -183,6 +189,16 @@ abstract class BasePackage extends BaseObject  implements Persistent {
 	}
 
 	/**
+	 * Get the [is_source] column value.
+	 * 
+	 * @return     boolean
+	 */
+	public function getIsSource()
+	{
+		return $this->is_source;
+	}
+
+	/**
 	 * Get the [summary] column value.
 	 * 
 	 * @return     string
@@ -283,6 +299,26 @@ abstract class BasePackage extends BaseObject  implements Persistent {
 	} // setIsApplication()
 
 	/**
+	 * Set the value of [is_source] column.
+	 * 
+	 * @param      boolean $v new value
+	 * @return     Package The current object (for fluent API support)
+	 */
+	public function setIsSource($v)
+	{
+		if ($v !== null) {
+			$v = (boolean) $v;
+		}
+
+		if ($this->is_source !== $v) {
+			$this->is_source = $v;
+			$this->modifiedColumns[] = PackagePeer::IS_SOURCE;
+		}
+
+		return $this;
+	} // setIsSource()
+
+	/**
 	 * Set the value of [summary] column.
 	 * 
 	 * @param      string $v new value
@@ -358,8 +394,9 @@ abstract class BasePackage extends BaseObject  implements Persistent {
 			$this->name = ($row[$startcol + 1] !== null) ? (string) $row[$startcol + 1] : null;
 			$this->md5_name = ($row[$startcol + 2] !== null) ? (string) $row[$startcol + 2] : null;
 			$this->is_application = ($row[$startcol + 3] !== null) ? (boolean) $row[$startcol + 3] : null;
-			$this->summary = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
-			$this->description = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
+			$this->is_source = ($row[$startcol + 4] !== null) ? (boolean) $row[$startcol + 4] : null;
+			$this->summary = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
+			$this->description = ($row[$startcol + 6] !== null) ? (string) $row[$startcol + 6] : null;
 			$this->resetModified();
 
 			$this->setNew(false);
@@ -369,7 +406,7 @@ abstract class BasePackage extends BaseObject  implements Persistent {
 			}
 
 			// FIXME - using NUM_COLUMNS may be clearer.
-			return $startcol + 6; // 6 = PackagePeer::NUM_COLUMNS - PackagePeer::NUM_LAZY_LOAD_COLUMNS).
+			return $startcol + 7; // 7 = PackagePeer::NUM_COLUMNS - PackagePeer::NUM_LAZY_LOAD_COLUMNS).
 
 		} catch (Exception $e) {
 			throw new PropelException("Error populating Package object", $e);
@@ -845,9 +882,12 @@ abstract class BasePackage extends BaseObject  implements Persistent {
 				return $this->getIsApplication();
 				break;
 			case 4:
-				return $this->getSummary();
+				return $this->getIsSource();
 				break;
 			case 5:
+				return $this->getSummary();
+				break;
+			case 6:
 				return $this->getDescription();
 				break;
 			default:
@@ -875,8 +915,9 @@ abstract class BasePackage extends BaseObject  implements Persistent {
 			$keys[1] => $this->getName(),
 			$keys[2] => $this->getMd5Name(),
 			$keys[3] => $this->getIsApplication(),
-			$keys[4] => $this->getSummary(),
-			$keys[5] => $this->getDescription(),
+			$keys[4] => $this->getIsSource(),
+			$keys[5] => $this->getSummary(),
+			$keys[6] => $this->getDescription(),
 		);
 		return $result;
 	}
@@ -921,9 +962,12 @@ abstract class BasePackage extends BaseObject  implements Persistent {
 				$this->setIsApplication($value);
 				break;
 			case 4:
-				$this->setSummary($value);
+				$this->setIsSource($value);
 				break;
 			case 5:
+				$this->setSummary($value);
+				break;
+			case 6:
 				$this->setDescription($value);
 				break;
 		} // switch()
@@ -954,8 +998,9 @@ abstract class BasePackage extends BaseObject  implements Persistent {
 		if (array_key_exists($keys[1], $arr)) $this->setName($arr[$keys[1]]);
 		if (array_key_exists($keys[2], $arr)) $this->setMd5Name($arr[$keys[2]]);
 		if (array_key_exists($keys[3], $arr)) $this->setIsApplication($arr[$keys[3]]);
-		if (array_key_exists($keys[4], $arr)) $this->setSummary($arr[$keys[4]]);
-		if (array_key_exists($keys[5], $arr)) $this->setDescription($arr[$keys[5]]);
+		if (array_key_exists($keys[4], $arr)) $this->setIsSource($arr[$keys[4]]);
+		if (array_key_exists($keys[5], $arr)) $this->setSummary($arr[$keys[5]]);
+		if (array_key_exists($keys[6], $arr)) $this->setDescription($arr[$keys[6]]);
 	}
 
 	/**
@@ -971,6 +1016,7 @@ abstract class BasePackage extends BaseObject  implements Persistent {
 		if ($this->isColumnModified(PackagePeer::NAME)) $criteria->add(PackagePeer::NAME, $this->name);
 		if ($this->isColumnModified(PackagePeer::MD5_NAME)) $criteria->add(PackagePeer::MD5_NAME, $this->md5_name);
 		if ($this->isColumnModified(PackagePeer::IS_APPLICATION)) $criteria->add(PackagePeer::IS_APPLICATION, $this->is_application);
+		if ($this->isColumnModified(PackagePeer::IS_SOURCE)) $criteria->add(PackagePeer::IS_SOURCE, $this->is_source);
 		if ($this->isColumnModified(PackagePeer::SUMMARY)) $criteria->add(PackagePeer::SUMMARY, $this->summary);
 		if ($this->isColumnModified(PackagePeer::DESCRIPTION)) $criteria->add(PackagePeer::DESCRIPTION, $this->description);
 
@@ -1032,6 +1078,8 @@ abstract class BasePackage extends BaseObject  implements Persistent {
 		$copyObj->setMd5Name($this->md5_name);
 
 		$copyObj->setIsApplication($this->is_application);
+
+		$copyObj->setIsSource($this->is_source);
 
 		$copyObj->setSummary($this->summary);
 
@@ -1467,6 +1515,53 @@ abstract class BasePackage extends BaseObject  implements Persistent {
 
 			if (!isset($this->lastRpmCriteria) || !$this->lastRpmCriteria->equals($criteria)) {
 				$this->collRpms = RpmPeer::doSelectJoinArch($criteria, $con, $join_behavior);
+			}
+		}
+		$this->lastRpmCriteria = $criteria;
+
+		return $this->collRpms;
+	}
+
+
+	/**
+	 * If this collection has already been initialized with
+	 * an identical criteria, it returns the collection.
+	 * Otherwise if this Package is new, it will return
+	 * an empty collection; or if this Package has previously
+	 * been saved, it will retrieve related Rpms from storage.
+	 *
+	 * This method is protected by default in order to keep the public
+	 * api reasonable.  You can provide public methods for those you
+	 * actually need in Package.
+	 */
+	public function getRpmsJoinRpmRelatedBySourceRpmId($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	{
+		if ($criteria === null) {
+			$criteria = new Criteria(PackagePeer::DATABASE_NAME);
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collRpms === null) {
+			if ($this->isNew()) {
+				$this->collRpms = array();
+			} else {
+
+				$criteria->add(RpmPeer::PACKAGE_ID, $this->id);
+
+				$this->collRpms = RpmPeer::doSelectJoinRpmRelatedBySourceRpmId($criteria, $con, $join_behavior);
+			}
+		} else {
+			// the following code is to determine if a new query is
+			// called for.  If the criteria is the same as the last
+			// one, just return the collection.
+
+			$criteria->add(RpmPeer::PACKAGE_ID, $this->id);
+
+			if (!isset($this->lastRpmCriteria) || !$this->lastRpmCriteria->equals($criteria)) {
+				$this->collRpms = RpmPeer::doSelectJoinRpmRelatedBySourceRpmId($criteria, $con, $join_behavior);
 			}
 		}
 		$this->lastRpmCriteria = $criteria;

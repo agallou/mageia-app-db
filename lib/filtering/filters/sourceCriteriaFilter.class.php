@@ -1,17 +1,17 @@
 <?php 
-class applicationCriteriaFilter extends baseCriteriaFilterChoice
+class sourceCriteriaFilter extends baseCriteriaFilterChoice
 {
 
   public function getPerimeter()
   {
-    return filterPerimeters::PACKAGE;
+    return filterPerimeters::RPM;
   }
 
   public function getValues()
   {
     return array(
-      '1' => 'Yes',
-      '0' => 'No',
+      '0' => 'regular packages',
+      '1' => 'source packages',
     );
   }
 
@@ -25,16 +25,15 @@ class applicationCriteriaFilter extends baseCriteriaFilterChoice
    */
   protected function filter(Criteria $criteria, madbContext $context)
   {
+    $value = $this->getValueFromContext($context);
     //TODO liste avec opérandes ????
     //plusieurs fois le même parameterHolder ??? pas de context ???
-    $value = $context->getParameter('application');
-    if (null !== $value)
+    if (count($value))
     {
-      $value = explode(',', $value);
       $criterion = null;
       foreach ($value as $val)
       {
-        $unCriterion = $criteria->getNewCriterion(PackagePeer::IS_APPLICATION, (bool)$val);
+        $unCriterion = $criteria->getNewCriterion(RpmPeer::IS_SOURCE, $val);
         if (is_null($criterion))
         {
           $criterion = $unCriterion;
@@ -51,7 +50,7 @@ class applicationCriteriaFilter extends baseCriteriaFilterChoice
 
   public function getCode()
   {
-    return 'application';
+    return 'source';
   }
 
   /**
@@ -61,7 +60,7 @@ class applicationCriteriaFilter extends baseCriteriaFilterChoice
    */
   public function getName()
   {
-    return 'Type'; //Internationalisation ? outside, allways in english here.
+    return 'Source'; //Internationalisation ? outside, allways in english here.
   }
 
 }

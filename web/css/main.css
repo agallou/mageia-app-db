@@ -220,7 +220,7 @@ div.pager
 .packlist li a
 {
     text-decoration: none;
-    color: black;
+    color: blue;
 }
 
 .packlist li a:hover

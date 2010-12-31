@@ -20,7 +20,7 @@ class madbUpdatePackageDesc extends madbBaseTask
     $con->exec($sql);
     
     $stmt = PackagePeer::doSelectStmt(new Criteria());
-    while($rs = $stmt->fetch())
+    foreach ($stmt as $rs)
     {
       $package = new Package();
       $package->hydrate($rs);
@@ -29,12 +29,10 @@ class madbUpdatePackageDesc extends madbBaseTask
       {
         $package->updateSummaryAndDescription();
       }
-      catch (Exception $e)
+      catch (PackageException $e)
       {
         echo $e->getMessage() . "\n";
       }
-//      $package->clearAllReferences(true);
-//      unset($package);
     }
   }
 }

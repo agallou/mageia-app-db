@@ -61,6 +61,12 @@ abstract class BaseRpm extends BaseObject  implements Persistent {
 	protected $name;
 
 	/**
+	 * The value for the short_name field.
+	 * @var        string
+	 */
+	protected $short_name;
+
+	/**
 	 * The value for the evr field.
 	 * @var        string
 	 */
@@ -97,12 +103,6 @@ abstract class BaseRpm extends BaseObject  implements Persistent {
 	protected $url;
 
 	/**
-	 * The value for the src_rpm field.
-	 * @var        string
-	 */
-	protected $src_rpm;
-
-	/**
 	 * The value for the rpm_pkgid field.
 	 * @var        string
 	 */
@@ -133,6 +133,18 @@ abstract class BaseRpm extends BaseObject  implements Persistent {
 	protected $arch_id;
 
 	/**
+	 * The value for the is_source field.
+	 * @var        boolean
+	 */
+	protected $is_source;
+
+	/**
+	 * The value for the source_rpm_id field.
+	 * @var        int
+	 */
+	protected $source_rpm_id;
+
+	/**
 	 * @var        Package
 	 */
 	protected $aPackage;
@@ -156,6 +168,21 @@ abstract class BaseRpm extends BaseObject  implements Persistent {
 	 * @var        Arch
 	 */
 	protected $aArch;
+
+	/**
+	 * @var        Rpm
+	 */
+	protected $aRpmRelatedBySourceRpmId;
+
+	/**
+	 * @var        array Rpm[] Collection to store aggregation of Rpm objects.
+	 */
+	protected $collRpmsRelatedBySourceRpmId;
+
+	/**
+	 * @var        Criteria The criteria used to select the current contents of collRpmsRelatedBySourceRpmId.
+	 */
+	private $lastRpmRelatedBySourceRpmIdCriteria = null;
 
 	/**
 	 * Flag to prevent endless save loop, if this object is referenced
@@ -246,6 +273,16 @@ abstract class BaseRpm extends BaseObject  implements Persistent {
 	}
 
 	/**
+	 * Get the [short_name] column value.
+	 * 
+	 * @return     string
+	 */
+	public function getShortName()
+	{
+		return $this->short_name;
+	}
+
+	/**
 	 * Get the [evr] column value.
 	 * 
 	 * @return     string
@@ -303,16 +340,6 @@ abstract class BaseRpm extends BaseObject  implements Persistent {
 	public function getUrl()
 	{
 		return $this->url;
-	}
-
-	/**
-	 * Get the [src_rpm] column value.
-	 * 
-	 * @return     string
-	 */
-	public function getSrcRpm()
-	{
-		return $this->src_rpm;
 	}
 
 	/**
@@ -391,6 +418,26 @@ abstract class BaseRpm extends BaseObject  implements Persistent {
 	public function getArchId()
 	{
 		return $this->arch_id;
+	}
+
+	/**
+	 * Get the [is_source] column value.
+	 * 
+	 * @return     boolean
+	 */
+	public function getIsSource()
+	{
+		return $this->is_source;
+	}
+
+	/**
+	 * Get the [source_rpm_id] column value.
+	 * 
+	 * @return     int
+	 */
+	public function getSourceRpmId()
+	{
+		return $this->source_rpm_id;
 	}
 
 	/**
@@ -550,6 +597,26 @@ abstract class BaseRpm extends BaseObject  implements Persistent {
 	} // setName()
 
 	/**
+	 * Set the value of [short_name] column.
+	 * 
+	 * @param      string $v new value
+	 * @return     Rpm The current object (for fluent API support)
+	 */
+	public function setShortName($v)
+	{
+		if ($v !== null) {
+			$v = (string) $v;
+		}
+
+		if ($this->short_name !== $v) {
+			$this->short_name = $v;
+			$this->modifiedColumns[] = RpmPeer::SHORT_NAME;
+		}
+
+		return $this;
+	} // setShortName()
+
+	/**
 	 * Set the value of [evr] column.
 	 * 
 	 * @param      string $v new value
@@ -668,26 +735,6 @@ abstract class BaseRpm extends BaseObject  implements Persistent {
 
 		return $this;
 	} // setUrl()
-
-	/**
-	 * Set the value of [src_rpm] column.
-	 * 
-	 * @param      string $v new value
-	 * @return     Rpm The current object (for fluent API support)
-	 */
-	public function setSrcRpm($v)
-	{
-		if ($v !== null) {
-			$v = (string) $v;
-		}
-
-		if ($this->src_rpm !== $v) {
-			$this->src_rpm = $v;
-			$this->modifiedColumns[] = RpmPeer::SRC_RPM;
-		}
-
-		return $this;
-	} // setSrcRpm()
 
 	/**
 	 * Set the value of [rpm_pkgid] column.
@@ -823,6 +870,50 @@ abstract class BaseRpm extends BaseObject  implements Persistent {
 	} // setArchId()
 
 	/**
+	 * Set the value of [is_source] column.
+	 * 
+	 * @param      boolean $v new value
+	 * @return     Rpm The current object (for fluent API support)
+	 */
+	public function setIsSource($v)
+	{
+		if ($v !== null) {
+			$v = (boolean) $v;
+		}
+
+		if ($this->is_source !== $v) {
+			$this->is_source = $v;
+			$this->modifiedColumns[] = RpmPeer::IS_SOURCE;
+		}
+
+		return $this;
+	} // setIsSource()
+
+	/**
+	 * Set the value of [source_rpm_id] column.
+	 * 
+	 * @param      int $v new value
+	 * @return     Rpm The current object (for fluent API support)
+	 */
+	public function setSourceRpmId($v)
+	{
+		if ($v !== null) {
+			$v = (int) $v;
+		}
+
+		if ($this->source_rpm_id !== $v) {
+			$this->source_rpm_id = $v;
+			$this->modifiedColumns[] = RpmPeer::SOURCE_RPM_ID;
+		}
+
+		if ($this->aRpmRelatedBySourceRpmId !== null && $this->aRpmRelatedBySourceRpmId->getId() !== $v) {
+			$this->aRpmRelatedBySourceRpmId = null;
+		}
+
+		return $this;
+	} // setSourceRpmId()
+
+	/**
 	 * Indicates whether the columns in this object are only set to default values.
 	 *
 	 * This method can be used in conjunction with isModified() to indicate whether an object is both
@@ -861,18 +952,20 @@ abstract class BaseRpm extends BaseObject  implements Persistent {
 			$this->rpm_group_id = ($row[$startcol + 4] !== null) ? (int) $row[$startcol + 4] : null;
 			$this->licence = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
 			$this->name = ($row[$startcol + 6] !== null) ? (string) $row[$startcol + 6] : null;
-			$this->evr = ($row[$startcol + 7] !== null) ? (string) $row[$startcol + 7] : null;
-			$this->version = ($row[$startcol + 8] !== null) ? (string) $row[$startcol + 8] : null;
-			$this->release = ($row[$startcol + 9] !== null) ? (string) $row[$startcol + 9] : null;
-			$this->summary = ($row[$startcol + 10] !== null) ? (string) $row[$startcol + 10] : null;
-			$this->description = ($row[$startcol + 11] !== null) ? (string) $row[$startcol + 11] : null;
-			$this->url = ($row[$startcol + 12] !== null) ? (string) $row[$startcol + 12] : null;
-			$this->src_rpm = ($row[$startcol + 13] !== null) ? (string) $row[$startcol + 13] : null;
+			$this->short_name = ($row[$startcol + 7] !== null) ? (string) $row[$startcol + 7] : null;
+			$this->evr = ($row[$startcol + 8] !== null) ? (string) $row[$startcol + 8] : null;
+			$this->version = ($row[$startcol + 9] !== null) ? (string) $row[$startcol + 9] : null;
+			$this->release = ($row[$startcol + 10] !== null) ? (string) $row[$startcol + 10] : null;
+			$this->summary = ($row[$startcol + 11] !== null) ? (string) $row[$startcol + 11] : null;
+			$this->description = ($row[$startcol + 12] !== null) ? (string) $row[$startcol + 12] : null;
+			$this->url = ($row[$startcol + 13] !== null) ? (string) $row[$startcol + 13] : null;
 			$this->rpm_pkgid = ($row[$startcol + 14] !== null) ? (string) $row[$startcol + 14] : null;
 			$this->build_time = ($row[$startcol + 15] !== null) ? (string) $row[$startcol + 15] : null;
 			$this->size = ($row[$startcol + 16] !== null) ? (int) $row[$startcol + 16] : null;
 			$this->realarch = ($row[$startcol + 17] !== null) ? (string) $row[$startcol + 17] : null;
 			$this->arch_id = ($row[$startcol + 18] !== null) ? (int) $row[$startcol + 18] : null;
+			$this->is_source = ($row[$startcol + 19] !== null) ? (boolean) $row[$startcol + 19] : null;
+			$this->source_rpm_id = ($row[$startcol + 20] !== null) ? (int) $row[$startcol + 20] : null;
 			$this->resetModified();
 
 			$this->setNew(false);
@@ -882,7 +975,7 @@ abstract class BaseRpm extends BaseObject  implements Persistent {
 			}
 
 			// FIXME - using NUM_COLUMNS may be clearer.
-			return $startcol + 19; // 19 = RpmPeer::NUM_COLUMNS - RpmPeer::NUM_LAZY_LOAD_COLUMNS).
+			return $startcol + 21; // 21 = RpmPeer::NUM_COLUMNS - RpmPeer::NUM_LAZY_LOAD_COLUMNS).
 
 		} catch (Exception $e) {
 			throw new PropelException("Error populating Rpm object", $e);
@@ -919,6 +1012,9 @@ abstract class BaseRpm extends BaseObject  implements Persistent {
 		}
 		if ($this->aArch !== null && $this->arch_id !== $this->aArch->getId()) {
 			$this->aArch = null;
+		}
+		if ($this->aRpmRelatedBySourceRpmId !== null && $this->source_rpm_id !== $this->aRpmRelatedBySourceRpmId->getId()) {
+			$this->aRpmRelatedBySourceRpmId = null;
 		}
 	} // ensureConsistency
 
@@ -964,6 +1060,10 @@ abstract class BaseRpm extends BaseObject  implements Persistent {
 			$this->aMedia = null;
 			$this->aRpmGroup = null;
 			$this->aArch = null;
+			$this->aRpmRelatedBySourceRpmId = null;
+			$this->collRpmsRelatedBySourceRpmId = null;
+			$this->lastRpmRelatedBySourceRpmIdCriteria = null;
+
 		} // if (deep)
 	}
 
@@ -1146,6 +1246,13 @@ abstract class BaseRpm extends BaseObject  implements Persistent {
 				$this->setArch($this->aArch);
 			}
 
+			if ($this->aRpmRelatedBySourceRpmId !== null) {
+				if ($this->aRpmRelatedBySourceRpmId->isModified() || $this->aRpmRelatedBySourceRpmId->isNew()) {
+					$affectedRows += $this->aRpmRelatedBySourceRpmId->save($con);
+				}
+				$this->setRpmRelatedBySourceRpmId($this->aRpmRelatedBySourceRpmId);
+			}
+
 			if ($this->isNew() ) {
 				$this->modifiedColumns[] = RpmPeer::ID;
 			}
@@ -1166,6 +1273,14 @@ abstract class BaseRpm extends BaseObject  implements Persistent {
 				}
 
 				$this->resetModified(); // [HL] After being saved an object is no longer 'modified'
+			}
+
+			if ($this->collRpmsRelatedBySourceRpmId !== null) {
+				foreach ($this->collRpmsRelatedBySourceRpmId as $referrerFK) {
+					if (!$referrerFK->isDeleted()) {
+						$affectedRows += $referrerFK->save($con);
+					}
+				}
 			}
 
 			$this->alreadyInSave = false;
@@ -1269,11 +1384,25 @@ abstract class BaseRpm extends BaseObject  implements Persistent {
 				}
 			}
 
+			if ($this->aRpmRelatedBySourceRpmId !== null) {
+				if (!$this->aRpmRelatedBySourceRpmId->validate($columns)) {
+					$failureMap = array_merge($failureMap, $this->aRpmRelatedBySourceRpmId->getValidationFailures());
+				}
+			}
+
 
 			if (($retval = RpmPeer::doValidate($this, $columns)) !== true) {
 				$failureMap = array_merge($failureMap, $retval);
 			}
 
+
+				if ($this->collRpmsRelatedBySourceRpmId !== null) {
+					foreach ($this->collRpmsRelatedBySourceRpmId as $referrerFK) {
+						if (!$referrerFK->validate($columns)) {
+							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
+						}
+					}
+				}
 
 
 			$this->alreadyInValidation = false;
@@ -1330,25 +1459,25 @@ abstract class BaseRpm extends BaseObject  implements Persistent {
 				return $this->getName();
 				break;
 			case 7:
-				return $this->getEvr();
+				return $this->getShortName();
 				break;
 			case 8:
-				return $this->getVersion();
+				return $this->getEvr();
 				break;
 			case 9:
-				return $this->getRelease();
+				return $this->getVersion();
 				break;
 			case 10:
-				return $this->getSummary();
+				return $this->getRelease();
 				break;
 			case 11:
-				return $this->getDescription();
+				return $this->getSummary();
 				break;
 			case 12:
-				return $this->getUrl();
+				return $this->getDescription();
 				break;
 			case 13:
-				return $this->getSrcRpm();
+				return $this->getUrl();
 				break;
 			case 14:
 				return $this->getRpmPkgid();
@@ -1364,6 +1493,12 @@ abstract class BaseRpm extends BaseObject  implements Persistent {
 				break;
 			case 18:
 				return $this->getArchId();
+				break;
+			case 19:
+				return $this->getIsSource();
+				break;
+			case 20:
+				return $this->getSourceRpmId();
 				break;
 			default:
 				return null;
@@ -1393,18 +1528,20 @@ abstract class BaseRpm extends BaseObject  implements Persistent {
 			$keys[4] => $this->getRpmGroupId(),
 			$keys[5] => $this->getLicence(),
 			$keys[6] => $this->getName(),
-			$keys[7] => $this->getEvr(),
-			$keys[8] => $this->getVersion(),
-			$keys[9] => $this->getRelease(),
-			$keys[10] => $this->getSummary(),
-			$keys[11] => $this->getDescription(),
-			$keys[12] => $this->getUrl(),
-			$keys[13] => $this->getSrcRpm(),
+			$keys[7] => $this->getShortName(),
+			$keys[8] => $this->getEvr(),
+			$keys[9] => $this->getVersion(),
+			$keys[10] => $this->getRelease(),
+			$keys[11] => $this->getSummary(),
+			$keys[12] => $this->getDescription(),
+			$keys[13] => $this->getUrl(),
 			$keys[14] => $this->getRpmPkgid(),
 			$keys[15] => $this->getBuildTime(),
 			$keys[16] => $this->getSize(),
 			$keys[17] => $this->getRealarch(),
 			$keys[18] => $this->getArchId(),
+			$keys[19] => $this->getIsSource(),
+			$keys[20] => $this->getSourceRpmId(),
 		);
 		return $result;
 	}
@@ -1458,25 +1595,25 @@ abstract class BaseRpm extends BaseObject  implements Persistent {
 				$this->setName($value);
 				break;
 			case 7:
-				$this->setEvr($value);
+				$this->setShortName($value);
 				break;
 			case 8:
-				$this->setVersion($value);
+				$this->setEvr($value);
 				break;
 			case 9:
-				$this->setRelease($value);
+				$this->setVersion($value);
 				break;
 			case 10:
-				$this->setSummary($value);
+				$this->setRelease($value);
 				break;
 			case 11:
-				$this->setDescription($value);
+				$this->setSummary($value);
 				break;
 			case 12:
-				$this->setUrl($value);
+				$this->setDescription($value);
 				break;
 			case 13:
-				$this->setSrcRpm($value);
+				$this->setUrl($value);
 				break;
 			case 14:
 				$this->setRpmPkgid($value);
@@ -1492,6 +1629,12 @@ abstract class BaseRpm extends BaseObject  implements Persistent {
 				break;
 			case 18:
 				$this->setArchId($value);
+				break;
+			case 19:
+				$this->setIsSource($value);
+				break;
+			case 20:
+				$this->setSourceRpmId($value);
 				break;
 		} // switch()
 	}
@@ -1524,18 +1667,20 @@ abstract class BaseRpm extends BaseObject  implements Persistent {
 		if (array_key_exists($keys[4], $arr)) $this->setRpmGroupId($arr[$keys[4]]);
 		if (array_key_exists($keys[5], $arr)) $this->setLicence($arr[$keys[5]]);
 		if (array_key_exists($keys[6], $arr)) $this->setName($arr[$keys[6]]);
-		if (array_key_exists($keys[7], $arr)) $this->setEvr($arr[$keys[7]]);
-		if (array_key_exists($keys[8], $arr)) $this->setVersion($arr[$keys[8]]);
-		if (array_key_exists($keys[9], $arr)) $this->setRelease($arr[$keys[9]]);
-		if (array_key_exists($keys[10], $arr)) $this->setSummary($arr[$keys[10]]);
-		if (array_key_exists($keys[11], $arr)) $this->setDescription($arr[$keys[11]]);
-		if (array_key_exists($keys[12], $arr)) $this->setUrl($arr[$keys[12]]);
-		if (array_key_exists($keys[13], $arr)) $this->setSrcRpm($arr[$keys[13]]);
+		if (array_key_exists($keys[7], $arr)) $this->setShortName($arr[$keys[7]]);
+		if (array_key_exists($keys[8], $arr)) $this->setEvr($arr[$keys[8]]);
+		if (array_key_exists($keys[9], $arr)) $this->setVersion($arr[$keys[9]]);
+		if (array_key_exists($keys[10], $arr)) $this->setRelease($arr[$keys[10]]);
+		if (array_key_exists($keys[11], $arr)) $this->setSummary($arr[$keys[11]]);
+		if (array_key_exists($keys[12], $arr)) $this->setDescription($arr[$keys[12]]);
+		if (array_key_exists($keys[13], $arr)) $this->setUrl($arr[$keys[13]]);
 		if (array_key_exists($keys[14], $arr)) $this->setRpmPkgid($arr[$keys[14]]);
 		if (array_key_exists($keys[15], $arr)) $this->setBuildTime($arr[$keys[15]]);
 		if (array_key_exists($keys[16], $arr)) $this->setSize($arr[$keys[16]]);
 		if (array_key_exists($keys[17], $arr)) $this->setRealarch($arr[$keys[17]]);
 		if (array_key_exists($keys[18], $arr)) $this->setArchId($arr[$keys[18]]);
+		if (array_key_exists($keys[19], $arr)) $this->setIsSource($arr[$keys[19]]);
+		if (array_key_exists($keys[20], $arr)) $this->setSourceRpmId($arr[$keys[20]]);
 	}
 
 	/**
@@ -1554,18 +1699,20 @@ abstract class BaseRpm extends BaseObject  implements Persistent {
 		if ($this->isColumnModified(RpmPeer::RPM_GROUP_ID)) $criteria->add(RpmPeer::RPM_GROUP_ID, $this->rpm_group_id);
 		if ($this->isColumnModified(RpmPeer::LICENCE)) $criteria->add(RpmPeer::LICENCE, $this->licence);
 		if ($this->isColumnModified(RpmPeer::NAME)) $criteria->add(RpmPeer::NAME, $this->name);
+		if ($this->isColumnModified(RpmPeer::SHORT_NAME)) $criteria->add(RpmPeer::SHORT_NAME, $this->short_name);
 		if ($this->isColumnModified(RpmPeer::EVR)) $criteria->add(RpmPeer::EVR, $this->evr);
 		if ($this->isColumnModified(RpmPeer::VERSION)) $criteria->add(RpmPeer::VERSION, $this->version);
 		if ($this->isColumnModified(RpmPeer::RELEASE)) $criteria->add(RpmPeer::RELEASE, $this->release);
 		if ($this->isColumnModified(RpmPeer::SUMMARY)) $criteria->add(RpmPeer::SUMMARY, $this->summary);
 		if ($this->isColumnModified(RpmPeer::DESCRIPTION)) $criteria->add(RpmPeer::DESCRIPTION, $this->description);
 		if ($this->isColumnModified(RpmPeer::URL)) $criteria->add(RpmPeer::URL, $this->url);
-		if ($this->isColumnModified(RpmPeer::SRC_RPM)) $criteria->add(RpmPeer::SRC_RPM, $this->src_rpm);
 		if ($this->isColumnModified(RpmPeer::RPM_PKGID)) $criteria->add(RpmPeer::RPM_PKGID, $this->rpm_pkgid);
 		if ($this->isColumnModified(RpmPeer::BUILD_TIME)) $criteria->add(RpmPeer::BUILD_TIME, $this->build_time);
 		if ($this->isColumnModified(RpmPeer::SIZE)) $criteria->add(RpmPeer::SIZE, $this->size);
 		if ($this->isColumnModified(RpmPeer::REALARCH)) $criteria->add(RpmPeer::REALARCH, $this->realarch);
 		if ($this->isColumnModified(RpmPeer::ARCH_ID)) $criteria->add(RpmPeer::ARCH_ID, $this->arch_id);
+		if ($this->isColumnModified(RpmPeer::IS_SOURCE)) $criteria->add(RpmPeer::IS_SOURCE, $this->is_source);
+		if ($this->isColumnModified(RpmPeer::SOURCE_RPM_ID)) $criteria->add(RpmPeer::SOURCE_RPM_ID, $this->source_rpm_id);
 
 		return $criteria;
 	}
@@ -1632,6 +1779,8 @@ abstract class BaseRpm extends BaseObject  implements Persistent {
 
 		$copyObj->setName($this->name);
 
+		$copyObj->setShortName($this->short_name);
+
 		$copyObj->setEvr($this->evr);
 
 		$copyObj->setVersion($this->version);
@@ -1644,8 +1793,6 @@ abstract class BaseRpm extends BaseObject  implements Persistent {
 
 		$copyObj->setUrl($this->url);
 
-		$copyObj->setSrcRpm($this->src_rpm);
-
 		$copyObj->setRpmPkgid($this->rpm_pkgid);
 
 		$copyObj->setBuildTime($this->build_time);
@@ -1655,6 +1802,24 @@ abstract class BaseRpm extends BaseObject  implements Persistent {
 		$copyObj->setRealarch($this->realarch);
 
 		$copyObj->setArchId($this->arch_id);
+
+		$copyObj->setIsSource($this->is_source);
+
+		$copyObj->setSourceRpmId($this->source_rpm_id);
+
+
+		if ($deepCopy) {
+			// important: temporarily setNew(false) because this affects the behavior of
+			// the getter/setter methods for fkey referrer objects.
+			$copyObj->setNew(false);
+
+			foreach ($this->getRpmsRelatedBySourceRpmId() as $relObj) {
+				if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+					$copyObj->addRpmRelatedBySourceRpmId($relObj->copy($deepCopy));
+				}
+			}
+
+		} // if ($deepCopy)
 
 
 		$copyObj->setNew(true);
@@ -1947,6 +2112,444 @@ abstract class BaseRpm extends BaseObject  implements Persistent {
 	}
 
 	/**
+	 * Declares an association between this object and a Rpm object.
+	 *
+	 * @param      Rpm $v
+	 * @return     Rpm The current object (for fluent API support)
+	 * @throws     PropelException
+	 */
+	public function setRpmRelatedBySourceRpmId(Rpm $v = null)
+	{
+		if ($v === null) {
+			$this->setSourceRpmId(NULL);
+		} else {
+			$this->setSourceRpmId($v->getId());
+		}
+
+		$this->aRpmRelatedBySourceRpmId = $v;
+
+		// Add binding for other direction of this n:n relationship.
+		// If this object has already been added to the Rpm object, it will not be re-added.
+		if ($v !== null) {
+			$v->addRpmRelatedBySourceRpmId($this);
+		}
+
+		return $this;
+	}
+
+
+	/**
+	 * Get the associated Rpm object
+	 *
+	 * @param      PropelPDO Optional Connection object.
+	 * @return     Rpm The associated Rpm object.
+	 * @throws     PropelException
+	 */
+	public function getRpmRelatedBySourceRpmId(PropelPDO $con = null)
+	{
+		if ($this->aRpmRelatedBySourceRpmId === null && ($this->source_rpm_id !== null)) {
+			$this->aRpmRelatedBySourceRpmId = RpmPeer::retrieveByPk($this->source_rpm_id);
+			/* The following can be used additionally to
+			   guarantee the related object contains a reference
+			   to this object.  This level of coupling may, however, be
+			   undesirable since it could result in an only partially populated collection
+			   in the referenced object.
+			   $this->aRpmRelatedBySourceRpmId->addRpmsRelatedBySourceRpmId($this);
+			 */
+		}
+		return $this->aRpmRelatedBySourceRpmId;
+	}
+
+	/**
+	 * Clears out the collRpmsRelatedBySourceRpmId collection (array).
+	 *
+	 * This does not modify the database; however, it will remove any associated objects, causing
+	 * them to be refetched by subsequent calls to accessor method.
+	 *
+	 * @return     void
+	 * @see        addRpmsRelatedBySourceRpmId()
+	 */
+	public function clearRpmsRelatedBySourceRpmId()
+	{
+		$this->collRpmsRelatedBySourceRpmId = null; // important to set this to NULL since that means it is uninitialized
+	}
+
+	/**
+	 * Initializes the collRpmsRelatedBySourceRpmId collection (array).
+	 *
+	 * By default this just sets the collRpmsRelatedBySourceRpmId collection to an empty array (like clearcollRpmsRelatedBySourceRpmId());
+	 * however, you may wish to override this method in your stub class to provide setting appropriate
+	 * to your application -- for example, setting the initial array to the values stored in database.
+	 *
+	 * @return     void
+	 */
+	public function initRpmsRelatedBySourceRpmId()
+	{
+		$this->collRpmsRelatedBySourceRpmId = array();
+	}
+
+	/**
+	 * Gets an array of Rpm objects which contain a foreign key that references this object.
+	 *
+	 * If this collection has already been initialized with an identical Criteria, it returns the collection.
+	 * Otherwise if this Rpm has previously been saved, it will retrieve
+	 * related RpmsRelatedBySourceRpmId from storage. If this Rpm is new, it will return
+	 * an empty collection or the current collection, the criteria is ignored on a new object.
+	 *
+	 * @param      PropelPDO $con
+	 * @param      Criteria $criteria
+	 * @return     array Rpm[]
+	 * @throws     PropelException
+	 */
+	public function getRpmsRelatedBySourceRpmId($criteria = null, PropelPDO $con = null)
+	{
+		if ($criteria === null) {
+			$criteria = new Criteria(RpmPeer::DATABASE_NAME);
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collRpmsRelatedBySourceRpmId === null) {
+			if ($this->isNew()) {
+			   $this->collRpmsRelatedBySourceRpmId = array();
+			} else {
+
+				$criteria->add(RpmPeer::SOURCE_RPM_ID, $this->id);
+
+				RpmPeer::addSelectColumns($criteria);
+				$this->collRpmsRelatedBySourceRpmId = RpmPeer::doSelect($criteria, $con);
+			}
+		} else {
+			// criteria has no effect for a new object
+			if (!$this->isNew()) {
+				// the following code is to determine if a new query is
+				// called for.  If the criteria is the same as the last
+				// one, just return the collection.
+
+
+				$criteria->add(RpmPeer::SOURCE_RPM_ID, $this->id);
+
+				RpmPeer::addSelectColumns($criteria);
+				if (!isset($this->lastRpmRelatedBySourceRpmIdCriteria) || !$this->lastRpmRelatedBySourceRpmIdCriteria->equals($criteria)) {
+					$this->collRpmsRelatedBySourceRpmId = RpmPeer::doSelect($criteria, $con);
+				}
+			}
+		}
+		$this->lastRpmRelatedBySourceRpmIdCriteria = $criteria;
+		return $this->collRpmsRelatedBySourceRpmId;
+	}
+
+	/**
+	 * Returns the number of related Rpm objects.
+	 *
+	 * @param      Criteria $criteria
+	 * @param      boolean $distinct
+	 * @param      PropelPDO $con
+	 * @return     int Count of related Rpm objects.
+	 * @throws     PropelException
+	 */
+	public function countRpmsRelatedBySourceRpmId(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+	{
+		if ($criteria === null) {
+			$criteria = new Criteria(RpmPeer::DATABASE_NAME);
+		} else {
+			$criteria = clone $criteria;
+		}
+
+		if ($distinct) {
+			$criteria->setDistinct();
+		}
+
+		$count = null;
+
+		if ($this->collRpmsRelatedBySourceRpmId === null) {
+			if ($this->isNew()) {
+				$count = 0;
+			} else {
+
+				$criteria->add(RpmPeer::SOURCE_RPM_ID, $this->id);
+
+				$count = RpmPeer::doCount($criteria, false, $con);
+			}
+		} else {
+			// criteria has no effect for a new object
+			if (!$this->isNew()) {
+				// the following code is to determine if a new query is
+				// called for.  If the criteria is the same as the last
+				// one, just return count of the collection.
+
+
+				$criteria->add(RpmPeer::SOURCE_RPM_ID, $this->id);
+
+				if (!isset($this->lastRpmRelatedBySourceRpmIdCriteria) || !$this->lastRpmRelatedBySourceRpmIdCriteria->equals($criteria)) {
+					$count = RpmPeer::doCount($criteria, false, $con);
+				} else {
+					$count = count($this->collRpmsRelatedBySourceRpmId);
+				}
+			} else {
+				$count = count($this->collRpmsRelatedBySourceRpmId);
+			}
+		}
+		return $count;
+	}
+
+	/**
+	 * Method called to associate a Rpm object to this object
+	 * through the Rpm foreign key attribute.
+	 *
+	 * @param      Rpm $l Rpm
+	 * @return     void
+	 * @throws     PropelException
+	 */
+	public function addRpmRelatedBySourceRpmId(Rpm $l)
+	{
+		if ($this->collRpmsRelatedBySourceRpmId === null) {
+			$this->initRpmsRelatedBySourceRpmId();
+		}
+		if (!in_array($l, $this->collRpmsRelatedBySourceRpmId, true)) { // only add it if the **same** object is not already associated
+			array_push($this->collRpmsRelatedBySourceRpmId, $l);
+			$l->setRpmRelatedBySourceRpmId($this);
+		}
+	}
+
+
+	/**
+	 * If this collection has already been initialized with
+	 * an identical criteria, it returns the collection.
+	 * Otherwise if this Rpm is new, it will return
+	 * an empty collection; or if this Rpm has previously
+	 * been saved, it will retrieve related RpmsRelatedBySourceRpmId from storage.
+	 *
+	 * This method is protected by default in order to keep the public
+	 * api reasonable.  You can provide public methods for those you
+	 * actually need in Rpm.
+	 */
+	public function getRpmsRelatedBySourceRpmIdJoinPackage($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	{
+		if ($criteria === null) {
+			$criteria = new Criteria(RpmPeer::DATABASE_NAME);
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collRpmsRelatedBySourceRpmId === null) {
+			if ($this->isNew()) {
+				$this->collRpmsRelatedBySourceRpmId = array();
+			} else {
+
+				$criteria->add(RpmPeer::SOURCE_RPM_ID, $this->id);
+
+				$this->collRpmsRelatedBySourceRpmId = RpmPeer::doSelectJoinPackage($criteria, $con, $join_behavior);
+			}
+		} else {
+			// the following code is to determine if a new query is
+			// called for.  If the criteria is the same as the last
+			// one, just return the collection.
+
+			$criteria->add(RpmPeer::SOURCE_RPM_ID, $this->id);
+
+			if (!isset($this->lastRpmRelatedBySourceRpmIdCriteria) || !$this->lastRpmRelatedBySourceRpmIdCriteria->equals($criteria)) {
+				$this->collRpmsRelatedBySourceRpmId = RpmPeer::doSelectJoinPackage($criteria, $con, $join_behavior);
+			}
+		}
+		$this->lastRpmRelatedBySourceRpmIdCriteria = $criteria;
+
+		return $this->collRpmsRelatedBySourceRpmId;
+	}
+
+
+	/**
+	 * If this collection has already been initialized with
+	 * an identical criteria, it returns the collection.
+	 * Otherwise if this Rpm is new, it will return
+	 * an empty collection; or if this Rpm has previously
+	 * been saved, it will retrieve related RpmsRelatedBySourceRpmId from storage.
+	 *
+	 * This method is protected by default in order to keep the public
+	 * api reasonable.  You can provide public methods for those you
+	 * actually need in Rpm.
+	 */
+	public function getRpmsRelatedBySourceRpmIdJoinDistrelease($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	{
+		if ($criteria === null) {
+			$criteria = new Criteria(RpmPeer::DATABASE_NAME);
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collRpmsRelatedBySourceRpmId === null) {
+			if ($this->isNew()) {
+				$this->collRpmsRelatedBySourceRpmId = array();
+			} else {
+
+				$criteria->add(RpmPeer::SOURCE_RPM_ID, $this->id);
+
+				$this->collRpmsRelatedBySourceRpmId = RpmPeer::doSelectJoinDistrelease($criteria, $con, $join_behavior);
+			}
+		} else {
+			// the following code is to determine if a new query is
+			// called for.  If the criteria is the same as the last
+			// one, just return the collection.
+
+			$criteria->add(RpmPeer::SOURCE_RPM_ID, $this->id);
+
+			if (!isset($this->lastRpmRelatedBySourceRpmIdCriteria) || !$this->lastRpmRelatedBySourceRpmIdCriteria->equals($criteria)) {
+				$this->collRpmsRelatedBySourceRpmId = RpmPeer::doSelectJoinDistrelease($criteria, $con, $join_behavior);
+			}
+		}
+		$this->lastRpmRelatedBySourceRpmIdCriteria = $criteria;
+
+		return $this->collRpmsRelatedBySourceRpmId;
+	}
+
+
+	/**
+	 * If this collection has already been initialized with
+	 * an identical criteria, it returns the collection.
+	 * Otherwise if this Rpm is new, it will return
+	 * an empty collection; or if this Rpm has previously
+	 * been saved, it will retrieve related RpmsRelatedBySourceRpmId from storage.
+	 *
+	 * This method is protected by default in order to keep the public
+	 * api reasonable.  You can provide public methods for those you
+	 * actually need in Rpm.
+	 */
+	public function getRpmsRelatedBySourceRpmIdJoinMedia($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	{
+		if ($criteria === null) {
+			$criteria = new Criteria(RpmPeer::DATABASE_NAME);
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collRpmsRelatedBySourceRpmId === null) {
+			if ($this->isNew()) {
+				$this->collRpmsRelatedBySourceRpmId = array();
+			} else {
+
+				$criteria->add(RpmPeer::SOURCE_RPM_ID, $this->id);
+
+				$this->collRpmsRelatedBySourceRpmId = RpmPeer::doSelectJoinMedia($criteria, $con, $join_behavior);
+			}
+		} else {
+			// the following code is to determine if a new query is
+			// called for.  If the criteria is the same as the last
+			// one, just return the collection.
+
+			$criteria->add(RpmPeer::SOURCE_RPM_ID, $this->id);
+
+			if (!isset($this->lastRpmRelatedBySourceRpmIdCriteria) || !$this->lastRpmRelatedBySourceRpmIdCriteria->equals($criteria)) {
+				$this->collRpmsRelatedBySourceRpmId = RpmPeer::doSelectJoinMedia($criteria, $con, $join_behavior);
+			}
+		}
+		$this->lastRpmRelatedBySourceRpmIdCriteria = $criteria;
+
+		return $this->collRpmsRelatedBySourceRpmId;
+	}
+
+
+	/**
+	 * If this collection has already been initialized with
+	 * an identical criteria, it returns the collection.
+	 * Otherwise if this Rpm is new, it will return
+	 * an empty collection; or if this Rpm has previously
+	 * been saved, it will retrieve related RpmsRelatedBySourceRpmId from storage.
+	 *
+	 * This method is protected by default in order to keep the public
+	 * api reasonable.  You can provide public methods for those you
+	 * actually need in Rpm.
+	 */
+	public function getRpmsRelatedBySourceRpmIdJoinRpmGroup($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	{
+		if ($criteria === null) {
+			$criteria = new Criteria(RpmPeer::DATABASE_NAME);
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collRpmsRelatedBySourceRpmId === null) {
+			if ($this->isNew()) {
+				$this->collRpmsRelatedBySourceRpmId = array();
+			} else {
+
+				$criteria->add(RpmPeer::SOURCE_RPM_ID, $this->id);
+
+				$this->collRpmsRelatedBySourceRpmId = RpmPeer::doSelectJoinRpmGroup($criteria, $con, $join_behavior);
+			}
+		} else {
+			// the following code is to determine if a new query is
+			// called for.  If the criteria is the same as the last
+			// one, just return the collection.
+
+			$criteria->add(RpmPeer::SOURCE_RPM_ID, $this->id);
+
+			if (!isset($this->lastRpmRelatedBySourceRpmIdCriteria) || !$this->lastRpmRelatedBySourceRpmIdCriteria->equals($criteria)) {
+				$this->collRpmsRelatedBySourceRpmId = RpmPeer::doSelectJoinRpmGroup($criteria, $con, $join_behavior);
+			}
+		}
+		$this->lastRpmRelatedBySourceRpmIdCriteria = $criteria;
+
+		return $this->collRpmsRelatedBySourceRpmId;
+	}
+
+
+	/**
+	 * If this collection has already been initialized with
+	 * an identical criteria, it returns the collection.
+	 * Otherwise if this Rpm is new, it will return
+	 * an empty collection; or if this Rpm has previously
+	 * been saved, it will retrieve related RpmsRelatedBySourceRpmId from storage.
+	 *
+	 * This method is protected by default in order to keep the public
+	 * api reasonable.  You can provide public methods for those you
+	 * actually need in Rpm.
+	 */
+	public function getRpmsRelatedBySourceRpmIdJoinArch($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	{
+		if ($criteria === null) {
+			$criteria = new Criteria(RpmPeer::DATABASE_NAME);
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collRpmsRelatedBySourceRpmId === null) {
+			if ($this->isNew()) {
+				$this->collRpmsRelatedBySourceRpmId = array();
+			} else {
+
+				$criteria->add(RpmPeer::SOURCE_RPM_ID, $this->id);
+
+				$this->collRpmsRelatedBySourceRpmId = RpmPeer::doSelectJoinArch($criteria, $con, $join_behavior);
+			}
+		} else {
+			// the following code is to determine if a new query is
+			// called for.  If the criteria is the same as the last
+			// one, just return the collection.
+
+			$criteria->add(RpmPeer::SOURCE_RPM_ID, $this->id);
+
+			if (!isset($this->lastRpmRelatedBySourceRpmIdCriteria) || !$this->lastRpmRelatedBySourceRpmIdCriteria->equals($criteria)) {
+				$this->collRpmsRelatedBySourceRpmId = RpmPeer::doSelectJoinArch($criteria, $con, $join_behavior);
+			}
+		}
+		$this->lastRpmRelatedBySourceRpmIdCriteria = $criteria;
+
+		return $this->collRpmsRelatedBySourceRpmId;
+	}
+
+	/**
 	 * Resets all collections of referencing foreign keys.
 	 *
 	 * This method is a user-space workaround for PHP's inability to garbage collect objects
@@ -1958,13 +2561,20 @@ abstract class BaseRpm extends BaseObject  implements Persistent {
 	public function clearAllReferences($deep = false)
 	{
 		if ($deep) {
+			if ($this->collRpmsRelatedBySourceRpmId) {
+				foreach ((array) $this->collRpmsRelatedBySourceRpmId as $o) {
+					$o->clearAllReferences($deep);
+				}
+			}
 		} // if ($deep)
 
+		$this->collRpmsRelatedBySourceRpmId = null;
 			$this->aPackage = null;
 			$this->aDistrelease = null;
 			$this->aMedia = null;
 			$this->aRpmGroup = null;
 			$this->aArch = null;
+			$this->aRpmRelatedBySourceRpmId = null;
 	}
 
 	// symfony_behaviors behavior

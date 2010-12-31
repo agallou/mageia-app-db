@@ -75,7 +75,7 @@ class Package extends BasePackage {
     }
     else
     {
-      throw new Exception("No RPM found while updating the '" . $this->getName() . "' package");
+      throw new PackageException("No RPM found while updating the '" . $this->getName() . "' package");
     }
   }
   

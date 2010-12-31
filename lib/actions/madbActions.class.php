@@ -47,9 +47,15 @@ class madbActions extends sfActions
 
   protected function getDefaultParameters()
   {
+    $criteria = new Criteria();
+    //$criteria->
+    $arch = ArchPeer::retrieveByName('i586');
+    
     return array(
       'application' => 1,
       'distrelease' => DistreleasePeer::getLatest()->getId(),
+      'arch' => $arch->getId(),
+      'source' => 0
     );
   }
 

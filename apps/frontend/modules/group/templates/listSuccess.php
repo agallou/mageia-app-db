@@ -3,7 +3,7 @@
 <h2><?php echo $t_group ?></h2>
 <?php endif; ?>
 <div>
-<ul>
+<ul class="packlist">
 <?php foreach ($results as $values): ?>
   <li><?php $exploded_name = explode('/', $values['the_name']);
   $name = $exploded_name[count($exploded_name)-1];
