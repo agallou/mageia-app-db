@@ -37,6 +37,7 @@
                          )
        ); ?></li>
   <li>Build time : <?php echo $rpm->getBuildtime() ?></li>
+  <li>Changelog : <span class='todo'>TODO : query Sophie</span></li>
   <li>Files : <span class='todo'>TODO : query Sophie</span></li>
   <li>Provides : <span class='todo'>TODO : query Sophie</span></li>
   <li>Requires : <span class='todo'>TODO : query Sophie</span></li>
