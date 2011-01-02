@@ -293,3 +293,15 @@ div.apply:hover
   background-color:yellow;
   font-weight:bold;
 }
+
+#filtersInfo
+{
+  margin-top:8px;
+  border:1px solid #ccc;
+  background-color:#E1E7E8;
+}
+
+#filtersInfo .name
+{
+  font-weight:bold;
+}

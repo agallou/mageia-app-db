@@ -13,6 +13,9 @@ class filterIteratorFactory
     }
     $classes = array_filter($classes, 'class_exists');
     $filters = array();
+    //TODO use fiterFactory
+    //TODO create method getFiltersNames from sfFinder ou list of files
+    //TODO catch del'exception du filterFactory
     foreach ($classes as $class)
     {
       $filters[] = new $class;
