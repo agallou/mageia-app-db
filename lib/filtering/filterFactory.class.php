@@ -5,7 +5,10 @@ class filterFactory
   public function create($name)
   {
     $classname = $name . 'CriteriaFilter';
-    //TODO exception
+    if (!class_exists($classname))
+    {
+      throw new filterFactoryException(sprintf('filter %s not found', $name));
+    }
     return new $classname;
   }
 
