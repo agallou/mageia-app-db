@@ -20,6 +20,9 @@
   <li><?php echo link_to('Last' . htmlentities('>>') ,$madburl->urlFor($module . '/' . $action, $madbcontext, array('extra_parameters' => array('page' => $link)))) ?></li>
 <?php endif; ?>
 </ul>
+<?php if (isset($showtotal) && $showtotal): ?>
+Total results : <span id="count"><?php echo $pager->getTotalRecordCount() ?></span>
+<?php endif; ?>
 <?php if (isset($message)): ?>
   <p><?php echo sprintf($message, $pager->getTotalRecordCount()) ?></p>
 <?php endif; ?>

@@ -16,36 +16,28 @@ class applicationCriteriaFilter extends baseCriteriaFilterChoice
   }
 
   /**
-   * filter 
+   * doFilterChoice 
    * 
    * @param Criteria             $criteria 
-   * @param iMadbParameterHolder $parameterHolder 
-
+   * @param                      $value 
    * @return Criteria
    */
-  protected function filter(Criteria $criteria, madbContext $context)
+  protected function doFilterChoice(Criteria $criteria, $value)
   {
-    //TODO liste avec opérandes ????
-    //plusieurs fois le même parameterHolder ??? pas de context ???
-    $value = $context->getParameter('application');
-    if (null !== $value)
+    $criterion = null;
+    foreach ($value as $val)
     {
-      $value = explode(',', $value);
-      $criterion = null;
-      foreach ($value as $val)
+      $unCriterion = $criteria->getNewCriterion(PackagePeer::IS_APPLICATION, (bool)$val);
+      if (is_null($criterion))
       {
-        $unCriterion = $criteria->getNewCriterion(PackagePeer::IS_APPLICATION, (bool)$val);
-        if (is_null($criterion))
-        {
-          $criterion = $unCriterion;
-        }
-        else
-        {
-          $criterion->addOr($unCriterion);
-        }
+        $criterion = $unCriterion;
       }
-      $criteria->addAnd($criterion);
+      else
+      {
+        $criterion->addOr($unCriterion);
+      }
     }
+    $criteria->addAnd($criterion);
     return $criteria;
   }
 

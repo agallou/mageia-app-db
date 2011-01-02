@@ -54,7 +54,7 @@ class criteriaToTemporaryTable
     }
     catch (PDOException $e)
     {
-      throw new sfException(sprintf('temporay table not created : "%s" (%s)', $this->criteria->toString(), $e->getMessage()));
+      throw new sfException(sprintf('temporary table not created : "%s" (%s)', $this->criteria->toString(), $e->getMessage()));
     }
     return $ret;
   }

@@ -20,23 +20,15 @@ class archCriteriaFilter extends baseCriteriaFilterChoice
   }
 
   /**
-   * filter 
+   * doFilterChoice 
    * 
    * @param Criteria             $criteria 
-   * @param iMadbParameterHolder $parameterHolder 
-
+   * @param                      $value 
    * @return Criteria
    */
-  protected function filter(Criteria $criteria, madbContext $context)
+  protected function doFilterChoice(Criteria $criteria, $value)
   {
-    //TODO liste avec opérandes ????
-    //plusieurs fois le même parameterHolder ??? pas de context ???
-    $value = $context->getParameter('arch');
-    if (null !== $value)
-    { 
-      $value = explode(',', $value);
-      $criteria->addAnd(RpmPeer::ARCH_ID, $value, Criteria::IN);
-    }
+    $criteria->addAnd(RpmPeer::ARCH_ID, $value, Criteria::IN);
     return $criteria;
   }
 

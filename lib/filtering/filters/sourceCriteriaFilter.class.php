@@ -16,35 +16,28 @@ class sourceCriteriaFilter extends baseCriteriaFilterChoice
   }
 
   /**
-   * filter 
+   * doFilterChoice 
    * 
    * @param Criteria             $criteria 
-   * @param iMadbParameterHolder $parameterHolder 
-
+   * @param                      $value 
    * @return Criteria
    */
-  protected function filter(Criteria $criteria, madbContext $context)
+  protected function doFilterChoice(Criteria $criteria, $value)
   {
-    $value = $this->getValueFromContext($context);
-    //TODO liste avec opérandes ????
-    //plusieurs fois le même parameterHolder ??? pas de context ???
-    if (count($value))
+    $criterion = null;
+    foreach ($value as $val)
     {
-      $criterion = null;
-      foreach ($value as $val)
+      $unCriterion = $criteria->getNewCriterion(RpmPeer::IS_SOURCE, $val);
+      if (is_null($criterion))
       {
-        $unCriterion = $criteria->getNewCriterion(RpmPeer::IS_SOURCE, $val);
-        if (is_null($criterion))
-        {
-          $criterion = $unCriterion;
-        }
-        else
-        {
-          $criterion->addOr($unCriterion);
-        }
+        $criterion = $unCriterion;
       }
-      $criteria->addAnd($criterion);
+      else
+      {
+        $criterion->addOr($unCriterion);
+      }
     }
+    $criteria->addAnd($criterion);
     return $criteria;
   }
 

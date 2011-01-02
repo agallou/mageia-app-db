@@ -25,8 +25,13 @@ class ArchPeer extends BaseArchPeer {
     $criteria = new Criteria();
     $criteria->add(ArchPeer::NAME, $name);
     
-    $archs = ArchPeer::doSelect($criteria, $con);
+    $arch = ArchPeer::doSelectOne($criteria, $con);
     
-    return !empty($archs) > 0 ? $archs[0] : null;
+    if (null === $arch) 
+    { 
+      throw new ArchPeerException('Arch \'' . $name . '\' not found (by name)'); 
+    }
+    
+    return $arch;
   }
 } // ArchPeer
