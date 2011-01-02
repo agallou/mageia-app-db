@@ -9,10 +9,10 @@
   'action'      => 'list',
   'madbcontext' => $madbcontext, 
   'madburl'     => $madburl,
+  'showtotal'   => true,
 )); ?>
 
 <div>
-Total results : <span id="count"></span>
 <ul id="results" class="packlist">
 <?php foreach ($pager as $package): ?>
   <li><?php echo link_to(
