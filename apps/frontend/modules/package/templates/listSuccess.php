@@ -1,6 +1,6 @@
 <h1>Packages/Applications</h1>
-<?php if (!is_null($t_group)): ?>
-<h2><?php echo $t_group ?></h2>
+<?php if ($rpm_group): ?>
+<h2><?php echo $rpm_group->getName(); ?></h2>
 <?php endif; ?>
 
 <?php include_partial('default/pager', array(

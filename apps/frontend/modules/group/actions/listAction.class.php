@@ -3,20 +3,30 @@ class listAction extends madbActions
 {
   public function execute($request)
   {
-    $this->t_group = $request->hasParameter('t_group') ? str_replace('|', '/', $request->getParameter('t_group')) : null;
-    $this->t_level = $request->hasParameter('t_level') ? (int) $request->getParameter('t_level') : 1;
+    $this->t_group = $request->hasParameter('t_group') ? $request->getParameter('t_group') : null;
+    $this->level = $request->hasParameter('level') ? (int) $request->getParameter('level') : 1;
+    $this->group_name = $request->hasParameter('group_name') ? str_replace('|', '/', $request->getParameter('group_name')) : null;
+    
+    if (!is_null($this->t_group) and count(explode(',', $this->t_group))==1)
+    {
+      $this->redirect($this->madburl->urlFor( 'package/list', 
+                                              $this->madbcontext, 
+                                              array( 
+                                                  'extra_parameters' => array(
+                                                  't_group' => $this->t_group
+                                                )
+                                              )
+                                            )
+                      );
+    }
     
     $criteria = $this->getCriteria(filterPerimeters::RPM);
     $criteria->addJoin(RpmPeer::RPM_GROUP_ID, RpmGroupPeer::ID, Criteria::JOIN);
-    if (!is_null($this->t_group))
-    {
-      $criteria->add(RpmGroupPeer::NAME, $this->t_group . '/%', Criteria::LIKE);
-    }
     
     $criteria->clearSelectColumns();
     
     $criteria->addAsColumn( 'the_name',
-                            sprintf("SUBSTRING_INDEX(%s, '/',". $this->t_level . ")", 
+                            sprintf("SUBSTRING_INDEX(%s, '/',". $this->level . ")", 
                                     RpmGroupPeer::NAME
                             )
     );
@@ -26,20 +36,6 @@ class listAction extends madbActions
     
     $stmt = RpmGroupPeer::doSelectStmt($criteria);
     $this->results = $stmt->fetchAll();
-
-    if (empty($this->results))
-    {
-      $this->redirect($this->madburl->urlFor( 'package/list', 
-                                              $this->madbcontext, 
-                                              array( 
-                                                'extra_parameters' => array(
-                                                  't_group' => str_replace('/', '|', $this->t_group)
-//                                                  't_level' => $this->t_level
-                                                )
-                                              )
-                                            )
-                      );
-    }
   }
 
 }

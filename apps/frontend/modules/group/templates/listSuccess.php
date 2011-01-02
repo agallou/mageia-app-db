@@ -1,6 +1,6 @@
 <h1>Groups</h1>
-<?php if (!is_null($t_group)): ?>
-<h2><?php echo $t_group ?></h2>
+<?php if (!is_null($group_name)): ?>
+<h2><?php echo $group_name ?></h2>
 <?php endif; ?>
 <div>
 <ul class="packlist">
@@ -12,8 +12,9 @@
                                   $madbcontext, 
                                   array( 
                                     'extra_parameters' => array(
-                                      't_group' => str_replace('/', '|', $values['the_name']),
-                                      't_level' => $t_level + 1
+                                      't_group' => implode(',', RpmGroupPeer::getGroupsIdsWhereNameLike($values['the_name'] . "%")),
+                                      'level' => $level + 1,
+                                      'group_name' => str_replace('/', '|', $values['the_name'])
                                     )
                                   )
                                 )

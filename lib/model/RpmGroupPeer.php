@@ -14,4 +14,34 @@
  */
 class RpmGroupPeer extends BaseRpmGroupPeer {
 
+  /**
+   * 
+   * Returns an array of RpmGroup containing RpmGroups whose name match $pattern
+   *
+   * @param string $pattern
+   * 
+   */
+  public static function getGroupsWhereNameLike($pattern)
+  {
+    $criteria = new Criteria();
+    $criteria->add(RpmGroupPeer::NAME, $pattern, Criteria::LIKE);
+    return RpmGroupPeer::doSelect($criteria);
+  }
+  
+  
+  /**
+   * 
+   * Returns an array of RpmGroup containing RpmGroups whose name match $pattern
+   *
+   * @param string $pattern
+   */
+  public static function getGroupsIdsWhereNameLike($pattern)
+  {
+    $results = array();
+    foreach (self::getGroupsWhereNameLike($pattern) as $rpm_group)
+    {
+      $results[] = $rpm_group->getId();
+    }
+    return $results;
+  }
 } // RpmGroupPeer

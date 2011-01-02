@@ -19,6 +19,11 @@ class madbContext
     return $this->parameterHolder;
   }
 
+  public function hasParameter($name)
+  {
+    return $this->getParameterHolder()->has($name);
+  }
+  
   public function getFiltersParameters()
   {
     $filtersIteratorFactory = new filterIteratorFactory();

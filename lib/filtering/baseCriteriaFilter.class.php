@@ -33,7 +33,13 @@ abstract class baseCriteriaFilter
     return $this->madbcontext;
   }
 
-  abstract protected function filter(Criteria $criteria, madbContext $context);
+  protected function filter(Criteria $criteria, $value)
+  {
+    return (null !== $value) ? $this->doFilter($criteria, $value) : $criteria;
+  }
+  
+  abstract protected function doFilter(Criteria $criteria, $value);
+  
   abstract public function getName();
 
   /**
@@ -43,7 +49,7 @@ abstract class baseCriteriaFilter
    */
   public function getFilteredCriteria()
   {
-   return $this->filter($this->getCriteria(), $this->getMadbContext());
+   return $this->filter($this->getCriteria(), $this->getValueFromContext($this->getMadbContext(), true));
   }
 
   abstract public function getValueFromContext(madbContext $context);
