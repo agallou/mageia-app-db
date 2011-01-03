@@ -6,6 +6,8 @@ class filteringComponent extends sfComponent
     $this->form    = formFactory::create($this->getMadbContext());
     $filters       = array();
     $filterFactory = new filterFactory();
+    $defaultValues = madbActions::getDefaultFiltersParameters();
+    $this->unremoveableFilters = array();
     foreach ($this->form as $field)
     {
       if (!count($field->getValue()))
@@ -17,9 +19,14 @@ class filteringComponent extends sfComponent
       $displayedValues = array();
       foreach ($field->getValue() as $value)
       {
-         $displayedValues[] = $filterValues[$value];
+        $displayedValues[] = $filterValues[$value];
       }
       $filters[$field->getName()] = $displayedValues;
+
+      if (isset($defaultValues[$field->getName()]) && (array)$defaultValues[$field->getName()] == $field->getValue())
+      {
+        $this->unremoveableFilters[] = $field->getName();
+      }
     }
     $this->filters      = $filters;
     $this->madburl      = $this->getMadbUrl();
