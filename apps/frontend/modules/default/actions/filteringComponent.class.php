@@ -21,7 +21,11 @@ class filteringComponent extends sfComponent
       }
       $filters[$field->getName()] = $displayedValues;
     }
-    $this->filters = $filters;
+    $this->filters      = $filters;
+    $this->madburl      = $this->getMadbUrl();
+    $this->moduleaction = $request->getUrlParameter('module') . '/' . $request->getUrlParameter('action');
+    $this->madbcontext  = $this->getMadbContext();
+
   }
 
   protected function getMadbContext()
@@ -34,6 +38,11 @@ class filteringComponent extends sfComponent
   {
     $criteriaFactory = new criteriaFactory();
     return $criteriaFactory->createFromContext($this->getMadbContext(), $perimeter);
+  }
+  
+  protected function getMadbUrl()
+  {
+    return new madbUrl($this->getContext());
   }
 
 }

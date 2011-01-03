@@ -41,6 +41,13 @@ class madbUrl
         $parameters = array_merge($madbContext->getParameterHolder()->getAll(), $parameters);
       }
     }
+    if (isset($options['ignored_parameters']) && is_array($options['ignored_parameters']))
+    {
+      foreach ($options['ignored_parameters'] as $ignoredparameter)
+      {
+        unset($parameters[$ignoredparameter]);
+      }
+    }
     $uri = $internalUri . '?' . http_build_query($parameters);
     return $this->controller->genUrl($uri, $absolute);
   }
