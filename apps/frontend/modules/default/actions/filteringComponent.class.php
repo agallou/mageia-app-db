@@ -3,7 +3,36 @@ class filteringComponent extends sfComponent
 {
   public function execute($request)
   {
-    $this->form  = formFactory::create($this->getMadbContext());
+    $this->form    = formFactory::create($this->getMadbContext());
+    $filters       = array();
+    $filterFactory = new filterFactory();
+    $defaultValues = madbActions::getDefaultFiltersParameters();
+    $this->unremoveableFilters = array();
+    foreach ($this->form as $field)
+    {
+      if (!count($field->getValue()))
+      {
+        continue;
+      }
+      $filter       = $filterFactory->create($field->getName());
+      $filterValues = $filter->getValues();
+      $displayedValues = array();
+      foreach ($field->getValue() as $value)
+      {
+        $displayedValues[] = $filterValues[$value];
+      }
+      $filters[$field->getName()] = $displayedValues;
+
+      if (isset($defaultValues[$field->getName()]) && (array)$defaultValues[$field->getName()] == $field->getValue())
+      {
+        $this->unremoveableFilters[] = $field->getName();
+      }
+    }
+    $this->filters      = $filters;
+    $this->madburl      = $this->getMadbUrl();
+    $this->moduleaction = $request->getUrlParameter('module') . '/' . $request->getUrlParameter('action');
+    $this->madbcontext  = $this->getMadbContext();
+
   }
 
   protected function getMadbContext()
@@ -16,6 +45,11 @@ class filteringComponent extends sfComponent
   {
     $criteriaFactory = new criteriaFactory();
     return $criteriaFactory->createFromContext($this->getMadbContext(), $perimeter);
+  }
+  
+  protected function getMadbUrl()
+  {
+    return new madbUrl($this->getContext());
   }
 
 }

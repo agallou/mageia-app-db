@@ -25,6 +25,13 @@ class getUrlAction extends madbActions
     unset($parameters['action']);
     unset($parameters['sf_culture']);
 
+    $filterIteratorFactory = new filterIteratorFactory();
+    $filterIterator        = $filterIteratorFactory->create();
+    foreach ($filterIterator as $filter)
+    {
+      unset($parameters[$filter->getCode()]);
+    }
+
     foreach ($extraParams as $name => $parameter)
     {
       if (is_array($parameter))

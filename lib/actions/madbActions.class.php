@@ -47,15 +47,19 @@ class madbActions extends sfActions
 
   protected function getDefaultParameters()
   {
-    $criteria = new Criteria();
-    //$criteria->
+    return self::getDefaultFiltersParameters();
+  }
+
+  //TODO improve this defaut in filter ??
+  public static function getDefaultFiltersParameters()
+  {
     $arch = ArchPeer::retrieveByName('i586');
-    
+
     return array(
       'application' => 1,
       'distrelease' => DistreleasePeer::getLatest()->getId(),
-      'arch' => $arch->getId(),
-      'source' => 0
+      'arch'        => $arch->getId(),
+      'source'      => 0
     );
   }
 
