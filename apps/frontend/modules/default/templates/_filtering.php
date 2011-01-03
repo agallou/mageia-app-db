@@ -8,7 +8,7 @@
   <span class="name"><?php echo $name ?></span>:
   <?php echo implode(',', $values); ?>
   <?php if (!in_array($name, $unremoveableFilters)): ?>
-    <?php echo link_to('remove', $madburl->urlFor($moduleaction, $madbcontext, array('ignored_parameters' => array($name)))); ?>
+    <?php echo link_to(image_tag('icons/cross'), $madburl->urlFor($moduleaction, $madbcontext, array('ignored_parameters' => array($name)))); ?>
   <?php endif; ?>
   <br />
 <?php endforeach; ?>

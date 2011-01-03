@@ -305,3 +305,8 @@ div.apply:hover
 {
   font-weight:bold;
 }
+
+img
+{
+  border:0px;
+}
