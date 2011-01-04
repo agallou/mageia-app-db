@@ -25,28 +25,28 @@ class madbInitTask extends madbBaseTask
       $databases = file_get_contents(sfConfig::get('sf_config_dir') . DIRECTORY_SEPARATOR . 'databases.yml-dist');
       $propel    = file_get_contents(sfConfig::get('sf_config_dir') . DIRECTORY_SEPARATOR . 'propel.ini-dist');
 
-      if (!$options['db_host'])
+      if (!isset($options['db_host']))
       {
         $options['db_host'] = $this->ask('host (localhost):', 'QUESTION_LARGE', 'localhost');
       }
       $databases = str_replace('%%host%%', $options['db_host'], $databases);
       $propel    = str_replace('%%host%%', $options['db_host'], $propel);
 
-      if (!$options['db_name'])
+      if (!isset($options['db_name']))
       {
         $options['db_name'] = $this->ask('database name:', 'QUESTION_LARGE');
       }
       $databases = str_replace('%%database%%', $options['db_name'], $databases);
       $propel    = str_replace('%%database%%', $options['db_name'], $propel);
 
-      if (!$options['db_user'])
+      if (!isset($options['db_user']))
       {
         $options['db_user'] = $this->ask('database user name (root):', 'QUESTION_LARGE', 'root');
       }
       $databases = str_replace('%%user%%', $options['db_user'], $databases);
       $propel    = str_replace('%%user%%', $options['db_user'], $propel);
 
-      if (!$options['db_pass'])
+      if (!isset($options['db_pass']))
       {
         $options['db_pass'] = $this->ask('database password (""):', 'QUESTION_LARGE', '');
       }
