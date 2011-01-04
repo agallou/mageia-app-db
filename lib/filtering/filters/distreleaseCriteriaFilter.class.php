@@ -7,6 +7,18 @@ class distreleaseCriteriaFilter extends baseCriteriaFilterChoice
     return filterPerimeters::RPM;
   }
 
+  public function getDefault()
+  {
+    try
+    {
+      return DistreleasePeer::getLatest()->getId();
+    }
+    catch(DistreleasePeerException $e)
+    {
+      return null;
+    }
+  }
+
   public function getValues()
   {
     $criteria = new Criteria();

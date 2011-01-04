@@ -21,7 +21,7 @@ class DistreleasePeer extends BaseDistreleasePeer {
     $distrelease = DistreleasePeer::doSelectOne($criteria);
     if (null === $distrelease)
     {
-      throw new sfException('lastest distrelease not found');
+      throw new DistreleasePeerException('lastest distrelease not found');
     }
     return $distrelease;
   }

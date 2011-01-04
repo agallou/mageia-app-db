@@ -57,4 +57,15 @@ abstract class baseCriteriaFilter
   abstract public function configureForm(sfForm $form);
 
   abstract public function getPerimeter();
+
+  public function getDefault()
+  {
+    //null is no default value.
+    return null;
+  }
+
+  public function hasDefault()
+  {
+    return $this->getDefault() !== null;
+  }
 }

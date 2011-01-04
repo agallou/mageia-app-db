@@ -7,6 +7,11 @@ class applicationCriteriaFilter extends baseCriteriaFilterChoice
     return filterPerimeters::PACKAGE;
   }
 
+  public function getDefault()
+  {
+    return 1;
+  }
+
   public function getValues()
   {
     return array(
