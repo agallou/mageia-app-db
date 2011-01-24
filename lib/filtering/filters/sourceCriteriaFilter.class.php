@@ -7,6 +7,11 @@ class sourceCriteriaFilter extends baseCriteriaFilterChoice
     return filterPerimeters::RPM;
   }
 
+  public function getDefault()
+  {
+    return 0;
+  }
+
   public function getValues()
   {
     return array(

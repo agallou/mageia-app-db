@@ -7,6 +7,18 @@ class archCriteriaFilter extends baseCriteriaFilterChoice
     return filterPerimeters::RPM;
   }
 
+  public function getDefault()
+  {
+    try
+    {
+      return ArchPeer::retrieveByName('i586')->getId();
+    }
+    catch(ArchPeerException $e)
+    {
+      return null;
+    }
+  }
+
   public function getValues()
   {
     $values = array();
