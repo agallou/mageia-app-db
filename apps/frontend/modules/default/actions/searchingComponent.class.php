@@ -8,7 +8,7 @@ class searchingComponent extends madbComponent
     $action      = $this->action_to ? $this->action_to : $request['action'];
     $internalUri = sprintf('%s/%s', $module, $action);
     $this->url   = $this->getMadbUrl()->urlFor($internalUri, $this->getMadbContext(), array(
-      'ignored_parameters' => array('t_search', 'search'),
+      'ignored_parameters' => array('t_search', 'search', 't_group'),
     ));
   }
 }
