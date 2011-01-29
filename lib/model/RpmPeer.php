@@ -25,12 +25,22 @@ class RpmPeer extends BaseRpmPeer {
    */
   public static function evrCompare($evr1, $evr2)
   {
-    // TODO : unit-test this function
     $split_evr1 = self::evrSplit($evr1);
     $split_evr2 = self::evrSplit($evr2);
     
     // epoch
-    if (version_compare($split_evr1[0], $split_evr2[0], '>'))
+    if (is_null($split_evr1[0]) or is_null($split_evr2[0]))
+    {
+      if (!is_null($split_evr1[0])) 
+      {
+        return 1;
+      }
+      if (!is_null($split_evr2[0]))
+      {
+        return -1;
+      }
+    }
+    elseif (version_compare($split_evr1[0], $split_evr2[0], '>'))
     {
       return 1;
     }
@@ -38,50 +48,60 @@ class RpmPeer extends BaseRpmPeer {
     {
       return -1;
     }
-    else
+
+
+    // version
+    if (version_compare($split_evr1[1], $split_evr2[1], '>'))
     {
-      // version
-      if (version_compare($split_evr1[1], $split_evr2[1], '>'))
+      return 1;
+    }
+    elseif (version_compare($split_evr1[1], $split_evr2[1], '<'))
+    {
+      return -1;
+    }
+
+    // release
+    if (is_null($split_evr1[2]) or is_null($split_evr2[2]))
+    {
+      if (!is_null($split_evr1[2])) 
       {
         return 1;
       }
-      elseif (version_compare($split_evr1[1], $split_evr2[1], '<'))
+      if (!is_null($split_evr2[2]))
       {
         return -1;
       }
-      else 
-      {
-        // release
-        if (version_compare($split_evr1[2], $split_evr2[2], '>'))
-        {
-          return 1;
-        }
-        elseif (version_compare($split_evr1[2], $split_evr2[2], '<'))
-        {
-          return -1;
-        }
-        else 
-        {
-          return 0;
-        }
-      }
+    }    
+    elseif (version_compare($split_evr1[2], $split_evr2[2], '>'))
+    {
+      return 1;
+    }
+    elseif (version_compare($split_evr1[2], $split_evr2[2], '<'))
+    {
+      return -1;
+    }
+    else 
+    {
+      return 0;
     }
   }
   
   /**
    * 
    * Returns array($epoch, $version, $release)
+   * $epoch and $release may be null
    * 
    * @param string $evr
    */
   public static function evrSplit($evr)
   {
-    // TODO : unit-test this function
     $tab = explode(':', $evr);
-    $epoch = count($tab) > 1 ? $tab[0] : 0;
+    $epoch = count($tab) > 1 ? $tab[0] : null;
     $vr = count($tab) > 1 ? $tab[1] : $evr;
-    
-    list($version, $release) = explode('-', $vr);
+
+    $tab2 = explode('-', $vr);
+    $version = $tab2[0];
+    $release = (isset($tab2[1])) ? $tab2[1] : null;
     
     return array($epoch, $version, $release);
   }
