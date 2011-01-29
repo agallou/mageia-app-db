@@ -35,12 +35,7 @@
                     
                 <div id="footer">
                 <div class="content">
-                 <!--   <span class="symfony">
-                        powered by
-                        <a href="http://www.symfony-project.org/">
-                            <img src="/images/symfony2.gif" alt="symfony framework" />
-                        </a>
-                    </span> -->
+                  <?php include_component('default', 'footer') ?>
                 </div>
             </div>
             </div>
