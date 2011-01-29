@@ -12,6 +12,7 @@ class madbInsertTestDataTask extends madbBaseTask
     $this->addOption('url', null, sfCommandOption::PARAMETER_OPTIONAL, 'url where test data are stored. Setting this option forces the download even if test data already are on the local system.', null);
     $this->addOption('limit', null, sfCommandOption::PARAMETER_OPTIONAL, 'number of lines to keep in the imported file', false);
     $this->propel = true;
+    $this->aliases = array($this->name);
   }
   protected function execute($arguments = array(), $options = array())
   {
