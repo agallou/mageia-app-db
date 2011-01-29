@@ -16,9 +16,13 @@ class filteringComponent extends sfComponent
       $filter          = $filterFactory->create($field->getName());
       $filterValues    = $filter->getValues();
       $displayedValues = array();
-      foreach ($field->getValue() as $value)
+      $values          = $field->getValue();
+      if (is_array($values))
       {
-        $displayedValues[] = $filterValues[$value];
+        foreach ($values as $value)
+        {
+          $displayedValues[] = $filterValues[$value];
+        }
       }
       $filters[$field->getName()] = $displayedValues;
 

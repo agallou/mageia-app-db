@@ -68,4 +68,5 @@ abstract class baseCriteriaFilter
   {
     return $this->getDefault() !== null;
   }
+
 }
