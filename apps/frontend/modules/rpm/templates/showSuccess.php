@@ -1,4 +1,15 @@
-<h1>RPM : <?php echo $rpm->getName() ?></h1>
+<h1>Package : <?php echo link_to(
+         $rpm->getPackage()->getName(),
+         $madburl->urlFor( 'package/show', 
+                           $madbcontext, 
+                           array( 
+                             'extra_parameters' => array(
+                               'id' => $rpm->getPackage()->getId() 
+                             )
+                           )
+                         )
+       ); ?>
+, RPM : <?php echo $rpm->getName() ?></h1>
 <div>
 <h2 class='todo'>TODO</h2>
 <p class='todo'>Make this page a well organized and designed page :)</p>
