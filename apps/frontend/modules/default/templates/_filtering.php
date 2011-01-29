@@ -13,5 +13,6 @@
   <br />
 <?php endforeach; ?>
 </div>
-
-
+<?php include_component('default', 'searching') ?>
+<br />
+<?php include_component('default', 'searchInfos') ?>

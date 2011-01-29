@@ -13,9 +13,10 @@
             <div id="header">
                 <h1>Mageia app DB</h1>
                 <div id="user_infos">
-                  <form method="get" action="" style="display:inline">
-                    <input type="text" name="t_search" /><input type="submit" value="search" />
-                  </form>
+                    <?php include_component('default', 'searching', array(
+                      'module_to' => 'package',
+                      'action_to' => 'list',
+                    )) ?>
                     <?php if ($sf_user->isAuthenticated()): ?>
                         <?php echo link_to('Logout', url_for('@logout')); ?>
                     <?php else: ?>
