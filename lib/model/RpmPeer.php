@@ -116,7 +116,6 @@ class RpmPeer extends BaseRpmPeer {
   public static function rpmEvrAndDistreleaseCompare($rpm1, $rpm2)
   {
     $compare = self::evrCompare($rpm1->getEvr(), $rpm2->getEvr());
-echo ($compare);    
     if ($compare == 0)
     {
       $compare = DistreleasePeer::compare($rpm1->getDistrelease(), $rpm2->getDistrelease());
