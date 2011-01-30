@@ -12,17 +12,26 @@ if(!function_exists('dl'))
 class Sophie
 {
   protected static $xmlrpc_url = 'http://sophie2.aero.jussieu.fr/rpc';
+  protected static $clientObjects = array();
 
   protected static function getClientObject($prefix)
   {
-    try {
-      return XML_RPC2_Client::create(self::$xmlrpc_url, array('prefix' => $prefix));
+    if (isset(self::$clientObjects[$prefix]))
+    {
+      return self::$clientObjects[$prefix];
     }
-    catch (Exception $e) 
-    {  
-      // Other errors (HTTP or networking problems...)
-      // TODO: don't die :)
-      die('Exception : ' . $e->getMessage());
+    else
+    {
+      try {
+        self::$clientObjects[$prefix] = XML_RPC2_Client::create(self::$xmlrpc_url, array('prefix' => $prefix));
+        return self::$clientObjects[$prefix];
+      }
+      catch (Exception $e) 
+      {  
+        // Other errors (HTTP or networking problems...)
+        // TODO: don't die :)
+        die('Exception : ' . $e->getMessage());
+      }
     }
   }
 
@@ -32,6 +41,26 @@ class Sophie
     try 
     {
       return call_user_func_array(array($client_obj, $method_name), $args); 
+    }
+    catch (XML_RPC2_FaultException $e) 
+    {
+    // The XMLRPC server returns a XMLRPC error
+    // TODO: don't die :)
+      die('XMLRPC Exception #' . $e->getFaultCode() . ' : ' . $e->getFaultString());
+    }
+    catch (Exception $e) 
+    {  
+      // Other errors (HTTP or networking problems...)
+      // TODO: don't die :)
+      die('Exception : ' . $e->getMessage());
+    }
+  }
+
+  public static function rpmsInfo ($pkgid)
+  {
+    try 
+    {
+      return self::query('rpms.', 'info', array($pkgid));
     }
     catch (XML_RPC2_FaultException $e) 
     {
@@ -45,10 +74,5 @@ class Sophie
       // TODO: don't die :)
       die('Exception : ' . $e->getMessage());
     }
-  }
-
-  public static function rpmsInfo ($pkgid)
-  {
-    return self::query('rpms.', 'info', array($pkgid));
   }
 }
