@@ -59,6 +59,35 @@ h1
     color: white;
 }
 
+div#header div#search
+{
+    width:420px;
+    margin:0px auto;
+    margin-top:-30px;
+}
+
+div#header div#search form input[type=text]
+{
+  height:22px;
+  width:330px;
+  margin-right:5px;
+}
+
+div#header div#search form input[type=text]:focus
+{
+  background-color:#F7F3D0;
+}
+
+div#header div#search form input[type=submit]
+{
+  border-color: #CCCCCC #666666 #666666 #CCCCCC;
+  border-style: solid;
+  border-width: 1px;
+  color: #000000;
+  font-size: small;
+  padding: 2px 5px;
+}
+
 /* LEFT Column stuff a.k.a Navigation */
 
 #menu
