@@ -17,6 +17,7 @@ class madbInsertTestDataTask extends madbBaseTask
   protected function execute($arguments = array(), $options = array())
   {
     sfContext::createInstance($this->createConfiguration('frontend', 'prod'));
+    // TODO : replace relative paths with absolute paths from dirname(__FILE__) ?
     $this->getFilesystem()->mkdirs('tmp/');
     $archive_name = 'tmp/test-data.zip';
     $filename = 'tmp/dump_sophie.gz';
@@ -55,7 +56,7 @@ class madbInsertTestDataTask extends madbBaseTask
       $dbCli->executeFile('tmp/import_test_data-step6.sql');
       $dbCli->executeFile('doc/import_test_data-step7.sql');
       
-      $task = new madbUpdatePackageDesc($this->dispatcher, $this->formatter);
+      $task = new madbUpdatePackageDescTask($this->dispatcher, $this->formatter);
       $task->run();
     }
     else 

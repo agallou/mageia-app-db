@@ -1,5 +1,5 @@
 <?php
-class madbUpdatePackageDesc extends madbBaseTask
+class madbUpdatePackageDescTask extends madbBaseTask
 {
 
   protected $propel = true;
