@@ -1,2 +1,4 @@
 all:
   version: 0.1-dev
+  homepage:
+    groups_line: 5

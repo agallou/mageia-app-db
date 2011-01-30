@@ -9,7 +9,6 @@
 
 <table width="100%">
   <?php $cpt = 0 ?>
-  <?php define('GROUP_LINE', 5); ?>
   <?php foreach ($groups as $values): ?>
     <?php if ($cpt == 0): ?>
       <tr>
@@ -31,11 +30,11 @@
               )
             ); ?>
       </td>
-    <?php if ($cpt == GROUP_LINE): ?>
+    <?php if ($cpt == sfConfig::get('app_homepage_groups_line')): ?>
       </tr>
     <?php endif; ?>
     <?php $cpt++ ?>
-    <?php if ($cpt == GROUP_LINE): ?>
+    <?php if ($cpt == sfConfig::get('app_homepage_groups_line')): ?>
       <?php $cpt = 0; ?>
     <?php endif; ?>
   <?php endforeach; ?>
