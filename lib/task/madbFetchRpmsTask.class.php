@@ -37,8 +37,8 @@ class madbFetchRpmsTask extends madbBaseTask
 //      '2009.0',
 //      '2009.1',
 //      '2010.0',
-//      '2010.1',
-      '2010.2',
+      '2010.1',
+//      '2010.2',
 //     '2011.0',
 //      'cooker'
     );
@@ -80,12 +80,13 @@ class madbFetchRpmsTask extends madbBaseTask
                 if ($json)
                 {
                   $rpmInfos = json_decode($json);
+                  $buildDate = new DateTime('@' . $rpmInfos->info->buildtime);
                   $tab = array(
                     $rpmInfos->info->filename,
                     $rpmInfos->info->evr,
                     $rpmInfos->info->summary,
                     str_replace("\n", '\n', $rpmInfos->info->description),
-                    "0000-00-00", // TODO : buildtime
+                    $buildDate->format('Y-m-d H:i:sP'),
                     $rpmInfos->info->url,
                     $rpmInfos->info->size,
                     $rpmInfos->info->sourcerpm,
