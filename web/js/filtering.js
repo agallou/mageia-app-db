@@ -24,7 +24,7 @@ $(document).ready(function(){
 	    apply: function(d){afterCheckboxChange(d)},
 	    defaults: getAllVals($('#source option[selected=selected]')),
 	  });
-  $('form input[type=submit]').remove();
+  $('div#filtering form:first input[type=submit]').remove();
 });
 
 

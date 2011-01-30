@@ -12,16 +12,20 @@
         <div id="container">
             <div id="header">
                 <h1>Mageia app DB</h1>
-                <div id="user_infos">
+                <div id="search">
                     <?php include_component('default', 'searching', array(
                       'module_to' => 'package',
                       'action_to' => 'list',
                     )) ?>
+                </div>
+                <div id="user_infos">
+                    <?php if (false): ?>
                     <?php if ($sf_user->isAuthenticated()): ?>
                         <?php echo link_to('Logout', url_for('@logout')); ?>
                     <?php else: ?>
                         <span>Register? |</span>
                         <?php echo link_to('Login', url_for('@login')) ?>
+                    <?php endif; ?>
                     <?php endif; ?>
                 </div>
             </div>

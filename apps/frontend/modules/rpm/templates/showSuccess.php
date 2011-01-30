@@ -35,18 +35,25 @@
 
 <h2>Advanced items</h2>
 <ul>
-  <li>Source RPM : <?php $src_rpm = $rpm->getRpmRelatedBySourceRpmId();
-  echo link_to(
-         $src_rpm->getName(),
-         $madburl->urlFor( 'rpm/show', 
-                           $madbcontext, 
-                           array( 
-                             'extra_parameters' => array(
-                               'id' => $src_rpm->getId() 
+  <li>Source RPM : <?php 
+  if ($src_rpm = $rpm->getRpmRelatedBySourceRpmId()) 
+  {
+    echo link_to(
+           $src_rpm->getName(),
+           $madburl->urlFor( 'rpm/show', 
+                             $madbcontext, 
+                             array( 
+                               'extra_parameters' => array(
+                                 'id' => $src_rpm->getId() 
+                               )
                              )
                            )
-                         )
-       ); ?></li>
+         ); 
+  }
+  else
+  {
+    echo "NOT IN DATABASE ?!";
+  }?></li>
   <li>Build time : <?php echo $rpm->getBuildtime() ?></li>
   <li>Changelog : <span class='todo'>TODO : query Sophie</span></li>
   <li>Files : <span class='todo'>TODO : query Sophie</span></li>
