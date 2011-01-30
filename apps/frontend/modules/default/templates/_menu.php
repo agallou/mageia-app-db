@@ -1,5 +1,5 @@
 <ul>
-  <li><?php echo link_to('Homepage', '@homepage'); ?></li>
+  <li><?php echo link_to('Homepage', $madburl->urlFor('@homepage', $madbcontext, array('filters_parameters' => true))) ?></li>
   <li>
       <h2>Latest</h2>
     <ul>
