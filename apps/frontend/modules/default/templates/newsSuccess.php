@@ -44,8 +44,22 @@
 
 <div id="updates">
   <div class="content_group">Latests updates</div>
+  <?php include_component('rpm', 'list', array(
+    'listtype'       => 'updates',
+    'page'           => 1,
+    'showpager'      => false,
+    'display_header' => false,
+    'limit'          => sfConfig::get('app_homepage_rpm_limit'),
+  )) ?>
 </div>
 
 <div id="backports">
   <div class="content_group">Latests backports</div>
+  <?php include_component('rpm', 'list', array(
+    'listtype'       => 'backports',
+    'page'           => 1,
+    'showpager'      => false,
+    'display_header' => false,
+    'limit'          => sfConfig::get('app_homepage_rpm_limit'),
+  )) ?>
 </div>
