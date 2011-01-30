@@ -14,3 +14,4 @@ tmp/*
 nbproject
 *.swp
 *.swo
+web/test.php
