@@ -1,5 +1,5 @@
 <?php 
-class filteringComponent extends sfComponent
+class filteringComponent extends madbComponent
 {
   public function execute($request)
   {
@@ -16,9 +16,13 @@ class filteringComponent extends sfComponent
       $filter          = $filterFactory->create($field->getName());
       $filterValues    = $filter->getValues();
       $displayedValues = array();
-      foreach ($field->getValue() as $value)
+      $values          = $field->getValue();
+      if (is_array($values))
       {
-        $displayedValues[] = $filterValues[$value];
+        foreach ($values as $value)
+        {
+          $displayedValues[] = $filterValues[$value];
+        }
       }
       $filters[$field->getName()] = $displayedValues;
 
@@ -34,21 +38,5 @@ class filteringComponent extends sfComponent
 
   }
 
-  protected function getMadbContext()
-  {
-    $contextFactory = new contextFactory();
-    return $contextFactory->createFromRequest($this->getRequest());
-  }
-
-  protected function getCriteria($perimeter)
-  {
-    $criteriaFactory = new criteriaFactory();
-    return $criteriaFactory->createFromContext($this->getMadbContext(), $perimeter);
-  }
-  
-  protected function getMadbUrl()
-  {
-    return new madbUrl($this->getContext());
-  }
 
 }

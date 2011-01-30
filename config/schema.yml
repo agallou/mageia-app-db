@@ -199,3 +199,7 @@ propel:
     hash:                                                              { type: varchar(45), required: true }
     _uniques:
       hash_UNIQUE:                                                     [ hash ]
+  version:
+    id:                                                                ~
+    version:                                                           { type: varchar(10) }
+

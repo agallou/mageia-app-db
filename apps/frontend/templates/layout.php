@@ -13,6 +13,10 @@
             <div id="header">
                 <h1>Mageia app DB</h1>
                 <div id="user_infos">
+                    <?php include_component('default', 'searching', array(
+                      'module_to' => 'package',
+                      'action_to' => 'list',
+                    )) ?>
                     <?php if ($sf_user->isAuthenticated()): ?>
                         <?php echo link_to('Logout', url_for('@logout')); ?>
                     <?php else: ?>
@@ -35,12 +39,7 @@
                     
                 <div id="footer">
                 <div class="content">
-                 <!--   <span class="symfony">
-                        powered by
-                        <a href="http://www.symfony-project.org/">
-                            <img src="/images/symfony2.gif" alt="symfony framework" />
-                        </a>
-                    </span> -->
+                  <?php include_component('default', 'footer') ?>
                 </div>
             </div>
             </div>
