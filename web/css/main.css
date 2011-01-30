@@ -351,3 +351,12 @@ img
 {
   border:0px;
 }
+
+.content_group
+{
+  background-color:#03344D;
+  padding: 4px;
+  color: #fff;
+  font-weight:bold;
+  margin-top: 15px;
+}
