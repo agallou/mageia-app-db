@@ -18,13 +18,11 @@ class madbUpdatePackageDescTask extends madbBaseTask
     
     $sql = "UPDATE package SET description=NULL, summary=NULL;";
     $con->exec($sql);
-    
-    $stmt = PackagePeer::doSelectStmt(new Criteria());
-    foreach ($stmt as $rs)
+
+    $factory  = new madbPropelObjectHydratorFactory();
+    $packages = $factory->create(new Criteria(), new Package());
+    foreach ($packages as $package)
     {
-      $package = new Package();
-      $package->hydrate($rs);
-      
       try
       {
         $package->updateSummaryAndDescription();
