@@ -43,7 +43,7 @@
 </div>
 
 <div id="updates">
-  <div class="content_group">Latests updates</div>
+  <div class="content_group">Latest updates</div>
   <?php include_component('rpm', 'list', array(
     'listtype'       => 'updates',
     'page'           => 1,
@@ -54,7 +54,7 @@
 </div>
 
 <div id="backports">
-  <div class="content_group">Latests backports</div>
+  <div class="content_group">Latest backports</div>
   <?php include_component('rpm', 'list', array(
     'listtype'       => 'backports',
     'page'           => 1,
