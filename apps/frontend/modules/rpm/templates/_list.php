@@ -15,8 +15,10 @@
       <th>Name</th>
       <th>Summary</th>
       <th>Version</th>
+      <?php if (!isset($short)): ?>
       <th>Build date</th>
       <th>Distribution<br/>release</th>
+      <?php endif; ?>
     </tr>
     <?php endif; ?>
   </thead>
@@ -40,8 +42,10 @@
                     array('extra_parameters' => array('id' => $rpm->getid()))
                   )
                 ); ?></td>
+      <?php if (!isset($short)): ?>
       <td><?php echo $rpm->getBuildtime('Y-m-d') ?></td>
       <td><?php echo $rpm->getDistrelease()->getName() ?></td>
+      <?php endif; ?>
     </tr> 
   <?php endforeach; ?>
 </tbody>

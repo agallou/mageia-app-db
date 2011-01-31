@@ -50,6 +50,7 @@
     'showpager'      => false,
     'display_header' => false,
     'limit'          => sfConfig::get('app_homepage_rpm_limit'),
+    'short'          => true,
   )) ?>
 </div>
 
@@ -61,5 +62,6 @@
     'showpager'      => false,
     'display_header' => false,
     'limit'          => sfConfig::get('app_homepage_rpm_limit'),
+    'short'          => true,
   )) ?>
 </div>
