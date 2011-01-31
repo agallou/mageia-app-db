@@ -1,0 +1,3 @@
+listSuccess:
+  components:
+    searching: [ default, searching ]

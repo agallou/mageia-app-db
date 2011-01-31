@@ -246,29 +246,17 @@ div.pager
     padding: 0px 2px 2px 0px;
 }
 
-.packlist a
+.packlist li a, .links a
 {
     text-decoration: none;
     color: blue;
 }
 
-.packlist a:hover
+.packlist li a:hover, .links a:hover
 {
     background-color: #DDDDDD;
     outline: 1px solid #507AAA;
 }
-
-.packlist td, th
-{
-  padding-right: 10px;
-  padding-left: 10px;
-  vertical-align: top;
-}
-
-.packlist th
-{
-  text-align:left;
-} 
 
 .new1
 {
@@ -350,4 +338,13 @@ div.apply:hover
 img
 {
   border:0px;
+}
+
+.content_group
+{
+  background-color:#03344D;
+  padding: 4px;
+  color: #fff;
+  font-weight:bold;
+  margin-top: 15px;
 }

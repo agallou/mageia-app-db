@@ -54,7 +54,11 @@ class criteriaFactory
     $criteria = $perimeter->addTemporayTableColumns($criteria);
     $criteria = $this->applyCurrentPerimeterFilters($filters, $criteria, $context);
 
+
     $tablename = 'tmp_filtrage_' . md5(serialize($filters));//TODO better filtertablename
+    //TODO do not delete every time this table
+    $this->getConnection()->exec(sprintf('DROP TABLE IF EXISTS `%s`', $tablename));
+
     $toTmp     = new criteriaToTemporaryTable($criteria, $tablename);
     $toTmp->setConnection($this->getConnection());
     $toTmp->execute();
