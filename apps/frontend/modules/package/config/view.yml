@@ -3,3 +3,6 @@ showSuccess:
     - package.css
 listSuccess:
   javascripts:
+listSuccess:
+  components:
+    searching: [ default, searching ]

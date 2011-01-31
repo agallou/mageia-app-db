@@ -4,6 +4,7 @@
 default:
   http_metas:
     content-type: text/html
+  toto: titi
 
   metas:
     title:         mageia-app-db
@@ -26,3 +27,5 @@ default:
 
   components:
     filtering: [ default, filtering ]
+    searching: [ ]
+
