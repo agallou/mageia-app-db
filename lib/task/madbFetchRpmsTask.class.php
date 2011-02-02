@@ -18,34 +18,35 @@ class madbFetchRpmsTask extends madbBaseTask
 //    $sql = "UPDATE package SET description=NULL, summary=NULL;";
 //    $con->exec($sql);
     
-    $csv = dirname(__FILE__) . '/../../tmp/tmp.csv';
+    // TODO : put that into a configuration file
+    $urlSophie = "http://sophie.zarb.org";
+    
+    $distribution = 'Mandriva';
+    $distreleases = array(
+      '2007.0',
+      '2007.1',
+      '2008.0',
+      '2008.1',
+      '2009.0',
+      '2009.1',
+      '2010.0',
+      '2010.1',
+      '2010.2',
+      '2011.0',
+      'cooker'
+    );
+    $archs = array(
+      'i586', 
+      'x86_64'
+    );
+    
+    $csv = dirname(__FILE__) . '/../../tmp/tmp' . $distribution . '.csv';
     $this->getFilesystem()->execute("rm -f $csv");
     if (!($csvHandle = fopen($csv, 'w')))
     {
       // TODO : throw exception
       die("couldn't open $csv for writing");
     }
-    
-    // TODO : put that into a configuration file
-    $urlSophie = "http://sophie.zarb.org";
-    $distribution = 'Mandriva';
-    $distreleases = array(
-//      '2007.0',
-//      '2007.1',
-//      '2008.0',
-//      '2008.1',
-//      '2009.0',
-//      '2009.1',
-//      '2010.0',
-      '2010.1',
-//      '2010.2',
-//     '2011.0',
-//      'cooker'
-    );
-    $archs = array(
-      'i586', 
-      'x86_64'
-    );
     
     // Fetch RPM and SRPM names and IDs for each distrelease and arch
     foreach ($distreleases as $distrelease)
@@ -68,7 +69,7 @@ class madbFetchRpmsTask extends madbBaseTask
               $rpms = json_decode($json);
               
               echo "(" . count($rpms) . ")";
-              $failedRpms = array();
+              $failedUrlRpms = array();
               foreach ($rpms as $rpm)
               {
                 if ($i++ and $i%100 == 0) 
@@ -85,7 +86,7 @@ class madbFetchRpmsTask extends madbBaseTask
                     $rpmInfos->info->filename,
                     $rpmInfos->info->evr,
                     $rpmInfos->info->summary,
-                    str_replace("\n", '\n', $rpmInfos->info->description),
+                    str_replace("\t", '\t', str_replace("\n", '\n', $rpmInfos->info->description)),
                     $buildDate->format('Y-m-d H:i:sP'),
                     $rpmInfos->info->url,
                     $rpmInfos->info->size,
@@ -116,10 +117,10 @@ class madbFetchRpmsTask extends madbBaseTask
             echo "\n";
             if (!empty($failedUrlRpms))
             {
-              echo count($numberFailed) . " failed requests, for the following URLs :\n";
+              echo count($failedUrlRpms) . " failed requests, for the following URLs :\n";
               foreach ($failedUrlRpms as $failedUrlRpm)
               {
-                echo "$failedUrlRpm";
+                echo "$failedUrlRpm\n";
               }
             }
           }
