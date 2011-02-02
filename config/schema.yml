@@ -42,6 +42,7 @@ propel:
       fk_rpm_arch1:                                                    [ arch_id ]
       fk_rpm_rpm1:                                                     [ source_rpm_id ]
       index_short_name:                                                [ short_name ]
+      index_multi1:                                                    [ distrelease_id, media_id, arch_id, is_source ]
   distrelease:
     id:                                                                ~
     name:                                                              { type: varchar(45), required: true }
