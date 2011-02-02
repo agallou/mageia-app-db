@@ -18,16 +18,9 @@ class madbFetchRpmsTask extends madbBaseTask
 //    $sql = "UPDATE package SET description=NULL, summary=NULL;";
 //    $con->exec($sql);
     
-    $csv = dirname(__FILE__) . '/../../tmp/tmp.csv';
-    $this->getFilesystem()->execute("rm -f $csv");
-    if (!($csvHandle = fopen($csv, 'w')))
-    {
-      // TODO : throw exception
-      die("couldn't open $csv for writing");
-    }
-    
     // TODO : put that into a configuration file
     $urlSophie = "http://sophie.zarb.org";
+    
     $distribution = 'Mandriva';
     $distreleases = array(
       '2007.0',
@@ -46,6 +39,14 @@ class madbFetchRpmsTask extends madbBaseTask
       'i586', 
       'x86_64'
     );
+    
+    $csv = dirname(__FILE__) . '/../../tmp/tmp' . $distribution . '.csv';
+    $this->getFilesystem()->execute("rm -f $csv");
+    if (!($csvHandle = fopen($csv, 'w')))
+    {
+      // TODO : throw exception
+      die("couldn't open $csv for writing");
+    }
     
     // Fetch RPM and SRPM names and IDs for each distrelease and arch
     foreach ($distreleases as $distrelease)
@@ -116,7 +117,7 @@ class madbFetchRpmsTask extends madbBaseTask
             echo "\n";
             if (!empty($failedUrlRpms))
             {
-              echo count($faileUrlRpms) . " failed requests, for the following URLs :\n";
+              echo count($failedUrlRpms) . " failed requests, for the following URLs :\n";
               foreach ($failedUrlRpms as $failedUrlRpm)
               {
                 echo "$failedUrlRpm\n";
