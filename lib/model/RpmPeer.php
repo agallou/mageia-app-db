@@ -126,7 +126,7 @@ class RpmPeer extends BaseRpmPeer {
   
   public static function sortByEvrAndDistrelease($rpms, $descending=true)
   {
-    usort($rpms, 'self::rpmEvrAndDistreleaseCompare');
+    usort($rpms, array('RpmPeer', 'rpmEvrAndDistreleaseCompare'));
     if ($descending) 
     {
       $rpms = array_reverse($rpms);
