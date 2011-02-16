@@ -64,6 +64,7 @@ div#header div#search
     width:420px;
     margin:0px auto;
     margin-top:-30px;
+    position: relative;
 }
 
 div#header div#search form input[type=text]
@@ -147,20 +148,30 @@ div#header div#search form input[type=submit]
     display: block;
     border-left: 1px solid #DDDDDD;
 }
+#content ul
+{
+    list-style-type: none;
+}
 
 #content h1
 {
     border-bottom: 1px solid #BBBBBB;
-    margin-bottom: 5px;
+    margin: 10px 0px 10px 0px;
 }
 
 div.pager
 {
-    margin: 0px 0px 5px 0px;
+    margin: 10px 0px 10px 0px;
+    /*margin: 0px 0px 5px 0px;
     margin-left:auto;
-    margin-right:auto;
+    margin-right:auto;*/
     width:100%;
     text-align:center;
+}
+
+.pager ul
+{
+    margin-bottom: 15px;
 }
 
 .pager li
@@ -176,14 +187,6 @@ div.pager
   font-weight:bold;
   font-family:verdana;
   font-size:small;
-}
-
-div.pager
-{
-/*  margin-left:auto;
-  margin-right:auto;
-  width:100%*/
-  text-align:center;
 }
 
 .pager li
@@ -232,6 +235,15 @@ div.pager
     min-height: 7%;
     height: 7%;
     border-top: 1px solid #DDDDDD;
+    position: relative;
+}
+
+.content
+{
+    position: absolute;
+    padding: 10px;
+    bottom: 0px;
+    right: 0px;
 }
 
 /* Package List Stuff */
@@ -325,7 +337,7 @@ div.apply:hover
 
 #filtersInfo
 {
-  margin-top:8px;
+  margin: 8px 0px 5px 0px;
   border:1px solid #ccc;
   background-color:#E1E7E8;
 }
@@ -347,4 +359,9 @@ img
   color: #fff;
   font-weight:bold;
   margin-top: 15px;
+}
+
+td /* All table cells have 1px padding, they looked to me a bit close to each other */
+{
+    padding: 1px;
 }
