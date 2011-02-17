@@ -198,6 +198,9 @@ propel:
     id:                                                                ~
     name:                                                              { type: varchar(45) }
     hash:                                                              { type: varchar(45), required: true }
+    user_id:                                                           { type: integer, required: true, foreignTable: user, foreignReference: id }
+    _indexes:
+      fk_rss_feed_user1:                                               [ user_id ]
     _uniques:
       hash_UNIQUE:                                                     [ hash ]
   version:
