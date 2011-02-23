@@ -1,0 +1,32 @@
+only_releases:
+  - '2007.0'
+  - '2007.1'
+  - '2008.0'
+  - '2008.1'
+  - '2009.0'
+  - '2009.1'
+  - '2010.0'
+  - '2010.1'
+  - '2010.2'
+  - 'cooker'
+exclude_releases: 
+only_media:
+exclude_media:
+  - /^.*-debug$/
+only_archs:
+exclude_archs:
+only_packages:
+exclude_packages:
+
+devel_releases:
+  - cooker
+latest_stable_release: 2010.2
+
+updates_media:
+  - /^.*-updates.*$/
+testing_media:
+  - /^.*-testing.*$/
+backports_media:
+  - /^.*-backports.*$/
+third_party_media:
+  - /^plf.*$/

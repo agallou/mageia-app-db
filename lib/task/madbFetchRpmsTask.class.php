@@ -8,37 +8,61 @@ class madbFetchRpmsTask extends madbBaseTask
   {
     $this->namespace = 'madb';
     $this->name      = 'fetch-rpms';
-    $this->addOption('limit', null, sfCommandOption::PARAMETER_OPTIONAL, 'number of rpms to fetch', false);
+    $this->addOption('limit', null, sfCommandOption::PARAMETER_REQUIRED, 'number of rpms to fetch', null);
+    $this->addOption('distro', null, sfCommandOption::PARAMETER_REQUIRED, 'distribution to fetch', 'mageia');
+    $this->addOption('config', null, sfCommandOption::PARAMETER_REQUIRED, 'configuration file to use', null);
+    $this->addOption('notify', null, sfCommandOption::PARAMETER_NONE, 'add this option if you want changes to trigger notifications', null);
   }
   protected function execute($arguments = array(), $options = array())
   {
     sfContext::createInstance($this->createConfiguration('frontend', 'prod'));
     $con = Propel::getConnection();
-
-//    $sql = "UPDATE package SET description=NULL, summary=NULL;";
-//    $con->exec($sql);
     
     // TODO : put that into a configuration file
     $urlSophie = "http://sophie.zarb.org";
     
-    $distribution = 'Mandriva';
-    $distreleases = array(
-      '2007.0',
-      '2007.1',
-      '2008.0',
-      '2008.1',
-      '2009.0',
-      '2009.1',
-      '2010.0',
-      '2010.1',
-      '2010.2',
-      '2011.0',
-      'cooker'
-    );
-    $archs = array(
-      'i586', 
-      'x86_64'
-    );
+    $distribution = $options['distro'];
+    $config_file = $options['config'] ? $options['config'] : dirname(__FILE__) . '/../../data/distros/' . $distribution . '/distro.yml';
+    
+    if (file_exists($config_file))
+    {
+      $config = sfYaml::load($config_file);
+    }
+    else
+    {
+      echo "Configuration file not found.\n";
+      return false;
+    }
+    
+    // TODO: use the "limit" parameter
+    
+    // Get list of releases
+    // Filter list with only_releases and exclude_releases filters
+    
+    // For each release
+      // Add release to database if not known yet
+      // Get list of media
+      // Filter list with only_media and exclude_media filters
+      
+      // For each media
+        // Add media to database if not known yet
+        // Get list of archs
+        // Filter list with only_archs and exclude_archs filters
+        
+        // For each arch
+          // Add arch to database if not known yet
+          // Get the list of pkgids and RPM names
+          // Filter list of RPMs with only_packages and exclude_packages filters
+          // Compare that list to what we have in database for that release/media/arch
+           
+          // For each unknown RPM (batch processing would be great here)
+            // Fetch RPM infos
+            // Insert RPM into database (rpm and package tables)
+            // Process notifications
+            
+          // For each deleted RPM (absent from the list)
+            // Flag the rows as deleted in rpm table
+            // Update other tables so that they are exactly like it would be without this RPM
     
     $csv = dirname(__FILE__) . '/../../tmp/tmp' . $distribution . '.csv';
     $this->getFilesystem()->execute("rm -f $csv");
