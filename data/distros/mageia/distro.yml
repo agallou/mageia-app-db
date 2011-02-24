@@ -1,22 +1,19 @@
+name: Mageia
 only_releases:
   - cauldron
-exclude_releases: 
+exclude_releases:
 only_media:
-exclude_media:
-  - /^.*-debug$/
+exclude_media: /^.*-debug$/
 only_archs:
 exclude_archs:
 only_packages:
 exclude_packages:
 
-devel_releases:
+devel_releases: 
   - cauldron
 latest_stable_release:
 
-updates_media:
-  - /^.*-updates.*$/
-testing_media:
-  - /^.*[-_]testing.*$/
-backports_media:
-  - /^.*-backports.*$/
+updates_media: /^.*-updates.*$/
+testing_media: /^.*[-_]testing.*$/
+backports_media: /^.*-backports.*$/
 third_party_media:

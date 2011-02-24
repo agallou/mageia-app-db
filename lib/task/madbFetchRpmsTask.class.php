@@ -15,11 +15,11 @@ class madbFetchRpmsTask extends madbBaseTask
   }
   protected function execute($arguments = array(), $options = array())
   {
+    // TODO: use the "limit" parameter
+    
+    
     sfContext::createInstance($this->createConfiguration('frontend', 'prod'));
     $con = Propel::getConnection();
-    
-    // TODO : put that into a configuration file
-    $urlSophie = "http://sophie.zarb.org";
     
     $distribution = $options['distro'];
     $config_file = $options['config'] ? $options['config'] : dirname(__FILE__) . '/../../data/distros/' . $distribution . '/distro.yml';
@@ -34,27 +34,85 @@ class madbFetchRpmsTask extends madbBaseTask
       return false;
     }
     
-    // TODO: use the "limit" parameter
+    // overload $distribution with the case-sensitive name
+    $distribution = isset($config['name']) ? $config['name'] : $distribution;
+    
+    $sophie = new SophieClient();
+    $sophie->setDefaultType('json');
     
     // Get list of releases
     // Filter list with only_releases and exclude_releases filters
+    $releases = $sophie->getReleases( 
+                  $distribution, 
+                  array(
+                    'only' => isset($config['only_releases']) ? $config['only_releases'] : null, 
+                    'exclude' => isset($config['exclude_releases']) ? $config['exclude_releases'] : null
+                  )
+                );
+    if (!$releases)
+    {
+      echo "Failed to get a list of releases for distribution '$distribution'\n";
+      return false;
+    }
     
     // For each release
+    foreach ($releases as $release)
+    {
       // Add release to database if not known yet
-      // Get list of media
-      // Filter list with only_media and exclude_media filters
+      // TODO
       
-      // For each media
-        // Add media to database if not known yet
-        // Get list of archs
-        // Filter list with only_archs and exclude_archs filters
-        
-        // For each arch
-          // Add arch to database if not known yet
+      
+      // Get list of archs
+      // Filter list with only_archs and exclude_archs filters
+      $archs = $sophie->getArchs( 
+                    $distribution,
+                    $release,
+                    array(
+                      'only' => isset($config['only_archs']) ? $config['only_archs'] : null, 
+                      'exclude' => isset($config['exclude_archs']) ? $config['exclude_archs'] : null
+                    )
+                  );
+      if (!$archs)
+      {
+        echo "Failed to get a list of archs for distribution '$distribution', release '$release'.\n";
+        return false;
+      }
+    
+      // For each arch
+      foreach ($archs as $arch)
+      {
+        // Add arch to database if not known yet
+        // TODO
+           
+        // Get list of media
+        // Filter list with only_media and exclude_media filters
+        $media = $sophie->getMedia( 
+                      $distribution,
+                      $release,
+                      $arch, 
+                      array(
+                        'only' => isset($config['only_media']) ? $config['only_media'] : null, 
+                        'exclude' => isset($config['exclude_media']) ? $config['exclude_media'] : null
+                      )
+                    );
+        if (!$media)
+        {
+          echo "Failed to get a list of media for distribution '$distribution', release '$release', arch '$arch'.\n";
+          return false;
+        }
+          
+        // For each media
+        foreach ($media as $medium)
+        {
+          // Add media to database if not known yet
+          // TODO
+          
+          echo "$distribution - $release - $arch - $medium\n";
+          
           // Get the list of pkgids and RPM names
           // Filter list of RPMs with only_packages and exclude_packages filters
           // Compare that list to what we have in database for that release/media/arch
-           
+          
           // For each unknown RPM (batch processing would be great here)
             // Fetch RPM infos
             // Insert RPM into database (rpm and package tables)
@@ -63,7 +121,10 @@ class madbFetchRpmsTask extends madbBaseTask
           // For each deleted RPM (absent from the list)
             // Flag the rows as deleted in rpm table
             // Update other tables so that they are exactly like it would be without this RPM
-    
+        }
+      }
+    }
+die;    
     $csv = dirname(__FILE__) . '/../../tmp/tmp' . $distribution . '.csv';
     $this->getFilesystem()->execute("rm -f $csv");
     if (!($csvHandle = fopen($csv, 'w')))
@@ -156,5 +217,5 @@ class madbFetchRpmsTask extends madbBaseTask
       }
     }
     fclose($csvHandle);
-  }
+  }  
 }
