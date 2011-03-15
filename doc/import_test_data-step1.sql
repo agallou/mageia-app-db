@@ -1,5 +1,4 @@
 drop table if exists rpmlinearized;
-truncate table rpm_group;
 truncate table arch;
 truncate table media;
 truncate table distrelease;
