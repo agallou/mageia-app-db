@@ -15,6 +15,28 @@
 class RpmGroupPeer extends BaseRpmGroupPeer {
 
   /**
+   * Retrieve a single object by name.
+   *
+   * @param      int $name the name.
+   * @param      PropelPDO $con the connection to use
+   * @return     RpmGroup
+   */
+  public static function retrieveByName($name, PropelPDO $con = null)
+  {
+    $criteria = new Criteria();
+    $criteria->add(RpmGroupPeer::NAME, $name);
+    
+    $rpmGroup = RpmGroupPeer::doSelectOne($criteria, $con);
+    
+    if (null === $rpmGroup) 
+    { 
+      throw new RpmGroupPeerException('RpmGroup \'' . $name . '\' not found (by name)'); 
+    }
+    
+    return $rpmGroup;
+  }  
+  
+  /**
    * 
    * Returns an array of RpmGroup containing RpmGroups whose name match $pattern
    *

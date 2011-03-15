@@ -13,5 +13,25 @@
  * @package    lib.model
  */
 class MediaPeer extends BaseMediaPeer {
-
+  /**
+   * Retrieve a single object by name.
+   *
+   * @param      int $name the name.
+   * @param      PropelPDO $con the connection to use
+   * @return     Media
+   */
+  public static function retrieveByName($name, PropelPDO $con = null)
+  {
+    $criteria = new Criteria();
+    $criteria->add(MediaPeer::NAME, $name);
+    
+    $media = MediaPeer::doSelectOne($criteria, $con);
+    
+    if (null === $media) 
+    { 
+      throw new MediaPeerException('Media \'' . $name . '\' not found (by name)'); 
+    }
+    
+    return $media;
+  }
 } // MediaPeer

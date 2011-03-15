@@ -25,7 +25,7 @@ abstract class BaseRpmPeer {
 	const TM_CLASS = 'RpmTableMap';
 	
 	/** The total number of columns. */
-	const NUM_COLUMNS = 21;
+	const NUM_COLUMNS = 23;
 
 	/** The number of lazy-loaded columns. */
 	const NUM_LAZY_LOAD_COLUMNS = 0;
@@ -50,6 +50,9 @@ abstract class BaseRpmPeer {
 
 	/** the column name for the NAME field */
 	const NAME = 'rpm.NAME';
+
+	/** the column name for the MD5_NAME field */
+	const MD5_NAME = 'rpm.MD5_NAME';
 
 	/** the column name for the SHORT_NAME field */
 	const SHORT_NAME = 'rpm.SHORT_NAME';
@@ -93,6 +96,9 @@ abstract class BaseRpmPeer {
 	/** the column name for the SOURCE_RPM_ID field */
 	const SOURCE_RPM_ID = 'rpm.SOURCE_RPM_ID';
 
+	/** the column name for the SOURCE_RPM_NAME field */
+	const SOURCE_RPM_NAME = 'rpm.SOURCE_RPM_NAME';
+
 	/**
 	 * An identiy map to hold any loaded instances of Rpm objects.
 	 * This must be public so that other peer classes can access this when hydrating from JOIN
@@ -116,11 +122,11 @@ abstract class BaseRpmPeer {
 	 * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
 	 */
 	private static $fieldNames = array (
-		BasePeer::TYPE_PHPNAME => array ('Id', 'PackageId', 'DistreleaseId', 'MediaId', 'RpmGroupId', 'Licence', 'Name', 'ShortName', 'Evr', 'Version', 'Release', 'Summary', 'Description', 'Url', 'RpmPkgid', 'BuildTime', 'Size', 'Realarch', 'ArchId', 'IsSource', 'SourceRpmId', ),
-		BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'packageId', 'distreleaseId', 'mediaId', 'rpmGroupId', 'licence', 'name', 'shortName', 'evr', 'version', 'release', 'summary', 'description', 'url', 'rpmPkgid', 'buildTime', 'size', 'realarch', 'archId', 'isSource', 'sourceRpmId', ),
-		BasePeer::TYPE_COLNAME => array (self::ID, self::PACKAGE_ID, self::DISTRELEASE_ID, self::MEDIA_ID, self::RPM_GROUP_ID, self::LICENCE, self::NAME, self::SHORT_NAME, self::EVR, self::VERSION, self::RELEASE, self::SUMMARY, self::DESCRIPTION, self::URL, self::RPM_PKGID, self::BUILD_TIME, self::SIZE, self::REALARCH, self::ARCH_ID, self::IS_SOURCE, self::SOURCE_RPM_ID, ),
-		BasePeer::TYPE_FIELDNAME => array ('id', 'package_id', 'distrelease_id', 'media_id', 'rpm_group_id', 'licence', 'name', 'short_name', 'evr', 'version', 'release', 'summary', 'description', 'url', 'rpm_pkgid', 'build_time', 'size', 'realarch', 'arch_id', 'is_source', 'source_rpm_id', ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, )
+		BasePeer::TYPE_PHPNAME => array ('Id', 'PackageId', 'DistreleaseId', 'MediaId', 'RpmGroupId', 'Licence', 'Name', 'Md5Name', 'ShortName', 'Evr', 'Version', 'Release', 'Summary', 'Description', 'Url', 'RpmPkgid', 'BuildTime', 'Size', 'Realarch', 'ArchId', 'IsSource', 'SourceRpmId', 'SourceRpmName', ),
+		BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'packageId', 'distreleaseId', 'mediaId', 'rpmGroupId', 'licence', 'name', 'md5Name', 'shortName', 'evr', 'version', 'release', 'summary', 'description', 'url', 'rpmPkgid', 'buildTime', 'size', 'realarch', 'archId', 'isSource', 'sourceRpmId', 'sourceRpmName', ),
+		BasePeer::TYPE_COLNAME => array (self::ID, self::PACKAGE_ID, self::DISTRELEASE_ID, self::MEDIA_ID, self::RPM_GROUP_ID, self::LICENCE, self::NAME, self::MD5_NAME, self::SHORT_NAME, self::EVR, self::VERSION, self::RELEASE, self::SUMMARY, self::DESCRIPTION, self::URL, self::RPM_PKGID, self::BUILD_TIME, self::SIZE, self::REALARCH, self::ARCH_ID, self::IS_SOURCE, self::SOURCE_RPM_ID, self::SOURCE_RPM_NAME, ),
+		BasePeer::TYPE_FIELDNAME => array ('id', 'package_id', 'distrelease_id', 'media_id', 'rpm_group_id', 'licence', 'name', 'md5_name', 'short_name', 'evr', 'version', 'release', 'summary', 'description', 'url', 'rpm_pkgid', 'build_time', 'size', 'realarch', 'arch_id', 'is_source', 'source_rpm_id', 'source_rpm_name', ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, )
 	);
 
 	/**
@@ -130,11 +136,11 @@ abstract class BaseRpmPeer {
 	 * e.g. self::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
 	 */
 	private static $fieldKeys = array (
-		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'PackageId' => 1, 'DistreleaseId' => 2, 'MediaId' => 3, 'RpmGroupId' => 4, 'Licence' => 5, 'Name' => 6, 'ShortName' => 7, 'Evr' => 8, 'Version' => 9, 'Release' => 10, 'Summary' => 11, 'Description' => 12, 'Url' => 13, 'RpmPkgid' => 14, 'BuildTime' => 15, 'Size' => 16, 'Realarch' => 17, 'ArchId' => 18, 'IsSource' => 19, 'SourceRpmId' => 20, ),
-		BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'packageId' => 1, 'distreleaseId' => 2, 'mediaId' => 3, 'rpmGroupId' => 4, 'licence' => 5, 'name' => 6, 'shortName' => 7, 'evr' => 8, 'version' => 9, 'release' => 10, 'summary' => 11, 'description' => 12, 'url' => 13, 'rpmPkgid' => 14, 'buildTime' => 15, 'size' => 16, 'realarch' => 17, 'archId' => 18, 'isSource' => 19, 'sourceRpmId' => 20, ),
-		BasePeer::TYPE_COLNAME => array (self::ID => 0, self::PACKAGE_ID => 1, self::DISTRELEASE_ID => 2, self::MEDIA_ID => 3, self::RPM_GROUP_ID => 4, self::LICENCE => 5, self::NAME => 6, self::SHORT_NAME => 7, self::EVR => 8, self::VERSION => 9, self::RELEASE => 10, self::SUMMARY => 11, self::DESCRIPTION => 12, self::URL => 13, self::RPM_PKGID => 14, self::BUILD_TIME => 15, self::SIZE => 16, self::REALARCH => 17, self::ARCH_ID => 18, self::IS_SOURCE => 19, self::SOURCE_RPM_ID => 20, ),
-		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'package_id' => 1, 'distrelease_id' => 2, 'media_id' => 3, 'rpm_group_id' => 4, 'licence' => 5, 'name' => 6, 'short_name' => 7, 'evr' => 8, 'version' => 9, 'release' => 10, 'summary' => 11, 'description' => 12, 'url' => 13, 'rpm_pkgid' => 14, 'build_time' => 15, 'size' => 16, 'realarch' => 17, 'arch_id' => 18, 'is_source' => 19, 'source_rpm_id' => 20, ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, )
+		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'PackageId' => 1, 'DistreleaseId' => 2, 'MediaId' => 3, 'RpmGroupId' => 4, 'Licence' => 5, 'Name' => 6, 'Md5Name' => 7, 'ShortName' => 8, 'Evr' => 9, 'Version' => 10, 'Release' => 11, 'Summary' => 12, 'Description' => 13, 'Url' => 14, 'RpmPkgid' => 15, 'BuildTime' => 16, 'Size' => 17, 'Realarch' => 18, 'ArchId' => 19, 'IsSource' => 20, 'SourceRpmId' => 21, 'SourceRpmName' => 22, ),
+		BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'packageId' => 1, 'distreleaseId' => 2, 'mediaId' => 3, 'rpmGroupId' => 4, 'licence' => 5, 'name' => 6, 'md5Name' => 7, 'shortName' => 8, 'evr' => 9, 'version' => 10, 'release' => 11, 'summary' => 12, 'description' => 13, 'url' => 14, 'rpmPkgid' => 15, 'buildTime' => 16, 'size' => 17, 'realarch' => 18, 'archId' => 19, 'isSource' => 20, 'sourceRpmId' => 21, 'sourceRpmName' => 22, ),
+		BasePeer::TYPE_COLNAME => array (self::ID => 0, self::PACKAGE_ID => 1, self::DISTRELEASE_ID => 2, self::MEDIA_ID => 3, self::RPM_GROUP_ID => 4, self::LICENCE => 5, self::NAME => 6, self::MD5_NAME => 7, self::SHORT_NAME => 8, self::EVR => 9, self::VERSION => 10, self::RELEASE => 11, self::SUMMARY => 12, self::DESCRIPTION => 13, self::URL => 14, self::RPM_PKGID => 15, self::BUILD_TIME => 16, self::SIZE => 17, self::REALARCH => 18, self::ARCH_ID => 19, self::IS_SOURCE => 20, self::SOURCE_RPM_ID => 21, self::SOURCE_RPM_NAME => 22, ),
+		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'package_id' => 1, 'distrelease_id' => 2, 'media_id' => 3, 'rpm_group_id' => 4, 'licence' => 5, 'name' => 6, 'md5_name' => 7, 'short_name' => 8, 'evr' => 9, 'version' => 10, 'release' => 11, 'summary' => 12, 'description' => 13, 'url' => 14, 'rpm_pkgid' => 15, 'build_time' => 16, 'size' => 17, 'realarch' => 18, 'arch_id' => 19, 'is_source' => 20, 'source_rpm_id' => 21, 'source_rpm_name' => 22, ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, )
 	);
 
 	/**
@@ -211,6 +217,7 @@ abstract class BaseRpmPeer {
 		$criteria->addSelectColumn(RpmPeer::RPM_GROUP_ID);
 		$criteria->addSelectColumn(RpmPeer::LICENCE);
 		$criteria->addSelectColumn(RpmPeer::NAME);
+		$criteria->addSelectColumn(RpmPeer::MD5_NAME);
 		$criteria->addSelectColumn(RpmPeer::SHORT_NAME);
 		$criteria->addSelectColumn(RpmPeer::EVR);
 		$criteria->addSelectColumn(RpmPeer::VERSION);
@@ -225,6 +232,7 @@ abstract class BaseRpmPeer {
 		$criteria->addSelectColumn(RpmPeer::ARCH_ID);
 		$criteria->addSelectColumn(RpmPeer::IS_SOURCE);
 		$criteria->addSelectColumn(RpmPeer::SOURCE_RPM_ID);
+		$criteria->addSelectColumn(RpmPeer::SOURCE_RPM_NAME);
 	}
 
 	/**
@@ -2988,7 +2996,7 @@ abstract class BaseRpmPeer {
 	 */
 	static public function getUniqueColumnNames()
 	{
-	  return array();
+	  return array(array('md5_name', 'distrelease_id', 'media_id', 'arch_id'));
 	}
 
 	// symfony_behaviors behavior

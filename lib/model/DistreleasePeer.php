@@ -41,4 +41,27 @@ class DistreleasePeer extends BaseDistreleasePeer {
     if ($distrelease1->getName() < $distrelease2->getName()) return -1;
     return 0;
   }
+  
+  /**
+   * Retrieve a single object by name.
+   *
+   * @param      int $name the name.
+   * @param      PropelPDO $con the connection to use
+   * @return     Distrelease
+   */
+  public static function retrieveByName($name, PropelPDO $con = null)
+  {
+    $criteria = new Criteria();
+    $criteria->add(DistreleasePeer::NAME, $name);
+    
+    $distrelease = DistreleasePeer::doSelectOne($criteria, $con);
+    
+    if (null === $distrelease) 
+    { 
+      throw new DistreleasePeerException('Distrelease \'' . $name . '\' not found (by name)'); 
+    }
+    
+    return $distrelease;
+  }
+
 } // DistreleasePeer

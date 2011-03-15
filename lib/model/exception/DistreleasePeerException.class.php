@@ -1,4 +1,4 @@
 <?php
-class DistreleasePeerException extends sfException
+class DistreleasePeerException extends madbException
 {
 }

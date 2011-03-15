@@ -1,16 +1,16 @@
 propel:
   package:
     id:                                                                ~
-    name:                                                              { type: varchar(1024), required: true }
+    name:                                                              { type: varchar(900), required: true }
     md5_name:                                                          { type: char, size:32, required: true }
     is_application:                                                    { type: boolean, required: true }
     is_source:                                                         { type: boolean, required: true }
     summary:                                                           { type: varchar(255) }
     description:                                                       longvarchar
     _indexes:
-      unique_name:                                                     [ name ]
+      name:                                                            [ name ]
     _uniques:
-      unique_md5_name:                                                 [ md5_name ]
+      unique_md5_name_is_source:                                       [ md5_name, is_source ]
   rpm:
     id:                                                                ~
     package_id:                                                        { type: integer, required: true, foreignTable: package, foreignReference: id }
@@ -18,7 +18,8 @@ propel:
     media_id:                                                          { type: integer, required: true, foreignTable: media, foreignReference: id }
     rpm_group_id:                                                      { type: integer, required: true, foreignTable: rpm_group, foreignReference: id }
     licence:                                                           { type: varchar(255), required: true }
-    name:                                                              { type: varchar(255), required: true }
+    name:                                                              { type: varchar(900), required: true }
+    md5_name:                                                          { type: varchar(45), required: true }
     short_name:                                                        { type: varchar(255), required: true }
     evr:                                                               { type: varchar(255), required: true }
     version:                                                           { type: varchar(255), required: true }
@@ -32,7 +33,8 @@ propel:
     realarch:                                                          { type: varchar(45), required: true }
     arch_id:                                                           { type: integer, required: true, foreignTable: arch, foreignReference: id }
     is_source:                                                         { type: boolean, required: true }
-    source_rpm_id:                                                     { type: integer, required: true, foreignTable: rpm, foreignReference: id }
+    source_rpm_id:                                                     { type: integer, foreignTable: rpm, foreignReference: id }
+    source_rpm_name:                                                   { type: varchar(900) }
     _indexes:
       fk_rpm_distrelease1:                                             [ distrelease_id ]
       fk_rpm_package1:                                                 [ package_id ]
@@ -43,6 +45,10 @@ propel:
       fk_rpm_rpm1:                                                     [ source_rpm_id ]
       index_short_name:                                                [ short_name ]
       index_multi1:                                                    [ distrelease_id, media_id, arch_id, is_source ]
+      index_rpm_pkgid:                                                 [ rpm_pkgid ]
+      index_source_rpm_name:                                           [ source_rpm_name ]
+    _uniques:
+      unique_name_multi:                                               [ md5_name, distrelease_id, media_id, arch_id ]
   distrelease:
     id:                                                                ~
     name:                                                              { type: varchar(45), required: true }
@@ -206,4 +212,3 @@ propel:
   version:
     id:                                                                ~
     version:                                                           { type: varchar(10) }
-

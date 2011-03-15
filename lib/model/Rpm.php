@@ -13,5 +13,22 @@
  * @package    lib.model
  */
 class Rpm extends BaseRpm {
-
+  /**
+   * 
+   * Search for a binary RPM for which this RPM would be the source RPM
+   * Useful only at creation or update time, because you can use the SOURCE_RPM_ID FK otherwise
+   * 
+   * @return Rpm
+   */
+  public function inferBinaryRpms()
+  {
+    $criteria = new Criteria();
+    $criteria->add(RpmPeer::DISTRELEASE_ID, $this->getDistrelease()->getId());
+    $criteria->add(RpmPeer::ARCH_ID, $this->getArch()->getId());
+    $criteria->add(RpmPeer::MEDIA_ID, $this->getMedia()->getId());
+    $criteria->add(RpmPeer::SOURCE_RPM_NAME, $this->getName());
+    $rpms = RpmPeer::doSelect($criteria);
+    return $rpms;
+  }    
+    
 } // Rpm

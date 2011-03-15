@@ -1,4 +1,4 @@
 <?php
-class ArchPeerException extends sfException 
+class ArchPeerException extends madbException 
 {
 }

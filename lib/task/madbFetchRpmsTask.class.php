@@ -24,149 +24,133 @@ class madbFetchRpmsTask extends madbBaseTask
     $distribution = $options['distro'];
     $config_file = $options['config'] ? $options['config'] : dirname(__FILE__) . '/../../data/distros/' . $distribution . '/distro.yml';
     
-    if (file_exists($config_file))
+    $factory = new madbDistroConfigFactory();
+    $config = $factory->createFromFile($config_file);
+    
+    
+    
+    // check config file validity (TODO : make it an actual check !)
+    if (!$config->check())
     {
-      $config = sfYaml::load($config_file);
-    }
-    else
-    {
-      echo "Configuration file not found.\n";
+      echo "Invalid configuration file '$config_file'";
       return false;
     }
     
-    // overload $distribution with the case-sensitive name
-    $distribution = isset($config['name']) ? $config['name'] : $distribution;
+    // overload $distribution with the case-sensitive name from the config file
+    $distribution = $config->getName();
+    
+    
+    
     
     $sophie = new SophieClient();
     $sophie->setDefaultType('json');
     
-    // Get list of releases
-    // Filter list with only_releases and exclude_releases filters
-    $releases = $sophie->getReleases( 
-                  $distribution, 
-                  array(
-                    'only' => isset($config['only_releases']) ? $config['only_releases'] : null, 
-                    'exclude' => isset($config['exclude_releases']) ? $config['exclude_releases'] : null
-                  )
-                );
-    if (!$releases)
+    // TODO : better handling of release, arch and media changes  
+    
+    // Get release, arch and media information from sophie
+    // $distreleases[$release][$arch][$media] = true
+    if (!$distreleases = $this->getDistreleasesArchsMedias($config, $sophie))
     {
-      echo "Failed to get a list of releases for distribution '$distribution'\n";
+      echo "Failed to get media information, aborting.\n";
       return false;
-    }
+    } 
     
-    // For each release
-    foreach ($releases as $release)
+    // Now that we have all wanted media for all archs for all releases, perform some checking
+    // TODO 
+    // Releases : 
+    // - releases present in database must be still present in result. If not, abort.
+    // - releases present in result but absent from database :
+    // - devel media
+    // - latest stable 
+    // It could be tricky (can a devel version lose it's devel version status ? Can it become obsolete ?)
+    // Can a distrelease disappear ? 
+    // Archs :
+    // - archs present in database must still exist in results ?
+    // - archs present in results but absent from database must be added in database
+    // Media :
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    // Now fetch RPM lists and treat them
+    $rpmImporter = new RpmImporter();
+    
+    foreach ($distreleases as $distrelease => $archs)
     {
-      // Add release to database if not known yet
-      // TODO
+      $distreleaseObj = DistreleasePeer::retrieveByName($distrelease); 
       
-      
-      // Get list of archs
-      // Filter list with only_archs and exclude_archs filters
-      $archs = $sophie->getArchs( 
-                    $distribution,
-                    $release,
-                    array(
-                      'only' => isset($config['only_archs']) ? $config['only_archs'] : null, 
-                      'exclude' => isset($config['exclude_archs']) ? $config['exclude_archs'] : null
-                    )
-                  );
-      if (!$archs)
+      foreach ($archs as $arch => $medias)
       {
-        echo "Failed to get a list of archs for distribution '$distribution', release '$release'.\n";
-        return false;
-      }
-    
-      // For each arch
-      foreach ($archs as $arch)
-      {
-        // Add arch to database if not known yet
-        // TODO
-           
-        // Get list of media
-        // Filter list with only_media and exclude_media filters
-        $media = $sophie->getMedia( 
-                      $distribution,
-                      $release,
-                      $arch, 
-                      array(
-                        'only' => isset($config['only_media']) ? $config['only_media'] : null, 
-                        'exclude' => isset($config['exclude_media']) ? $config['exclude_media'] : null
-                      )
-                    );
-        if (!$media)
+        $archObj = ArchPeer::retrieveByName($arch); 
+        foreach ($medias as $media => $unused_value)
         {
-          echo "Failed to get a list of media for distribution '$distribution', release '$release', arch '$arch'.\n";
-          return false;
-        }
-          
-        // For each media
-        foreach ($media as $medium)
-        {
-          // Add media to database if not known yet
-          // TODO
-          
-          echo "$distribution - $release - $arch - $medium\n";
-          
+          $mediaObj = MediaPeer::retrieveByName($sophie->convertMediaName($media)); 
+          echo "--- $distrelease : $arch : $media"; 
           // Get the list of pkgids and RPM names
           // Filter list of RPMs with only_packages and exclude_packages filters
+          $rpms = $sophie->getRpmsFromMedia( 
+                    $distribution,
+                    $distrelease,
+                    $arch,
+                    $media,
+                    array(
+                      'only' => $config->getOnlyRpms(), 
+                      'exclude' => $config->getExcludeRpms()
+                    )
+                  );
+          asort($rpms);
+
           // Compare that list to what we have in database for that release/media/arch
+          $criteria = new Criteria();
+          $criteria->addJoin(RpmPeer::DISTRELEASE_ID, DistreleasePeer::ID);
+          $criteria->addJoin(RpmPeer::ARCH_ID, ArchPeer::ID);
+          $criteria->addJoin(RpmPeer::MEDIA_ID, MediaPeer::ID);
+          $criteria->add(DistreleasePeer::NAME, $distrelease);
+          $criteria->add(ArchPeer::NAME, $arch);
+          $criteria->add(MediaPeer::NAME, $sophie->convertMediaName($media));
+          $criteria->addSelectColumn(RpmPeer::RPM_PKGID);
+          $criteria->addSelectColumn(RpmPeer::NAME);
+          $stmt = RpmPeer::doSelectStmt($criteria);
+          $rpms2 = array();
+          foreach ($stmt as $row)
+          {
+            $rpms2[$row['RPM_PKGID']] = $row['NAME'];
+          }
+          asort($rpms2);
           
-          // For each unknown RPM (batch processing would be great here)
-            // Fetch RPM infos
-            // Insert RPM into database (rpm and package tables)
-            // Process notifications
+          $differences = array_diff_assoc($rpms, $rpms2);
+          echo " (" . count($rpms) . " RPMs , " . count($differences) . " new RPMs) ---\n";
+          // For each unknown RPM 
+          // TODO : (batch processing would be great here)
+          foreach ($differences as $pkgid => $filename)
+          {
+            echo " " . $filename . " ( " . $pkgid . " )\n";
             
+            // Fetch RPM infos
+            $rpmInfos = $sophie->getRpmByPkgid($pkgid);
+            
+            // Process RPM
+            $rpmImporter->importFromArray($distreleaseObj, $archObj, $mediaObj, $rpmInfos);
+            
+          }
+          echo "\n";
+          
+          // TODO : handle missing packages from sophie as compared to database
+          // and for being able to do it, treat -src media along with their non-src media
+          //(array_diff_assoc($rpms2, $rpms));
           // For each deleted RPM (absent from the list)
             // Flag the rows as deleted in rpm table
             // Update other tables so that they are exactly like it would be without this RPM
+          
         }
       }
     }
-die;    
-    $csv = dirname(__FILE__) . '/../../tmp/tmp' . $distribution . '.csv';
-    $this->getFilesystem()->execute("rm -f $csv");
-    if (!($csvHandle = fopen($csv, 'w')))
-    {
-      // TODO : throw exception
-      die("couldn't open $csv for writing");
-    }
-    
-    // Fetch RPM and SRPM names and IDs for each distrelease and arch
-    foreach ($distreleases as $distrelease)
-    {
-      foreach ($archs as $arch)
-      {
-        $urlDistreleaseArch = "$urlSophie/distrib/$distribution/$distrelease/$arch";
-        echo "Fetching $urlDistreleaseArch\n";
-        $json = file_get_contents($urlDistreleaseArch . "?json=1");
-        if ($json)
-        {
-          $medias = json_decode($json);
-          foreach ($medias as $media)
-          {
-            $urlMedia = $urlDistreleaseArch . "/media/$media";
-            echo "$media ";
-            $json = file_get_contents($urlMedia . "?json=1");
-            if ($json)
-            {
-              $rpms = json_decode($json);
-              
-              echo "(" . count($rpms) . ")";
-              $failedUrlRpms = array();
-              foreach ($rpms as $rpm)
-              {
-                if ($i++ and $i%100 == 0) 
-                {
-                  echo "."; 
-                }
-                $urlRpm = $urlMedia . "/by-pkgid/" . $rpm->pkgid;
-                $json = file_get_contents($urlRpm . "?json=1");
-                if ($json)
-                {
-                  $rpmInfos = json_decode($json);
-                  $buildDate = new DateTime('@' . $rpmInfos->info->buildtime);
+/*
                   $tab = array(
                     $rpmInfos->info->filename,
                     $rpmInfos->info->evr,
@@ -185,37 +169,75 @@ die;
                     $distrelease,
                     $arch,
                     $rpm->pkgid
+*/
+  }  
+  
+  protected function getDistreleasesArchsMedias (madbDistroConfig $config, SophieClient $sophie)
+  {
+    // TODO : better error handling (no echo inside the method...)
+    $distribution = $config->getName();
+    $distreleases = array();
+    
+    $releases = $sophie->getReleases( 
+                  $distribution, 
+                  array(
+                    'only' => $config->getOnlyReleases(), 
+                    'exclude' => $config->getExcludeReleases()
+                  )
+              );
+    if (!$releases)
+    {
+      echo "Failed to get a list of releases for distribution '$distribution'\n";
+      return false;
+    }
+    
+    // For each release
+    foreach ($releases as $release)
+    {
+      // Get list of archs
+      // Filter list with only_archs and exclude_archs filters
+      $archs = $sophie->getArchs( 
+                    $distribution,
+                    $release,
+                    array(
+                      'only' => $config->getOnlyArchs(), 
+                      'exclude' => $config->getExcludeArchs()
+                    )
                   );
-                  // Write it in the csv file
-                  fwrite($csvHandle, implode("\t", $tab) . "\n");
-                }
-                else 
-                {
-                  $failedUrlRpms[] = $urlRpm;
-                }
-              }
-            }
-            else
-            {
-              echo ": fetch failed !";
-            }
-            echo "\n";
-            if (!empty($failedUrlRpms))
-            {
-              echo count($failedUrlRpms) . " failed requests, for the following URLs :\n";
-              foreach ($failedUrlRpms as $failedUrlRpm)
-              {
-                echo "$failedUrlRpm\n";
-              }
-            }
-          }
-        }
-        else
+      if (!$archs)
+      {
+        echo "Failed to get a list of archs for distribution '$distribution', release '$release'.\n";
+        return false;
+      }
+      
+      // For each arch
+      foreach ($archs as $arch)
+      {
+        // Get list of media
+        // Filter list with only_media and exclude_media filters
+        $medias = $sophie->getMedias( 
+                      $distribution,
+                      $release,
+                      $arch, 
+                      array(
+                        'only' => $config->getOnlyMedias(), 
+                        'exclude' => $config->getExcludeMedias()
+                      )
+                    );
+        if (!$medias)
         {
-          echo "Fetch failed, or empty results !\n";
+          echo "Failed to get a list of medias for distribution '$distribution', release '$release', arch '$arch'.\n";
+          return false;
+        }
+          
+        // For each media
+        foreach ($medias as $media)
+        {
+          $distreleases[$release][$arch][$media] = true;
         }
       }
     }
-    fclose($csvHandle);
-  }  
+    
+    return $distreleases;
+  }
 }

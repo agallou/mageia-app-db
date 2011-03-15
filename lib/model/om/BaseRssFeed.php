@@ -37,6 +37,17 @@ abstract class BaseRssFeed extends BaseObject  implements Persistent {
 	protected $hash;
 
 	/**
+	 * The value for the user_id field.
+	 * @var        int
+	 */
+	protected $user_id;
+
+	/**
+	 * @var        User
+	 */
+	protected $aUser;
+
+	/**
 	 * @var        array Notification[] Collection to store aggregation of Notification objects.
 	 */
 	protected $collNotifications;
@@ -92,6 +103,16 @@ abstract class BaseRssFeed extends BaseObject  implements Persistent {
 	public function getHash()
 	{
 		return $this->hash;
+	}
+
+	/**
+	 * Get the [user_id] column value.
+	 * 
+	 * @return     int
+	 */
+	public function getUserId()
+	{
+		return $this->user_id;
 	}
 
 	/**
@@ -155,6 +176,30 @@ abstract class BaseRssFeed extends BaseObject  implements Persistent {
 	} // setHash()
 
 	/**
+	 * Set the value of [user_id] column.
+	 * 
+	 * @param      int $v new value
+	 * @return     RssFeed The current object (for fluent API support)
+	 */
+	public function setUserId($v)
+	{
+		if ($v !== null) {
+			$v = (int) $v;
+		}
+
+		if ($this->user_id !== $v) {
+			$this->user_id = $v;
+			$this->modifiedColumns[] = RssFeedPeer::USER_ID;
+		}
+
+		if ($this->aUser !== null && $this->aUser->getId() !== $v) {
+			$this->aUser = null;
+		}
+
+		return $this;
+	} // setUserId()
+
+	/**
 	 * Indicates whether the columns in this object are only set to default values.
 	 *
 	 * This method can be used in conjunction with isModified() to indicate whether an object is both
@@ -189,6 +234,7 @@ abstract class BaseRssFeed extends BaseObject  implements Persistent {
 			$this->id = ($row[$startcol + 0] !== null) ? (int) $row[$startcol + 0] : null;
 			$this->name = ($row[$startcol + 1] !== null) ? (string) $row[$startcol + 1] : null;
 			$this->hash = ($row[$startcol + 2] !== null) ? (string) $row[$startcol + 2] : null;
+			$this->user_id = ($row[$startcol + 3] !== null) ? (int) $row[$startcol + 3] : null;
 			$this->resetModified();
 
 			$this->setNew(false);
@@ -198,7 +244,7 @@ abstract class BaseRssFeed extends BaseObject  implements Persistent {
 			}
 
 			// FIXME - using NUM_COLUMNS may be clearer.
-			return $startcol + 3; // 3 = RssFeedPeer::NUM_COLUMNS - RssFeedPeer::NUM_LAZY_LOAD_COLUMNS).
+			return $startcol + 4; // 4 = RssFeedPeer::NUM_COLUMNS - RssFeedPeer::NUM_LAZY_LOAD_COLUMNS).
 
 		} catch (Exception $e) {
 			throw new PropelException("Error populating RssFeed object", $e);
@@ -221,6 +267,9 @@ abstract class BaseRssFeed extends BaseObject  implements Persistent {
 	public function ensureConsistency()
 	{
 
+		if ($this->aUser !== null && $this->user_id !== $this->aUser->getId()) {
+			$this->aUser = null;
+		}
 	} // ensureConsistency
 
 	/**
@@ -260,6 +309,7 @@ abstract class BaseRssFeed extends BaseObject  implements Persistent {
 
 		if ($deep) {  // also de-associate any related objects?
 
+			$this->aUser = null;
 			$this->collNotifications = null;
 			$this->lastNotificationCriteria = null;
 
@@ -405,6 +455,18 @@ abstract class BaseRssFeed extends BaseObject  implements Persistent {
 		if (!$this->alreadyInSave) {
 			$this->alreadyInSave = true;
 
+			// We call the save method on the following object(s) if they
+			// were passed to this object by their coresponding set
+			// method.  This object relates to these object(s) by a
+			// foreign key reference.
+
+			if ($this->aUser !== null) {
+				if ($this->aUser->isModified() || $this->aUser->isNew()) {
+					$affectedRows += $this->aUser->save($con);
+				}
+				$this->setUser($this->aUser);
+			}
+
 			if ($this->isNew() ) {
 				$this->modifiedColumns[] = RssFeedPeer::ID;
 			}
@@ -501,6 +563,18 @@ abstract class BaseRssFeed extends BaseObject  implements Persistent {
 			$failureMap = array();
 
 
+			// We call the validate method on the following object(s) if they
+			// were passed to this object by their coresponding set
+			// method.  This object relates to these object(s) by a
+			// foreign key reference.
+
+			if ($this->aUser !== null) {
+				if (!$this->aUser->validate($columns)) {
+					$failureMap = array_merge($failureMap, $this->aUser->getValidationFailures());
+				}
+			}
+
+
 			if (($retval = RssFeedPeer::doValidate($this, $columns)) !== true) {
 				$failureMap = array_merge($failureMap, $retval);
 			}
@@ -556,6 +630,9 @@ abstract class BaseRssFeed extends BaseObject  implements Persistent {
 			case 2:
 				return $this->getHash();
 				break;
+			case 3:
+				return $this->getUserId();
+				break;
 			default:
 				return null;
 				break;
@@ -580,6 +657,7 @@ abstract class BaseRssFeed extends BaseObject  implements Persistent {
 			$keys[0] => $this->getId(),
 			$keys[1] => $this->getName(),
 			$keys[2] => $this->getHash(),
+			$keys[3] => $this->getUserId(),
 		);
 		return $result;
 	}
@@ -620,6 +698,9 @@ abstract class BaseRssFeed extends BaseObject  implements Persistent {
 			case 2:
 				$this->setHash($value);
 				break;
+			case 3:
+				$this->setUserId($value);
+				break;
 		} // switch()
 	}
 
@@ -647,6 +728,7 @@ abstract class BaseRssFeed extends BaseObject  implements Persistent {
 		if (array_key_exists($keys[0], $arr)) $this->setId($arr[$keys[0]]);
 		if (array_key_exists($keys[1], $arr)) $this->setName($arr[$keys[1]]);
 		if (array_key_exists($keys[2], $arr)) $this->setHash($arr[$keys[2]]);
+		if (array_key_exists($keys[3], $arr)) $this->setUserId($arr[$keys[3]]);
 	}
 
 	/**
@@ -661,6 +743,7 @@ abstract class BaseRssFeed extends BaseObject  implements Persistent {
 		if ($this->isColumnModified(RssFeedPeer::ID)) $criteria->add(RssFeedPeer::ID, $this->id);
 		if ($this->isColumnModified(RssFeedPeer::NAME)) $criteria->add(RssFeedPeer::NAME, $this->name);
 		if ($this->isColumnModified(RssFeedPeer::HASH)) $criteria->add(RssFeedPeer::HASH, $this->hash);
+		if ($this->isColumnModified(RssFeedPeer::USER_ID)) $criteria->add(RssFeedPeer::USER_ID, $this->user_id);
 
 		return $criteria;
 	}
@@ -719,6 +802,8 @@ abstract class BaseRssFeed extends BaseObject  implements Persistent {
 
 		$copyObj->setHash($this->hash);
 
+		$copyObj->setUserId($this->user_id);
+
 
 		if ($deepCopy) {
 			// important: temporarily setNew(false) because this affects the behavior of
@@ -776,6 +861,55 @@ abstract class BaseRssFeed extends BaseObject  implements Persistent {
 			self::$peer = new RssFeedPeer();
 		}
 		return self::$peer;
+	}
+
+	/**
+	 * Declares an association between this object and a User object.
+	 *
+	 * @param      User $v
+	 * @return     RssFeed The current object (for fluent API support)
+	 * @throws     PropelException
+	 */
+	public function setUser(User $v = null)
+	{
+		if ($v === null) {
+			$this->setUserId(NULL);
+		} else {
+			$this->setUserId($v->getId());
+		}
+
+		$this->aUser = $v;
+
+		// Add binding for other direction of this n:n relationship.
+		// If this object has already been added to the User object, it will not be re-added.
+		if ($v !== null) {
+			$v->addRssFeed($this);
+		}
+
+		return $this;
+	}
+
+
+	/**
+	 * Get the associated User object
+	 *
+	 * @param      PropelPDO Optional Connection object.
+	 * @return     User The associated User object.
+	 * @throws     PropelException
+	 */
+	public function getUser(PropelPDO $con = null)
+	{
+		if ($this->aUser === null && ($this->user_id !== null)) {
+			$this->aUser = UserPeer::retrieveByPk($this->user_id);
+			/* The following can be used additionally to
+			   guarantee the related object contains a reference
+			   to this object.  This level of coupling may, however, be
+			   undesirable since it could result in an only partially populated collection
+			   in the referenced object.
+			   $this->aUser->addRssFeeds($this);
+			 */
+		}
+		return $this->aUser;
 	}
 
 	/**
@@ -999,6 +1133,7 @@ abstract class BaseRssFeed extends BaseObject  implements Persistent {
 		} // if ($deep)
 
 		$this->collNotifications = null;
+			$this->aUser = null;
 	}
 
 	// symfony_behaviors behavior

@@ -39,6 +39,7 @@ class RssFeedTableMap extends TableMap {
 		$this->addPrimaryKey('ID', 'Id', 'INTEGER', true, null, null);
 		$this->addColumn('NAME', 'Name', 'VARCHAR', false, 45, null);
 		$this->addColumn('HASH', 'Hash', 'VARCHAR', true, 45, null);
+		$this->addForeignKey('USER_ID', 'UserId', 'INTEGER', 'user', 'ID', true, null, null);
 		// validators
 	} // initialize()
 
@@ -47,6 +48,7 @@ class RssFeedTableMap extends TableMap {
 	 */
 	public function buildRelations()
 	{
+    $this->addRelation('User', 'User', RelationMap::MANY_TO_ONE, array('user_id' => 'id', ), null, null);
     $this->addRelation('Notification', 'Notification', RelationMap::ONE_TO_MANY, array('id' => 'rss_feed_id', ), null, null);
 	} // buildRelations()
 
