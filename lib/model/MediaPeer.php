@@ -26,12 +26,6 @@ class MediaPeer extends BaseMediaPeer {
     $criteria->add(MediaPeer::NAME, $name);
     
     $media = MediaPeer::doSelectOne($criteria, $con);
-    
-    if (null === $media) 
-    { 
-      throw new MediaPeerException('Media \'' . $name . '\' not found (by name)'); 
-    }
-    
     return $media;
   }
 } // MediaPeer

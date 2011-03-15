@@ -55,12 +55,6 @@ class DistreleasePeer extends BaseDistreleasePeer {
     $criteria->add(DistreleasePeer::NAME, $name);
     
     $distrelease = DistreleasePeer::doSelectOne($criteria, $con);
-    
-    if (null === $distrelease) 
-    { 
-      throw new DistreleasePeerException('Distrelease \'' . $name . '\' not found (by name)'); 
-    }
-    
     return $distrelease;
   }
 
