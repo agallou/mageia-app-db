@@ -3,7 +3,7 @@ only_releases:
   - cauldron
 exclude_releases:
 only_medias:
-exclude_medias: /^.*-debug$/
+exclude_medias: ^.*-debug$
 only_archs:
 exclude_archs:
 only_rpms:
@@ -13,7 +13,7 @@ devel_releases:
   - cauldron
 latest_stable_release:
 
-updates_medias: /^.*-updates.*$/
-testing_medias: /^.*[-_]testing.*$/
-backports_medias: /^.*-backports.*$/
+updates_medias: ^.*-updates.*$
+testing_medias: ^.*[-_]testing.*$
+backports_medias: ^.*-backports.*$
 third_party_medias:
