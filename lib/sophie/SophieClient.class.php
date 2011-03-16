@@ -94,40 +94,12 @@ class SophieClient
   {
     if (isset($options['only']))
     {
-      $only = $options['only'];
-      if (!is_array($only))
-      {
-        throw new SophieClientException('$options[\'only\'] must be an array, scalar given.');
-      }
-      
-      if (!empty($only))
-      {
-        $unfiltered_result = $result;
-        $result = array();
-        foreach($only as $regexp)
-        {
-          if (strpos($regexp, '/') !== false)
-          {
-            throw new SophieClientException('$options[\'only\'] must not contain slashes (value found : ' . $regexp . ')');
-          }
-          $grepped = preg_grep("/$regexp/", $unfiltered_result);
-          $result = $result + $grepped;
-        }
-      }
+      $result = madbToolkit::filterArrayKeepOnly($result, $options['only']);
     }
     
     if (isset($options['exclude']))
     {
-      $exclude = $options['exclude'];
-      if (!is_array($exclude))
-      {
-        throw new SophieClientException('$options[\'exclude\'] must be an array, scalar given.');
-      }
-      
-      foreach($exclude as $regexp)
-      {
-        $result = preg_grep("/$regexp/", $result, PREG_GREP_INVERT);
-      }
+      $result = madbToolkit::filterArrayExclude($result, $options['exclude']);
     }
     return $result;
   }
