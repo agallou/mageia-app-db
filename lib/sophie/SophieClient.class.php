@@ -94,7 +94,7 @@ class SophieClient
   {
     if (isset($options['only']))
     {
-      $result = madbToolkit::filterArrayKeepOnly($result, $options['only']);
+      $result = madbToolkit::filterArrayKeepOnly($result, $options['only'], true);
     }
     
     if (isset($options['exclude']))

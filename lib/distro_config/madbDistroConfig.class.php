@@ -109,4 +109,28 @@ class madbDistroConfig
     $value = $this->values['exclude_rpms'];
     return $this->valueToArray($value);
   }
+  
+  public function getUpdatesMedias()
+  {
+    $value = $this->values['updates_medias'];
+    return $this->valueToArray($value);
+  }
+
+  public function getTestingMedias()
+  {
+    $value = $this->values['testing_medias'];
+    return $this->valueToArray($value);
+  }
+
+  public function getBackportsMedias()
+  {
+    $value = $this->values['backports_medias'];
+    return $this->valueToArray($value);
+  }
+
+  public function getThirdPartyMedias()
+  {
+    $value = $this->values['third_party_medias'];
+    return $this->valueToArray($value);
+  }
 }

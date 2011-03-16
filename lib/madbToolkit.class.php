@@ -1,14 +1,14 @@
 <?php
 class madbToolkit
 {
-  public static function filterArrayKeepOnly($values = array(), $regexps = array())
+  public static function filterArrayKeepOnly($values = array(), $regexps = array(), $empty_means_no_filter = false)
   {
     if (!is_array($regexps))
     {
       throw new madbException('$regexps must be an array of values.');
     }
     
-    if (!empty($regexps))
+    if (!$empty_means_no_filter or !empty($regexps))
     {
       $unfiltered_values = $values;
       $values = array();

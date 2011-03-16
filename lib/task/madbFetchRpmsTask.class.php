@@ -252,6 +252,7 @@ class madbFetchRpmsTask extends madbBaseTask
     
     
     // Media :
+    $allMedias = MediaPeer::MediasToNames(MediaPeer::doSelect(new Criteria()));
     $mediasSophie = array();
     foreach ($distreleases as $distrelease => $archs)
     {
@@ -264,14 +265,10 @@ class madbFetchRpmsTask extends madbBaseTask
       }
     }
     $mediaObjs = MediaPeer::doSelect(new Criteria());
-    $mediasDb = array();
-    foreach ($mediaObjs as $mediaObj)
-    {
-      $mediasDb[] = $mediaObj->getName();
-    }
+
     // - media present in database must still exist in results
     //   If not, abort, or ignore, following $options['ignore-missing-from-sophie']
-    $missing_from_sophie = array_diff($mediasDb, $mediasSophie);
+    $missing_from_sophie = array_diff($allMedias, $mediasSophie);
     if (count($missing_from_sophie))
     {
       $message = "Missing media(s) from Sophie's response : " . implode(' ', $missing_from_sophie);
@@ -286,7 +283,7 @@ class madbFetchRpmsTask extends madbBaseTask
     }
     // - media present in sophie must exist in database
     //   abort or add them, following $options['add']
-    $missing_from_db = array_diff($mediasSophie, $mediasDb);
+    $missing_from_db = array_diff($mediasSophie, $allMedias);
     if (count($missing_from_db))
     {
       $message = "New media(s) in Sophie's response : " . implode(' ', $missing_from_db);
@@ -308,10 +305,215 @@ class madbFetchRpmsTask extends madbBaseTask
       }
     }    
     
-    // TODO : updates, backports, testing media...
+    // backports media
+    $currentUpdatesMedias = MediaPeer::MediasToNames(MediaPeer::getUpdatesMedias());
+    $newUpdatesMedias = madbToolkit::filterArrayKeepOnly($allMedias, $config->getUpdatesMedias());
     
+    // - update media according to config but not according to database. 
+    //   abort or add them, following $options['add']
+    $missing_from_db = array_diff($newUpdatesMedias, $currentUpdatesMedias);
+    if (count($missing_from_db))
+    {
+      $message = "New updates media(s) according to config file : " . implode(' ', $missing_from_db);
+      if ($options['add'])
+      {  
+        echo $message . "\n";
+        // add them
+        foreach ($missing_from_db as $media)
+        {
+          $mediaObj = MediaPeer::retrieveByName($media);
+          $mediaObj->setIsUpdates(true);
+          $mediaObj->save();
+          echo "=> $media is now an updates media.\n";
+        }
+      }
+      else
+      {
+        throw new madbException($message);
+      }
+    }
     
+    // - update media according to database but not according to config. 
+    //   abort or change their status, following $options['add']
+    $missing_from_config = array_diff($currentUpdatesMedias, $newUpdatesMedias);
+    if (count($missing_from_config))
+    {
+      $message = "Not updates media(s) according to config file, but updates media in database : " . implode(' ', $missing_from_config);
+      if ($options['add'])
+      {  
+        echo $message . "\n";
+        // add them
+        foreach ($missing_from_config as $media)
+        {
+          $mediaObj = MediaPeer::retrieveByName($media);
+          $mediaObj->setIsUpdates(false);
+          $mediaObj->save();
+          echo "=> $media is no longer an updates media.\n";
+        }
+      }
+      else
+      {
+        throw new madbException($message);
+      }
+    }
+        
+    // - testing media
+    $currentTestingMedias = MediaPeer::MediasToNames(MediaPeer::getTestingMedias());
+    $newTestingMedias = madbToolkit::filterArrayKeepOnly($allMedias, $config->getTestingMedias());
     
+    // - testing media according to config but not according to database. 
+    //   abort or add them, following $options['add']
+    $missing_from_db = array_diff($newTestingMedias, $currentTestingMedias);
+    if (count($missing_from_db))
+    {
+      $message = "New testing media(s) according to config file : " . implode(' ', $missing_from_db);
+      if ($options['add'])
+      {  
+        echo $message . "\n";
+        // add them
+        foreach ($missing_from_db as $media)
+        {
+          $mediaObj = MediaPeer::retrieveByName($media);
+          $mediaObj->setIsTesting(true);
+          $mediaObj->save();
+          echo "=> $media is now a testing media.\n";
+        }
+      }
+      else
+      {
+        throw new madbException($message);
+      }
+    }
+    
+    // - testing media according to database but not according to config. 
+    //   abort or change their status, following $options['add']
+    $missing_from_config = array_diff($currentTestingMedias, $newTestingMedias);
+    if (count($missing_from_config))
+    {
+      $message = "Not testing media(s) according to config file, but updates media in database : " . implode(' ', $missing_from_config);
+      if ($options['add'])
+      {  
+        echo $message . "\n";
+        // add them
+        foreach ($missing_from_config as $media)
+        {
+          $mediaObj = MediaPeer::retrieveByName($media);
+          $mediaObj->setIsTesting(false);
+          $mediaObj->save();
+          echo "=> $media is no longer a testing media.\n";
+        }
+      }
+      else
+      {
+        throw new madbException($message);
+      }
+    }
+    
+    // - backports media
+    $currentBackportsMedias = MediaPeer::MediasToNames(MediaPeer::getBackportsMedias());
+    $newBackportsMedias = madbToolkit::filterArrayKeepOnly($allMedias, $config->getBackportsMedias());    
+    
+    // - backports media according to config but not according to database. 
+    //   abort or add them, following $options['add']
+    $missing_from_db = array_diff($newBackportsMedias, $currentBackportsMedias);
+    if (count($missing_from_db))
+    {
+      $message = "New backports media(s) according to config file : " . implode(' ', $missing_from_db);
+      if ($options['add'])
+      {  
+        echo $message . "\n";
+        // add them
+        foreach ($missing_from_db as $media)
+        {
+          $mediaObj = MediaPeer::retrieveByName($media);
+          $mediaObj->setIsBackports(true);
+          $mediaObj->save();
+          echo "=> $media is now a backports media.\n";
+        }
+      }
+      else
+      {
+        throw new madbException($message);
+      }
+    }
+    
+    // - backports media according to database but not according to config. 
+    //   abort or change their status, following $options['add']
+    $missing_from_config = array_diff($currentBackportsMedias, $newBackportsMedias);
+    if (count($missing_from_config))
+    {
+      $message = "Not backports media(s) according to config file, but updates media in database : " . implode(' ', $missing_from_config);
+      if ($options['add'])
+      {  
+        echo $message . "\n";
+        // add them
+        foreach ($missing_from_config as $media)
+        {
+          $mediaObj = MediaPeer::retrieveByName($media);
+          $mediaObj->setIsBackports(false);
+          $mediaObj->save();
+          echo "=> $media is no longer a backports media.\n";
+        }
+      }
+      else
+      {
+        throw new madbException($message);
+      }    
+    }
+    
+    // - third party media
+    $currentThirdPartyMedias = MediaPeer::MediasToNames(MediaPeer::getThirdPartyMedias());
+    $newThirdPartyMedias = madbToolkit::filterArrayKeepOnly($allMedias, $config->getThirdPartyMedias());
+    
+    // - third party media according to config but not according to database. 
+    //   abort or add them, following $options['add']
+    $missing_from_db = array_diff($newThirdPartyMedias, $currentThirdPartyMedias);
+    if (count($missing_from_db))
+    {
+      $message = "New third party media(s) according to config file : " . implode(' ', $missing_from_db);
+      if ($options['add'])
+      {  
+        echo $message . "\n";
+        // add them
+        foreach ($missing_from_db as $media)
+        {
+          $mediaObj = MediaPeer::retrieveByName($media);
+          $mediaObj->setIsThirdParty(true);
+          $mediaObj->save();
+          echo "=> $media is now a third party media.\n";
+        }
+      }
+      else
+      {
+        throw new madbException($message);
+      }
+    }
+    
+    // - third party media according to database but not according to config. 
+    //   abort or change their status, following $options['add']
+    $missing_from_config = array_diff($currentThirdPartyMedias, $newThirdPartyMedias);
+    if (count($missing_from_config))
+    {
+      $message = "Not third party media(s) according to config file, but updates media in database : " . implode(' ', $missing_from_config);
+      if ($options['add'])
+      {  
+        echo $message . "\n";
+        // add them
+        foreach ($missing_from_config as $media)
+        {
+          $mediaObj = MediaPeer::retrieveByName($media);
+          $mediaObj->setIsThirdParty(false);
+          $mediaObj->save();
+          echo "=> $media is no longer a third party media.\n";
+        }
+      }
+      else
+      {
+        throw new madbException($message);
+      }    
+    }    
+    
+die;    
     
     
     
