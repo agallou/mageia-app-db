@@ -12,8 +12,6 @@ class RpmImporter
    */
   public function importFromArray(Distrelease $distrelease, Arch $arch, Media $media, $values)
   {
-//$startTime = microtime(true);
-//echo " (";
     // Is it a source RPM ?
     $is_source = RpmPeer::inferIsSourceFromFilename($values['filename']);
     
@@ -38,25 +36,20 @@ class RpmImporter
       $rpmGroup = new RpmGroup();
       $rpmGroup->setName($values['group']);
     }
-//echo round(microtime(true) - $startTime, 2) . ", ";    
     
     // create RPM object
     $rpm = RpmPeer::createFromArray($distrelease, $arch, $media, $rpmGroup, $package, $values);
-//echo round(microtime(true) - $startTime, 2) . ", ";    
     
     // save
     if ($package->isNew())
     {
       $package->save();
     }
-//echo round(microtime(true) - $startTime, 2) . ", ";    
     if ($rpmGroup->isNew())
     {
       $rpmGroup->save();
     }
-//echo round(microtime(true) - $startTime, 2) . ", ";    
     $rpm->save();
-//echo round(microtime(true) - $startTime, 2) . ", ";    
     
     // If it's a source RPM, update the relationship with its binary RPM, if present in database
     if ($rpm->getIsSource())
@@ -70,14 +63,12 @@ class RpmImporter
         }
       }
     }
-//echo round(microtime(true) - $startTime, 3) . ", ";    
     
     // update Package object
     // TODO : is_application
     // summary
     // description
     $package->updateSummaryAndDescription();    
-//echo round(microtime(true) - $startTime, 3) . ")";    
     
     // TODO : Process notifications
     if (isset($binary_rpms))
