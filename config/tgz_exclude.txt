@@ -1,0 +1,7 @@
+lib/vendor/symfony/plugins/sfDoctrinePlugin
+lib/vendor/symfony/plugins/sfProtoculousPlugin
+lib/vendor/symfony/plugins/sfCompat10Plugin
+test
+doc
+lib/vendor/symfony/i18n/data
+lib/vendor/symfony/task/generator
