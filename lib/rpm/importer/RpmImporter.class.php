@@ -79,5 +79,15 @@ echo round(microtime(true) - $startTime, 3) . ", ";
 echo round(microtime(true) - $startTime, 3) . ")";    
     
     // TODO : Process notifications
+    if (isset($binary_rpms))
+    {
+      foreach ($binary_rpms as $binary_rpm)
+      {
+        $binary_rpm->clearAllReferences(true);
+      }
+    }
+    $rpmGroup->clearAllReferences(true);
+    $package->clearAllReferences(true);
+    $rpm->clearAllReferences(true);
   }
 }
