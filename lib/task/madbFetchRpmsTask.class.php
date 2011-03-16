@@ -371,6 +371,7 @@ class madbFetchRpmsTask extends madbBaseTask
             $rpms2[$row['RPM_PKGID']] = $row['NAME'];
           }
           asort($rpms2);
+          unset($stmt);
           
           $differences = array_diff_assoc($rpms, $rpms2);
           echo " (" . count($rpms) . " RPMs , " . count($differences) . " new) ---\n";
