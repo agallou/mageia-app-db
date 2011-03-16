@@ -27,12 +27,6 @@ class RpmGroupPeer extends BaseRpmGroupPeer {
     $criteria->add(RpmGroupPeer::NAME, $name);
     
     $rpmGroup = RpmGroupPeer::doSelectOne($criteria, $con);
-    
-    if (null === $rpmGroup) 
-    { 
-      throw new RpmGroupPeerException('RpmGroup \'' . $name . '\' not found (by name)'); 
-    }
-    
     return $rpmGroup;
   }  
   

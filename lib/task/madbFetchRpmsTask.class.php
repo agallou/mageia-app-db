@@ -378,26 +378,28 @@ class madbFetchRpmsTask extends madbBaseTask
           foreach ($differences as $pkgid => $filename)
           {
             echo " " . $filename . " ( " . $pkgid . " )";
+            $startTime = microtime(true);
             
             // Fetch RPM infos
             try 
             {
-              $before = microtime(true);
               $rpmInfos = $sophie->getRpmByPkgid($pkgid);
-              $time = round(microtime(true) - $before, 3);
-              echo " - ${time}s"; 
+              $time1 = round(microtime(true) - $startTime, 2);
+              echo " - ${time1}s"; 
               $nbRetrievedRpms++;
-              echo "\n";
             }
             catch (SophieClientException $e)
             {
               echo "\nError retrieving $filename : " . $e->getMessage() . "\n";
               $nbFailedRpms++;
+              continue;
             }
             
             // Process RPM
             $rpmImporter->importFromArray($distreleaseObj, $archObj, $mediaObj, $rpmInfos);
-            
+            $time2 = round(microtime(true) - $startTime - $time1, 2);
+            echo " + ${time2}s";
+            echo "\n"; 
           }
           
           if (count($differences))
