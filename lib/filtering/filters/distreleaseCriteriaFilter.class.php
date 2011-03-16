@@ -13,6 +13,10 @@ class distreleaseCriteriaFilter extends baseCriteriaFilterChoice
     {
       return $latest->getId();
     } 
+    elseif ($devels = DistreleasePeer::getDevels())
+    {
+      return $devels[0]->getId();
+    }
     return null;
   }
 
