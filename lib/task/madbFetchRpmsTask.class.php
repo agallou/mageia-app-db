@@ -513,9 +513,6 @@ class madbFetchRpmsTask extends madbBaseTask
       }    
     }    
     
-die;    
-    
-    
     
     // Now fetch RPM lists and treat them
     $rpmImporter = new RpmImporter();
