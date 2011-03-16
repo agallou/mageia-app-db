@@ -314,7 +314,6 @@ class madbFetchRpmsTask extends madbBaseTask
     
     
     
-    
     // Now fetch RPM lists and treat them
     $rpmImporter = new RpmImporter();
     $nbFailedRpms = 0;
@@ -373,7 +372,7 @@ class madbFetchRpmsTask extends madbBaseTask
           asort($rpms2);
           
           $differences = array_diff_assoc($rpms, $rpms2);
-          echo " (" . count($rpms) . " RPMs , " . count($differences) . " new RPMs) ---\n";
+          echo " (" . count($rpms) . " RPMs , " . count($differences) . " new) ---\n";
           // For each unknown RPM 
           // TODO : (batch processing would be great here)
           foreach ($differences as $pkgid => $filename)
