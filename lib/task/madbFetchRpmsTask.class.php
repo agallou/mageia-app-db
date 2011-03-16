@@ -23,6 +23,7 @@ class madbFetchRpmsTask extends madbBaseTask
     
     sfContext::createInstance($this->createConfiguration('frontend', 'prod'));
     $con = Propel::getConnection();
+    Propel::disableInstancePooling();
     
     $distribution = $options['distro'];
     $config_file = $options['config'] ? $options['config'] : dirname(__FILE__) . '/../../data/distros/' . $distribution . '/distro.yml';
