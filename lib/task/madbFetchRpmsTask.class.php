@@ -377,17 +377,21 @@ class madbFetchRpmsTask extends madbBaseTask
           // TODO : (batch processing would be great here)
           foreach ($differences as $pkgid => $filename)
           {
-            echo " " . $filename . " ( " . $pkgid . " )\n";
+            echo " " . $filename . " ( " . $pkgid . " )";
             
             // Fetch RPM infos
             try 
             {
+              $before = microtime(true);
               $rpmInfos = $sophie->getRpmByPkgid($pkgid);
+              $time = round(microtime(true) - $before, 3);
+              echo " - ${time}s"; 
               $nbRetrievedRpms++;
+              echo "\n";
             }
             catch (SophieClientException $e)
             {
-              echo "Error retrieving $filename : " . $e->getMessage() . "\n";
+              echo "\nError retrieving $filename : " . $e->getMessage() . "\n";
               $nbFailedRpms++;
             }
             
