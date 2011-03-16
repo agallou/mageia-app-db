@@ -317,6 +317,8 @@ class madbFetchRpmsTask extends madbBaseTask
     
     // Now fetch RPM lists and treat them
     $rpmImporter = new RpmImporter();
+    $nbFailedRpms = 0;
+    $nbRetrievedRpms = 0;
     
     foreach ($distreleases as $distrelease => $archs)
     {
@@ -379,13 +381,26 @@ class madbFetchRpmsTask extends madbBaseTask
             echo " " . $filename . " ( " . $pkgid . " )\n";
             
             // Fetch RPM infos
-            $rpmInfos = $sophie->getRpmByPkgid($pkgid);
+            try 
+            {
+              $rpmInfos = $sophie->getRpmByPkgid($pkgid);
+              $nbRetrievedRpms++;
+            }
+            catch (SophieClientException $e)
+            {
+              echo "Error retrieving $filename : " . $e->getMessage() . "\n";
+              $nbFailedRpms++;
+            }
             
             // Process RPM
             $rpmImporter->importFromArray($distreleaseObj, $archObj, $mediaObj, $rpmInfos);
             
           }
-          echo "\n";
+          
+          if (count($differences))
+          {
+            echo "\n";
+          }
           
           // TODO : handle missing packages from sophie as compared to database
           // and for being able to do it, treat -src media along with their non-src media
@@ -397,26 +412,9 @@ class madbFetchRpmsTask extends madbBaseTask
         }
       }
     }
-/*
-                  $tab = array(
-                    $rpmInfos->info->filename,
-                    $rpmInfos->info->evr,
-                    $rpmInfos->info->summary,
-                    str_replace("\t", '\t', str_replace("\n", '\n', $rpmInfos->info->description)),
-                    $buildDate->format('Y-m-d H:i:sP'),
-                    $rpmInfos->info->url,
-                    $rpmInfos->info->size,
-                    $rpmInfos->info->sourcerpm,
-                    $rpmInfos->info->license,
-                    $rpmInfos->info->group,
-                    $rpmInfos->info->arch,
-                    $media,
-                    $distribution,
-                    "",
-                    $distrelease,
-                    $arch,
-                    $rpm->pkgid
-*/
+    
+    echo "Total number of retrieved RPMs : $nbRetrievedRpms\n";
+    echo "Total number of failed RPMs retrievals : $nbFailedRpms\n";
   }  
   
   protected function getDistreleasesArchsMedias (madbDistroConfig $config, SophieClient $sophie)
