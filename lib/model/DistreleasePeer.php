@@ -19,12 +19,16 @@ class DistreleasePeer extends BaseDistreleasePeer {
     $criteria = new Criteria();
     $criteria->add(DistreleasePeer::IS_LATEST, true);
     $distrelease = DistreleasePeer::doSelectOne($criteria);
-    if (null === $distrelease)
-    {
-      throw new DistreleasePeerException('lastest distrelease not found');
-    }
     return $distrelease;
   }
+  
+  public static function getDevels()
+  {
+    $criteria = new Criteria();
+    $criteria->add(DistreleasePeer::IS_DEV_VERSION, true);
+    $distreleases = DistreleasePeer::doSelect($criteria);
+    return $distreleases;
+  }  
 
   /**
    * 
@@ -57,5 +61,27 @@ class DistreleasePeer extends BaseDistreleasePeer {
     $distrelease = DistreleasePeer::doSelectOne($criteria, $con);
     return $distrelease;
   }
-
+  
+  public static function updateIsLatestFlag($name)
+  {
+    if (!$new_latest_stable = self::retrieveByName($name))
+    {
+      throw new DistreleasePeerException("Latest stable release '$name' not found in database");
+    }
+    
+    // If the distrelease doesn't already knows it's the latest stable release
+    if (!$new_latest_stable->getIsLatest())
+    {
+      // unset the flag to the old stable release, if there is one
+      if ($old_latest_stable = self::getLatest())
+      {
+        $old_latest_stable->setIsLatest(false);
+        $old_latest_stable->save();
+      }
+      
+      // set the flag to the new one
+      $new_latest_stable->setIsLatest(true);
+      $new_latest_stable->save();
+    }
+  }
 } // DistreleasePeer

@@ -26,7 +26,7 @@ class RpmImporter
       $package->setSummary($values['summary']);
       $package->setDescription($values['description']);
       // TODO : $package->setIsApplication();
-      $package->setMd5Name($package->computeMd5Name());
+      $package->setMd5Name(md5($package_name));
     }
     // Create RpmGroup object if doesn't exist and save it, else retrieve it
     try

@@ -14,6 +14,7 @@ class madbFetchRpmsTask extends madbBaseTask
     $this->addOption('notify', null, sfCommandOption::PARAMETER_NONE, 'add this option if you want changes to trigger notifications', null);
     $this->addOption('add', null, sfCommandOption::PARAMETER_NONE, 'add missing distreleases, archs and media, instead of failing', null);
     $this->addOption('ignore-missing-from-sophie', null, sfCommandOption::PARAMETER_NONE, 'ignore missing distreleases, archs or media from sophie\'s response', null);
+    $this->addOption('ignore-missing-stable', null, sfCommandOption::PARAMETER_NONE, 'ignore missing stable distrelease in config file', null);
   }
   protected function execute($arguments = array(), $options = array())
   {
@@ -51,12 +52,12 @@ class madbFetchRpmsTask extends madbBaseTask
     // $distreleases[$release][$arch][$media] = true
     if (!$distreleases = $this->getDistreleasesArchsMedias($config, $sophie))
     {
-      echo "Failed to get media information, aborting.\n";
+      echo "Failed to get distrelease, arch and media information, aborting.\n";
       return false;
     } 
     
     // Now that we have all wanted media for all archs for all distreleases, perform some checking
-    // TODO 
+    // TODO : better checking
     // Distreleases : 
     $distreleaseObjs = DistreleasePeer::doSelect(new Criteria());
     $distreleasesDb = array();
@@ -64,6 +65,8 @@ class madbFetchRpmsTask extends madbBaseTask
     {
       $distreleasesDb[] = $distreleaseObj->getName();
     }
+    // - releases present in database must be still present in result. 
+    //   If not, abort, or ignore, following $options['ignore-missing-from-sophie']
     $missing_from_sophie = array_diff($distreleasesDb, array_keys($distreleases));
     if (count($missing_from_sophie))
     {
@@ -78,13 +81,120 @@ class madbFetchRpmsTask extends madbBaseTask
       }
     }
     
-    // - releases present in database must be still present in result. If not, abort
-    // - releases present in result but absent from database :
+    // - releases present in result but absent from database : 
+    //   abort or add them, following $options['add']
+    $missing_from_db = array_diff(array_keys($distreleases), $distreleasesDb);
+    if (count($missing_from_db))
+    {
+      $message = "New distrelease(s) in Sophie's response : " . implode(' ', $missing_from_db);
+      if ($options['add'])
+      {
+        echo $message . "\n";
+        // add them
+        foreach ($missing_from_db as $distrelease)
+        {
+          $distreleaseObj = new Distrelease();
+          $distreleaseObj->setName($distrelease);
+          $distreleaseObj->save();
+          echo "=> $distrelease added.\n";
+        }
+      }
+      else
+      {
+        throw new madbException($message);
+      }
+    }
     
-    // - devel media
-    // - latest stable 
-    // It could be tricky (can a devel version lose it's devel version status ? Can it become obsolete ?)
-    // Can a distrelease disappear ? 
+    // - devel distreleases
+    // TODO :  It could be tricky (can a devel version lose it's devel version status ? Can it become obsolete ?)
+    $new_list_devel = $config->getDevelReleases();
+    $old_list_devel = array();
+    $develDistreleaseObjs = DistreleasePeer::getDevels();
+    foreach($develDistreleaseObjs as $develDistreleaseObj)
+    {
+      $old_list_devel[] = $develDistreleaseObj->getName();
+    }
+    // new devel releases
+    $new_not_in_old = array_diff($new_list_devel, $old_list_devel);
+    if ($new_not_in_old)
+    {
+      $message = "New devel distrelease(s) not devel in database : " . implode(' ', $new_not_in_old);
+      if ($options['add'])
+      {
+        echo $message . "\n";
+        foreach ($new_not_in_old as $distrelease)
+        {
+          if (!$distreleaseObj = DistreleasePeer::retrieveByName($distrelease))
+          {
+            throw new madbException("Distrelease $distrelease not found in database");
+          }
+          $distreleaseObj->setIsDevVersion(true);
+          $distreleaseObj->save();
+          echo "=> status updated for distrelease $distrelease.\n";
+        }
+      }
+      else
+      {
+        throw new madbException($message);
+      }
+    }
+    // devel releases that are no more devel
+    $old_not_in_new = array_diff($old_list_devel, $new_list_devel);
+    if ($old_not_in_new)
+    {
+      $message = "Old devel distrelease(s) no more devel in config file : " . implode(' ', $old_not_in_new);
+      if ($options['add'])
+      {
+        echo $message . "\n";
+        foreach ($old_not_in_new as $distrelease)
+        {
+          if (!$distreleaseObj = DistreleasePeer::retrieveByName($distrelease))
+          {
+            throw new madbException("Distrelease $distrelease not found in database");
+          }
+          $distreleaseObj->setIsDevVersion(false);
+          $distreleaseObj->save();
+          echo "=> status updated for distrelease $distrelease.\n";
+        }
+      }
+      else
+      {
+        throw new madbException($message);
+      }
+    }
+    
+    // - latest stable release
+    $latest = $config->getLatestStableRelease();
+    if (!$new_latest_stable = DistreleasePeer::retrieveByName($latest))
+    {
+      $message = "Latest stable release '$latest' not found in database";
+      if ($options['ignore-missing-stable'])
+      {
+        echo $message . "\n";
+      }
+      else
+      {
+        throw new madbException($message);
+      }
+    }
+    // If the distrelease doesn't already know it's the latest stable release
+    // Abort, or update, depending on $options['add']
+    elseif (!$new_latest_stable->getIsLatest())
+    {
+      $message = "Distrelease $latest doesn't know it's the latest stable release";
+      if ($options['add'])
+      {
+        echo $message . "\n";
+        DistreleasePeer::updateIsLatestFlag($latest);
+        echo "=> status updated for distrelease $latest.\n";
+      }
+      else
+      {
+        throw new madbException($message);
+      }      
+    }
+    
+    
     // Archs :
     $archsSophie = array();
     foreach ($distreleases as $distrelease => $archs)
@@ -94,13 +204,14 @@ class madbFetchRpmsTask extends madbBaseTask
         $archsSophie[$arch] = $arch;
       }
     }
-    // - archs present in database must still exist in results
     $archObjs = ArchPeer::doSelect(new Criteria());
     $archsDb = array();
     foreach ($archObjs as $archObj)
     {
       $archsDb[] = $archObj->getName();
     }
+    // - archs present in database must still exist in results
+    //   If not, abort, or ignore, following $options['ignore-missing-from-sophie']
     $missing_from_sophie = array_diff($archsDb, $archsSophie);
     if (count($missing_from_sophie))
     {
@@ -115,6 +226,29 @@ class madbFetchRpmsTask extends madbBaseTask
       }
     }
     // - archs present in results but absent from database must be added in database
+    //   abort or add them, following $options['add']
+    $missing_from_db = array_diff($archsSophie, $archsDb);
+    if (count($missing_from_db))
+    {
+      $message = "New arch(s) in Sophie's response : " . implode(' ', $missing_from_db);
+      if ($options['add'])
+      {  
+        echo $message . "\n";
+        // add them
+        foreach ($missing_from_db as $arch)
+        {
+          $archObj = new Arch();
+          $archObj->setName($arch);
+          $archObj->save();
+          echo "=> $arch added.\n";
+        }
+      }
+      else
+      {
+        throw new madbException($message);
+      }
+    }
+    
     
     // Media :
     $mediasSophie = array();
@@ -128,13 +262,14 @@ class madbFetchRpmsTask extends madbBaseTask
         }
       }
     }
-    // - archs present in database must still exist in results
     $mediaObjs = MediaPeer::doSelect(new Criteria());
     $mediasDb = array();
     foreach ($mediaObjs as $mediaObj)
     {
       $mediasDb[] = $mediaObj->getName();
     }
+    // - media present in database must still exist in results
+    //   If not, abort, or ignore, following $options['ignore-missing-from-sophie']
     $missing_from_sophie = array_diff($mediasDb, $mediasSophie);
     if (count($missing_from_sophie))
     {
@@ -148,6 +283,33 @@ class madbFetchRpmsTask extends madbBaseTask
         throw new madbException($message);
       }
     }
+    // - media present in sophie must exist in database
+    //   abort or add them, following $options['add']
+    $missing_from_db = array_diff($mediasSophie, $mediasDb);
+    if (count($missing_from_db))
+    {
+      $message = "New media(s) in Sophie's response : " . implode(' ', $missing_from_db);
+      if ($options['add'])
+      {  
+        echo $message . "\n";
+        // add them
+        foreach ($missing_from_db as $media)
+        {
+          $mediaObj = new Media();
+          $mediaObj->setName($media);
+          $mediaObj->save();
+          echo "=> $media added.\n";
+        }
+      }
+      else
+      {
+        throw new madbException($message);
+      }
+    }    
+    
+    // TODO : updates, backports, testing media...
+    
+    
     
     
     
