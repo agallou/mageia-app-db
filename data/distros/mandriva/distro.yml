@@ -17,6 +17,7 @@ only_archs:
 exclude_archs:
 only_rpms:
 exclude_rpms:
+  - .*\.new$ # buggy RPM
 
 devel_releases:
   - cooker
