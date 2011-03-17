@@ -204,6 +204,8 @@ class SophieClient
   {
     // remove the -src suffix
     $media = str_replace('-src', '', $media);
+    // remove the -binary suffix (in some plf medias)
+    $media = str_replace('-binary', '', $media);
     return $media;
   }
 }
