@@ -18,7 +18,6 @@ class madbFetchRpmsTask extends madbBaseTask
   }
   protected function execute($arguments = array(), $options = array())
   {
-    // TODO: use the "limit" parameter
     if (is_numeric($options['limit']) and (int) $options['limit'] > 0)
     {
       $limit = $options['limit'];
@@ -263,11 +262,10 @@ class madbFetchRpmsTask extends madbBaseTask
       {
         foreach ($medias as $media => $value)
         {
-          $mediasSophie[$media] = $media;
+          $mediasSophie[$media] = $sophie->convertMediaName($media);
         }
       }
     }
-    $mediaObjs = MediaPeer::doSelect(new Criteria());
 
     // - media present in database must still exist in results
     //   If not, abort, or ignore, following $options['ignore-missing-from-sophie']
