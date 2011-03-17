@@ -262,7 +262,7 @@ class madbFetchRpmsTask extends madbBaseTask
       {
         foreach ($medias as $media => $value)
         {
-          $mediasSophie[$media] = $sophie->convertMediaName($media);
+          $mediasSophie[$sophie->convertMediaName($media)] = $sophie->convertMediaName($media);
         }
       }
     }
