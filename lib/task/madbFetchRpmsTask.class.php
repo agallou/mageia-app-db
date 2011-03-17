@@ -19,7 +19,10 @@ class madbFetchRpmsTask extends madbBaseTask
   protected function execute($arguments = array(), $options = array())
   {
     // TODO: use the "limit" parameter
-    
+    if (is_numeric($options['limit']) and (int) $options['limit'] > 0)
+    {
+      $limit = $options['limit'];
+    }
     
     sfContext::createInstance($this->createConfiguration('frontend', 'prod'));
     $con = Propel::getConnection();
@@ -40,7 +43,7 @@ class madbFetchRpmsTask extends madbBaseTask
       return false;
     }
     
-    // overload $distribution with the case-sensitive name from the config file
+    // override $distribution with the case-sensitive name from the config file
     $distribution = $config->getName();
     
     
@@ -600,7 +603,14 @@ class madbFetchRpmsTask extends madbBaseTask
             $rpmImporter->importFromArray($distreleaseObj, $archObj, $mediaObj, $rpmInfos);
             $time2 = round(microtime(true) - $startTime - $time1, 2);
             echo " + ${time2}s";
-            echo "\n"; 
+            echo "\n";
+            
+            // Apply --limit
+            if (isset($limit) and (($nbRetrievedRpms + $nbFailedRpms) >= $limit))
+            {
+              echo "\nLimit $limit reached, stopping.\n";
+              break 4;
+            }
           }
           
           if (count($differences))
@@ -614,6 +624,7 @@ class madbFetchRpmsTask extends madbBaseTask
           // For each deleted RPM (absent from the list)
             // Flag the rows as deleted in rpm table
             // Update other tables so that they are exactly like it would be without this RPM
+            
           
         }
       }
