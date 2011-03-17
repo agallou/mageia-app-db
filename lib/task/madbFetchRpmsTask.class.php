@@ -308,7 +308,10 @@ class madbFetchRpmsTask extends madbBaseTask
       }
     }    
     
-    // backports media
+    // Update the $allMedias array so that it knows the new media now
+    $allMedias = MediaPeer::MediasToNames(MediaPeer::doSelect(new Criteria()));
+    
+    // updates media
     $currentUpdatesMedias = MediaPeer::MediasToNames(MediaPeer::getUpdatesMedias());
     $newUpdatesMedias = madbToolkit::filterArrayKeepOnly($allMedias, $config->getUpdatesMedias());
     
