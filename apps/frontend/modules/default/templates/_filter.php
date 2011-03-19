@@ -1,5 +1,7 @@
-<?php echo $formField->render(); ?>
-<?php echo $formField->renderLabel(); ?>
+<?php if (!in_array($name, array('search'))): ?>
+  <?php echo $formField->render(); ?>
+  <?php echo $formField->renderLabel(); ?>
+<?php endif; ?>
 <?php if (in_array($name, array_keys($filters))): ?>
   <?php $values = $filters[$name] ?>
   <?php echo implode(',', $values); ?>
