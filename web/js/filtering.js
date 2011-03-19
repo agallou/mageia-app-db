@@ -3,6 +3,7 @@ $(document).ready(function(){
   $('#application').selectToCheckboxes({
     apply: function(d){afterCheckboxChange(d)},
     defaults: getAllVals($('#application option[selected=selected]')),
+    searchfield: false,
   });
   $('#group').selectToCheckboxes({
     apply: function(d){afterCheckboxChange(d)},

@@ -3,6 +3,7 @@
     var settings = {
       apply: function(){},
       defaults: [],
+      searchfield: true,
     }
     if (options)
     {
@@ -41,7 +42,10 @@
       ng1.append(div);
       global.append(ng1);
       var recherche = $('<input>', { type: 'text', id: 'recherche_' + selectId});
-      div.append(recherche);
+      if (settings.searchfield)
+      {
+        div.append(recherche);
+      }
       div.append('<br>');
       recherche.keyup(function(e){
         var letext = $(e.target).val();
