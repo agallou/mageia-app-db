@@ -1,4 +1,5 @@
-<form class="filters">
+<div class="filters">
+<form>
 <?php $partialParameters = array(
   'filters'            => $filters,
   'unremoveableFilters'=> $unremoveableFilters,
@@ -38,5 +39,6 @@
 
 <input type="submit" value="Filter" />
 </form>
+</div>
 
 <?php include_component_slot('searching') ?>
