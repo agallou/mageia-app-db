@@ -1,4 +1,4 @@
-<form>
+<form class="filters">
 <?php $partialParameters = array(
   'filters'            => $filters,
   'unremoveableFilters'=> $unremoveableFilters,

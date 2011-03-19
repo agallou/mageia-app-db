@@ -7,3 +7,12 @@
 {
   margin-top:4px;
 }
+
+
+form.filters
+{
+  margin:0px 0px 2px 0px;
+  padding: 6px;
+  border:1px solid #ccc;
+  background-color:#E1E7E8;
+}
