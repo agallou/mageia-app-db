@@ -270,35 +270,6 @@ div.pager
     outline: 1px solid #507AAA;
 }
 
-.new1
-{
-  height:150px;
-  background-color:#ccc;
-  overflow:auto;
-  border:1px solid #996A75;
-  position:absolute;
-}
-
-.new1 span
-{
-  font-family:verdana;
-  font-size:small;
-}
-
-.new1 input
-{
-  width:95%;
-  margin-left:2px;
-  margin-top:2px;
-  
-}
-
-
-.new label
-{
-  cursor:pointer;
-}
-
 .span
 {
   border:1px solid;
@@ -311,28 +282,6 @@ div.pager
 .span:hover
 {
   border-color: #666; 
-}
-
-.new
-{
-  margin-top:4px;
-}
-
-div.apply
-{
-  text-align:center;
-  font-weight:bold;
-  margin:1px 5px 1px 5px;
-}
-
-div.apply:hover
-{
-  background-color:#666;
-  cursor:pointer;
-}
-.fleche
-{
-  font-weight:bolder;
 }
 
 .todo 
