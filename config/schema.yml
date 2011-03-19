@@ -19,7 +19,8 @@ propel:
     rpm_group_id:                                                      { type: integer, required: true, foreignTable: rpm_group, foreignReference: id }
     licence:                                                           { type: varchar(255), required: true }
     name:                                                              { type: varchar(900), required: true }
-    md5_name:                                                          { type: varchar(45), required: true }
+    md5_name:                                                          { type: varchar(32), required: true }
+    filename:                                                          { type: varchar(900), required: true }
     short_name:                                                        { type: varchar(255), required: true }
     evr:                                                               { type: varchar(255), required: true }
     version:                                                           { type: varchar(255), required: true }

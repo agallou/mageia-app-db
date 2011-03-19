@@ -43,7 +43,8 @@ class RpmTableMap extends TableMap {
 		$this->addForeignKey('RPM_GROUP_ID', 'RpmGroupId', 'INTEGER', 'rpm_group', 'ID', true, null, null);
 		$this->addColumn('LICENCE', 'Licence', 'VARCHAR', true, 255, null);
 		$this->addColumn('NAME', 'Name', 'VARCHAR', true, 900, null);
-		$this->addColumn('MD5_NAME', 'Md5Name', 'VARCHAR', true, 45, null);
+		$this->addColumn('MD5_NAME', 'Md5Name', 'VARCHAR', true, 32, null);
+		$this->addColumn('FILENAME', 'Filename', 'VARCHAR', true, 900, null);
 		$this->addColumn('SHORT_NAME', 'ShortName', 'VARCHAR', true, 255, null);
 		$this->addColumn('EVR', 'Evr', 'VARCHAR', true, 255, null);
 		$this->addColumn('VERSION', 'Version', 'VARCHAR', true, 255, null);

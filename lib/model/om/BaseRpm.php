@@ -67,6 +67,12 @@ abstract class BaseRpm extends BaseObject  implements Persistent {
 	protected $md5_name;
 
 	/**
+	 * The value for the filename field.
+	 * @var        string
+	 */
+	protected $filename;
+
+	/**
 	 * The value for the short_name field.
 	 * @var        string
 	 */
@@ -292,6 +298,16 @@ abstract class BaseRpm extends BaseObject  implements Persistent {
 	public function getMd5Name()
 	{
 		return $this->md5_name;
+	}
+
+	/**
+	 * Get the [filename] column value.
+	 * 
+	 * @return     string
+	 */
+	public function getFilename()
+	{
+		return $this->filename;
 	}
 
 	/**
@@ -647,6 +663,26 @@ abstract class BaseRpm extends BaseObject  implements Persistent {
 
 		return $this;
 	} // setMd5Name()
+
+	/**
+	 * Set the value of [filename] column.
+	 * 
+	 * @param      string $v new value
+	 * @return     Rpm The current object (for fluent API support)
+	 */
+	public function setFilename($v)
+	{
+		if ($v !== null) {
+			$v = (string) $v;
+		}
+
+		if ($this->filename !== $v) {
+			$this->filename = $v;
+			$this->modifiedColumns[] = RpmPeer::FILENAME;
+		}
+
+		return $this;
+	} // setFilename()
 
 	/**
 	 * Set the value of [short_name] column.
@@ -1025,21 +1061,22 @@ abstract class BaseRpm extends BaseObject  implements Persistent {
 			$this->licence = ($row[$startcol + 5] !== null) ? (string) $row[$startcol + 5] : null;
 			$this->name = ($row[$startcol + 6] !== null) ? (string) $row[$startcol + 6] : null;
 			$this->md5_name = ($row[$startcol + 7] !== null) ? (string) $row[$startcol + 7] : null;
-			$this->short_name = ($row[$startcol + 8] !== null) ? (string) $row[$startcol + 8] : null;
-			$this->evr = ($row[$startcol + 9] !== null) ? (string) $row[$startcol + 9] : null;
-			$this->version = ($row[$startcol + 10] !== null) ? (string) $row[$startcol + 10] : null;
-			$this->release = ($row[$startcol + 11] !== null) ? (string) $row[$startcol + 11] : null;
-			$this->summary = ($row[$startcol + 12] !== null) ? (string) $row[$startcol + 12] : null;
-			$this->description = ($row[$startcol + 13] !== null) ? (string) $row[$startcol + 13] : null;
-			$this->url = ($row[$startcol + 14] !== null) ? (string) $row[$startcol + 14] : null;
-			$this->rpm_pkgid = ($row[$startcol + 15] !== null) ? (string) $row[$startcol + 15] : null;
-			$this->build_time = ($row[$startcol + 16] !== null) ? (string) $row[$startcol + 16] : null;
-			$this->size = ($row[$startcol + 17] !== null) ? (int) $row[$startcol + 17] : null;
-			$this->realarch = ($row[$startcol + 18] !== null) ? (string) $row[$startcol + 18] : null;
-			$this->arch_id = ($row[$startcol + 19] !== null) ? (int) $row[$startcol + 19] : null;
-			$this->is_source = ($row[$startcol + 20] !== null) ? (boolean) $row[$startcol + 20] : null;
-			$this->source_rpm_id = ($row[$startcol + 21] !== null) ? (int) $row[$startcol + 21] : null;
-			$this->source_rpm_name = ($row[$startcol + 22] !== null) ? (string) $row[$startcol + 22] : null;
+			$this->filename = ($row[$startcol + 8] !== null) ? (string) $row[$startcol + 8] : null;
+			$this->short_name = ($row[$startcol + 9] !== null) ? (string) $row[$startcol + 9] : null;
+			$this->evr = ($row[$startcol + 10] !== null) ? (string) $row[$startcol + 10] : null;
+			$this->version = ($row[$startcol + 11] !== null) ? (string) $row[$startcol + 11] : null;
+			$this->release = ($row[$startcol + 12] !== null) ? (string) $row[$startcol + 12] : null;
+			$this->summary = ($row[$startcol + 13] !== null) ? (string) $row[$startcol + 13] : null;
+			$this->description = ($row[$startcol + 14] !== null) ? (string) $row[$startcol + 14] : null;
+			$this->url = ($row[$startcol + 15] !== null) ? (string) $row[$startcol + 15] : null;
+			$this->rpm_pkgid = ($row[$startcol + 16] !== null) ? (string) $row[$startcol + 16] : null;
+			$this->build_time = ($row[$startcol + 17] !== null) ? (string) $row[$startcol + 17] : null;
+			$this->size = ($row[$startcol + 18] !== null) ? (int) $row[$startcol + 18] : null;
+			$this->realarch = ($row[$startcol + 19] !== null) ? (string) $row[$startcol + 19] : null;
+			$this->arch_id = ($row[$startcol + 20] !== null) ? (int) $row[$startcol + 20] : null;
+			$this->is_source = ($row[$startcol + 21] !== null) ? (boolean) $row[$startcol + 21] : null;
+			$this->source_rpm_id = ($row[$startcol + 22] !== null) ? (int) $row[$startcol + 22] : null;
+			$this->source_rpm_name = ($row[$startcol + 23] !== null) ? (string) $row[$startcol + 23] : null;
 			$this->resetModified();
 
 			$this->setNew(false);
@@ -1049,7 +1086,7 @@ abstract class BaseRpm extends BaseObject  implements Persistent {
 			}
 
 			// FIXME - using NUM_COLUMNS may be clearer.
-			return $startcol + 23; // 23 = RpmPeer::NUM_COLUMNS - RpmPeer::NUM_LAZY_LOAD_COLUMNS).
+			return $startcol + 24; // 24 = RpmPeer::NUM_COLUMNS - RpmPeer::NUM_LAZY_LOAD_COLUMNS).
 
 		} catch (Exception $e) {
 			throw new PropelException("Error populating Rpm object", $e);
@@ -1536,48 +1573,51 @@ abstract class BaseRpm extends BaseObject  implements Persistent {
 				return $this->getMd5Name();
 				break;
 			case 8:
-				return $this->getShortName();
+				return $this->getFilename();
 				break;
 			case 9:
-				return $this->getEvr();
+				return $this->getShortName();
 				break;
 			case 10:
-				return $this->getVersion();
+				return $this->getEvr();
 				break;
 			case 11:
-				return $this->getRelease();
+				return $this->getVersion();
 				break;
 			case 12:
-				return $this->getSummary();
+				return $this->getRelease();
 				break;
 			case 13:
-				return $this->getDescription();
+				return $this->getSummary();
 				break;
 			case 14:
-				return $this->getUrl();
+				return $this->getDescription();
 				break;
 			case 15:
-				return $this->getRpmPkgid();
+				return $this->getUrl();
 				break;
 			case 16:
-				return $this->getBuildTime();
+				return $this->getRpmPkgid();
 				break;
 			case 17:
-				return $this->getSize();
+				return $this->getBuildTime();
 				break;
 			case 18:
-				return $this->getRealarch();
+				return $this->getSize();
 				break;
 			case 19:
-				return $this->getArchId();
+				return $this->getRealarch();
 				break;
 			case 20:
-				return $this->getIsSource();
+				return $this->getArchId();
 				break;
 			case 21:
-				return $this->getSourceRpmId();
+				return $this->getIsSource();
 				break;
 			case 22:
+				return $this->getSourceRpmId();
+				break;
+			case 23:
 				return $this->getSourceRpmName();
 				break;
 			default:
@@ -1609,21 +1649,22 @@ abstract class BaseRpm extends BaseObject  implements Persistent {
 			$keys[5] => $this->getLicence(),
 			$keys[6] => $this->getName(),
 			$keys[7] => $this->getMd5Name(),
-			$keys[8] => $this->getShortName(),
-			$keys[9] => $this->getEvr(),
-			$keys[10] => $this->getVersion(),
-			$keys[11] => $this->getRelease(),
-			$keys[12] => $this->getSummary(),
-			$keys[13] => $this->getDescription(),
-			$keys[14] => $this->getUrl(),
-			$keys[15] => $this->getRpmPkgid(),
-			$keys[16] => $this->getBuildTime(),
-			$keys[17] => $this->getSize(),
-			$keys[18] => $this->getRealarch(),
-			$keys[19] => $this->getArchId(),
-			$keys[20] => $this->getIsSource(),
-			$keys[21] => $this->getSourceRpmId(),
-			$keys[22] => $this->getSourceRpmName(),
+			$keys[8] => $this->getFilename(),
+			$keys[9] => $this->getShortName(),
+			$keys[10] => $this->getEvr(),
+			$keys[11] => $this->getVersion(),
+			$keys[12] => $this->getRelease(),
+			$keys[13] => $this->getSummary(),
+			$keys[14] => $this->getDescription(),
+			$keys[15] => $this->getUrl(),
+			$keys[16] => $this->getRpmPkgid(),
+			$keys[17] => $this->getBuildTime(),
+			$keys[18] => $this->getSize(),
+			$keys[19] => $this->getRealarch(),
+			$keys[20] => $this->getArchId(),
+			$keys[21] => $this->getIsSource(),
+			$keys[22] => $this->getSourceRpmId(),
+			$keys[23] => $this->getSourceRpmName(),
 		);
 		return $result;
 	}
@@ -1680,48 +1721,51 @@ abstract class BaseRpm extends BaseObject  implements Persistent {
 				$this->setMd5Name($value);
 				break;
 			case 8:
-				$this->setShortName($value);
+				$this->setFilename($value);
 				break;
 			case 9:
-				$this->setEvr($value);
+				$this->setShortName($value);
 				break;
 			case 10:
-				$this->setVersion($value);
+				$this->setEvr($value);
 				break;
 			case 11:
-				$this->setRelease($value);
+				$this->setVersion($value);
 				break;
 			case 12:
-				$this->setSummary($value);
+				$this->setRelease($value);
 				break;
 			case 13:
-				$this->setDescription($value);
+				$this->setSummary($value);
 				break;
 			case 14:
-				$this->setUrl($value);
+				$this->setDescription($value);
 				break;
 			case 15:
-				$this->setRpmPkgid($value);
+				$this->setUrl($value);
 				break;
 			case 16:
-				$this->setBuildTime($value);
+				$this->setRpmPkgid($value);
 				break;
 			case 17:
-				$this->setSize($value);
+				$this->setBuildTime($value);
 				break;
 			case 18:
-				$this->setRealarch($value);
+				$this->setSize($value);
 				break;
 			case 19:
-				$this->setArchId($value);
+				$this->setRealarch($value);
 				break;
 			case 20:
-				$this->setIsSource($value);
+				$this->setArchId($value);
 				break;
 			case 21:
-				$this->setSourceRpmId($value);
+				$this->setIsSource($value);
 				break;
 			case 22:
+				$this->setSourceRpmId($value);
+				break;
+			case 23:
 				$this->setSourceRpmName($value);
 				break;
 		} // switch()
@@ -1756,21 +1800,22 @@ abstract class BaseRpm extends BaseObject  implements Persistent {
 		if (array_key_exists($keys[5], $arr)) $this->setLicence($arr[$keys[5]]);
 		if (array_key_exists($keys[6], $arr)) $this->setName($arr[$keys[6]]);
 		if (array_key_exists($keys[7], $arr)) $this->setMd5Name($arr[$keys[7]]);
-		if (array_key_exists($keys[8], $arr)) $this->setShortName($arr[$keys[8]]);
-		if (array_key_exists($keys[9], $arr)) $this->setEvr($arr[$keys[9]]);
-		if (array_key_exists($keys[10], $arr)) $this->setVersion($arr[$keys[10]]);
-		if (array_key_exists($keys[11], $arr)) $this->setRelease($arr[$keys[11]]);
-		if (array_key_exists($keys[12], $arr)) $this->setSummary($arr[$keys[12]]);
-		if (array_key_exists($keys[13], $arr)) $this->setDescription($arr[$keys[13]]);
-		if (array_key_exists($keys[14], $arr)) $this->setUrl($arr[$keys[14]]);
-		if (array_key_exists($keys[15], $arr)) $this->setRpmPkgid($arr[$keys[15]]);
-		if (array_key_exists($keys[16], $arr)) $this->setBuildTime($arr[$keys[16]]);
-		if (array_key_exists($keys[17], $arr)) $this->setSize($arr[$keys[17]]);
-		if (array_key_exists($keys[18], $arr)) $this->setRealarch($arr[$keys[18]]);
-		if (array_key_exists($keys[19], $arr)) $this->setArchId($arr[$keys[19]]);
-		if (array_key_exists($keys[20], $arr)) $this->setIsSource($arr[$keys[20]]);
-		if (array_key_exists($keys[21], $arr)) $this->setSourceRpmId($arr[$keys[21]]);
-		if (array_key_exists($keys[22], $arr)) $this->setSourceRpmName($arr[$keys[22]]);
+		if (array_key_exists($keys[8], $arr)) $this->setFilename($arr[$keys[8]]);
+		if (array_key_exists($keys[9], $arr)) $this->setShortName($arr[$keys[9]]);
+		if (array_key_exists($keys[10], $arr)) $this->setEvr($arr[$keys[10]]);
+		if (array_key_exists($keys[11], $arr)) $this->setVersion($arr[$keys[11]]);
+		if (array_key_exists($keys[12], $arr)) $this->setRelease($arr[$keys[12]]);
+		if (array_key_exists($keys[13], $arr)) $this->setSummary($arr[$keys[13]]);
+		if (array_key_exists($keys[14], $arr)) $this->setDescription($arr[$keys[14]]);
+		if (array_key_exists($keys[15], $arr)) $this->setUrl($arr[$keys[15]]);
+		if (array_key_exists($keys[16], $arr)) $this->setRpmPkgid($arr[$keys[16]]);
+		if (array_key_exists($keys[17], $arr)) $this->setBuildTime($arr[$keys[17]]);
+		if (array_key_exists($keys[18], $arr)) $this->setSize($arr[$keys[18]]);
+		if (array_key_exists($keys[19], $arr)) $this->setRealarch($arr[$keys[19]]);
+		if (array_key_exists($keys[20], $arr)) $this->setArchId($arr[$keys[20]]);
+		if (array_key_exists($keys[21], $arr)) $this->setIsSource($arr[$keys[21]]);
+		if (array_key_exists($keys[22], $arr)) $this->setSourceRpmId($arr[$keys[22]]);
+		if (array_key_exists($keys[23], $arr)) $this->setSourceRpmName($arr[$keys[23]]);
 	}
 
 	/**
@@ -1790,6 +1835,7 @@ abstract class BaseRpm extends BaseObject  implements Persistent {
 		if ($this->isColumnModified(RpmPeer::LICENCE)) $criteria->add(RpmPeer::LICENCE, $this->licence);
 		if ($this->isColumnModified(RpmPeer::NAME)) $criteria->add(RpmPeer::NAME, $this->name);
 		if ($this->isColumnModified(RpmPeer::MD5_NAME)) $criteria->add(RpmPeer::MD5_NAME, $this->md5_name);
+		if ($this->isColumnModified(RpmPeer::FILENAME)) $criteria->add(RpmPeer::FILENAME, $this->filename);
 		if ($this->isColumnModified(RpmPeer::SHORT_NAME)) $criteria->add(RpmPeer::SHORT_NAME, $this->short_name);
 		if ($this->isColumnModified(RpmPeer::EVR)) $criteria->add(RpmPeer::EVR, $this->evr);
 		if ($this->isColumnModified(RpmPeer::VERSION)) $criteria->add(RpmPeer::VERSION, $this->version);
@@ -1872,6 +1918,8 @@ abstract class BaseRpm extends BaseObject  implements Persistent {
 		$copyObj->setName($this->name);
 
 		$copyObj->setMd5Name($this->md5_name);
+
+		$copyObj->setFilename($this->filename);
 
 		$copyObj->setShortName($this->short_name);
 

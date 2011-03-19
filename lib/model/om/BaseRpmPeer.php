@@ -25,7 +25,7 @@ abstract class BaseRpmPeer {
 	const TM_CLASS = 'RpmTableMap';
 	
 	/** The total number of columns. */
-	const NUM_COLUMNS = 23;
+	const NUM_COLUMNS = 24;
 
 	/** The number of lazy-loaded columns. */
 	const NUM_LAZY_LOAD_COLUMNS = 0;
@@ -53,6 +53,9 @@ abstract class BaseRpmPeer {
 
 	/** the column name for the MD5_NAME field */
 	const MD5_NAME = 'rpm.MD5_NAME';
+
+	/** the column name for the FILENAME field */
+	const FILENAME = 'rpm.FILENAME';
 
 	/** the column name for the SHORT_NAME field */
 	const SHORT_NAME = 'rpm.SHORT_NAME';
@@ -122,11 +125,11 @@ abstract class BaseRpmPeer {
 	 * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
 	 */
 	private static $fieldNames = array (
-		BasePeer::TYPE_PHPNAME => array ('Id', 'PackageId', 'DistreleaseId', 'MediaId', 'RpmGroupId', 'Licence', 'Name', 'Md5Name', 'ShortName', 'Evr', 'Version', 'Release', 'Summary', 'Description', 'Url', 'RpmPkgid', 'BuildTime', 'Size', 'Realarch', 'ArchId', 'IsSource', 'SourceRpmId', 'SourceRpmName', ),
-		BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'packageId', 'distreleaseId', 'mediaId', 'rpmGroupId', 'licence', 'name', 'md5Name', 'shortName', 'evr', 'version', 'release', 'summary', 'description', 'url', 'rpmPkgid', 'buildTime', 'size', 'realarch', 'archId', 'isSource', 'sourceRpmId', 'sourceRpmName', ),
-		BasePeer::TYPE_COLNAME => array (self::ID, self::PACKAGE_ID, self::DISTRELEASE_ID, self::MEDIA_ID, self::RPM_GROUP_ID, self::LICENCE, self::NAME, self::MD5_NAME, self::SHORT_NAME, self::EVR, self::VERSION, self::RELEASE, self::SUMMARY, self::DESCRIPTION, self::URL, self::RPM_PKGID, self::BUILD_TIME, self::SIZE, self::REALARCH, self::ARCH_ID, self::IS_SOURCE, self::SOURCE_RPM_ID, self::SOURCE_RPM_NAME, ),
-		BasePeer::TYPE_FIELDNAME => array ('id', 'package_id', 'distrelease_id', 'media_id', 'rpm_group_id', 'licence', 'name', 'md5_name', 'short_name', 'evr', 'version', 'release', 'summary', 'description', 'url', 'rpm_pkgid', 'build_time', 'size', 'realarch', 'arch_id', 'is_source', 'source_rpm_id', 'source_rpm_name', ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, )
+		BasePeer::TYPE_PHPNAME => array ('Id', 'PackageId', 'DistreleaseId', 'MediaId', 'RpmGroupId', 'Licence', 'Name', 'Md5Name', 'Filename', 'ShortName', 'Evr', 'Version', 'Release', 'Summary', 'Description', 'Url', 'RpmPkgid', 'BuildTime', 'Size', 'Realarch', 'ArchId', 'IsSource', 'SourceRpmId', 'SourceRpmName', ),
+		BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'packageId', 'distreleaseId', 'mediaId', 'rpmGroupId', 'licence', 'name', 'md5Name', 'filename', 'shortName', 'evr', 'version', 'release', 'summary', 'description', 'url', 'rpmPkgid', 'buildTime', 'size', 'realarch', 'archId', 'isSource', 'sourceRpmId', 'sourceRpmName', ),
+		BasePeer::TYPE_COLNAME => array (self::ID, self::PACKAGE_ID, self::DISTRELEASE_ID, self::MEDIA_ID, self::RPM_GROUP_ID, self::LICENCE, self::NAME, self::MD5_NAME, self::FILENAME, self::SHORT_NAME, self::EVR, self::VERSION, self::RELEASE, self::SUMMARY, self::DESCRIPTION, self::URL, self::RPM_PKGID, self::BUILD_TIME, self::SIZE, self::REALARCH, self::ARCH_ID, self::IS_SOURCE, self::SOURCE_RPM_ID, self::SOURCE_RPM_NAME, ),
+		BasePeer::TYPE_FIELDNAME => array ('id', 'package_id', 'distrelease_id', 'media_id', 'rpm_group_id', 'licence', 'name', 'md5_name', 'filename', 'short_name', 'evr', 'version', 'release', 'summary', 'description', 'url', 'rpm_pkgid', 'build_time', 'size', 'realarch', 'arch_id', 'is_source', 'source_rpm_id', 'source_rpm_name', ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, )
 	);
 
 	/**
@@ -136,11 +139,11 @@ abstract class BaseRpmPeer {
 	 * e.g. self::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
 	 */
 	private static $fieldKeys = array (
-		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'PackageId' => 1, 'DistreleaseId' => 2, 'MediaId' => 3, 'RpmGroupId' => 4, 'Licence' => 5, 'Name' => 6, 'Md5Name' => 7, 'ShortName' => 8, 'Evr' => 9, 'Version' => 10, 'Release' => 11, 'Summary' => 12, 'Description' => 13, 'Url' => 14, 'RpmPkgid' => 15, 'BuildTime' => 16, 'Size' => 17, 'Realarch' => 18, 'ArchId' => 19, 'IsSource' => 20, 'SourceRpmId' => 21, 'SourceRpmName' => 22, ),
-		BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'packageId' => 1, 'distreleaseId' => 2, 'mediaId' => 3, 'rpmGroupId' => 4, 'licence' => 5, 'name' => 6, 'md5Name' => 7, 'shortName' => 8, 'evr' => 9, 'version' => 10, 'release' => 11, 'summary' => 12, 'description' => 13, 'url' => 14, 'rpmPkgid' => 15, 'buildTime' => 16, 'size' => 17, 'realarch' => 18, 'archId' => 19, 'isSource' => 20, 'sourceRpmId' => 21, 'sourceRpmName' => 22, ),
-		BasePeer::TYPE_COLNAME => array (self::ID => 0, self::PACKAGE_ID => 1, self::DISTRELEASE_ID => 2, self::MEDIA_ID => 3, self::RPM_GROUP_ID => 4, self::LICENCE => 5, self::NAME => 6, self::MD5_NAME => 7, self::SHORT_NAME => 8, self::EVR => 9, self::VERSION => 10, self::RELEASE => 11, self::SUMMARY => 12, self::DESCRIPTION => 13, self::URL => 14, self::RPM_PKGID => 15, self::BUILD_TIME => 16, self::SIZE => 17, self::REALARCH => 18, self::ARCH_ID => 19, self::IS_SOURCE => 20, self::SOURCE_RPM_ID => 21, self::SOURCE_RPM_NAME => 22, ),
-		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'package_id' => 1, 'distrelease_id' => 2, 'media_id' => 3, 'rpm_group_id' => 4, 'licence' => 5, 'name' => 6, 'md5_name' => 7, 'short_name' => 8, 'evr' => 9, 'version' => 10, 'release' => 11, 'summary' => 12, 'description' => 13, 'url' => 14, 'rpm_pkgid' => 15, 'build_time' => 16, 'size' => 17, 'realarch' => 18, 'arch_id' => 19, 'is_source' => 20, 'source_rpm_id' => 21, 'source_rpm_name' => 22, ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, )
+		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'PackageId' => 1, 'DistreleaseId' => 2, 'MediaId' => 3, 'RpmGroupId' => 4, 'Licence' => 5, 'Name' => 6, 'Md5Name' => 7, 'Filename' => 8, 'ShortName' => 9, 'Evr' => 10, 'Version' => 11, 'Release' => 12, 'Summary' => 13, 'Description' => 14, 'Url' => 15, 'RpmPkgid' => 16, 'BuildTime' => 17, 'Size' => 18, 'Realarch' => 19, 'ArchId' => 20, 'IsSource' => 21, 'SourceRpmId' => 22, 'SourceRpmName' => 23, ),
+		BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'packageId' => 1, 'distreleaseId' => 2, 'mediaId' => 3, 'rpmGroupId' => 4, 'licence' => 5, 'name' => 6, 'md5Name' => 7, 'filename' => 8, 'shortName' => 9, 'evr' => 10, 'version' => 11, 'release' => 12, 'summary' => 13, 'description' => 14, 'url' => 15, 'rpmPkgid' => 16, 'buildTime' => 17, 'size' => 18, 'realarch' => 19, 'archId' => 20, 'isSource' => 21, 'sourceRpmId' => 22, 'sourceRpmName' => 23, ),
+		BasePeer::TYPE_COLNAME => array (self::ID => 0, self::PACKAGE_ID => 1, self::DISTRELEASE_ID => 2, self::MEDIA_ID => 3, self::RPM_GROUP_ID => 4, self::LICENCE => 5, self::NAME => 6, self::MD5_NAME => 7, self::FILENAME => 8, self::SHORT_NAME => 9, self::EVR => 10, self::VERSION => 11, self::RELEASE => 12, self::SUMMARY => 13, self::DESCRIPTION => 14, self::URL => 15, self::RPM_PKGID => 16, self::BUILD_TIME => 17, self::SIZE => 18, self::REALARCH => 19, self::ARCH_ID => 20, self::IS_SOURCE => 21, self::SOURCE_RPM_ID => 22, self::SOURCE_RPM_NAME => 23, ),
+		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'package_id' => 1, 'distrelease_id' => 2, 'media_id' => 3, 'rpm_group_id' => 4, 'licence' => 5, 'name' => 6, 'md5_name' => 7, 'filename' => 8, 'short_name' => 9, 'evr' => 10, 'version' => 11, 'release' => 12, 'summary' => 13, 'description' => 14, 'url' => 15, 'rpm_pkgid' => 16, 'build_time' => 17, 'size' => 18, 'realarch' => 19, 'arch_id' => 20, 'is_source' => 21, 'source_rpm_id' => 22, 'source_rpm_name' => 23, ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, )
 	);
 
 	/**
@@ -218,6 +221,7 @@ abstract class BaseRpmPeer {
 		$criteria->addSelectColumn(RpmPeer::LICENCE);
 		$criteria->addSelectColumn(RpmPeer::NAME);
 		$criteria->addSelectColumn(RpmPeer::MD5_NAME);
+		$criteria->addSelectColumn(RpmPeer::FILENAME);
 		$criteria->addSelectColumn(RpmPeer::SHORT_NAME);
 		$criteria->addSelectColumn(RpmPeer::EVR);
 		$criteria->addSelectColumn(RpmPeer::VERSION);

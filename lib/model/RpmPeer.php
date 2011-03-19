@@ -179,8 +179,9 @@ class RpmPeer extends BaseRpmPeer {
     $rpm->setDescription($values['description']);
     $rpm->setEvr($values['evr']);
     $rpm->setLicence($values['license']);
-    $rpm->setName($values['filename']);
-    $rpm->setMd5Name(md5($values['filename']));
+    $rpm->setName($values['real_filename']);
+    $rpm->setMd5Name(md5($values['real_filename']));
+    $rpm->setFilename($values['filename']);
     $rpm->setRealarch($values['arch']);
     $rpm->setRelease($release);
     $rpm->setIsSource(self::inferIsSourceFromFilename($values['filename']));

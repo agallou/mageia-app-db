@@ -589,6 +589,7 @@ class madbFetchRpmsTask extends madbBaseTask
             try 
             {
               $rpmInfos = $sophie->getRpmByPkgid($pkgid);
+              $rpmInfos['real_filename'] = $filename;
               $time1 = round(microtime(true) - $startTime, 2);
               echo " - ${time1}s"; 
               $nbRetrievedRpms++;
