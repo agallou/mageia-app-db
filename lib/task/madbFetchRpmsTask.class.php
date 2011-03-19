@@ -634,6 +634,10 @@ class madbFetchRpmsTask extends madbBaseTask
     
     echo "Total number of retrieved RPMs : $nbRetrievedRpms\n";
     echo "Total number of failed RPMs retrievals : $nbFailedRpms\n";
+    
+    // Update package.is_application
+    $pathToAppList = sfConfig::get('sf_root_dir') . '/data/distros/' . $options['distro'] . '/applications.txt';
+    $this->updateIsApplicationFromFile($pathToAppList); 
   }  
   
   protected function getDistreleasesArchsMedias (madbDistroConfig $config, SophieClient $sophie)
@@ -703,5 +707,22 @@ class madbFetchRpmsTask extends madbBaseTask
     }
     
     return $distreleases;
+  }
+  
+  protected function updateIsApplicationFromFile($filename)
+  {
+    $con = Propel::getConnection();
+    
+    $sql = "CREATE TEMPORARY TABLE tmpapplications (name VARCHAR(255), PRIMARY KEY (name))";
+    $con->exec($sql);
+    
+    $sql = "LOAD DATA INFILE '$filename' INTO TABLE tmpapplications";
+    $con->exec($sql);
+    
+    $sql = "UPDATE package SET is_application = 0";
+    $con->exec($sql);
+    
+    $sql = "UPDATE package JOIN tmpapplications ON package.name = tmpapplications.name SET package.is_application=1";
+    $con->exec($sql);
   }
 }

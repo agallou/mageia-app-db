@@ -25,7 +25,7 @@ class RpmImporter
       $package->setIsSource($is_source);
       $package->setSummary($values['summary']);
       $package->setDescription($values['description']);
-      // TODO : $package->setIsApplication();
+      // TODO : $package->setIsApplication(); => no, treated outside
       $package->setMd5Name(md5($package_name));
     }
     
@@ -65,7 +65,7 @@ class RpmImporter
     }
     
     // update Package object
-    // TODO : is_application
+    // TODO : is_application => no, will be done outside this method
     // summary
     // description
     $package->updateSummaryAndDescription();    
