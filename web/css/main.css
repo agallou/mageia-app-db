@@ -293,6 +293,12 @@ div.pager
   
 }
 
+
+.new label
+{
+  cursor:pointer;
+}
+
 .span
 {
   border:1px solid;

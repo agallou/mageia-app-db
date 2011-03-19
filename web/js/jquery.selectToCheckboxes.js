@@ -78,10 +78,19 @@
           checked : (jQuery.inArray(value[0], settings.defaults) > -1),
           id      : 'inp_' + selectId + '_' + value[0],
          }).appendTo(jSpan);
-        $('<label>', {
+        var label = $('<label>', {
           'for' : 'inp_' + selectId + '_' + value[0],
           text   : value[1],
-        }).appendTo(jSpan);
+        });
+        label.appendTo(jSpan);
+        label.click(function(){
+          //TODO only to that if option auto_something to true (default)
+          //TODO same as jApply, factorize that ???
+          ng1.hide();
+          $('input[name=' + selectId + ']:checked').removeAttr('checked')
+          $('input[id=' + $(this).attr('for') + ']').attr("checked", "checked");
+          settings.apply.apply(this, [$('input[name=' + selectId + ']:checked')]);
+        });
         $('<br>').appendTo(jSpan);
 
         div.append(jSpan);
