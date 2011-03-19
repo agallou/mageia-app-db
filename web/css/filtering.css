@@ -16,3 +16,8 @@ form.filters
   border:1px solid #ccc;
   background-color:#E1E7E8;
 }
+
+form.filters img.delete
+{
+  vertical-align:middle;
+}
