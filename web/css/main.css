@@ -270,19 +270,7 @@ div.pager
     outline: 1px solid #507AAA;
 }
 
-.span
-{
-  border:1px solid;
-  padding:2px 5px 2px 5px ;
-  font-size:small;
-  border-color: #ccc #666 #666 #ccc; 
-  color:#000;
-}
 
-.span:hover
-{
-  border-color: #666; 
-}
 
 .todo 
 {
