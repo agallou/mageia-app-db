@@ -716,13 +716,24 @@ class madbFetchRpmsTask extends madbBaseTask
     $sql = "CREATE TEMPORARY TABLE tmpapplications (name VARCHAR(255), PRIMARY KEY (name))";
     $con->exec($sql);
     
-    $sql = "LOAD DATA INFILE '$filename' INTO TABLE tmpapplications";
+    $sql = "LOAD DATA LOCAL INFILE '$filename' INTO TABLE tmpapplications";
     $con->exec($sql);
     
     $sql = "UPDATE package SET is_application = 0";
     $con->exec($sql);
     
-    $sql = "UPDATE package JOIN tmpapplications ON package.name = tmpapplications.name SET package.is_application=1";
+    $sql = "UPDATE package JOIN tmpapplications ON package.name = tmpapplications.name SET package.is_application=1 WHERE package.is_source=0";
+    $con->exec($sql);
+    
+    // source packages of applications are flagged as applications too
+    $sql = <<<EOF
+UPDATE package AS source_package
+JOIN rpm AS source_rpm ON source_package.ID = source_rpm.PACKAGE_ID
+JOIN rpm ON source_rpm.ID = rpm.SOURCE_RPM_ID AND rpm.is_source = FALSE
+JOIN package ON rpm.PACKAGE_ID = package.ID
+SET source_package.is_application = 1
+WHERE package.is_application = 1;"
+EOF;
     $con->exec($sql);
   }
 }
