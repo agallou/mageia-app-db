@@ -27,6 +27,11 @@ $(document).ready(function(){
 	    defaults: getAllVals($('#source option[selected=selected]')),
 	  });
   $('div#filtering form:first input[type=submit]').remove();
+
+  $('div#otherFilters').toggle();
+  $('span#linkmore').click(function(){
+    $('div#otherFilters').toggle();
+  });
 });
 
 

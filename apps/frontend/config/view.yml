@@ -16,6 +16,7 @@ default:
   stylesheets:
     - main.css
     - selectToCheckboxes.css
+    - filtering.css
 
   javascripts:
     - jquery-1.4.4.js
