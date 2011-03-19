@@ -16,6 +16,7 @@ $(document).ready(function(){
   $('#arch').selectToCheckboxes({
 	    apply: function(d){afterCheckboxChange(d)},
 	    defaults: getAllVals($('#arch option[selected=selected]')),
+      searchfield: false,
 	  });
   $('#media').selectToCheckboxes({
 	    apply: function(d){afterCheckboxChange(d)},
