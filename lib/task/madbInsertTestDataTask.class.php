@@ -21,7 +21,7 @@ class madbInsertTestDataTask extends madbBaseTask
     
     // TODO : replace with configured tmp dir
     $this->getFilesystem()->mkdirs('tmp/');
-    $archive_name = 'tmp/test-data.zip';
+    $archive_name = 'tmp/data.zip';
     $content_dir = 'tmp/test-data';
     $this->getFilesystem()->mkdirs($content_dir);
     $this->getFilesystem()->execute("rm -f $content_dir/*");
