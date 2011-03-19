@@ -290,18 +290,6 @@ div.pager
   font-weight:bold;
 }
 
-#filtersInfo
-{
-  margin: 8px 0px 5px 0px;
-  border:1px solid #ccc;
-  background-color:#E1E7E8;
-}
-
-#filtersInfo .name
-{
-  font-weight:bold;
-}
-
 img
 {
   border:0px;
