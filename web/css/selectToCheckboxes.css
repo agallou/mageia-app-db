@@ -36,7 +36,7 @@ div.apply:hover
   font-size:small;
 }
 
-.new1 input
+.new1 input[type=text]
 {
   width:95%;
   margin-left:2px;
