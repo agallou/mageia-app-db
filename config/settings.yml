@@ -2,3 +2,5 @@ all:
   .actions:
     login_module: user
     login_action: login
+  .settings:
+    error_reporting: 4095

@@ -134,4 +134,78 @@ class RpmPeer extends BaseRpmPeer {
     return $rpms;
   }
   
+  public static function inferIsSourceFromFilename($filename)
+  {
+    return preg_match('/^.*\.src\.rpm$/i', $filename);
+  }
+  
+  public static function retrieveUniqueByName(Distrelease $distrelease, Arch $arch, Media $media, $name)
+  {
+    $criteria = new Criteria();
+    $criteria->add(RpmPeer::DISTRELEASE_ID, $distrelease->getId());
+    $criteria->add(RpmPeer::ARCH_ID, $arch->getId());
+    $criteria->add(RpmPeer::MEDIA_ID, $media->getId());
+    $criteria->add(RpmPeer::NAME, $name);
+    $rpm = RpmPeer::doSelectOne($criteria);
+    return $rpm;
+  }
+  
+  
+  /**
+   * 
+   * Create a Rpm object from an array of values and related objects
+   * 
+   * @param Distrelease $distrelease
+   * @param Arch $arch
+   * @param Media $media
+   * @param RpmGroup $rpmGroup
+   * @param Package $package
+   * @param array $values
+   * @throws RpmPeerException
+   * @return Rpm
+   */
+  public static function createFromArray(Distrelease $distrelease, Arch $arch, Media $media, RpmGroup $rpmGroup, Package $package, $values)
+  {
+    list ($epoch, $version, $release) = self::evrSplit($values['evr']);
+    $rpm = new Rpm();
+    
+    $rpm->setDistrelease($distrelease);
+    $rpm->setArch($arch);
+    $rpm->setMedia($media);
+    $rpm->setPackage($package);
+    $rpm->setRpmGroup($rpmGroup);
+    
+    $rpm->setBuildTime($values['buildtime']);
+    $rpm->setDescription($values['description']);
+    $rpm->setEvr($values['evr']);
+    $rpm->setLicence($values['license']);
+    $rpm->setName($values['real_filename']);
+    $rpm->setMd5Name(md5($values['real_filename']));
+    $rpm->setFilename($values['filename']);
+    $rpm->setRealarch($values['arch']);
+    $rpm->setRelease($release);
+    $rpm->setIsSource(self::inferIsSourceFromFilename($values['filename']));
+    $rpm->setRpmPkgid($values['pkgid']);
+    
+    $rpm->setShortName($package->getName());
+    $rpm->setSize($values['size']);
+    $rpm->setSummary($values['summary']);
+    $rpm->setUrl(isset($values['url']) ? $values['url'] : '');
+    $rpm->setVersion($epoch === null ? $version : "$epoch:$version");
+    
+    // Find the source RPM if it's in database and add the relationship with it
+    if (!$rpm->getIsSource())
+    {
+      if (isset($values['sourcerpm']))
+      {
+        $rpm->setSourceRpmName($values['sourcerpm']);
+        if ($source_rpm = self::retrieveUniqueByName($distrelease, $arch, $media, $values['sourcerpm']))
+        {
+          $rpm->setRpmRelatedBySourceRpmId($source_rpm);
+        }
+      }
+    }
+    
+    return $rpm;
+  }
 } // RpmPeer

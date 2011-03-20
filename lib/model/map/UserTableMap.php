@@ -55,6 +55,7 @@ class UserTableMap extends TableMap {
     $this->addRelation('UserCommentsNewVersionRequest', 'UserCommentsNewVersionRequest', RelationMap::ONE_TO_MANY, array('id' => 'user_id', ), null, null);
     $this->addRelation('UserHasNewVersionRequest', 'UserHasNewVersionRequest', RelationMap::ONE_TO_MANY, array('id' => 'user_id', ), null, null);
     $this->addRelation('Notification', 'Notification', RelationMap::ONE_TO_MANY, array('id' => 'user_id', ), null, null);
+    $this->addRelation('RssFeed', 'RssFeed', RelationMap::ONE_TO_MANY, array('id' => 'user_id', ), null, null);
 	} // buildRelations()
 
 	/**

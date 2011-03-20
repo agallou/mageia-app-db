@@ -117,6 +117,16 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 	private $lastNotificationCriteria = null;
 
 	/**
+	 * @var        array RssFeed[] Collection to store aggregation of RssFeed objects.
+	 */
+	protected $collRssFeeds;
+
+	/**
+	 * @var        Criteria The criteria used to select the current contents of collRssFeeds.
+	 */
+	private $lastRssFeedCriteria = null;
+
+	/**
 	 * Flag to prevent endless save loop, if this object is referenced
 	 * by another object which falls in this transaction.
 	 * @var        boolean
@@ -354,6 +364,9 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 			$this->collNotifications = null;
 			$this->lastNotificationCriteria = null;
 
+			$this->collRssFeeds = null;
+			$this->lastRssFeedCriteria = null;
+
 		} // if (deep)
 	}
 
@@ -582,6 +595,14 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 				}
 			}
 
+			if ($this->collRssFeeds !== null) {
+				foreach ($this->collRssFeeds as $referrerFK) {
+					if (!$referrerFK->isDeleted()) {
+						$affectedRows += $referrerFK->save($con);
+					}
+				}
+			}
+
 			$this->alreadyInSave = false;
 
 		}
@@ -711,6 +732,14 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 
 				if ($this->collNotifications !== null) {
 					foreach ($this->collNotifications as $referrerFK) {
+						if (!$referrerFK->validate($columns)) {
+							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
+						}
+					}
+				}
+
+				if ($this->collRssFeeds !== null) {
+					foreach ($this->collRssFeeds as $referrerFK) {
 						if (!$referrerFK->validate($columns)) {
 							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
 						}
@@ -973,6 +1002,12 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 			foreach ($this->getNotifications() as $relObj) {
 				if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
 					$copyObj->addNotification($relObj->copy($deepCopy));
+				}
+			}
+
+			foreach ($this->getRssFeeds() as $relObj) {
+				if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+					$copyObj->addRssFeed($relObj->copy($deepCopy));
 				}
 			}
 
@@ -2632,6 +2667,160 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 	}
 
 	/**
+	 * Clears out the collRssFeeds collection (array).
+	 *
+	 * This does not modify the database; however, it will remove any associated objects, causing
+	 * them to be refetched by subsequent calls to accessor method.
+	 *
+	 * @return     void
+	 * @see        addRssFeeds()
+	 */
+	public function clearRssFeeds()
+	{
+		$this->collRssFeeds = null; // important to set this to NULL since that means it is uninitialized
+	}
+
+	/**
+	 * Initializes the collRssFeeds collection (array).
+	 *
+	 * By default this just sets the collRssFeeds collection to an empty array (like clearcollRssFeeds());
+	 * however, you may wish to override this method in your stub class to provide setting appropriate
+	 * to your application -- for example, setting the initial array to the values stored in database.
+	 *
+	 * @return     void
+	 */
+	public function initRssFeeds()
+	{
+		$this->collRssFeeds = array();
+	}
+
+	/**
+	 * Gets an array of RssFeed objects which contain a foreign key that references this object.
+	 *
+	 * If this collection has already been initialized with an identical Criteria, it returns the collection.
+	 * Otherwise if this User has previously been saved, it will retrieve
+	 * related RssFeeds from storage. If this User is new, it will return
+	 * an empty collection or the current collection, the criteria is ignored on a new object.
+	 *
+	 * @param      PropelPDO $con
+	 * @param      Criteria $criteria
+	 * @return     array RssFeed[]
+	 * @throws     PropelException
+	 */
+	public function getRssFeeds($criteria = null, PropelPDO $con = null)
+	{
+		if ($criteria === null) {
+			$criteria = new Criteria(UserPeer::DATABASE_NAME);
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collRssFeeds === null) {
+			if ($this->isNew()) {
+			   $this->collRssFeeds = array();
+			} else {
+
+				$criteria->add(RssFeedPeer::USER_ID, $this->id);
+
+				RssFeedPeer::addSelectColumns($criteria);
+				$this->collRssFeeds = RssFeedPeer::doSelect($criteria, $con);
+			}
+		} else {
+			// criteria has no effect for a new object
+			if (!$this->isNew()) {
+				// the following code is to determine if a new query is
+				// called for.  If the criteria is the same as the last
+				// one, just return the collection.
+
+
+				$criteria->add(RssFeedPeer::USER_ID, $this->id);
+
+				RssFeedPeer::addSelectColumns($criteria);
+				if (!isset($this->lastRssFeedCriteria) || !$this->lastRssFeedCriteria->equals($criteria)) {
+					$this->collRssFeeds = RssFeedPeer::doSelect($criteria, $con);
+				}
+			}
+		}
+		$this->lastRssFeedCriteria = $criteria;
+		return $this->collRssFeeds;
+	}
+
+	/**
+	 * Returns the number of related RssFeed objects.
+	 *
+	 * @param      Criteria $criteria
+	 * @param      boolean $distinct
+	 * @param      PropelPDO $con
+	 * @return     int Count of related RssFeed objects.
+	 * @throws     PropelException
+	 */
+	public function countRssFeeds(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+	{
+		if ($criteria === null) {
+			$criteria = new Criteria(UserPeer::DATABASE_NAME);
+		} else {
+			$criteria = clone $criteria;
+		}
+
+		if ($distinct) {
+			$criteria->setDistinct();
+		}
+
+		$count = null;
+
+		if ($this->collRssFeeds === null) {
+			if ($this->isNew()) {
+				$count = 0;
+			} else {
+
+				$criteria->add(RssFeedPeer::USER_ID, $this->id);
+
+				$count = RssFeedPeer::doCount($criteria, false, $con);
+			}
+		} else {
+			// criteria has no effect for a new object
+			if (!$this->isNew()) {
+				// the following code is to determine if a new query is
+				// called for.  If the criteria is the same as the last
+				// one, just return count of the collection.
+
+
+				$criteria->add(RssFeedPeer::USER_ID, $this->id);
+
+				if (!isset($this->lastRssFeedCriteria) || !$this->lastRssFeedCriteria->equals($criteria)) {
+					$count = RssFeedPeer::doCount($criteria, false, $con);
+				} else {
+					$count = count($this->collRssFeeds);
+				}
+			} else {
+				$count = count($this->collRssFeeds);
+			}
+		}
+		return $count;
+	}
+
+	/**
+	 * Method called to associate a RssFeed object to this object
+	 * through the RssFeed foreign key attribute.
+	 *
+	 * @param      RssFeed $l RssFeed
+	 * @return     void
+	 * @throws     PropelException
+	 */
+	public function addRssFeed(RssFeed $l)
+	{
+		if ($this->collRssFeeds === null) {
+			$this->initRssFeeds();
+		}
+		if (!in_array($l, $this->collRssFeeds, true)) { // only add it if the **same** object is not already associated
+			array_push($this->collRssFeeds, $l);
+			$l->setUser($this);
+		}
+	}
+
+	/**
 	 * Resets all collections of referencing foreign keys.
 	 *
 	 * This method is a user-space workaround for PHP's inability to garbage collect objects
@@ -2683,6 +2872,11 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 					$o->clearAllReferences($deep);
 				}
 			}
+			if ($this->collRssFeeds) {
+				foreach ((array) $this->collRssFeeds as $o) {
+					$o->clearAllReferences($deep);
+				}
+			}
 		} // if ($deep)
 
 		$this->collUserCommentsPackages = null;
@@ -2693,6 +2887,7 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 		$this->collUserCommentsNewVersionRequests = null;
 		$this->collUserHasNewVersionRequests = null;
 		$this->collNotifications = null;
+		$this->collRssFeeds = null;
 	}
 
 	// symfony_behaviors behavior

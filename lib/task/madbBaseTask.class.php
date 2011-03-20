@@ -12,6 +12,7 @@ abstract class madbBaseTask extends sfBaseTask
     }
     */
     parent::initialize($dispatcher, $formatter);
+    $this->addOption('env', null, sfCommandOption::PARAMETER_OPTIONAL, 'Changes the environment this task is run in', 'prod');
   }
 
 }

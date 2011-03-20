@@ -1,0 +1,2 @@
+mysqldump madb --tab . rpm package media distrelease arch rpm_group
+zip test-data-mageia.zip *.txt
