@@ -55,4 +55,18 @@ class MediaTableMap extends TableMap {
     $this->addRelation('NotificationElement', 'NotificationElement', RelationMap::ONE_TO_MANY, array('id' => 'media_id', ), null, null);
 	} // buildRelations()
 
+	/**
+	 * 
+	 * Gets the list of behaviors registered for this table
+	 * 
+	 * @return array Associative array (name => parameters) of behaviors
+	 */
+	public function getBehaviors()
+	{
+		return array(
+			'symfony' => array('form' => 'true', 'filter' => 'true', ),
+			'symfony_behaviors' => array(),
+		);
+	} // getBehaviors()
+
 } // MediaTableMap

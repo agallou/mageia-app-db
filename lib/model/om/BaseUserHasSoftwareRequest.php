@@ -54,6 +54,10 @@ abstract class BaseUserHasSoftwareRequest extends BaseObject  implements Persist
 	 */
 	protected $alreadyInValidation = false;
 
+	// symfony behavior
+	
+	const PEER = 'UserHasSoftwareRequestPeer';
+
 	/**
 	 * Get the [user_id] column value.
 	 * 
@@ -260,9 +264,26 @@ abstract class BaseUserHasSoftwareRequest extends BaseObject  implements Persist
 		$con->beginTransaction();
 		try {
 			$ret = $this->preDelete($con);
+			// symfony_behaviors behavior
+			foreach (sfMixer::getCallables('BaseUserHasSoftwareRequest:delete:pre') as $callable)
+			{
+			  if (call_user_func($callable, $this, $con))
+			  {
+			    $con->commit();
+			
+			    return;
+			  }
+			}
+
 			if ($ret) {
 				UserHasSoftwareRequestPeer::doDelete($this, $con);
 				$this->postDelete($con);
+				// symfony_behaviors behavior
+				foreach (sfMixer::getCallables('BaseUserHasSoftwareRequest:delete:post') as $callable)
+				{
+				  call_user_func($callable, $this, $con);
+				}
+
 				$this->setDeleted(true);
 				$con->commit();
 			} else {
@@ -301,6 +322,17 @@ abstract class BaseUserHasSoftwareRequest extends BaseObject  implements Persist
 		$isInsert = $this->isNew();
 		try {
 			$ret = $this->preSave($con);
+			// symfony_behaviors behavior
+			foreach (sfMixer::getCallables('BaseUserHasSoftwareRequest:save:pre') as $callable)
+			{
+			  if (is_integer($affectedRows = call_user_func($callable, $this, $con)))
+			  {
+			    $con->commit();
+			
+			    return $affectedRows;
+			  }
+			}
+
 			if ($isInsert) {
 				$ret = $ret && $this->preInsert($con);
 			} else {
@@ -314,6 +346,12 @@ abstract class BaseUserHasSoftwareRequest extends BaseObject  implements Persist
 					$this->postUpdate($con);
 				}
 				$this->postSave($con);
+				// symfony_behaviors behavior
+				foreach (sfMixer::getCallables('BaseUserHasSoftwareRequest:save:post') as $callable)
+				{
+				  call_user_func($callable, $this, $con, $affectedRows);
+				}
+
 				UserHasSoftwareRequestPeer::addInstanceToPool($this);
 			} else {
 				$affectedRows = 0;
@@ -833,6 +871,23 @@ abstract class BaseUserHasSoftwareRequest extends BaseObject  implements Persist
 
 			$this->aUser = null;
 			$this->aSoftwareRequest = null;
+	}
+
+	// symfony_behaviors behavior
+	
+	/**
+	 * Calls methods defined via {@link sfMixer}.
+	 */
+	public function __call($method, $arguments)
+	{
+	  if (!$callable = sfMixer::getCallable('BaseUserHasSoftwareRequest:'.$method))
+	  {
+	    throw new sfException(sprintf('Call to undefined method BaseUserHasSoftwareRequest::%s', $method));
+	  }
+	
+	  array_unshift($arguments, $this);
+	
+	  return call_user_func_array($callable, $arguments);
 	}
 
 } // BaseUserHasSoftwareRequest

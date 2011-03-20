@@ -54,6 +54,10 @@ abstract class BaseUserHasNewVersionRequest extends BaseObject  implements Persi
 	 */
 	protected $alreadyInValidation = false;
 
+	// symfony behavior
+	
+	const PEER = 'UserHasNewVersionRequestPeer';
+
 	/**
 	 * Get the [user_id] column value.
 	 * 
@@ -260,9 +264,26 @@ abstract class BaseUserHasNewVersionRequest extends BaseObject  implements Persi
 		$con->beginTransaction();
 		try {
 			$ret = $this->preDelete($con);
+			// symfony_behaviors behavior
+			foreach (sfMixer::getCallables('BaseUserHasNewVersionRequest:delete:pre') as $callable)
+			{
+			  if (call_user_func($callable, $this, $con))
+			  {
+			    $con->commit();
+			
+			    return;
+			  }
+			}
+
 			if ($ret) {
 				UserHasNewVersionRequestPeer::doDelete($this, $con);
 				$this->postDelete($con);
+				// symfony_behaviors behavior
+				foreach (sfMixer::getCallables('BaseUserHasNewVersionRequest:delete:post') as $callable)
+				{
+				  call_user_func($callable, $this, $con);
+				}
+
 				$this->setDeleted(true);
 				$con->commit();
 			} else {
@@ -301,6 +322,17 @@ abstract class BaseUserHasNewVersionRequest extends BaseObject  implements Persi
 		$isInsert = $this->isNew();
 		try {
 			$ret = $this->preSave($con);
+			// symfony_behaviors behavior
+			foreach (sfMixer::getCallables('BaseUserHasNewVersionRequest:save:pre') as $callable)
+			{
+			  if (is_integer($affectedRows = call_user_func($callable, $this, $con)))
+			  {
+			    $con->commit();
+			
+			    return $affectedRows;
+			  }
+			}
+
 			if ($isInsert) {
 				$ret = $ret && $this->preInsert($con);
 			} else {
@@ -314,6 +346,12 @@ abstract class BaseUserHasNewVersionRequest extends BaseObject  implements Persi
 					$this->postUpdate($con);
 				}
 				$this->postSave($con);
+				// symfony_behaviors behavior
+				foreach (sfMixer::getCallables('BaseUserHasNewVersionRequest:save:post') as $callable)
+				{
+				  call_user_func($callable, $this, $con, $affectedRows);
+				}
+
 				UserHasNewVersionRequestPeer::addInstanceToPool($this);
 			} else {
 				$affectedRows = 0;
@@ -833,6 +871,23 @@ abstract class BaseUserHasNewVersionRequest extends BaseObject  implements Persi
 
 			$this->aUser = null;
 			$this->aNewVersionRequest = null;
+	}
+
+	// symfony_behaviors behavior
+	
+	/**
+	 * Calls methods defined via {@link sfMixer}.
+	 */
+	public function __call($method, $arguments)
+	{
+	  if (!$callable = sfMixer::getCallable('BaseUserHasNewVersionRequest:'.$method))
+	  {
+	    throw new sfException(sprintf('Call to undefined method BaseUserHasNewVersionRequest::%s', $method));
+	  }
+	
+	  array_unshift($arguments, $this);
+	
+	  return call_user_func_array($callable, $arguments);
 	}
 
 } // BaseUserHasNewVersionRequest

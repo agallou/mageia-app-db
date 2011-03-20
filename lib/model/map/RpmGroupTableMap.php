@@ -50,4 +50,18 @@ class RpmGroupTableMap extends TableMap {
     $this->addRelation('NotificationElement', 'NotificationElement', RelationMap::ONE_TO_MANY, array('id' => 'rpm_group_id', ), null, null);
 	} // buildRelations()
 
+	/**
+	 * 
+	 * Gets the list of behaviors registered for this table
+	 * 
+	 * @return array Associative array (name => parameters) of behaviors
+	 */
+	public function getBehaviors()
+	{
+		return array(
+			'symfony' => array('form' => 'true', 'filter' => 'true', ),
+			'symfony_behaviors' => array(),
+		);
+	} // getBehaviors()
+
 } // RpmGroupTableMap

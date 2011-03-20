@@ -45,6 +45,13 @@ abstract class BaseLanguagePeer {
 	public static $instances = array();
 
 
+	// symfony behavior
+	
+	/**
+	 * Indicates whether the current model includes I18N.
+	 */
+	const IS_I18N = false;
+
 	/**
 	 * holds an array of fieldnames
 	 *
@@ -176,6 +183,12 @@ abstract class BaseLanguagePeer {
 		if ($con === null) {
 			$con = Propel::getConnection(LanguagePeer::DATABASE_NAME, Propel::CONNECTION_READ);
 		}
+		// symfony_behaviors behavior
+		foreach (sfMixer::getCallables(self::getMixerPreSelectHook(__FUNCTION__)) as $sf_hook)
+		{
+		  call_user_func($sf_hook, 'BaseLanguagePeer', $criteria, $con);
+		}
+
 		// BasePeer returns a PDOStatement
 		$stmt = BasePeer::doCount($criteria, $con);
 
@@ -245,6 +258,12 @@ abstract class BaseLanguagePeer {
 
 		// Set the correct dbName
 		$criteria->setDbName(self::DATABASE_NAME);
+		// symfony_behaviors behavior
+		foreach (sfMixer::getCallables(self::getMixerPreSelectHook(__FUNCTION__)) as $sf_hook)
+		{
+		  call_user_func($sf_hook, 'BaseLanguagePeer', $criteria, $con);
+		}
+
 
 		// BasePeer returns a PDOStatement
 		return BasePeer::doSelect($criteria, $con);
@@ -437,6 +456,15 @@ abstract class BaseLanguagePeer {
 	 */
 	public static function doInsert($values, PropelPDO $con = null)
 	{
+    // symfony_behaviors behavior
+    foreach (sfMixer::getCallables('BaseLanguagePeer:doInsert:pre') as $sf_hook)
+    {
+      if (false !== $sf_hook_retval = call_user_func($sf_hook, 'BaseLanguagePeer', $values, $con))
+      {
+        return $sf_hook_retval;
+      }
+    }
+
 		if ($con === null) {
 			$con = Propel::getConnection(LanguagePeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
 		}
@@ -466,6 +494,12 @@ abstract class BaseLanguagePeer {
 			throw $e;
 		}
 
+    // symfony_behaviors behavior
+    foreach (sfMixer::getCallables('BaseLanguagePeer:doInsert:post') as $sf_hook)
+    {
+      call_user_func($sf_hook, 'BaseLanguagePeer', $values, $con, $pk);
+    }
+
 		return $pk;
 	}
 
@@ -480,6 +514,15 @@ abstract class BaseLanguagePeer {
 	 */
 	public static function doUpdate($values, PropelPDO $con = null)
 	{
+    // symfony_behaviors behavior
+    foreach (sfMixer::getCallables('BaseLanguagePeer:doUpdate:pre') as $sf_hook)
+    {
+      if (false !== $sf_hook_retval = call_user_func($sf_hook, 'BaseLanguagePeer', $values, $con))
+      {
+        return $sf_hook_retval;
+      }
+    }
+
 		if ($con === null) {
 			$con = Propel::getConnection(LanguagePeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
 		}
@@ -500,7 +543,15 @@ abstract class BaseLanguagePeer {
 		// set the correct dbName
 		$criteria->setDbName(self::DATABASE_NAME);
 
-		return BasePeer::doUpdate($selectCriteria, $criteria, $con);
+		$ret = BasePeer::doUpdate($selectCriteria, $criteria, $con);
+
+    // symfony_behaviors behavior
+    foreach (sfMixer::getCallables('BaseLanguagePeer:doUpdate:post') as $sf_hook)
+    {
+      call_user_func($sf_hook, 'BaseLanguagePeer', $values, $con, $ret);
+    }
+
+    return $ret;
 	}
 
 	/**
@@ -676,6 +727,39 @@ abstract class BaseLanguagePeer {
 			$objs = LanguagePeer::doSelect($criteria, $con);
 		}
 		return $objs;
+	}
+
+	// symfony behavior
+	
+	/**
+	 * Returns an array of arrays that contain columns in each unique index.
+	 *
+	 * @return array
+	 */
+	static public function getUniqueColumnNames()
+	{
+	  return array();
+	}
+
+	// symfony_behaviors behavior
+	
+	/**
+	 * Returns the name of the hook to call from inside the supplied method.
+	 *
+	 * @param string $method The calling method
+	 *
+	 * @return string A hook name for {@link sfMixer}
+	 *
+	 * @throws LogicException If the method name is not recognized
+	 */
+	static private function getMixerPreSelectHook($method)
+	{
+	  if (preg_match('/^do(Select|Count)(Join(All(Except)?)?|Stmt)?/', $method, $match))
+	  {
+	    return sprintf('BaseLanguagePeer:%s:%1$s', 'Count' == $match[1] ? 'doCount' : $match[0]);
+	  }
+	
+	  throw new LogicException(sprintf('Unrecognized function "%s"', $method));
 	}
 
 } // BaseLanguagePeer

@@ -51,6 +51,13 @@ abstract class BasePackageLinksPeer {
 	public static $instances = array();
 
 
+	// symfony behavior
+	
+	/**
+	 * Indicates whether the current model includes I18N.
+	 */
+	const IS_I18N = false;
+
 	/**
 	 * holds an array of fieldnames
 	 *
@@ -184,6 +191,12 @@ abstract class BasePackageLinksPeer {
 		if ($con === null) {
 			$con = Propel::getConnection(PackageLinksPeer::DATABASE_NAME, Propel::CONNECTION_READ);
 		}
+		// symfony_behaviors behavior
+		foreach (sfMixer::getCallables(self::getMixerPreSelectHook(__FUNCTION__)) as $sf_hook)
+		{
+		  call_user_func($sf_hook, 'BasePackageLinksPeer', $criteria, $con);
+		}
+
 		// BasePeer returns a PDOStatement
 		$stmt = BasePeer::doCount($criteria, $con);
 
@@ -253,6 +266,12 @@ abstract class BasePackageLinksPeer {
 
 		// Set the correct dbName
 		$criteria->setDbName(self::DATABASE_NAME);
+		// symfony_behaviors behavior
+		foreach (sfMixer::getCallables(self::getMixerPreSelectHook(__FUNCTION__)) as $sf_hook)
+		{
+		  call_user_func($sf_hook, 'BasePackageLinksPeer', $criteria, $con);
+		}
+
 
 		// BasePeer returns a PDOStatement
 		return BasePeer::doSelect($criteria, $con);
@@ -433,6 +452,12 @@ abstract class BasePackageLinksPeer {
 
 		$criteria->addJoin(PackageLinksPeer::LANGUAGE_ID, LanguagePeer::ID, $join_behavior);
 
+		// symfony_behaviors behavior
+		foreach (sfMixer::getCallables(self::getMixerPreSelectHook(__FUNCTION__)) as $sf_hook)
+		{
+		  call_user_func($sf_hook, 'BasePackageLinksPeer', $criteria, $con);
+		}
+
 		$stmt = BasePeer::doCount($criteria, $con);
 
 		if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
@@ -483,6 +508,12 @@ abstract class BasePackageLinksPeer {
 
 		$criteria->addJoin(PackageLinksPeer::PACKAGE_ID, PackagePeer::ID, $join_behavior);
 
+		// symfony_behaviors behavior
+		foreach (sfMixer::getCallables(self::getMixerPreSelectHook(__FUNCTION__)) as $sf_hook)
+		{
+		  call_user_func($sf_hook, 'BasePackageLinksPeer', $criteria, $con);
+		}
+
 		$stmt = BasePeer::doCount($criteria, $con);
 
 		if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
@@ -518,6 +549,12 @@ abstract class BasePackageLinksPeer {
 		LanguagePeer::addSelectColumns($criteria);
 
 		$criteria->addJoin(PackageLinksPeer::LANGUAGE_ID, LanguagePeer::ID, $join_behavior);
+
+		// symfony_behaviors behavior
+		foreach (sfMixer::getCallables(self::getMixerPreSelectHook(__FUNCTION__)) as $sf_hook)
+		{
+		  call_user_func($sf_hook, 'BasePackageLinksPeer', $criteria, $con);
+		}
 
 		$stmt = BasePeer::doSelect($criteria, $con);
 		$results = array();
@@ -584,6 +621,12 @@ abstract class BasePackageLinksPeer {
 		PackagePeer::addSelectColumns($criteria);
 
 		$criteria->addJoin(PackageLinksPeer::PACKAGE_ID, PackagePeer::ID, $join_behavior);
+
+		// symfony_behaviors behavior
+		foreach (sfMixer::getCallables(self::getMixerPreSelectHook(__FUNCTION__)) as $sf_hook)
+		{
+		  call_user_func($sf_hook, 'BasePackageLinksPeer', $criteria, $con);
+		}
 
 		$stmt = BasePeer::doSelect($criteria, $con);
 		$results = array();
@@ -667,6 +710,12 @@ abstract class BasePackageLinksPeer {
 
 		$criteria->addJoin(PackageLinksPeer::PACKAGE_ID, PackagePeer::ID, $join_behavior);
 
+		// symfony_behaviors behavior
+		foreach (sfMixer::getCallables(self::getMixerPreSelectHook(__FUNCTION__)) as $sf_hook)
+		{
+		  call_user_func($sf_hook, 'BasePackageLinksPeer', $criteria, $con);
+		}
+
 		$stmt = BasePeer::doCount($criteria, $con);
 
 		if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
@@ -709,6 +758,12 @@ abstract class BasePackageLinksPeer {
 		$criteria->addJoin(PackageLinksPeer::LANGUAGE_ID, LanguagePeer::ID, $join_behavior);
 
 		$criteria->addJoin(PackageLinksPeer::PACKAGE_ID, PackagePeer::ID, $join_behavior);
+
+		// symfony_behaviors behavior
+		foreach (sfMixer::getCallables(self::getMixerPreSelectHook(__FUNCTION__)) as $sf_hook)
+		{
+		  call_user_func($sf_hook, 'BasePackageLinksPeer', $criteria, $con);
+		}
 
 		$stmt = BasePeer::doSelect($criteria, $con);
 		$results = array();
@@ -808,6 +863,12 @@ abstract class BasePackageLinksPeer {
 	
 		$criteria->addJoin(PackageLinksPeer::PACKAGE_ID, PackagePeer::ID, $join_behavior);
 
+		// symfony_behaviors behavior
+		foreach (sfMixer::getCallables(self::getMixerPreSelectHook(__FUNCTION__)) as $sf_hook)
+		{
+		  call_user_func($sf_hook, 'BasePackageLinksPeer', $criteria, $con);
+		}
+
 		$stmt = BasePeer::doCount($criteria, $con);
 
 		if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
@@ -858,6 +919,12 @@ abstract class BasePackageLinksPeer {
 	
 		$criteria->addJoin(PackageLinksPeer::LANGUAGE_ID, LanguagePeer::ID, $join_behavior);
 
+		// symfony_behaviors behavior
+		foreach (sfMixer::getCallables(self::getMixerPreSelectHook(__FUNCTION__)) as $sf_hook)
+		{
+		  call_user_func($sf_hook, 'BasePackageLinksPeer', $criteria, $con);
+		}
+
 		$stmt = BasePeer::doCount($criteria, $con);
 
 		if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
@@ -898,6 +965,12 @@ abstract class BasePackageLinksPeer {
 		$startcol3 = $startcol2 + (PackagePeer::NUM_COLUMNS - PackagePeer::NUM_LAZY_LOAD_COLUMNS);
 
 		$criteria->addJoin(PackageLinksPeer::PACKAGE_ID, PackagePeer::ID, $join_behavior);
+
+		// symfony_behaviors behavior
+		foreach (sfMixer::getCallables(self::getMixerPreSelectHook(__FUNCTION__)) as $sf_hook)
+		{
+		  call_user_func($sf_hook, 'BasePackageLinksPeer', $criteria, $con);
+		}
 
 
 		$stmt = BasePeer::doSelect($criteria, $con);
@@ -971,6 +1044,12 @@ abstract class BasePackageLinksPeer {
 		$startcol3 = $startcol2 + (LanguagePeer::NUM_COLUMNS - LanguagePeer::NUM_LAZY_LOAD_COLUMNS);
 
 		$criteria->addJoin(PackageLinksPeer::LANGUAGE_ID, LanguagePeer::ID, $join_behavior);
+
+		// symfony_behaviors behavior
+		foreach (sfMixer::getCallables(self::getMixerPreSelectHook(__FUNCTION__)) as $sf_hook)
+		{
+		  call_user_func($sf_hook, 'BasePackageLinksPeer', $criteria, $con);
+		}
 
 
 		$stmt = BasePeer::doSelect($criteria, $con);
@@ -1066,6 +1145,15 @@ abstract class BasePackageLinksPeer {
 	 */
 	public static function doInsert($values, PropelPDO $con = null)
 	{
+    // symfony_behaviors behavior
+    foreach (sfMixer::getCallables('BasePackageLinksPeer:doInsert:pre') as $sf_hook)
+    {
+      if (false !== $sf_hook_retval = call_user_func($sf_hook, 'BasePackageLinksPeer', $values, $con))
+      {
+        return $sf_hook_retval;
+      }
+    }
+
 		if ($con === null) {
 			$con = Propel::getConnection(PackageLinksPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
 		}
@@ -1095,6 +1183,12 @@ abstract class BasePackageLinksPeer {
 			throw $e;
 		}
 
+    // symfony_behaviors behavior
+    foreach (sfMixer::getCallables('BasePackageLinksPeer:doInsert:post') as $sf_hook)
+    {
+      call_user_func($sf_hook, 'BasePackageLinksPeer', $values, $con, $pk);
+    }
+
 		return $pk;
 	}
 
@@ -1109,6 +1203,15 @@ abstract class BasePackageLinksPeer {
 	 */
 	public static function doUpdate($values, PropelPDO $con = null)
 	{
+    // symfony_behaviors behavior
+    foreach (sfMixer::getCallables('BasePackageLinksPeer:doUpdate:pre') as $sf_hook)
+    {
+      if (false !== $sf_hook_retval = call_user_func($sf_hook, 'BasePackageLinksPeer', $values, $con))
+      {
+        return $sf_hook_retval;
+      }
+    }
+
 		if ($con === null) {
 			$con = Propel::getConnection(PackageLinksPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
 		}
@@ -1129,7 +1232,15 @@ abstract class BasePackageLinksPeer {
 		// set the correct dbName
 		$criteria->setDbName(self::DATABASE_NAME);
 
-		return BasePeer::doUpdate($selectCriteria, $criteria, $con);
+		$ret = BasePeer::doUpdate($selectCriteria, $criteria, $con);
+
+    // symfony_behaviors behavior
+    foreach (sfMixer::getCallables('BasePackageLinksPeer:doUpdate:post') as $sf_hook)
+    {
+      call_user_func($sf_hook, 'BasePackageLinksPeer', $values, $con, $ret);
+    }
+
+    return $ret;
 	}
 
 	/**
@@ -1305,6 +1416,39 @@ abstract class BasePackageLinksPeer {
 			$objs = PackageLinksPeer::doSelect($criteria, $con);
 		}
 		return $objs;
+	}
+
+	// symfony behavior
+	
+	/**
+	 * Returns an array of arrays that contain columns in each unique index.
+	 *
+	 * @return array
+	 */
+	static public function getUniqueColumnNames()
+	{
+	  return array();
+	}
+
+	// symfony_behaviors behavior
+	
+	/**
+	 * Returns the name of the hook to call from inside the supplied method.
+	 *
+	 * @param string $method The calling method
+	 *
+	 * @return string A hook name for {@link sfMixer}
+	 *
+	 * @throws LogicException If the method name is not recognized
+	 */
+	static private function getMixerPreSelectHook($method)
+	{
+	  if (preg_match('/^do(Select|Count)(Join(All(Except)?)?|Stmt)?/', $method, $match))
+	  {
+	    return sprintf('BasePackageLinksPeer:%s:%1$s', 'Count' == $match[1] ? 'doCount' : $match[0]);
+	  }
+	
+	  throw new LogicException(sprintf('Unrecognized function "%s"', $method));
 	}
 
 } // BasePackageLinksPeer

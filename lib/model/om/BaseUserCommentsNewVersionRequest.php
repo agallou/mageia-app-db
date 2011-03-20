@@ -72,6 +72,10 @@ abstract class BaseUserCommentsNewVersionRequest extends BaseObject  implements 
 	 */
 	protected $alreadyInValidation = false;
 
+	// symfony behavior
+	
+	const PEER = 'UserCommentsNewVersionRequestPeer';
+
 	/**
 	 * Get the [id] column value.
 	 * 
@@ -428,9 +432,26 @@ abstract class BaseUserCommentsNewVersionRequest extends BaseObject  implements 
 		$con->beginTransaction();
 		try {
 			$ret = $this->preDelete($con);
+			// symfony_behaviors behavior
+			foreach (sfMixer::getCallables('BaseUserCommentsNewVersionRequest:delete:pre') as $callable)
+			{
+			  if (call_user_func($callable, $this, $con))
+			  {
+			    $con->commit();
+			
+			    return;
+			  }
+			}
+
 			if ($ret) {
 				UserCommentsNewVersionRequestPeer::doDelete($this, $con);
 				$this->postDelete($con);
+				// symfony_behaviors behavior
+				foreach (sfMixer::getCallables('BaseUserCommentsNewVersionRequest:delete:post') as $callable)
+				{
+				  call_user_func($callable, $this, $con);
+				}
+
 				$this->setDeleted(true);
 				$con->commit();
 			} else {
@@ -469,8 +490,27 @@ abstract class BaseUserCommentsNewVersionRequest extends BaseObject  implements 
 		$isInsert = $this->isNew();
 		try {
 			$ret = $this->preSave($con);
+			// symfony_behaviors behavior
+			foreach (sfMixer::getCallables('BaseUserCommentsNewVersionRequest:save:pre') as $callable)
+			{
+			  if (is_integer($affectedRows = call_user_func($callable, $this, $con)))
+			  {
+			    $con->commit();
+			
+			    return $affectedRows;
+			  }
+			}
+
+			// symfony_timestampable behavior
+			
 			if ($isInsert) {
 				$ret = $ret && $this->preInsert($con);
+				// symfony_timestampable behavior
+				if (!$this->isColumnModified(UserCommentsNewVersionRequestPeer::CREATED_AT))
+				{
+				  $this->setCreatedAt(time());
+				}
+
 			} else {
 				$ret = $ret && $this->preUpdate($con);
 			}
@@ -482,6 +522,12 @@ abstract class BaseUserCommentsNewVersionRequest extends BaseObject  implements 
 					$this->postUpdate($con);
 				}
 				$this->postSave($con);
+				// symfony_behaviors behavior
+				foreach (sfMixer::getCallables('BaseUserCommentsNewVersionRequest:save:post') as $callable)
+				{
+				  call_user_func($callable, $this, $con, $affectedRows);
+				}
+
 				UserCommentsNewVersionRequestPeer::addInstanceToPool($this);
 			} else {
 				$affectedRows = 0;
@@ -1027,6 +1073,23 @@ abstract class BaseUserCommentsNewVersionRequest extends BaseObject  implements 
 
 			$this->aUser = null;
 			$this->aNewVersionRequest = null;
+	}
+
+	// symfony_behaviors behavior
+	
+	/**
+	 * Calls methods defined via {@link sfMixer}.
+	 */
+	public function __call($method, $arguments)
+	{
+	  if (!$callable = sfMixer::getCallable('BaseUserCommentsNewVersionRequest:'.$method))
+	  {
+	    throw new sfException(sprintf('Call to undefined method BaseUserCommentsNewVersionRequest::%s', $method));
+	  }
+	
+	  array_unshift($arguments, $this);
+	
+	  return call_user_func_array($callable, $arguments);
 	}
 
 } // BaseUserCommentsNewVersionRequest
