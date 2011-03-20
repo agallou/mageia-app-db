@@ -53,19 +53,4 @@ class UserCommentsPackageTableMap extends TableMap {
     $this->addRelation('User', 'User', RelationMap::MANY_TO_ONE, array('user_id' => 'id', ), null, null);
 	} // buildRelations()
 
-	/**
-	 * 
-	 * Gets the list of behaviors registered for this table
-	 * 
-	 * @return array Associative array (name => parameters) of behaviors
-	 */
-	public function getBehaviors()
-	{
-		return array(
-			'symfony' => array('form' => 'true', 'filter' => 'true', ),
-			'symfony_behaviors' => array(),
-			'symfony_timestampable' => array('create_column' => 'created_at', ),
-		);
-	} // getBehaviors()
-
 } // UserCommentsPackageTableMap

@@ -60,13 +60,6 @@ abstract class BaseNotificationElementPeer {
 	public static $instances = array();
 
 
-	// symfony behavior
-	
-	/**
-	 * Indicates whether the current model includes I18N.
-	 */
-	const IS_I18N = false;
-
 	/**
 	 * holds an array of fieldnames
 	 *
@@ -203,12 +196,6 @@ abstract class BaseNotificationElementPeer {
 		if ($con === null) {
 			$con = Propel::getConnection(NotificationElementPeer::DATABASE_NAME, Propel::CONNECTION_READ);
 		}
-		// symfony_behaviors behavior
-		foreach (sfMixer::getCallables(self::getMixerPreSelectHook(__FUNCTION__)) as $sf_hook)
-		{
-		  call_user_func($sf_hook, 'BaseNotificationElementPeer', $criteria, $con);
-		}
-
 		// BasePeer returns a PDOStatement
 		$stmt = BasePeer::doCount($criteria, $con);
 
@@ -278,12 +265,6 @@ abstract class BaseNotificationElementPeer {
 
 		// Set the correct dbName
 		$criteria->setDbName(self::DATABASE_NAME);
-		// symfony_behaviors behavior
-		foreach (sfMixer::getCallables(self::getMixerPreSelectHook(__FUNCTION__)) as $sf_hook)
-		{
-		  call_user_func($sf_hook, 'BaseNotificationElementPeer', $criteria, $con);
-		}
-
 
 		// BasePeer returns a PDOStatement
 		return BasePeer::doSelect($criteria, $con);
@@ -464,12 +445,6 @@ abstract class BaseNotificationElementPeer {
 
 		$criteria->addJoin(NotificationElementPeer::NOTIFICATION_ID, NotificationPeer::ID, $join_behavior);
 
-		// symfony_behaviors behavior
-		foreach (sfMixer::getCallables(self::getMixerPreSelectHook(__FUNCTION__)) as $sf_hook)
-		{
-		  call_user_func($sf_hook, 'BaseNotificationElementPeer', $criteria, $con);
-		}
-
 		$stmt = BasePeer::doCount($criteria, $con);
 
 		if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
@@ -519,12 +494,6 @@ abstract class BaseNotificationElementPeer {
 		}
 
 		$criteria->addJoin(NotificationElementPeer::PACKAGE_ID, PackagePeer::ID, $join_behavior);
-
-		// symfony_behaviors behavior
-		foreach (sfMixer::getCallables(self::getMixerPreSelectHook(__FUNCTION__)) as $sf_hook)
-		{
-		  call_user_func($sf_hook, 'BaseNotificationElementPeer', $criteria, $con);
-		}
 
 		$stmt = BasePeer::doCount($criteria, $con);
 
@@ -576,12 +545,6 @@ abstract class BaseNotificationElementPeer {
 
 		$criteria->addJoin(NotificationElementPeer::RPM_GROUP_ID, RpmGroupPeer::ID, $join_behavior);
 
-		// symfony_behaviors behavior
-		foreach (sfMixer::getCallables(self::getMixerPreSelectHook(__FUNCTION__)) as $sf_hook)
-		{
-		  call_user_func($sf_hook, 'BaseNotificationElementPeer', $criteria, $con);
-		}
-
 		$stmt = BasePeer::doCount($criteria, $con);
 
 		if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
@@ -631,12 +594,6 @@ abstract class BaseNotificationElementPeer {
 		}
 
 		$criteria->addJoin(NotificationElementPeer::DISTRELEASE_ID, DistreleasePeer::ID, $join_behavior);
-
-		// symfony_behaviors behavior
-		foreach (sfMixer::getCallables(self::getMixerPreSelectHook(__FUNCTION__)) as $sf_hook)
-		{
-		  call_user_func($sf_hook, 'BaseNotificationElementPeer', $criteria, $con);
-		}
 
 		$stmt = BasePeer::doCount($criteria, $con);
 
@@ -688,12 +645,6 @@ abstract class BaseNotificationElementPeer {
 
 		$criteria->addJoin(NotificationElementPeer::ARCH_ID, ArchPeer::ID, $join_behavior);
 
-		// symfony_behaviors behavior
-		foreach (sfMixer::getCallables(self::getMixerPreSelectHook(__FUNCTION__)) as $sf_hook)
-		{
-		  call_user_func($sf_hook, 'BaseNotificationElementPeer', $criteria, $con);
-		}
-
 		$stmt = BasePeer::doCount($criteria, $con);
 
 		if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
@@ -744,12 +695,6 @@ abstract class BaseNotificationElementPeer {
 
 		$criteria->addJoin(NotificationElementPeer::MEDIA_ID, MediaPeer::ID, $join_behavior);
 
-		// symfony_behaviors behavior
-		foreach (sfMixer::getCallables(self::getMixerPreSelectHook(__FUNCTION__)) as $sf_hook)
-		{
-		  call_user_func($sf_hook, 'BaseNotificationElementPeer', $criteria, $con);
-		}
-
 		$stmt = BasePeer::doCount($criteria, $con);
 
 		if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
@@ -785,12 +730,6 @@ abstract class BaseNotificationElementPeer {
 		NotificationPeer::addSelectColumns($criteria);
 
 		$criteria->addJoin(NotificationElementPeer::NOTIFICATION_ID, NotificationPeer::ID, $join_behavior);
-
-		// symfony_behaviors behavior
-		foreach (sfMixer::getCallables(self::getMixerPreSelectHook(__FUNCTION__)) as $sf_hook)
-		{
-		  call_user_func($sf_hook, 'BaseNotificationElementPeer', $criteria, $con);
-		}
 
 		$stmt = BasePeer::doSelect($criteria, $con);
 		$results = array();
@@ -858,12 +797,6 @@ abstract class BaseNotificationElementPeer {
 
 		$criteria->addJoin(NotificationElementPeer::PACKAGE_ID, PackagePeer::ID, $join_behavior);
 
-		// symfony_behaviors behavior
-		foreach (sfMixer::getCallables(self::getMixerPreSelectHook(__FUNCTION__)) as $sf_hook)
-		{
-		  call_user_func($sf_hook, 'BaseNotificationElementPeer', $criteria, $con);
-		}
-
 		$stmt = BasePeer::doSelect($criteria, $con);
 		$results = array();
 
@@ -929,12 +862,6 @@ abstract class BaseNotificationElementPeer {
 		RpmGroupPeer::addSelectColumns($criteria);
 
 		$criteria->addJoin(NotificationElementPeer::RPM_GROUP_ID, RpmGroupPeer::ID, $join_behavior);
-
-		// symfony_behaviors behavior
-		foreach (sfMixer::getCallables(self::getMixerPreSelectHook(__FUNCTION__)) as $sf_hook)
-		{
-		  call_user_func($sf_hook, 'BaseNotificationElementPeer', $criteria, $con);
-		}
 
 		$stmt = BasePeer::doSelect($criteria, $con);
 		$results = array();
@@ -1002,12 +929,6 @@ abstract class BaseNotificationElementPeer {
 
 		$criteria->addJoin(NotificationElementPeer::DISTRELEASE_ID, DistreleasePeer::ID, $join_behavior);
 
-		// symfony_behaviors behavior
-		foreach (sfMixer::getCallables(self::getMixerPreSelectHook(__FUNCTION__)) as $sf_hook)
-		{
-		  call_user_func($sf_hook, 'BaseNotificationElementPeer', $criteria, $con);
-		}
-
 		$stmt = BasePeer::doSelect($criteria, $con);
 		$results = array();
 
@@ -1074,12 +995,6 @@ abstract class BaseNotificationElementPeer {
 
 		$criteria->addJoin(NotificationElementPeer::ARCH_ID, ArchPeer::ID, $join_behavior);
 
-		// symfony_behaviors behavior
-		foreach (sfMixer::getCallables(self::getMixerPreSelectHook(__FUNCTION__)) as $sf_hook)
-		{
-		  call_user_func($sf_hook, 'BaseNotificationElementPeer', $criteria, $con);
-		}
-
 		$stmt = BasePeer::doSelect($criteria, $con);
 		$results = array();
 
@@ -1145,12 +1060,6 @@ abstract class BaseNotificationElementPeer {
 		MediaPeer::addSelectColumns($criteria);
 
 		$criteria->addJoin(NotificationElementPeer::MEDIA_ID, MediaPeer::ID, $join_behavior);
-
-		// symfony_behaviors behavior
-		foreach (sfMixer::getCallables(self::getMixerPreSelectHook(__FUNCTION__)) as $sf_hook)
-		{
-		  call_user_func($sf_hook, 'BaseNotificationElementPeer', $criteria, $con);
-		}
 
 		$stmt = BasePeer::doSelect($criteria, $con);
 		$results = array();
@@ -1242,12 +1151,6 @@ abstract class BaseNotificationElementPeer {
 
 		$criteria->addJoin(NotificationElementPeer::MEDIA_ID, MediaPeer::ID, $join_behavior);
 
-		// symfony_behaviors behavior
-		foreach (sfMixer::getCallables(self::getMixerPreSelectHook(__FUNCTION__)) as $sf_hook)
-		{
-		  call_user_func($sf_hook, 'BaseNotificationElementPeer', $criteria, $con);
-		}
-
 		$stmt = BasePeer::doCount($criteria, $con);
 
 		if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
@@ -1310,12 +1213,6 @@ abstract class BaseNotificationElementPeer {
 		$criteria->addJoin(NotificationElementPeer::ARCH_ID, ArchPeer::ID, $join_behavior);
 
 		$criteria->addJoin(NotificationElementPeer::MEDIA_ID, MediaPeer::ID, $join_behavior);
-
-		// symfony_behaviors behavior
-		foreach (sfMixer::getCallables(self::getMixerPreSelectHook(__FUNCTION__)) as $sf_hook)
-		{
-		  call_user_func($sf_hook, 'BaseNotificationElementPeer', $criteria, $con);
-		}
 
 		$stmt = BasePeer::doSelect($criteria, $con);
 		$results = array();
@@ -1495,12 +1392,6 @@ abstract class BaseNotificationElementPeer {
 
 		$criteria->addJoin(NotificationElementPeer::MEDIA_ID, MediaPeer::ID, $join_behavior);
 
-		// symfony_behaviors behavior
-		foreach (sfMixer::getCallables(self::getMixerPreSelectHook(__FUNCTION__)) as $sf_hook)
-		{
-		  call_user_func($sf_hook, 'BaseNotificationElementPeer', $criteria, $con);
-		}
-
 		$stmt = BasePeer::doCount($criteria, $con);
 
 		if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
@@ -1558,12 +1449,6 @@ abstract class BaseNotificationElementPeer {
 		$criteria->addJoin(NotificationElementPeer::ARCH_ID, ArchPeer::ID, $join_behavior);
 
 		$criteria->addJoin(NotificationElementPeer::MEDIA_ID, MediaPeer::ID, $join_behavior);
-
-		// symfony_behaviors behavior
-		foreach (sfMixer::getCallables(self::getMixerPreSelectHook(__FUNCTION__)) as $sf_hook)
-		{
-		  call_user_func($sf_hook, 'BaseNotificationElementPeer', $criteria, $con);
-		}
 
 		$stmt = BasePeer::doCount($criteria, $con);
 
@@ -1623,12 +1508,6 @@ abstract class BaseNotificationElementPeer {
 
 		$criteria->addJoin(NotificationElementPeer::MEDIA_ID, MediaPeer::ID, $join_behavior);
 
-		// symfony_behaviors behavior
-		foreach (sfMixer::getCallables(self::getMixerPreSelectHook(__FUNCTION__)) as $sf_hook)
-		{
-		  call_user_func($sf_hook, 'BaseNotificationElementPeer', $criteria, $con);
-		}
-
 		$stmt = BasePeer::doCount($criteria, $con);
 
 		if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
@@ -1686,12 +1565,6 @@ abstract class BaseNotificationElementPeer {
 		$criteria->addJoin(NotificationElementPeer::ARCH_ID, ArchPeer::ID, $join_behavior);
 
 		$criteria->addJoin(NotificationElementPeer::MEDIA_ID, MediaPeer::ID, $join_behavior);
-
-		// symfony_behaviors behavior
-		foreach (sfMixer::getCallables(self::getMixerPreSelectHook(__FUNCTION__)) as $sf_hook)
-		{
-		  call_user_func($sf_hook, 'BaseNotificationElementPeer', $criteria, $con);
-		}
 
 		$stmt = BasePeer::doCount($criteria, $con);
 
@@ -1751,12 +1624,6 @@ abstract class BaseNotificationElementPeer {
 
 		$criteria->addJoin(NotificationElementPeer::MEDIA_ID, MediaPeer::ID, $join_behavior);
 
-		// symfony_behaviors behavior
-		foreach (sfMixer::getCallables(self::getMixerPreSelectHook(__FUNCTION__)) as $sf_hook)
-		{
-		  call_user_func($sf_hook, 'BaseNotificationElementPeer', $criteria, $con);
-		}
-
 		$stmt = BasePeer::doCount($criteria, $con);
 
 		if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
@@ -1814,12 +1681,6 @@ abstract class BaseNotificationElementPeer {
 		$criteria->addJoin(NotificationElementPeer::DISTRELEASE_ID, DistreleasePeer::ID, $join_behavior);
 
 		$criteria->addJoin(NotificationElementPeer::ARCH_ID, ArchPeer::ID, $join_behavior);
-
-		// symfony_behaviors behavior
-		foreach (sfMixer::getCallables(self::getMixerPreSelectHook(__FUNCTION__)) as $sf_hook)
-		{
-		  call_user_func($sf_hook, 'BaseNotificationElementPeer', $criteria, $con);
-		}
 
 		$stmt = BasePeer::doCount($criteria, $con);
 
@@ -1881,12 +1742,6 @@ abstract class BaseNotificationElementPeer {
 		$criteria->addJoin(NotificationElementPeer::ARCH_ID, ArchPeer::ID, $join_behavior);
 
 		$criteria->addJoin(NotificationElementPeer::MEDIA_ID, MediaPeer::ID, $join_behavior);
-
-		// symfony_behaviors behavior
-		foreach (sfMixer::getCallables(self::getMixerPreSelectHook(__FUNCTION__)) as $sf_hook)
-		{
-		  call_user_func($sf_hook, 'BaseNotificationElementPeer', $criteria, $con);
-		}
 
 
 		$stmt = BasePeer::doSelect($criteria, $con);
@@ -2057,12 +1912,6 @@ abstract class BaseNotificationElementPeer {
 
 		$criteria->addJoin(NotificationElementPeer::MEDIA_ID, MediaPeer::ID, $join_behavior);
 
-		// symfony_behaviors behavior
-		foreach (sfMixer::getCallables(self::getMixerPreSelectHook(__FUNCTION__)) as $sf_hook)
-		{
-		  call_user_func($sf_hook, 'BaseNotificationElementPeer', $criteria, $con);
-		}
-
 
 		$stmt = BasePeer::doSelect($criteria, $con);
 		$results = array();
@@ -2231,12 +2080,6 @@ abstract class BaseNotificationElementPeer {
 		$criteria->addJoin(NotificationElementPeer::ARCH_ID, ArchPeer::ID, $join_behavior);
 
 		$criteria->addJoin(NotificationElementPeer::MEDIA_ID, MediaPeer::ID, $join_behavior);
-
-		// symfony_behaviors behavior
-		foreach (sfMixer::getCallables(self::getMixerPreSelectHook(__FUNCTION__)) as $sf_hook)
-		{
-		  call_user_func($sf_hook, 'BaseNotificationElementPeer', $criteria, $con);
-		}
 
 
 		$stmt = BasePeer::doSelect($criteria, $con);
@@ -2407,12 +2250,6 @@ abstract class BaseNotificationElementPeer {
 
 		$criteria->addJoin(NotificationElementPeer::MEDIA_ID, MediaPeer::ID, $join_behavior);
 
-		// symfony_behaviors behavior
-		foreach (sfMixer::getCallables(self::getMixerPreSelectHook(__FUNCTION__)) as $sf_hook)
-		{
-		  call_user_func($sf_hook, 'BaseNotificationElementPeer', $criteria, $con);
-		}
-
 
 		$stmt = BasePeer::doSelect($criteria, $con);
 		$results = array();
@@ -2582,12 +2419,6 @@ abstract class BaseNotificationElementPeer {
 
 		$criteria->addJoin(NotificationElementPeer::MEDIA_ID, MediaPeer::ID, $join_behavior);
 
-		// symfony_behaviors behavior
-		foreach (sfMixer::getCallables(self::getMixerPreSelectHook(__FUNCTION__)) as $sf_hook)
-		{
-		  call_user_func($sf_hook, 'BaseNotificationElementPeer', $criteria, $con);
-		}
-
 
 		$stmt = BasePeer::doSelect($criteria, $con);
 		$results = array();
@@ -2756,12 +2587,6 @@ abstract class BaseNotificationElementPeer {
 		$criteria->addJoin(NotificationElementPeer::DISTRELEASE_ID, DistreleasePeer::ID, $join_behavior);
 
 		$criteria->addJoin(NotificationElementPeer::ARCH_ID, ArchPeer::ID, $join_behavior);
-
-		// symfony_behaviors behavior
-		foreach (sfMixer::getCallables(self::getMixerPreSelectHook(__FUNCTION__)) as $sf_hook)
-		{
-		  call_user_func($sf_hook, 'BaseNotificationElementPeer', $criteria, $con);
-		}
 
 
 		$stmt = BasePeer::doSelect($criteria, $con);
@@ -2933,15 +2758,6 @@ abstract class BaseNotificationElementPeer {
 	 */
 	public static function doInsert($values, PropelPDO $con = null)
 	{
-    // symfony_behaviors behavior
-    foreach (sfMixer::getCallables('BaseNotificationElementPeer:doInsert:pre') as $sf_hook)
-    {
-      if (false !== $sf_hook_retval = call_user_func($sf_hook, 'BaseNotificationElementPeer', $values, $con))
-      {
-        return $sf_hook_retval;
-      }
-    }
-
 		if ($con === null) {
 			$con = Propel::getConnection(NotificationElementPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
 		}
@@ -2971,12 +2787,6 @@ abstract class BaseNotificationElementPeer {
 			throw $e;
 		}
 
-    // symfony_behaviors behavior
-    foreach (sfMixer::getCallables('BaseNotificationElementPeer:doInsert:post') as $sf_hook)
-    {
-      call_user_func($sf_hook, 'BaseNotificationElementPeer', $values, $con, $pk);
-    }
-
 		return $pk;
 	}
 
@@ -2991,15 +2801,6 @@ abstract class BaseNotificationElementPeer {
 	 */
 	public static function doUpdate($values, PropelPDO $con = null)
 	{
-    // symfony_behaviors behavior
-    foreach (sfMixer::getCallables('BaseNotificationElementPeer:doUpdate:pre') as $sf_hook)
-    {
-      if (false !== $sf_hook_retval = call_user_func($sf_hook, 'BaseNotificationElementPeer', $values, $con))
-      {
-        return $sf_hook_retval;
-      }
-    }
-
 		if ($con === null) {
 			$con = Propel::getConnection(NotificationElementPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
 		}
@@ -3020,15 +2821,7 @@ abstract class BaseNotificationElementPeer {
 		// set the correct dbName
 		$criteria->setDbName(self::DATABASE_NAME);
 
-		$ret = BasePeer::doUpdate($selectCriteria, $criteria, $con);
-
-    // symfony_behaviors behavior
-    foreach (sfMixer::getCallables('BaseNotificationElementPeer:doUpdate:post') as $sf_hook)
-    {
-      call_user_func($sf_hook, 'BaseNotificationElementPeer', $values, $con, $ret);
-    }
-
-    return $ret;
+		return BasePeer::doUpdate($selectCriteria, $criteria, $con);
 	}
 
 	/**
@@ -3204,39 +2997,6 @@ abstract class BaseNotificationElementPeer {
 			$objs = NotificationElementPeer::doSelect($criteria, $con);
 		}
 		return $objs;
-	}
-
-	// symfony behavior
-	
-	/**
-	 * Returns an array of arrays that contain columns in each unique index.
-	 *
-	 * @return array
-	 */
-	static public function getUniqueColumnNames()
-	{
-	  return array(array('notification_id', 'package_id', 'rpm_group_id', 'distrelease_id', 'arch_id', 'media_id'));
-	}
-
-	// symfony_behaviors behavior
-	
-	/**
-	 * Returns the name of the hook to call from inside the supplied method.
-	 *
-	 * @param string $method The calling method
-	 *
-	 * @return string A hook name for {@link sfMixer}
-	 *
-	 * @throws LogicException If the method name is not recognized
-	 */
-	static private function getMixerPreSelectHook($method)
-	{
-	  if (preg_match('/^do(Select|Count)(Join(All(Except)?)?|Stmt)?/', $method, $match))
-	  {
-	    return sprintf('BaseNotificationElementPeer:%s:%1$s', 'Count' == $match[1] ? 'doCount' : $match[0]);
-	  }
-	
-	  throw new LogicException(sprintf('Unrecognized function "%s"', $method));
 	}
 
 } // BaseNotificationElementPeer

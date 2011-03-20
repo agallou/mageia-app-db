@@ -54,13 +54,6 @@ abstract class BaseUserCommentsPackagePeer {
 	public static $instances = array();
 
 
-	// symfony behavior
-	
-	/**
-	 * Indicates whether the current model includes I18N.
-	 */
-	const IS_I18N = false;
-
 	/**
 	 * holds an array of fieldnames
 	 *
@@ -195,12 +188,6 @@ abstract class BaseUserCommentsPackagePeer {
 		if ($con === null) {
 			$con = Propel::getConnection(UserCommentsPackagePeer::DATABASE_NAME, Propel::CONNECTION_READ);
 		}
-		// symfony_behaviors behavior
-		foreach (sfMixer::getCallables(self::getMixerPreSelectHook(__FUNCTION__)) as $sf_hook)
-		{
-		  call_user_func($sf_hook, 'BaseUserCommentsPackagePeer', $criteria, $con);
-		}
-
 		// BasePeer returns a PDOStatement
 		$stmt = BasePeer::doCount($criteria, $con);
 
@@ -270,12 +257,6 @@ abstract class BaseUserCommentsPackagePeer {
 
 		// Set the correct dbName
 		$criteria->setDbName(self::DATABASE_NAME);
-		// symfony_behaviors behavior
-		foreach (sfMixer::getCallables(self::getMixerPreSelectHook(__FUNCTION__)) as $sf_hook)
-		{
-		  call_user_func($sf_hook, 'BaseUserCommentsPackagePeer', $criteria, $con);
-		}
-
 
 		// BasePeer returns a PDOStatement
 		return BasePeer::doSelect($criteria, $con);
@@ -456,12 +437,6 @@ abstract class BaseUserCommentsPackagePeer {
 
 		$criteria->addJoin(UserCommentsPackagePeer::PACKAGE_ID, PackagePeer::ID, $join_behavior);
 
-		// symfony_behaviors behavior
-		foreach (sfMixer::getCallables(self::getMixerPreSelectHook(__FUNCTION__)) as $sf_hook)
-		{
-		  call_user_func($sf_hook, 'BaseUserCommentsPackagePeer', $criteria, $con);
-		}
-
 		$stmt = BasePeer::doCount($criteria, $con);
 
 		if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
@@ -512,12 +487,6 @@ abstract class BaseUserCommentsPackagePeer {
 
 		$criteria->addJoin(UserCommentsPackagePeer::USER_ID, UserPeer::ID, $join_behavior);
 
-		// symfony_behaviors behavior
-		foreach (sfMixer::getCallables(self::getMixerPreSelectHook(__FUNCTION__)) as $sf_hook)
-		{
-		  call_user_func($sf_hook, 'BaseUserCommentsPackagePeer', $criteria, $con);
-		}
-
 		$stmt = BasePeer::doCount($criteria, $con);
 
 		if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
@@ -553,12 +522,6 @@ abstract class BaseUserCommentsPackagePeer {
 		PackagePeer::addSelectColumns($criteria);
 
 		$criteria->addJoin(UserCommentsPackagePeer::PACKAGE_ID, PackagePeer::ID, $join_behavior);
-
-		// symfony_behaviors behavior
-		foreach (sfMixer::getCallables(self::getMixerPreSelectHook(__FUNCTION__)) as $sf_hook)
-		{
-		  call_user_func($sf_hook, 'BaseUserCommentsPackagePeer', $criteria, $con);
-		}
 
 		$stmt = BasePeer::doSelect($criteria, $con);
 		$results = array();
@@ -625,12 +588,6 @@ abstract class BaseUserCommentsPackagePeer {
 		UserPeer::addSelectColumns($criteria);
 
 		$criteria->addJoin(UserCommentsPackagePeer::USER_ID, UserPeer::ID, $join_behavior);
-
-		// symfony_behaviors behavior
-		foreach (sfMixer::getCallables(self::getMixerPreSelectHook(__FUNCTION__)) as $sf_hook)
-		{
-		  call_user_func($sf_hook, 'BaseUserCommentsPackagePeer', $criteria, $con);
-		}
 
 		$stmt = BasePeer::doSelect($criteria, $con);
 		$results = array();
@@ -714,12 +671,6 @@ abstract class BaseUserCommentsPackagePeer {
 
 		$criteria->addJoin(UserCommentsPackagePeer::USER_ID, UserPeer::ID, $join_behavior);
 
-		// symfony_behaviors behavior
-		foreach (sfMixer::getCallables(self::getMixerPreSelectHook(__FUNCTION__)) as $sf_hook)
-		{
-		  call_user_func($sf_hook, 'BaseUserCommentsPackagePeer', $criteria, $con);
-		}
-
 		$stmt = BasePeer::doCount($criteria, $con);
 
 		if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
@@ -762,12 +713,6 @@ abstract class BaseUserCommentsPackagePeer {
 		$criteria->addJoin(UserCommentsPackagePeer::PACKAGE_ID, PackagePeer::ID, $join_behavior);
 
 		$criteria->addJoin(UserCommentsPackagePeer::USER_ID, UserPeer::ID, $join_behavior);
-
-		// symfony_behaviors behavior
-		foreach (sfMixer::getCallables(self::getMixerPreSelectHook(__FUNCTION__)) as $sf_hook)
-		{
-		  call_user_func($sf_hook, 'BaseUserCommentsPackagePeer', $criteria, $con);
-		}
 
 		$stmt = BasePeer::doSelect($criteria, $con);
 		$results = array();
@@ -867,12 +812,6 @@ abstract class BaseUserCommentsPackagePeer {
 	
 		$criteria->addJoin(UserCommentsPackagePeer::USER_ID, UserPeer::ID, $join_behavior);
 
-		// symfony_behaviors behavior
-		foreach (sfMixer::getCallables(self::getMixerPreSelectHook(__FUNCTION__)) as $sf_hook)
-		{
-		  call_user_func($sf_hook, 'BaseUserCommentsPackagePeer', $criteria, $con);
-		}
-
 		$stmt = BasePeer::doCount($criteria, $con);
 
 		if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
@@ -923,12 +862,6 @@ abstract class BaseUserCommentsPackagePeer {
 	
 		$criteria->addJoin(UserCommentsPackagePeer::PACKAGE_ID, PackagePeer::ID, $join_behavior);
 
-		// symfony_behaviors behavior
-		foreach (sfMixer::getCallables(self::getMixerPreSelectHook(__FUNCTION__)) as $sf_hook)
-		{
-		  call_user_func($sf_hook, 'BaseUserCommentsPackagePeer', $criteria, $con);
-		}
-
 		$stmt = BasePeer::doCount($criteria, $con);
 
 		if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
@@ -969,12 +902,6 @@ abstract class BaseUserCommentsPackagePeer {
 		$startcol3 = $startcol2 + (UserPeer::NUM_COLUMNS - UserPeer::NUM_LAZY_LOAD_COLUMNS);
 
 		$criteria->addJoin(UserCommentsPackagePeer::USER_ID, UserPeer::ID, $join_behavior);
-
-		// symfony_behaviors behavior
-		foreach (sfMixer::getCallables(self::getMixerPreSelectHook(__FUNCTION__)) as $sf_hook)
-		{
-		  call_user_func($sf_hook, 'BaseUserCommentsPackagePeer', $criteria, $con);
-		}
 
 
 		$stmt = BasePeer::doSelect($criteria, $con);
@@ -1048,12 +975,6 @@ abstract class BaseUserCommentsPackagePeer {
 		$startcol3 = $startcol2 + (PackagePeer::NUM_COLUMNS - PackagePeer::NUM_LAZY_LOAD_COLUMNS);
 
 		$criteria->addJoin(UserCommentsPackagePeer::PACKAGE_ID, PackagePeer::ID, $join_behavior);
-
-		// symfony_behaviors behavior
-		foreach (sfMixer::getCallables(self::getMixerPreSelectHook(__FUNCTION__)) as $sf_hook)
-		{
-		  call_user_func($sf_hook, 'BaseUserCommentsPackagePeer', $criteria, $con);
-		}
 
 
 		$stmt = BasePeer::doSelect($criteria, $con);
@@ -1149,15 +1070,6 @@ abstract class BaseUserCommentsPackagePeer {
 	 */
 	public static function doInsert($values, PropelPDO $con = null)
 	{
-    // symfony_behaviors behavior
-    foreach (sfMixer::getCallables('BaseUserCommentsPackagePeer:doInsert:pre') as $sf_hook)
-    {
-      if (false !== $sf_hook_retval = call_user_func($sf_hook, 'BaseUserCommentsPackagePeer', $values, $con))
-      {
-        return $sf_hook_retval;
-      }
-    }
-
 		if ($con === null) {
 			$con = Propel::getConnection(UserCommentsPackagePeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
 		}
@@ -1187,12 +1099,6 @@ abstract class BaseUserCommentsPackagePeer {
 			throw $e;
 		}
 
-    // symfony_behaviors behavior
-    foreach (sfMixer::getCallables('BaseUserCommentsPackagePeer:doInsert:post') as $sf_hook)
-    {
-      call_user_func($sf_hook, 'BaseUserCommentsPackagePeer', $values, $con, $pk);
-    }
-
 		return $pk;
 	}
 
@@ -1207,15 +1113,6 @@ abstract class BaseUserCommentsPackagePeer {
 	 */
 	public static function doUpdate($values, PropelPDO $con = null)
 	{
-    // symfony_behaviors behavior
-    foreach (sfMixer::getCallables('BaseUserCommentsPackagePeer:doUpdate:pre') as $sf_hook)
-    {
-      if (false !== $sf_hook_retval = call_user_func($sf_hook, 'BaseUserCommentsPackagePeer', $values, $con))
-      {
-        return $sf_hook_retval;
-      }
-    }
-
 		if ($con === null) {
 			$con = Propel::getConnection(UserCommentsPackagePeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
 		}
@@ -1236,15 +1133,7 @@ abstract class BaseUserCommentsPackagePeer {
 		// set the correct dbName
 		$criteria->setDbName(self::DATABASE_NAME);
 
-		$ret = BasePeer::doUpdate($selectCriteria, $criteria, $con);
-
-    // symfony_behaviors behavior
-    foreach (sfMixer::getCallables('BaseUserCommentsPackagePeer:doUpdate:post') as $sf_hook)
-    {
-      call_user_func($sf_hook, 'BaseUserCommentsPackagePeer', $values, $con, $ret);
-    }
-
-    return $ret;
+		return BasePeer::doUpdate($selectCriteria, $criteria, $con);
 	}
 
 	/**
@@ -1420,39 +1309,6 @@ abstract class BaseUserCommentsPackagePeer {
 			$objs = UserCommentsPackagePeer::doSelect($criteria, $con);
 		}
 		return $objs;
-	}
-
-	// symfony behavior
-	
-	/**
-	 * Returns an array of arrays that contain columns in each unique index.
-	 *
-	 * @return array
-	 */
-	static public function getUniqueColumnNames()
-	{
-	  return array();
-	}
-
-	// symfony_behaviors behavior
-	
-	/**
-	 * Returns the name of the hook to call from inside the supplied method.
-	 *
-	 * @param string $method The calling method
-	 *
-	 * @return string A hook name for {@link sfMixer}
-	 *
-	 * @throws LogicException If the method name is not recognized
-	 */
-	static private function getMixerPreSelectHook($method)
-	{
-	  if (preg_match('/^do(Select|Count)(Join(All(Except)?)?|Stmt)?/', $method, $match))
-	  {
-	    return sprintf('BaseUserCommentsPackagePeer:%s:%1$s', 'Count' == $match[1] ? 'doCount' : $match[0]);
-	  }
-	
-	  throw new LogicException(sprintf('Unrecognized function "%s"', $method));
 	}
 
 } // BaseUserCommentsPackagePeer

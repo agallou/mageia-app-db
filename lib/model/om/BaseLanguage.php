@@ -64,10 +64,6 @@ abstract class BaseLanguage extends BaseObject  implements Persistent {
 	 */
 	protected $alreadyInValidation = false;
 
-	// symfony behavior
-	
-	const PEER = 'LanguagePeer';
-
 	/**
 	 * Get the [id] column value.
 	 * 
@@ -264,26 +260,9 @@ abstract class BaseLanguage extends BaseObject  implements Persistent {
 		$con->beginTransaction();
 		try {
 			$ret = $this->preDelete($con);
-			// symfony_behaviors behavior
-			foreach (sfMixer::getCallables('BaseLanguage:delete:pre') as $callable)
-			{
-			  if (call_user_func($callable, $this, $con))
-			  {
-			    $con->commit();
-			
-			    return;
-			  }
-			}
-
 			if ($ret) {
 				LanguagePeer::doDelete($this, $con);
 				$this->postDelete($con);
-				// symfony_behaviors behavior
-				foreach (sfMixer::getCallables('BaseLanguage:delete:post') as $callable)
-				{
-				  call_user_func($callable, $this, $con);
-				}
-
 				$this->setDeleted(true);
 				$con->commit();
 			} else {
@@ -322,17 +301,6 @@ abstract class BaseLanguage extends BaseObject  implements Persistent {
 		$isInsert = $this->isNew();
 		try {
 			$ret = $this->preSave($con);
-			// symfony_behaviors behavior
-			foreach (sfMixer::getCallables('BaseLanguage:save:pre') as $callable)
-			{
-			  if (is_integer($affectedRows = call_user_func($callable, $this, $con)))
-			  {
-			    $con->commit();
-			
-			    return $affectedRows;
-			  }
-			}
-
 			if ($isInsert) {
 				$ret = $ret && $this->preInsert($con);
 			} else {
@@ -346,12 +314,6 @@ abstract class BaseLanguage extends BaseObject  implements Persistent {
 					$this->postUpdate($con);
 				}
 				$this->postSave($con);
-				// symfony_behaviors behavior
-				foreach (sfMixer::getCallables('BaseLanguage:save:post') as $callable)
-				{
-				  call_user_func($callable, $this, $con, $affectedRows);
-				}
-
 				LanguagePeer::addInstanceToPool($this);
 			} else {
 				$affectedRows = 0;
@@ -1193,23 +1155,6 @@ abstract class BaseLanguage extends BaseObject  implements Persistent {
 
 		$this->collPackageDescriptions = null;
 		$this->collPackageLinkss = null;
-	}
-
-	// symfony_behaviors behavior
-	
-	/**
-	 * Calls methods defined via {@link sfMixer}.
-	 */
-	public function __call($method, $arguments)
-	{
-	  if (!$callable = sfMixer::getCallable('BaseLanguage:'.$method))
-	  {
-	    throw new sfException(sprintf('Call to undefined method BaseLanguage::%s', $method));
-	  }
-	
-	  array_unshift($arguments, $this);
-	
-	  return call_user_func_array($callable, $arguments);
 	}
 
 } // BaseLanguage

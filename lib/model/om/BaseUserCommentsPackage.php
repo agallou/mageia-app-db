@@ -72,10 +72,6 @@ abstract class BaseUserCommentsPackage extends BaseObject  implements Persistent
 	 */
 	protected $alreadyInValidation = false;
 
-	// symfony behavior
-	
-	const PEER = 'UserCommentsPackagePeer';
-
 	/**
 	 * Get the [id] column value.
 	 * 
@@ -432,26 +428,9 @@ abstract class BaseUserCommentsPackage extends BaseObject  implements Persistent
 		$con->beginTransaction();
 		try {
 			$ret = $this->preDelete($con);
-			// symfony_behaviors behavior
-			foreach (sfMixer::getCallables('BaseUserCommentsPackage:delete:pre') as $callable)
-			{
-			  if (call_user_func($callable, $this, $con))
-			  {
-			    $con->commit();
-			
-			    return;
-			  }
-			}
-
 			if ($ret) {
 				UserCommentsPackagePeer::doDelete($this, $con);
 				$this->postDelete($con);
-				// symfony_behaviors behavior
-				foreach (sfMixer::getCallables('BaseUserCommentsPackage:delete:post') as $callable)
-				{
-				  call_user_func($callable, $this, $con);
-				}
-
 				$this->setDeleted(true);
 				$con->commit();
 			} else {
@@ -490,27 +469,8 @@ abstract class BaseUserCommentsPackage extends BaseObject  implements Persistent
 		$isInsert = $this->isNew();
 		try {
 			$ret = $this->preSave($con);
-			// symfony_behaviors behavior
-			foreach (sfMixer::getCallables('BaseUserCommentsPackage:save:pre') as $callable)
-			{
-			  if (is_integer($affectedRows = call_user_func($callable, $this, $con)))
-			  {
-			    $con->commit();
-			
-			    return $affectedRows;
-			  }
-			}
-
-			// symfony_timestampable behavior
-			
 			if ($isInsert) {
 				$ret = $ret && $this->preInsert($con);
-				// symfony_timestampable behavior
-				if (!$this->isColumnModified(UserCommentsPackagePeer::CREATED_AT))
-				{
-				  $this->setCreatedAt(time());
-				}
-
 			} else {
 				$ret = $ret && $this->preUpdate($con);
 			}
@@ -522,12 +482,6 @@ abstract class BaseUserCommentsPackage extends BaseObject  implements Persistent
 					$this->postUpdate($con);
 				}
 				$this->postSave($con);
-				// symfony_behaviors behavior
-				foreach (sfMixer::getCallables('BaseUserCommentsPackage:save:post') as $callable)
-				{
-				  call_user_func($callable, $this, $con, $affectedRows);
-				}
-
 				UserCommentsPackagePeer::addInstanceToPool($this);
 			} else {
 				$affectedRows = 0;
@@ -1073,23 +1027,6 @@ abstract class BaseUserCommentsPackage extends BaseObject  implements Persistent
 
 			$this->aPackage = null;
 			$this->aUser = null;
-	}
-
-	// symfony_behaviors behavior
-	
-	/**
-	 * Calls methods defined via {@link sfMixer}.
-	 */
-	public function __call($method, $arguments)
-	{
-	  if (!$callable = sfMixer::getCallable('BaseUserCommentsPackage:'.$method))
-	  {
-	    throw new sfException(sprintf('Call to undefined method BaseUserCommentsPackage::%s', $method));
-	  }
-	
-	  array_unshift($arguments, $this);
-	
-	  return call_user_func_array($callable, $arguments);
 	}
 
 } // BaseUserCommentsPackage

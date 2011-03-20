@@ -103,10 +103,6 @@ abstract class BaseNewVersionRequest extends BaseObject  implements Persistent {
 	 */
 	protected $alreadyInValidation = false;
 
-	// symfony behavior
-	
-	const PEER = 'NewVersionRequestPeer';
-
 	/**
 	 * Get the [id] column value.
 	 * 
@@ -451,26 +447,9 @@ abstract class BaseNewVersionRequest extends BaseObject  implements Persistent {
 		$con->beginTransaction();
 		try {
 			$ret = $this->preDelete($con);
-			// symfony_behaviors behavior
-			foreach (sfMixer::getCallables('BaseNewVersionRequest:delete:pre') as $callable)
-			{
-			  if (call_user_func($callable, $this, $con))
-			  {
-			    $con->commit();
-			
-			    return;
-			  }
-			}
-
 			if ($ret) {
 				NewVersionRequestPeer::doDelete($this, $con);
 				$this->postDelete($con);
-				// symfony_behaviors behavior
-				foreach (sfMixer::getCallables('BaseNewVersionRequest:delete:post') as $callable)
-				{
-				  call_user_func($callable, $this, $con);
-				}
-
 				$this->setDeleted(true);
 				$con->commit();
 			} else {
@@ -509,17 +488,6 @@ abstract class BaseNewVersionRequest extends BaseObject  implements Persistent {
 		$isInsert = $this->isNew();
 		try {
 			$ret = $this->preSave($con);
-			// symfony_behaviors behavior
-			foreach (sfMixer::getCallables('BaseNewVersionRequest:save:pre') as $callable)
-			{
-			  if (is_integer($affectedRows = call_user_func($callable, $this, $con)))
-			  {
-			    $con->commit();
-			
-			    return $affectedRows;
-			  }
-			}
-
 			if ($isInsert) {
 				$ret = $ret && $this->preInsert($con);
 			} else {
@@ -533,12 +501,6 @@ abstract class BaseNewVersionRequest extends BaseObject  implements Persistent {
 					$this->postUpdate($con);
 				}
 				$this->postSave($con);
-				// symfony_behaviors behavior
-				foreach (sfMixer::getCallables('BaseNewVersionRequest:save:post') as $callable)
-				{
-				  call_user_func($callable, $this, $con, $affectedRows);
-				}
-
 				NewVersionRequestPeer::addInstanceToPool($this);
 			} else {
 				$affectedRows = 0;
@@ -1636,23 +1598,6 @@ abstract class BaseNewVersionRequest extends BaseObject  implements Persistent {
 			$this->aUser = null;
 			$this->aPackage = null;
 			$this->aDistrelease = null;
-	}
-
-	// symfony_behaviors behavior
-	
-	/**
-	 * Calls methods defined via {@link sfMixer}.
-	 */
-	public function __call($method, $arguments)
-	{
-	  if (!$callable = sfMixer::getCallable('BaseNewVersionRequest:'.$method))
-	  {
-	    throw new sfException(sprintf('Call to undefined method BaseNewVersionRequest::%s', $method));
-	  }
-	
-	  array_unshift($arguments, $this);
-	
-	  return call_user_func_array($callable, $arguments);
 	}
 
 } // BaseNewVersionRequest

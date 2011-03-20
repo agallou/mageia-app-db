@@ -45,13 +45,6 @@ abstract class BaseUserHasSoftwareRequestPeer {
 	public static $instances = array();
 
 
-	// symfony behavior
-	
-	/**
-	 * Indicates whether the current model includes I18N.
-	 */
-	const IS_I18N = false;
-
 	/**
 	 * holds an array of fieldnames
 	 *
@@ -183,12 +176,6 @@ abstract class BaseUserHasSoftwareRequestPeer {
 		if ($con === null) {
 			$con = Propel::getConnection(UserHasSoftwareRequestPeer::DATABASE_NAME, Propel::CONNECTION_READ);
 		}
-		// symfony_behaviors behavior
-		foreach (sfMixer::getCallables(self::getMixerPreSelectHook(__FUNCTION__)) as $sf_hook)
-		{
-		  call_user_func($sf_hook, 'BaseUserHasSoftwareRequestPeer', $criteria, $con);
-		}
-
 		// BasePeer returns a PDOStatement
 		$stmt = BasePeer::doCount($criteria, $con);
 
@@ -258,12 +245,6 @@ abstract class BaseUserHasSoftwareRequestPeer {
 
 		// Set the correct dbName
 		$criteria->setDbName(self::DATABASE_NAME);
-		// symfony_behaviors behavior
-		foreach (sfMixer::getCallables(self::getMixerPreSelectHook(__FUNCTION__)) as $sf_hook)
-		{
-		  call_user_func($sf_hook, 'BaseUserHasSoftwareRequestPeer', $criteria, $con);
-		}
-
 
 		// BasePeer returns a PDOStatement
 		return BasePeer::doSelect($criteria, $con);
@@ -444,12 +425,6 @@ abstract class BaseUserHasSoftwareRequestPeer {
 
 		$criteria->addJoin(UserHasSoftwareRequestPeer::USER_ID, UserPeer::ID, $join_behavior);
 
-		// symfony_behaviors behavior
-		foreach (sfMixer::getCallables(self::getMixerPreSelectHook(__FUNCTION__)) as $sf_hook)
-		{
-		  call_user_func($sf_hook, 'BaseUserHasSoftwareRequestPeer', $criteria, $con);
-		}
-
 		$stmt = BasePeer::doCount($criteria, $con);
 
 		if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
@@ -500,12 +475,6 @@ abstract class BaseUserHasSoftwareRequestPeer {
 
 		$criteria->addJoin(UserHasSoftwareRequestPeer::SOFTWARE_REQUEST_ID, SoftwareRequestPeer::ID, $join_behavior);
 
-		// symfony_behaviors behavior
-		foreach (sfMixer::getCallables(self::getMixerPreSelectHook(__FUNCTION__)) as $sf_hook)
-		{
-		  call_user_func($sf_hook, 'BaseUserHasSoftwareRequestPeer', $criteria, $con);
-		}
-
 		$stmt = BasePeer::doCount($criteria, $con);
 
 		if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
@@ -541,12 +510,6 @@ abstract class BaseUserHasSoftwareRequestPeer {
 		UserPeer::addSelectColumns($criteria);
 
 		$criteria->addJoin(UserHasSoftwareRequestPeer::USER_ID, UserPeer::ID, $join_behavior);
-
-		// symfony_behaviors behavior
-		foreach (sfMixer::getCallables(self::getMixerPreSelectHook(__FUNCTION__)) as $sf_hook)
-		{
-		  call_user_func($sf_hook, 'BaseUserHasSoftwareRequestPeer', $criteria, $con);
-		}
 
 		$stmt = BasePeer::doSelect($criteria, $con);
 		$results = array();
@@ -613,12 +576,6 @@ abstract class BaseUserHasSoftwareRequestPeer {
 		SoftwareRequestPeer::addSelectColumns($criteria);
 
 		$criteria->addJoin(UserHasSoftwareRequestPeer::SOFTWARE_REQUEST_ID, SoftwareRequestPeer::ID, $join_behavior);
-
-		// symfony_behaviors behavior
-		foreach (sfMixer::getCallables(self::getMixerPreSelectHook(__FUNCTION__)) as $sf_hook)
-		{
-		  call_user_func($sf_hook, 'BaseUserHasSoftwareRequestPeer', $criteria, $con);
-		}
 
 		$stmt = BasePeer::doSelect($criteria, $con);
 		$results = array();
@@ -702,12 +659,6 @@ abstract class BaseUserHasSoftwareRequestPeer {
 
 		$criteria->addJoin(UserHasSoftwareRequestPeer::SOFTWARE_REQUEST_ID, SoftwareRequestPeer::ID, $join_behavior);
 
-		// symfony_behaviors behavior
-		foreach (sfMixer::getCallables(self::getMixerPreSelectHook(__FUNCTION__)) as $sf_hook)
-		{
-		  call_user_func($sf_hook, 'BaseUserHasSoftwareRequestPeer', $criteria, $con);
-		}
-
 		$stmt = BasePeer::doCount($criteria, $con);
 
 		if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
@@ -750,12 +701,6 @@ abstract class BaseUserHasSoftwareRequestPeer {
 		$criteria->addJoin(UserHasSoftwareRequestPeer::USER_ID, UserPeer::ID, $join_behavior);
 
 		$criteria->addJoin(UserHasSoftwareRequestPeer::SOFTWARE_REQUEST_ID, SoftwareRequestPeer::ID, $join_behavior);
-
-		// symfony_behaviors behavior
-		foreach (sfMixer::getCallables(self::getMixerPreSelectHook(__FUNCTION__)) as $sf_hook)
-		{
-		  call_user_func($sf_hook, 'BaseUserHasSoftwareRequestPeer', $criteria, $con);
-		}
 
 		$stmt = BasePeer::doSelect($criteria, $con);
 		$results = array();
@@ -855,12 +800,6 @@ abstract class BaseUserHasSoftwareRequestPeer {
 	
 		$criteria->addJoin(UserHasSoftwareRequestPeer::SOFTWARE_REQUEST_ID, SoftwareRequestPeer::ID, $join_behavior);
 
-		// symfony_behaviors behavior
-		foreach (sfMixer::getCallables(self::getMixerPreSelectHook(__FUNCTION__)) as $sf_hook)
-		{
-		  call_user_func($sf_hook, 'BaseUserHasSoftwareRequestPeer', $criteria, $con);
-		}
-
 		$stmt = BasePeer::doCount($criteria, $con);
 
 		if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
@@ -911,12 +850,6 @@ abstract class BaseUserHasSoftwareRequestPeer {
 	
 		$criteria->addJoin(UserHasSoftwareRequestPeer::USER_ID, UserPeer::ID, $join_behavior);
 
-		// symfony_behaviors behavior
-		foreach (sfMixer::getCallables(self::getMixerPreSelectHook(__FUNCTION__)) as $sf_hook)
-		{
-		  call_user_func($sf_hook, 'BaseUserHasSoftwareRequestPeer', $criteria, $con);
-		}
-
 		$stmt = BasePeer::doCount($criteria, $con);
 
 		if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
@@ -957,12 +890,6 @@ abstract class BaseUserHasSoftwareRequestPeer {
 		$startcol3 = $startcol2 + (SoftwareRequestPeer::NUM_COLUMNS - SoftwareRequestPeer::NUM_LAZY_LOAD_COLUMNS);
 
 		$criteria->addJoin(UserHasSoftwareRequestPeer::SOFTWARE_REQUEST_ID, SoftwareRequestPeer::ID, $join_behavior);
-
-		// symfony_behaviors behavior
-		foreach (sfMixer::getCallables(self::getMixerPreSelectHook(__FUNCTION__)) as $sf_hook)
-		{
-		  call_user_func($sf_hook, 'BaseUserHasSoftwareRequestPeer', $criteria, $con);
-		}
 
 
 		$stmt = BasePeer::doSelect($criteria, $con);
@@ -1036,12 +963,6 @@ abstract class BaseUserHasSoftwareRequestPeer {
 		$startcol3 = $startcol2 + (UserPeer::NUM_COLUMNS - UserPeer::NUM_LAZY_LOAD_COLUMNS);
 
 		$criteria->addJoin(UserHasSoftwareRequestPeer::USER_ID, UserPeer::ID, $join_behavior);
-
-		// symfony_behaviors behavior
-		foreach (sfMixer::getCallables(self::getMixerPreSelectHook(__FUNCTION__)) as $sf_hook)
-		{
-		  call_user_func($sf_hook, 'BaseUserHasSoftwareRequestPeer', $criteria, $con);
-		}
 
 
 		$stmt = BasePeer::doSelect($criteria, $con);
@@ -1137,15 +1058,6 @@ abstract class BaseUserHasSoftwareRequestPeer {
 	 */
 	public static function doInsert($values, PropelPDO $con = null)
 	{
-    // symfony_behaviors behavior
-    foreach (sfMixer::getCallables('BaseUserHasSoftwareRequestPeer:doInsert:pre') as $sf_hook)
-    {
-      if (false !== $sf_hook_retval = call_user_func($sf_hook, 'BaseUserHasSoftwareRequestPeer', $values, $con))
-      {
-        return $sf_hook_retval;
-      }
-    }
-
 		if ($con === null) {
 			$con = Propel::getConnection(UserHasSoftwareRequestPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
 		}
@@ -1171,12 +1083,6 @@ abstract class BaseUserHasSoftwareRequestPeer {
 			throw $e;
 		}
 
-    // symfony_behaviors behavior
-    foreach (sfMixer::getCallables('BaseUserHasSoftwareRequestPeer:doInsert:post') as $sf_hook)
-    {
-      call_user_func($sf_hook, 'BaseUserHasSoftwareRequestPeer', $values, $con, $pk);
-    }
-
 		return $pk;
 	}
 
@@ -1191,15 +1097,6 @@ abstract class BaseUserHasSoftwareRequestPeer {
 	 */
 	public static function doUpdate($values, PropelPDO $con = null)
 	{
-    // symfony_behaviors behavior
-    foreach (sfMixer::getCallables('BaseUserHasSoftwareRequestPeer:doUpdate:pre') as $sf_hook)
-    {
-      if (false !== $sf_hook_retval = call_user_func($sf_hook, 'BaseUserHasSoftwareRequestPeer', $values, $con))
-      {
-        return $sf_hook_retval;
-      }
-    }
-
 		if ($con === null) {
 			$con = Propel::getConnection(UserHasSoftwareRequestPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
 		}
@@ -1223,15 +1120,7 @@ abstract class BaseUserHasSoftwareRequestPeer {
 		// set the correct dbName
 		$criteria->setDbName(self::DATABASE_NAME);
 
-		$ret = BasePeer::doUpdate($selectCriteria, $criteria, $con);
-
-    // symfony_behaviors behavior
-    foreach (sfMixer::getCallables('BaseUserHasSoftwareRequestPeer:doUpdate:post') as $sf_hook)
-    {
-      call_user_func($sf_hook, 'BaseUserHasSoftwareRequestPeer', $values, $con, $ret);
-    }
-
-    return $ret;
+		return BasePeer::doUpdate($selectCriteria, $criteria, $con);
 	}
 
 	/**
@@ -1389,39 +1278,6 @@ abstract class BaseUserHasSoftwareRequestPeer {
 
 		return !empty($v) ? $v[0] : null;
 	}
-	// symfony behavior
-	
-	/**
-	 * Returns an array of arrays that contain columns in each unique index.
-	 *
-	 * @return array
-	 */
-	static public function getUniqueColumnNames()
-	{
-	  return array();
-	}
-
-	// symfony_behaviors behavior
-	
-	/**
-	 * Returns the name of the hook to call from inside the supplied method.
-	 *
-	 * @param string $method The calling method
-	 *
-	 * @return string A hook name for {@link sfMixer}
-	 *
-	 * @throws LogicException If the method name is not recognized
-	 */
-	static private function getMixerPreSelectHook($method)
-	{
-	  if (preg_match('/^do(Select|Count)(Join(All(Except)?)?|Stmt)?/', $method, $match))
-	  {
-	    return sprintf('BaseUserHasSoftwareRequestPeer:%s:%1$s', 'Count' == $match[1] ? 'doCount' : $match[0]);
-	  }
-	
-	  throw new LogicException(sprintf('Unrecognized function "%s"', $method));
-	}
-
 } // BaseUserHasSoftwareRequestPeer
 
 // This is the static code needed to register the TableMap for this table with the main Propel class.

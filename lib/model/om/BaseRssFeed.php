@@ -71,10 +71,6 @@ abstract class BaseRssFeed extends BaseObject  implements Persistent {
 	 */
 	protected $alreadyInValidation = false;
 
-	// symfony behavior
-	
-	const PEER = 'RssFeedPeer';
-
 	/**
 	 * Get the [id] column value.
 	 * 
@@ -338,26 +334,9 @@ abstract class BaseRssFeed extends BaseObject  implements Persistent {
 		$con->beginTransaction();
 		try {
 			$ret = $this->preDelete($con);
-			// symfony_behaviors behavior
-			foreach (sfMixer::getCallables('BaseRssFeed:delete:pre') as $callable)
-			{
-			  if (call_user_func($callable, $this, $con))
-			  {
-			    $con->commit();
-			
-			    return;
-			  }
-			}
-
 			if ($ret) {
 				RssFeedPeer::doDelete($this, $con);
 				$this->postDelete($con);
-				// symfony_behaviors behavior
-				foreach (sfMixer::getCallables('BaseRssFeed:delete:post') as $callable)
-				{
-				  call_user_func($callable, $this, $con);
-				}
-
 				$this->setDeleted(true);
 				$con->commit();
 			} else {
@@ -396,17 +375,6 @@ abstract class BaseRssFeed extends BaseObject  implements Persistent {
 		$isInsert = $this->isNew();
 		try {
 			$ret = $this->preSave($con);
-			// symfony_behaviors behavior
-			foreach (sfMixer::getCallables('BaseRssFeed:save:pre') as $callable)
-			{
-			  if (is_integer($affectedRows = call_user_func($callable, $this, $con)))
-			  {
-			    $con->commit();
-			
-			    return $affectedRows;
-			  }
-			}
-
 			if ($isInsert) {
 				$ret = $ret && $this->preInsert($con);
 			} else {
@@ -420,12 +388,6 @@ abstract class BaseRssFeed extends BaseObject  implements Persistent {
 					$this->postUpdate($con);
 				}
 				$this->postSave($con);
-				// symfony_behaviors behavior
-				foreach (sfMixer::getCallables('BaseRssFeed:save:post') as $callable)
-				{
-				  call_user_func($callable, $this, $con, $affectedRows);
-				}
-
 				RssFeedPeer::addInstanceToPool($this);
 			} else {
 				$affectedRows = 0;
@@ -1134,23 +1096,6 @@ abstract class BaseRssFeed extends BaseObject  implements Persistent {
 
 		$this->collNotifications = null;
 			$this->aUser = null;
-	}
-
-	// symfony_behaviors behavior
-	
-	/**
-	 * Calls methods defined via {@link sfMixer}.
-	 */
-	public function __call($method, $arguments)
-	{
-	  if (!$callable = sfMixer::getCallable('BaseRssFeed:'.$method))
-	  {
-	    throw new sfException(sprintf('Call to undefined method BaseRssFeed::%s', $method));
-	  }
-	
-	  array_unshift($arguments, $this);
-	
-	  return call_user_func_array($callable, $arguments);
 	}
 
 } // BaseRssFeed

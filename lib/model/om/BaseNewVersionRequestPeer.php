@@ -57,13 +57,6 @@ abstract class BaseNewVersionRequestPeer {
 	public static $instances = array();
 
 
-	// symfony behavior
-	
-	/**
-	 * Indicates whether the current model includes I18N.
-	 */
-	const IS_I18N = false;
-
 	/**
 	 * holds an array of fieldnames
 	 *
@@ -199,12 +192,6 @@ abstract class BaseNewVersionRequestPeer {
 		if ($con === null) {
 			$con = Propel::getConnection(NewVersionRequestPeer::DATABASE_NAME, Propel::CONNECTION_READ);
 		}
-		// symfony_behaviors behavior
-		foreach (sfMixer::getCallables(self::getMixerPreSelectHook(__FUNCTION__)) as $sf_hook)
-		{
-		  call_user_func($sf_hook, 'BaseNewVersionRequestPeer', $criteria, $con);
-		}
-
 		// BasePeer returns a PDOStatement
 		$stmt = BasePeer::doCount($criteria, $con);
 
@@ -274,12 +261,6 @@ abstract class BaseNewVersionRequestPeer {
 
 		// Set the correct dbName
 		$criteria->setDbName(self::DATABASE_NAME);
-		// symfony_behaviors behavior
-		foreach (sfMixer::getCallables(self::getMixerPreSelectHook(__FUNCTION__)) as $sf_hook)
-		{
-		  call_user_func($sf_hook, 'BaseNewVersionRequestPeer', $criteria, $con);
-		}
-
 
 		// BasePeer returns a PDOStatement
 		return BasePeer::doSelect($criteria, $con);
@@ -460,12 +441,6 @@ abstract class BaseNewVersionRequestPeer {
 
 		$criteria->addJoin(NewVersionRequestPeer::USER_ID, UserPeer::ID, $join_behavior);
 
-		// symfony_behaviors behavior
-		foreach (sfMixer::getCallables(self::getMixerPreSelectHook(__FUNCTION__)) as $sf_hook)
-		{
-		  call_user_func($sf_hook, 'BaseNewVersionRequestPeer', $criteria, $con);
-		}
-
 		$stmt = BasePeer::doCount($criteria, $con);
 
 		if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
@@ -515,12 +490,6 @@ abstract class BaseNewVersionRequestPeer {
 		}
 
 		$criteria->addJoin(NewVersionRequestPeer::PACKAGE_ID, PackagePeer::ID, $join_behavior);
-
-		// symfony_behaviors behavior
-		foreach (sfMixer::getCallables(self::getMixerPreSelectHook(__FUNCTION__)) as $sf_hook)
-		{
-		  call_user_func($sf_hook, 'BaseNewVersionRequestPeer', $criteria, $con);
-		}
 
 		$stmt = BasePeer::doCount($criteria, $con);
 
@@ -572,12 +541,6 @@ abstract class BaseNewVersionRequestPeer {
 
 		$criteria->addJoin(NewVersionRequestPeer::DISTRELEASE_ID, DistreleasePeer::ID, $join_behavior);
 
-		// symfony_behaviors behavior
-		foreach (sfMixer::getCallables(self::getMixerPreSelectHook(__FUNCTION__)) as $sf_hook)
-		{
-		  call_user_func($sf_hook, 'BaseNewVersionRequestPeer', $criteria, $con);
-		}
-
 		$stmt = BasePeer::doCount($criteria, $con);
 
 		if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
@@ -613,12 +576,6 @@ abstract class BaseNewVersionRequestPeer {
 		UserPeer::addSelectColumns($criteria);
 
 		$criteria->addJoin(NewVersionRequestPeer::USER_ID, UserPeer::ID, $join_behavior);
-
-		// symfony_behaviors behavior
-		foreach (sfMixer::getCallables(self::getMixerPreSelectHook(__FUNCTION__)) as $sf_hook)
-		{
-		  call_user_func($sf_hook, 'BaseNewVersionRequestPeer', $criteria, $con);
-		}
 
 		$stmt = BasePeer::doSelect($criteria, $con);
 		$results = array();
@@ -686,12 +643,6 @@ abstract class BaseNewVersionRequestPeer {
 
 		$criteria->addJoin(NewVersionRequestPeer::PACKAGE_ID, PackagePeer::ID, $join_behavior);
 
-		// symfony_behaviors behavior
-		foreach (sfMixer::getCallables(self::getMixerPreSelectHook(__FUNCTION__)) as $sf_hook)
-		{
-		  call_user_func($sf_hook, 'BaseNewVersionRequestPeer', $criteria, $con);
-		}
-
 		$stmt = BasePeer::doSelect($criteria, $con);
 		$results = array();
 
@@ -757,12 +708,6 @@ abstract class BaseNewVersionRequestPeer {
 		DistreleasePeer::addSelectColumns($criteria);
 
 		$criteria->addJoin(NewVersionRequestPeer::DISTRELEASE_ID, DistreleasePeer::ID, $join_behavior);
-
-		// symfony_behaviors behavior
-		foreach (sfMixer::getCallables(self::getMixerPreSelectHook(__FUNCTION__)) as $sf_hook)
-		{
-		  call_user_func($sf_hook, 'BaseNewVersionRequestPeer', $criteria, $con);
-		}
 
 		$stmt = BasePeer::doSelect($criteria, $con);
 		$results = array();
@@ -848,12 +793,6 @@ abstract class BaseNewVersionRequestPeer {
 
 		$criteria->addJoin(NewVersionRequestPeer::DISTRELEASE_ID, DistreleasePeer::ID, $join_behavior);
 
-		// symfony_behaviors behavior
-		foreach (sfMixer::getCallables(self::getMixerPreSelectHook(__FUNCTION__)) as $sf_hook)
-		{
-		  call_user_func($sf_hook, 'BaseNewVersionRequestPeer', $criteria, $con);
-		}
-
 		$stmt = BasePeer::doCount($criteria, $con);
 
 		if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
@@ -901,12 +840,6 @@ abstract class BaseNewVersionRequestPeer {
 		$criteria->addJoin(NewVersionRequestPeer::PACKAGE_ID, PackagePeer::ID, $join_behavior);
 
 		$criteria->addJoin(NewVersionRequestPeer::DISTRELEASE_ID, DistreleasePeer::ID, $join_behavior);
-
-		// symfony_behaviors behavior
-		foreach (sfMixer::getCallables(self::getMixerPreSelectHook(__FUNCTION__)) as $sf_hook)
-		{
-		  call_user_func($sf_hook, 'BaseNewVersionRequestPeer', $criteria, $con);
-		}
 
 		$stmt = BasePeer::doSelect($criteria, $con);
 		$results = array();
@@ -1026,12 +959,6 @@ abstract class BaseNewVersionRequestPeer {
 
 		$criteria->addJoin(NewVersionRequestPeer::DISTRELEASE_ID, DistreleasePeer::ID, $join_behavior);
 
-		// symfony_behaviors behavior
-		foreach (sfMixer::getCallables(self::getMixerPreSelectHook(__FUNCTION__)) as $sf_hook)
-		{
-		  call_user_func($sf_hook, 'BaseNewVersionRequestPeer', $criteria, $con);
-		}
-
 		$stmt = BasePeer::doCount($criteria, $con);
 
 		if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
@@ -1083,12 +1010,6 @@ abstract class BaseNewVersionRequestPeer {
 		$criteria->addJoin(NewVersionRequestPeer::USER_ID, UserPeer::ID, $join_behavior);
 
 		$criteria->addJoin(NewVersionRequestPeer::DISTRELEASE_ID, DistreleasePeer::ID, $join_behavior);
-
-		// symfony_behaviors behavior
-		foreach (sfMixer::getCallables(self::getMixerPreSelectHook(__FUNCTION__)) as $sf_hook)
-		{
-		  call_user_func($sf_hook, 'BaseNewVersionRequestPeer', $criteria, $con);
-		}
 
 		$stmt = BasePeer::doCount($criteria, $con);
 
@@ -1142,12 +1063,6 @@ abstract class BaseNewVersionRequestPeer {
 
 		$criteria->addJoin(NewVersionRequestPeer::PACKAGE_ID, PackagePeer::ID, $join_behavior);
 
-		// symfony_behaviors behavior
-		foreach (sfMixer::getCallables(self::getMixerPreSelectHook(__FUNCTION__)) as $sf_hook)
-		{
-		  call_user_func($sf_hook, 'BaseNewVersionRequestPeer', $criteria, $con);
-		}
-
 		$stmt = BasePeer::doCount($criteria, $con);
 
 		if ($row = $stmt->fetch(PDO::FETCH_NUM)) {
@@ -1193,12 +1108,6 @@ abstract class BaseNewVersionRequestPeer {
 		$criteria->addJoin(NewVersionRequestPeer::PACKAGE_ID, PackagePeer::ID, $join_behavior);
 
 		$criteria->addJoin(NewVersionRequestPeer::DISTRELEASE_ID, DistreleasePeer::ID, $join_behavior);
-
-		// symfony_behaviors behavior
-		foreach (sfMixer::getCallables(self::getMixerPreSelectHook(__FUNCTION__)) as $sf_hook)
-		{
-		  call_user_func($sf_hook, 'BaseNewVersionRequestPeer', $criteria, $con);
-		}
 
 
 		$stmt = BasePeer::doSelect($criteria, $con);
@@ -1297,12 +1206,6 @@ abstract class BaseNewVersionRequestPeer {
 
 		$criteria->addJoin(NewVersionRequestPeer::DISTRELEASE_ID, DistreleasePeer::ID, $join_behavior);
 
-		// symfony_behaviors behavior
-		foreach (sfMixer::getCallables(self::getMixerPreSelectHook(__FUNCTION__)) as $sf_hook)
-		{
-		  call_user_func($sf_hook, 'BaseNewVersionRequestPeer', $criteria, $con);
-		}
-
 
 		$stmt = BasePeer::doSelect($criteria, $con);
 		$results = array();
@@ -1399,12 +1302,6 @@ abstract class BaseNewVersionRequestPeer {
 		$criteria->addJoin(NewVersionRequestPeer::USER_ID, UserPeer::ID, $join_behavior);
 
 		$criteria->addJoin(NewVersionRequestPeer::PACKAGE_ID, PackagePeer::ID, $join_behavior);
-
-		// symfony_behaviors behavior
-		foreach (sfMixer::getCallables(self::getMixerPreSelectHook(__FUNCTION__)) as $sf_hook)
-		{
-		  call_user_func($sf_hook, 'BaseNewVersionRequestPeer', $criteria, $con);
-		}
 
 
 		$stmt = BasePeer::doSelect($criteria, $con);
@@ -1519,15 +1416,6 @@ abstract class BaseNewVersionRequestPeer {
 	 */
 	public static function doInsert($values, PropelPDO $con = null)
 	{
-    // symfony_behaviors behavior
-    foreach (sfMixer::getCallables('BaseNewVersionRequestPeer:doInsert:pre') as $sf_hook)
-    {
-      if (false !== $sf_hook_retval = call_user_func($sf_hook, 'BaseNewVersionRequestPeer', $values, $con))
-      {
-        return $sf_hook_retval;
-      }
-    }
-
 		if ($con === null) {
 			$con = Propel::getConnection(NewVersionRequestPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
 		}
@@ -1557,12 +1445,6 @@ abstract class BaseNewVersionRequestPeer {
 			throw $e;
 		}
 
-    // symfony_behaviors behavior
-    foreach (sfMixer::getCallables('BaseNewVersionRequestPeer:doInsert:post') as $sf_hook)
-    {
-      call_user_func($sf_hook, 'BaseNewVersionRequestPeer', $values, $con, $pk);
-    }
-
 		return $pk;
 	}
 
@@ -1577,15 +1459,6 @@ abstract class BaseNewVersionRequestPeer {
 	 */
 	public static function doUpdate($values, PropelPDO $con = null)
 	{
-    // symfony_behaviors behavior
-    foreach (sfMixer::getCallables('BaseNewVersionRequestPeer:doUpdate:pre') as $sf_hook)
-    {
-      if (false !== $sf_hook_retval = call_user_func($sf_hook, 'BaseNewVersionRequestPeer', $values, $con))
-      {
-        return $sf_hook_retval;
-      }
-    }
-
 		if ($con === null) {
 			$con = Propel::getConnection(NewVersionRequestPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
 		}
@@ -1609,15 +1482,7 @@ abstract class BaseNewVersionRequestPeer {
 		// set the correct dbName
 		$criteria->setDbName(self::DATABASE_NAME);
 
-		$ret = BasePeer::doUpdate($selectCriteria, $criteria, $con);
-
-    // symfony_behaviors behavior
-    foreach (sfMixer::getCallables('BaseNewVersionRequestPeer:doUpdate:post') as $sf_hook)
-    {
-      call_user_func($sf_hook, 'BaseNewVersionRequestPeer', $values, $con, $ret);
-    }
-
-    return $ret;
+		return BasePeer::doUpdate($selectCriteria, $criteria, $con);
 	}
 
 	/**
@@ -1775,39 +1640,6 @@ abstract class BaseNewVersionRequestPeer {
 
 		return !empty($v) ? $v[0] : null;
 	}
-	// symfony behavior
-	
-	/**
-	 * Returns an array of arrays that contain columns in each unique index.
-	 *
-	 * @return array
-	 */
-	static public function getUniqueColumnNames()
-	{
-	  return array();
-	}
-
-	// symfony_behaviors behavior
-	
-	/**
-	 * Returns the name of the hook to call from inside the supplied method.
-	 *
-	 * @param string $method The calling method
-	 *
-	 * @return string A hook name for {@link sfMixer}
-	 *
-	 * @throws LogicException If the method name is not recognized
-	 */
-	static private function getMixerPreSelectHook($method)
-	{
-	  if (preg_match('/^do(Select|Count)(Join(All(Except)?)?|Stmt)?/', $method, $match))
-	  {
-	    return sprintf('BaseNewVersionRequestPeer:%s:%1$s', 'Count' == $match[1] ? 'doCount' : $match[0]);
-	  }
-	
-	  throw new LogicException(sprintf('Unrecognized function "%s"', $method));
-	}
-
 } // BaseNewVersionRequestPeer
 
 // This is the static code needed to register the TableMap for this table with the main Propel class.

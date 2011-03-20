@@ -44,10 +44,6 @@ abstract class BaseVersion extends BaseObject  implements Persistent {
 	 */
 	protected $alreadyInValidation = false;
 
-	// symfony behavior
-	
-	const PEER = 'VersionPeer';
-
 	/**
 	 * Get the [id] column value.
 	 * 
@@ -238,26 +234,9 @@ abstract class BaseVersion extends BaseObject  implements Persistent {
 		$con->beginTransaction();
 		try {
 			$ret = $this->preDelete($con);
-			// symfony_behaviors behavior
-			foreach (sfMixer::getCallables('BaseVersion:delete:pre') as $callable)
-			{
-			  if (call_user_func($callable, $this, $con))
-			  {
-			    $con->commit();
-			
-			    return;
-			  }
-			}
-
 			if ($ret) {
 				VersionPeer::doDelete($this, $con);
 				$this->postDelete($con);
-				// symfony_behaviors behavior
-				foreach (sfMixer::getCallables('BaseVersion:delete:post') as $callable)
-				{
-				  call_user_func($callable, $this, $con);
-				}
-
 				$this->setDeleted(true);
 				$con->commit();
 			} else {
@@ -296,17 +275,6 @@ abstract class BaseVersion extends BaseObject  implements Persistent {
 		$isInsert = $this->isNew();
 		try {
 			$ret = $this->preSave($con);
-			// symfony_behaviors behavior
-			foreach (sfMixer::getCallables('BaseVersion:save:pre') as $callable)
-			{
-			  if (is_integer($affectedRows = call_user_func($callable, $this, $con)))
-			  {
-			    $con->commit();
-			
-			    return $affectedRows;
-			  }
-			}
-
 			if ($isInsert) {
 				$ret = $ret && $this->preInsert($con);
 			} else {
@@ -320,12 +288,6 @@ abstract class BaseVersion extends BaseObject  implements Persistent {
 					$this->postUpdate($con);
 				}
 				$this->postSave($con);
-				// symfony_behaviors behavior
-				foreach (sfMixer::getCallables('BaseVersion:save:post') as $callable)
-				{
-				  call_user_func($callable, $this, $con, $affectedRows);
-				}
-
 				VersionPeer::addInstanceToPool($this);
 			} else {
 				$affectedRows = 0;
@@ -701,23 +663,6 @@ abstract class BaseVersion extends BaseObject  implements Persistent {
 		if ($deep) {
 		} // if ($deep)
 
-	}
-
-	// symfony_behaviors behavior
-	
-	/**
-	 * Calls methods defined via {@link sfMixer}.
-	 */
-	public function __call($method, $arguments)
-	{
-	  if (!$callable = sfMixer::getCallable('BaseVersion:'.$method))
-	  {
-	    throw new sfException(sprintf('Call to undefined method BaseVersion::%s', $method));
-	  }
-	
-	  array_unshift($arguments, $this);
-	
-	  return call_user_func_array($callable, $arguments);
 	}
 
 } // BaseVersion

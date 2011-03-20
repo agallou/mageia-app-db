@@ -95,10 +95,6 @@ abstract class BaseDistrelease extends BaseObject  implements Persistent {
 	 */
 	protected $alreadyInValidation = false;
 
-	// symfony behavior
-	
-	const PEER = 'DistreleasePeer';
-
 	/**
 	 * Applies default values to this object.
 	 * This method should be called from the object's constructor (or
@@ -426,26 +422,9 @@ abstract class BaseDistrelease extends BaseObject  implements Persistent {
 		$con->beginTransaction();
 		try {
 			$ret = $this->preDelete($con);
-			// symfony_behaviors behavior
-			foreach (sfMixer::getCallables('BaseDistrelease:delete:pre') as $callable)
-			{
-			  if (call_user_func($callable, $this, $con))
-			  {
-			    $con->commit();
-			
-			    return;
-			  }
-			}
-
 			if ($ret) {
 				DistreleasePeer::doDelete($this, $con);
 				$this->postDelete($con);
-				// symfony_behaviors behavior
-				foreach (sfMixer::getCallables('BaseDistrelease:delete:post') as $callable)
-				{
-				  call_user_func($callable, $this, $con);
-				}
-
 				$this->setDeleted(true);
 				$con->commit();
 			} else {
@@ -484,17 +463,6 @@ abstract class BaseDistrelease extends BaseObject  implements Persistent {
 		$isInsert = $this->isNew();
 		try {
 			$ret = $this->preSave($con);
-			// symfony_behaviors behavior
-			foreach (sfMixer::getCallables('BaseDistrelease:save:pre') as $callable)
-			{
-			  if (is_integer($affectedRows = call_user_func($callable, $this, $con)))
-			  {
-			    $con->commit();
-			
-			    return $affectedRows;
-			  }
-			}
-
 			if ($isInsert) {
 				$ret = $ret && $this->preInsert($con);
 			} else {
@@ -508,12 +476,6 @@ abstract class BaseDistrelease extends BaseObject  implements Persistent {
 					$this->postUpdate($con);
 				}
 				$this->postSave($con);
-				// symfony_behaviors behavior
-				foreach (sfMixer::getCallables('BaseDistrelease:save:post') as $callable)
-				{
-				  call_user_func($callable, $this, $con, $affectedRows);
-				}
-
 				DistreleasePeer::addInstanceToPool($this);
 			} else {
 				$affectedRows = 0;
@@ -2040,23 +2002,6 @@ abstract class BaseDistrelease extends BaseObject  implements Persistent {
 		$this->collRpms = null;
 		$this->collNewVersionRequests = null;
 		$this->collNotificationElements = null;
-	}
-
-	// symfony_behaviors behavior
-	
-	/**
-	 * Calls methods defined via {@link sfMixer}.
-	 */
-	public function __call($method, $arguments)
-	{
-	  if (!$callable = sfMixer::getCallable('BaseDistrelease:'.$method))
-	  {
-	    throw new sfException(sprintf('Call to undefined method BaseDistrelease::%s', $method));
-	  }
-	
-	  array_unshift($arguments, $this);
-	
-	  return call_user_func_array($callable, $arguments);
 	}
 
 } // BaseDistrelease

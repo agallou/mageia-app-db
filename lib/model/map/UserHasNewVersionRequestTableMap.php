@@ -50,18 +50,4 @@ class UserHasNewVersionRequestTableMap extends TableMap {
     $this->addRelation('NewVersionRequest', 'NewVersionRequest', RelationMap::MANY_TO_ONE, array('new_version_request_id' => 'id', ), null, null);
 	} // buildRelations()
 
-	/**
-	 * 
-	 * Gets the list of behaviors registered for this table
-	 * 
-	 * @return array Associative array (name => parameters) of behaviors
-	 */
-	public function getBehaviors()
-	{
-		return array(
-			'symfony' => array('form' => 'true', 'filter' => 'true', ),
-			'symfony_behaviors' => array(),
-		);
-	} // getBehaviors()
-
 } // UserHasNewVersionRequestTableMap
