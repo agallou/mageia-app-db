@@ -102,6 +102,16 @@
       ng1.toggle();
       select.remove();
       label.remove();
+      $(document).mousedown(function(event){
+        var $target = $(event.target);
+        if ($target[0].id != 'new' + selectId + '1'
+          && $target.parents('#' + 'new' + selectId + '1').length == 0
+        )
+        {
+          ng1.hide();
+          settings.apply.apply(this, [$('input[name=' + selectId + ']:checked')]);
+        }
+      });
     });
   };
 })(jQuery);
