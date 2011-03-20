@@ -44,7 +44,7 @@ class listComponent extends madbComponent
         throw new Exception('Unknown value for listtype : \'' . $this->listtype . '\'');
         break;
     }
-    $this->pager = new PropelPager($criteria, Rpm::PEER, 'doSelect', $this->page, $this->limit);
+    $this->pager = new PropelPager($criteria, 'RpmPeer', 'doSelect', $this->page, $this->limit);
   }
 
 }
