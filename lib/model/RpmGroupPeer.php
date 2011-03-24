@@ -47,14 +47,20 @@ class RpmGroupPeer extends BaseRpmGroupPeer {
   
   /**
    * 
-   * Returns an array of RpmGroup containing RpmGroups whose name match $pattern
+   * Returns the list of child group ids whose name begins with $parent_name
+   * If $include_parent is true, returns also the parent group if it exists
    *
-   * @param string $pattern
+   * @param string $parent_name
+   * @param bool $include_parent
    */
-  public static function getGroupsIdsWhereNameLike($pattern)
+  public static function getChildGroupsFor($parent_name, $include_parent = false)
   {
     $results = array();
-    foreach (self::getGroupsWhereNameLike($pattern) as $rpm_group)
+    if ($include_parent and $rpm_group = self::retrieveByName($parent_name))
+    {
+      $results[] = $rpm_group->getId();
+    }
+    foreach (self::getGroupsWhereNameLike($parent_name . '/%') as $rpm_group)
     {
       $results[] = $rpm_group->getId();
     }

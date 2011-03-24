@@ -23,7 +23,7 @@
                 $madbcontext, 
                  array( 
                    'extra_parameters' => array(
-                      't_group'    => implode(',', RpmGroupPeer::getGroupsIdsWhereNameLike($values['the_name'] . "%")),
+                      't_group'    => implode(',', RpmGroupPeer::getChildGroupsFor($values['the_name'], true)),
                       'level'      =>  1 + 1,
                       'group_name' => str_replace('/', '|', $values['the_name'])
                    )
