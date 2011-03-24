@@ -9,11 +9,11 @@ class archCriteriaFilter extends baseCriteriaFilterChoice
 
   public function getDefault()
   {
-    try
+    if ($arch = ArchPeer::retrieveByName('i586'))
     {
-      return ArchPeer::retrieveByName('i586')->getId();
+      return $arch->getId();
     }
-    catch(ArchPeerException $e)
+    else
     {
       return null;
     }
@@ -22,11 +22,13 @@ class archCriteriaFilter extends baseCriteriaFilterChoice
   public function getValues()
   {
     $values = array();
-    $archs = ArchPeer::doSelect(new Criteria);
-    //TODO some callback to a statement.
-    foreach ($archs as $arch)
+    if ($archs = ArchPeer::doSelect(new Criteria))
     {
-      $values[$arch->getId()] = $arch->getName();
+      //TODO some callback to a statement.
+      foreach ($archs as $arch)
+      {
+        $values[$arch->getId()] = $arch->getName();
+      }
     }
     return $values;
   }
