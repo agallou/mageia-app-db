@@ -176,7 +176,14 @@ class RpmPeer extends BaseRpmPeer {
     $rpm->setRpmGroup($rpmGroup);
     
     $rpm->setBuildTime($values['buildtime']);
-    $rpm->setDescription(str_replace('\n', "\n", $values['description']));
+
+    $description = str_replace('\n', "\n", $values['description']);
+    // Fix bad encoding in Sophie's response
+    $description = mb_convert_encoding($description, 'latin1', 'utf-8');
+    $summary = mb_convert_encoding($values['summary'], 'latin1', 'utf-8');
+    $rpm->setDescription($description);
+    $rpm->setSummary($summary);
+    
     $rpm->setEvr($values['evr']);
     $rpm->setLicence($values['license']);
     $rpm->setName($values['real_filename']);
@@ -189,7 +196,6 @@ class RpmPeer extends BaseRpmPeer {
     
     $rpm->setShortName($package->getName());
     $rpm->setSize($values['size']);
-    $rpm->setSummary($values['summary']);
     $rpm->setUrl(isset($values['url']) ? $values['url'] : '');
     $rpm->setVersion($epoch === null ? $version : "$epoch:$version");
     
