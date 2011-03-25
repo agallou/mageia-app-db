@@ -176,7 +176,7 @@ class RpmPeer extends BaseRpmPeer {
     $rpm->setRpmGroup($rpmGroup);
     
     $rpm->setBuildTime($values['buildtime']);
-    $rpm->setDescription($values['description']);
+    $rpm->setDescription(str_replace('\n', "\n", $values['description']));
     $rpm->setEvr($values['evr']);
     $rpm->setLicence($values['license']);
     $rpm->setName($values['real_filename']);
