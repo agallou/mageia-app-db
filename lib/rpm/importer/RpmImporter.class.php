@@ -65,7 +65,6 @@ class RpmImporter
     }
     
     // update Package object
-    // TODO : is_application => no, will be done outside this method
     // summary
     // description
     $package->updateSummaryAndDescription();    

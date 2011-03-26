@@ -563,7 +563,7 @@ class madbFetchRpmsTask extends madbBaseTask
             'bin' => $media
           );
           
-          $rpms = array();
+          $rpmsBySophieMedia = array();
           foreach ($sophieMedias as $mediaType => $sophieMedia)
           {
             // then fetch RPM lists from Sophie
@@ -606,34 +606,29 @@ class madbFetchRpmsTask extends madbBaseTask
             // TODO : (batch processing would be great here)
             foreach ($missing_from_db as $pkgid => $filename)
             {
-print_r($rpmsInDatabase);
-print_r($rpmsInSophie);
-print_r($missing_from_db);
-die;
-              
-              echo " " . $filename . " ( " . $pkgid . " )";
+              echo " Add " . $filename . " ( " . $pkgid . " )";
               $startTime = microtime(true);
               
               // Fetch RPM infos
-//              try 
-//              {
-//                $rpmInfos = $sophie->getRpmByPkgid($pkgid);
-//                $rpmInfos['real_filename'] = $filename;
-//                $time1 = round(microtime(true) - $startTime, 2);
-//                echo " - ${time1}s"; 
-//                $nbRetrievedRpms++;
-//              }
-//              catch (SophieClientException $e)
-//              {
-//                echo "\nError retrieving $filename : " . $e->getMessage() . "\n";
-//                $nbFailedRpms++;
-//                continue;
-//              }
-//              
-//              // Process RPM
-//              $rpmImporter->importFromArray($distreleaseObj, $archObj, $mediaObj, $rpmInfos);
-//              $time2 = round(microtime(true) - $startTime - $time1, 2);
-//              echo " + ${time2}s";
+              try 
+              {
+                $rpmInfos = $sophie->getRpmByPkgid($pkgid);
+                $rpmInfos['real_filename'] = $filename;
+                $time1 = round(microtime(true) - $startTime, 2);
+                echo " - ${time1}s"; 
+                $nbRetrievedRpms++;
+              }
+              catch (SophieClientException $e)
+              {
+                echo "\nError retrieving $filename : " . $e->getMessage() . "\n";
+                $nbFailedRpms++;
+                continue;
+              }
+              
+              // Process RPM
+              $rpmImporter->importFromArray($distreleaseObj, $archObj, $mediaObj, $rpmInfos);
+              $time2 = round(microtime(true) - $startTime - $time1, 2);
+              echo " + ${time2}s";
               echo "\n";
               
               // Apply --limit
@@ -650,25 +645,48 @@ die;
             }
           }
           
+          // TODO : handle missing packages from sophie as compared to database
+          // and for being able to do it, treat -src media along with their non-src media
+          //(array_diff_assoc($rpms2, $rpms));
+          // For each deleted RPM (absent from the list)
           $missing_from_sophie = $rpmsInDatabase;
           foreach ($rpmsBySophieMedia as $sophieMedia => $rpmsInSophie)
           {
             $missing_from_sophie = array_diff_assoc($missing_from_sophie, $rpmsInSophie);
           }
-
-if (count($missing_from_sophie))
-{
-  print_r($missing_from_sophie);
-  die; 
-}
           
-          // TODO : handle missing packages from sophie as compared to database
-          // and for being able to do it, treat -src media along with their non-src media
-          //(array_diff_assoc($rpms2, $rpms));
-          // For each deleted RPM (absent from the list)
-            // Flag the rows as deleted in rpm table
-            // Update other tables so that they are exactly like it would be without this RPM
+          if (count($missing_from_sophie))
+          {
+            echo "\n" . count($missing_from_sophie) . " RPMs are no more in Sophie, removing them :\n";
+          }
+          foreach ($missing_from_sophie as $pkgid => $filename)
+          {
+            $startTime = microtime(true);
+            echo " Remove " . $filename . " ( " . $pkgid . " )";
             
+            if (!$rpm = RpmPeer::retrieveUniqueByName($distrelease, $arch, $media, $filename))
+            {
+              throw new madbException("Couldn't retrieve $filename for distrelease $distrelease, arch $arch and media $media");
+            }
+            
+            // Update related RPMs if needed (binary RPMs for this source RPM)
+            foreach ($rpm->getRpmsRelatedBySourceRpmId() as $relatedRpm)
+            {
+              $relatedRpm->setSourceRpmId(null);
+              $relatedRpm->save();
+            }
+            
+            $package = $rpm->getPackage();
+            
+            // Remove the RPM itself
+            $rpm->delete();
+            
+            // Update package : description, summary (should be useless, but it's a security)
+            $package->updateSummaryAndDescription();
+            
+            $time = round(microtime(true) - $startTime, 2);
+            echo " - ${time}s"; 
+          }
           
         }
       }
