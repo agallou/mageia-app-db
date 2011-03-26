@@ -262,7 +262,7 @@ class madbFetchRpmsTask extends madbBaseTask
       {
         foreach ($medias as $media => $value)
         {
-          $mediasSophie[$sophie->convertMediaName($media)] = $sophie->convertMediaName($media);
+          $mediasSophie[$media] = $media;
         }
       }
     }
@@ -538,87 +538,124 @@ class madbFetchRpmsTask extends madbBaseTask
         } 
         foreach ($medias as $media => $unused_value)
         {
-          if (!$mediaObj = MediaPeer::retrieveByName($sophie->convertMediaName($media)))
-          {
-            throw new madbException("Media $media not found in database");
-          } 
-          echo "--- $distrelease : $arch : $media"; 
-          // Get the list of pkgids and RPM names
-          // Filter list of RPMs with only_packages and exclude_packages filters
-          $rpms = $sophie->getRpmsFromMedia( 
-                    $distribution,
-                    $distrelease,
-                    $arch,
-                    $media,
-                    array(
-                      'only' => $config->getOnlyRpms(), 
-                      'exclude' => $config->getExcludeRpms()
-                    )
-                  );
-          asort($rpms);
-          
-          // Compare that list to what we have in database for that release/media/arch
+          // get list of RPMs for this media in our database
           $criteria = new Criteria();
           $criteria->addJoin(RpmPeer::DISTRELEASE_ID, DistreleasePeer::ID);
           $criteria->addJoin(RpmPeer::ARCH_ID, ArchPeer::ID);
           $criteria->addJoin(RpmPeer::MEDIA_ID, MediaPeer::ID);
           $criteria->add(DistreleasePeer::NAME, $distrelease);
           $criteria->add(ArchPeer::NAME, $arch);
-          $criteria->add(MediaPeer::NAME, $sophie->convertMediaName($media));
+          $criteria->add(MediaPeer::NAME, $media);
           $criteria->addSelectColumn(RpmPeer::RPM_PKGID);
           $criteria->addSelectColumn(RpmPeer::NAME);
           $stmt = RpmPeer::doSelectStmt($criteria);
-          $rpms2 = array();
+          $rpmsInDatabase = array();
           foreach ($stmt as $row)
           {
-            $rpms2[$row['RPM_PKGID']] = $row['NAME'];
+            $rpmsInDatabase[$row['RPM_PKGID']] = $row['NAME'];
           }
-          asort($rpms2);
+          asort($rpmsInDatabase);
           unset($stmt);
           
-          $differences = array_diff_assoc($rpms, $rpms2);
-          echo " (" . count($rpms) . " RPMs , " . count($differences) . " new) ---\n";
-          // For each unknown RPM 
-          // TODO : (batch processing would be great here)
-          foreach ($differences as $pkgid => $filename)
+          
+          $sophieMedias = array(
+            'src' => $sophie->getSrcMediaNameFromBinMediaName($media),
+            'bin' => $media
+          );
+          
+          $rpms = array();
+          foreach ($sophieMedias as $mediaType => $sophieMedia)
           {
-            echo " " . $filename . " ( " . $pkgid . " )";
-            $startTime = microtime(true);
-            
-            // Fetch RPM infos
-            try 
+            // then fetch RPM lists from Sophie
+            if (!$mediaObj = MediaPeer::retrieveByName($sophie->convertMediaName($media)))
             {
-              $rpmInfos = $sophie->getRpmByPkgid($pkgid);
-              $rpmInfos['real_filename'] = $filename;
-              $time1 = round(microtime(true) - $startTime, 2);
-              echo " - ${time1}s"; 
-              $nbRetrievedRpms++;
-            }
-            catch (SophieClientException $e)
-            {
-              echo "\nError retrieving $filename : " . $e->getMessage() . "\n";
-              $nbFailedRpms++;
-              continue;
+              if ($mediaType == 'bin')
+              {
+                throw new madbException("Media $media not found in database");
+              }
+              else
+              {
+                echo "--- $distrelease : $arch : Source media $sophieMedia not found in Sophie, skipping it.\n";
+                continue;
+              }
             }
             
-            // Process RPM
-            $rpmImporter->importFromArray($distreleaseObj, $archObj, $mediaObj, $rpmInfos);
-            $time2 = round(microtime(true) - $startTime - $time1, 2);
-            echo " + ${time2}s";
-            echo "\n";
-            
-            // Apply --limit
-            if (isset($limit) and (($nbRetrievedRpms + $nbFailedRpms) >= $limit))
+            // Get the list of pkgids and RPM names
+            // Filter list of RPMs with only_packages and exclude_packages filters
+            $rpmsBySophieMedia[$sophieMedia] = $sophie->getRpmsFromMedia( 
+                      $distribution,
+                      $distrelease,
+                      $arch,
+                      $sophieMedia,
+                      array(
+                        'only' => $config->getOnlyRpms(), 
+                        'exclude' => $config->getExcludeRpms()
+                      )
+                    );
+            asort($rpmsBySophieMedia[$sophieMedia]);
+          }
+          
+          foreach ($rpmsBySophieMedia as $sophieMedia => $rpmsInSophie)
+          {
+            echo "--- $distrelease : $arch : $sophieMedia";
+              
+            // Search for missing RPMs in our database
+            $missing_from_db = array_diff_assoc($rpmsInSophie, $rpmsInDatabase);
+            echo " (" . count($rpmsInSophie) . " RPMs , " . count($missing_from_db) . " new) ---\n";
+            // For each unknown RPM 
+            // TODO : (batch processing would be great here)
+            foreach ($missing_from_db as $pkgid => $filename)
             {
-              echo "\nLimit $limit reached, stopping.\n";
-              break 4;
+              echo " " . $filename . " ( " . $pkgid . " )";
+              $startTime = microtime(true);
+              
+              // Fetch RPM infos
+//              try 
+//              {
+//                $rpmInfos = $sophie->getRpmByPkgid($pkgid);
+//                $rpmInfos['real_filename'] = $filename;
+//                $time1 = round(microtime(true) - $startTime, 2);
+//                echo " - ${time1}s"; 
+//                $nbRetrievedRpms++;
+//              }
+//              catch (SophieClientException $e)
+//              {
+//                echo "\nError retrieving $filename : " . $e->getMessage() . "\n";
+//                $nbFailedRpms++;
+//                continue;
+//              }
+//              
+//              // Process RPM
+//              $rpmImporter->importFromArray($distreleaseObj, $archObj, $mediaObj, $rpmInfos);
+//              $time2 = round(microtime(true) - $startTime - $time1, 2);
+//              echo " + ${time2}s";
+              echo "\n";
+              
+              // Apply --limit
+              if (isset($limit) and (($nbRetrievedRpms + $nbFailedRpms) >= $limit))
+              {
+                echo "\nLimit $limit reached, stopping.\n";
+                break 5;
+              }
+            }
+            
+            if (count($missing_from_db))
+            {
+              echo "\n";
             }
           }
           
-          if (count($differences))
+          $missing_from_sophie = $rpmsInDatabase;
+          foreach ($rpmsBySophieMedia as $sophieMedia => $rpmsInSophie)
           {
-            echo "\n";
+            $missing_from_sophie = array_diff_assoc($missing_from_sophie, $rpmsInSophie);
           }
+
+if (count($missing_from_sophie))
+{
+  print_r($missing_from_sophie);
+  die; 
+}
           
           // TODO : handle missing packages from sophie as compared to database
           // and for being able to do it, treat -src media along with their non-src media
@@ -701,7 +738,7 @@ class madbFetchRpmsTask extends madbBaseTask
         // For each media
         foreach ($medias as $media)
         {
-          $distreleases[$release][$arch][$media] = true;
+          $distreleases[$release][$arch][$sophie->convertMediaName($media)] = true;
         }
       }
     }

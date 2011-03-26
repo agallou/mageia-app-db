@@ -208,4 +208,9 @@ class SophieClient
     $media = preg_replace('/-binary$/', '', $media);
     return $media;
   }
+  
+  public function getSrcMediaNameFromBinMediaName($media)
+  {
+    return $media . '-src';
+  }
 }
