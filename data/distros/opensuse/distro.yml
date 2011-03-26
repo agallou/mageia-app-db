@@ -1,0 +1,22 @@
+name: OpenSuse
+only_releases:
+  - 11\.1
+  - 11\.2
+  - 11\.3
+  - factory
+exclude_releases:
+only_medias:
+exclude_medias: 
+only_archs:
+exclude_archs:
+only_rpms:
+exclude_rpms:
+
+devel_releases:
+  - factory
+latest_stable_release: 11.3
+
+updates_medias: ^.*updates.*$
+testing_medias: 
+backports_medias: 
+third_party_medias: 
