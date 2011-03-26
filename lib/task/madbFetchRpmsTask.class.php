@@ -560,8 +560,8 @@ class madbFetchRpmsTask extends madbBaseTask
           
           
           $sophieMedias = array(
-            'src' => $sophie->getSrcMediaNameFromBinMediaName($media),
-            'bin' => $media
+            'bin' => $media,
+            'src' => $sophie->getSrcMediaNameFromBinMediaName($media)
           );
           
           $rpmsBySophieMedia = array();
