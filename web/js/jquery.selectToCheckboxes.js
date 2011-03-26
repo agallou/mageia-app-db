@@ -105,6 +105,7 @@
       $(document).mousedown(function(event){
         var $target = $(event.target);
         if ($target[0].id != 'new' + selectId + '1'
+          && $target[0].id != 'span' + selectId
           && $target.parents('#' + 'new' + selectId + '1').length == 0
         )
         {
