@@ -14,6 +14,7 @@ class listComponent extends madbComponent
     {
       case 'updates':
         $criteria->addJoin(RpmPeer::MEDIA_ID, MediaPeer::ID, Criteria::JOIN);
+        $criteria->addJoin(RpmPeer::DISTRELEASE_ID, DistreleasePeer::ID, Criteria::JOIN);
         $criterion = $criteria->getNewCriterion(MediaPeer::IS_UPDATES, true, Criteria::EQUAL);
         $criterion->addOr($criteria->getNewCriterion(DistreleasePeer::IS_DEV_VERSION, true, Criteria::EQUAL));
         $criteria->add($criterion);
