@@ -598,7 +598,7 @@ class madbFetchRpmsTask extends madbBaseTask
           foreach ($rpmsBySophieMedia as $sophieMedia => $rpmsInSophie)
           {
             echo "--- $distrelease : $arch : $sophieMedia";
-              
+
             // Search for missing RPMs in our database
             $missing_from_db = array_diff_assoc($rpmsInSophie, $rpmsInDatabase);
             echo " (" . count($rpmsInSophie) . " RPMs , " . count($missing_from_db) . " new) ---\n";
@@ -606,6 +606,11 @@ class madbFetchRpmsTask extends madbBaseTask
             // TODO : (batch processing would be great here)
             foreach ($missing_from_db as $pkgid => $filename)
             {
+print_r($rpmsInDatabase);
+print_r($rpmsInSophie);
+print_r($missing_from_db);
+die;
+              
               echo " " . $filename . " ( " . $pkgid . " )";
               $startTime = microtime(true);
               
