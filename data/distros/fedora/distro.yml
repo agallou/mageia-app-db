@@ -1,0 +1,21 @@
+name: Fedora
+only_releases:
+  - 13
+  - 14
+  - development
+exclude_releases:
+only_medias:
+exclude_medias: ^.*-debug$
+only_archs:
+exclude_archs:
+only_rpms:
+exclude_rpms:
+
+devel_releases:
+  - development
+latest_stable_release: 14
+
+updates_medias: ^.*updates.*$
+testing_medias: ^.*testing.*$
+backports_medias:
+third_party_medias:
