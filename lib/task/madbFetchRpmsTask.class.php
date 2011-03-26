@@ -522,6 +522,7 @@ class madbFetchRpmsTask extends madbBaseTask
     $rpmImporter = new RpmImporter();
     $nbFailedRpms = 0;
     $nbRetrievedRpms = 0;
+    $nbRemovedRpms = 0;
     
     foreach ($distreleases as $distrelease => $archs)
     {
@@ -684,6 +685,8 @@ class madbFetchRpmsTask extends madbBaseTask
             // Update package : description, summary (should be useless, but it's a security)
             $package->updateSummaryAndDescription();
             
+            $nbRemovedRpms++;
+            
             $time = round(microtime(true) - $startTime, 2);
             echo " - ${time}s"; 
           }
@@ -694,6 +697,7 @@ class madbFetchRpmsTask extends madbBaseTask
     
     echo "Total number of retrieved RPMs : $nbRetrievedRpms\n";
     echo "Total number of failed RPMs retrievals : $nbFailedRpms\n";
+    echo "Total number of removed RPMs : $nbRemovedRpms\n";
     
     // Update package.is_application
     $pathToAppList = sfConfig::get('sf_root_dir') . '/data/distros/' . $options['distro'] . '/applications.txt';
