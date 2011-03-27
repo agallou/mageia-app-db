@@ -663,9 +663,9 @@ class madbFetchRpmsTask extends madbBaseTask
           foreach ($missing_from_sophie as $pkgid => $filename)
           {
             $startTime = microtime(true);
-            echo " Remove " . $filename . " ( " . $pkgid . " )";
+            echo " Remove " . $filename . " ( " . $pkgid . " )\n";
             
-            if (!$rpm = RpmPeer::retrieveUniqueByName($distrelease, $arch, $media, $filename))
+            if (!$rpm = RpmPeer::retrieveUniqueByName($distreleaseObj, $archObj, $mediaObj, $filename))
             {
               throw new madbException("Couldn't retrieve $filename for distrelease $distrelease, arch $arch and media $media");
             }
@@ -690,7 +690,10 @@ class madbFetchRpmsTask extends madbBaseTask
             $time = round(microtime(true) - $startTime, 2);
             echo " - ${time}s"; 
           }
-          
+          if (count($missing_from_sophie))
+          {
+            echo "\n";
+          }
         }
       }
     }
