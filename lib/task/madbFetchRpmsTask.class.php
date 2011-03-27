@@ -683,7 +683,14 @@ class madbFetchRpmsTask extends madbBaseTask
             $rpm->delete();
             
             // Update package : description, summary (should be useless, but it's a security)
-            $package->updateSummaryAndDescription();
+            try 
+            {
+              $package->updateSummaryAndDescription();
+            }
+            catch (PackageException $e)
+            {
+              echo " (" . $e->getMessage() . ")";
+            }
             
             $nbRemovedRpms++;
             
