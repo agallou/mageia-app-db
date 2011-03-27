@@ -663,7 +663,7 @@ class madbFetchRpmsTask extends madbBaseTask
           foreach ($missing_from_sophie as $pkgid => $filename)
           {
             $startTime = microtime(true);
-            echo " Remove " . $filename . " ( " . $pkgid . " )\n";
+            echo " Remove " . $filename . " ( " . $pkgid . " )";
             
             if (!$rpm = RpmPeer::retrieveUniqueByName($distreleaseObj, $archObj, $mediaObj, $filename))
             {
@@ -688,7 +688,8 @@ class madbFetchRpmsTask extends madbBaseTask
             $nbRemovedRpms++;
             
             $time = round(microtime(true) - $startTime, 2);
-            echo " - ${time}s"; 
+            echo " - ${time}s";
+            echo "\n"; 
           }
           if (count($missing_from_sophie))
           {
