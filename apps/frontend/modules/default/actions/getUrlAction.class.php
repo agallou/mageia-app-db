@@ -46,8 +46,7 @@ class getUrlAction extends madbActions
       'extra_parameters' => $parameters,
       'absolute'         => true,
     ));
-
-    $this->changed = count(array_diff($baseParams, $parameters));
+    $this->changed = count(array_diff($baseParams, $parameters)) + count(array_diff($parameters, $baseParams));
     $this->getResponse()->sethttpHeader('Content-type','application/json');
   }
 
