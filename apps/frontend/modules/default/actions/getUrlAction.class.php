@@ -25,6 +25,8 @@ class getUrlAction extends madbActions
     unset($parameters['action']);
     unset($parameters['sf_culture']);
 
+    $baseParams  = $parameters;
+
     $filterIteratorFactory = new filterIteratorFactory();
     $filterIterator        = $filterIteratorFactory->create();
     foreach ($filterIterator as $filter)
@@ -44,6 +46,8 @@ class getUrlAction extends madbActions
       'extra_parameters' => $parameters,
       'absolute'         => true,
     ));
+
+    $this->changed = count(array_diff($baseParams, $parameters));
     $this->getResponse()->sethttpHeader('Content-type','application/json');
   }
 
