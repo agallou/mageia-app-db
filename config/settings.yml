@@ -3,10 +3,10 @@ all:
     login_module: user
     login_action: login
 
+prod:
+ .settings:
+    error_reporting:  <?php echo (E_PARSE | E_COMPILE_ERROR | E_ERROR | E_CORE_ERROR | E_USER_ERROR)."\n" ?>
+
 dev:
   .settings:
-    error_reporting: 4095
-
-prod:
-  .settings:
-    error_reporting: 257
+    error_reporting:  <?php echo (E_ALL | E_STRICT)."\n" ?>
