@@ -41,12 +41,11 @@ class getUrlAction extends madbActions
        $parameters[$name] = implode(',', $parameter);
       }
     }
-
     $this->newUrl = $this->getMadbUrl()->urlFor(sprintf('%s/%s', $parsedUrl['module'], $parsedUrl['action']), null, array(
       'extra_parameters' => $parameters,
       'absolute'         => true,
     ));
-    $this->changed = count(array_diff($baseParams, $parameters)) + count(array_diff($parameters, $baseParams));
+    $this->changed = (int)(bool)(count(array_diff_assoc($baseParams, $parameters)) + count(array_diff_assoc($parameters, $baseParams)));
     $this->getResponse()->sethttpHeader('Content-type','application/json');
   }
 
