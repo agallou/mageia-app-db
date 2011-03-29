@@ -2,5 +2,11 @@ all:
   .actions:
     login_module: user
     login_action: login
+
+dev:
   .settings:
     error_reporting: 4095
+
+prod:
+  .settings:
+    error_reporting: 257
