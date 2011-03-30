@@ -25,7 +25,9 @@ devel_releases:
   - cooker
 latest_stable_release: '2010.2'
 
-updates_medias: ^.*-updates.*$
+updates_medias: 
+  - ^.*-updates.*$
+  - ^.*-testing.*$
 testing_medias: ^.*-testing.*$
 backports_medias: ^.*-backports.*$
 third_party_medias: ^plf.*$
