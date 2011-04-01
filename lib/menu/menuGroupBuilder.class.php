@@ -1,5 +1,5 @@
 <?php
-abstract menuGroupBuilder
+abstract class menuGroupBuilder
 {
 
   private $menuGroup = null;
@@ -21,7 +21,7 @@ abstract menuGroupBuilder
 
   protected function isUserAuthenticated()
   {
-    return false; //TODO 
+    return false; //TODO
   }
 
   protected function createItem($name, $internalUri, array $options)

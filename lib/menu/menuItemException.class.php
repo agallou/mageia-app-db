@@ -1,4 +1,5 @@
 <?php
-class menuItemException
+class menuItemException extends sfException
 {
+    
 }

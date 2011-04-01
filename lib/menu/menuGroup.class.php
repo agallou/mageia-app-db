@@ -27,7 +27,14 @@ class menuGroup extends ArrayIterator
 
   public function append($value)
   {
-    parent::append($value);
+    if ($value instanceof menuItem || $value instanceof menuGroup)
+    {
+        parent::append($value);
+    }
+    else
+    {
+         throw new menuGroupException();
+    }
   }
 
 }

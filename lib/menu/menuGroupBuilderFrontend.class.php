@@ -10,12 +10,12 @@ class menuGroupBuilderFrontend extends menuGroupBuilder
       $this->createItem('Update candidates', 'rpm/list', array('extra_parameters' => array('listtype' => 'updates_testing'), 'filters_parameters' => true)),
       $this->createItem('Backports', 'rpm/list', array('extra_parameters' => array('listtype' => 'backports'), 'filters_parameters' => true)),
       $this->createItem('Backport candidates', 'rpm/list', array('extra_parameters' => array('listtype' => 'backports_testing'), 'filters_parameters' => true))
-    );
+    ));
     $this->addGroup('Browse', array(
       $this->createItem('By group', 'group/list', array('filters_parameters' => true)),
       $this->createItem('By popularity'),
       $this->createItem('By name', 'package/list', array('filters_parameters' => true)),
-    );
+    ));
     $this->addGroup('Requests', array(
       $this->createItem('Backports requests'),
       $this->createItem('New soft request'),

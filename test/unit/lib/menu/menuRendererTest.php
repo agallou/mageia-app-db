@@ -2,7 +2,7 @@
 include dirname(__FILE__) . '/../../../bootstrap/unit.php';
 
 $_SERVER['SCRIPT_NAME'] = '/index.php';                                                                                                                                      
-$configuration = ProjectConfiguration::getApplicationConfiguration('frontend', 'prod', true);
+$configuration = ProjectConfiguration::getApplicationConfiguration('frontend', 'dev', true);
 $context       = sfContext::createInstance($configuration);
 
 $t = new lime_test(1);
@@ -19,37 +19,66 @@ $madbUrl     = new madbUrl($context);
 $renderer = new menuItemRenderer($madbcontext, $madbUrl);
 
 $menuGroup = new menuGroup();
+
+$item = new menuItem('Homepage', '@homepage', array('filters_parameters' => true));
 $menuGroup->addMenuItem($item);
+
 $latestGroup = new menuGroup('Latest');
+
+$extraparams =array('arch'=> '1','media'=>'1','source'=>'0');
+
+$updatesItem = new menuItem ('Updates', 'rpm/list', array('extra_parameters' => array_merge($extraparams,array('listtype' => 'updates')), 'filters_parameters' => true));
+$latestGroup->addMenuItem($updatesItem);
+
+$updatesCanItem = new menuItem ('Update candidates', 'rpm/list', array('extra_parameters' => array_merge($extraparams, array('listtype' => 'updates_testing')), 'filters_parameters' => true));
+$latestGroup->addMenuItem($updatesCanItem);
+
+$backports = new menuItem('Backports', 'rpm/list', array('extra_parameters' => array_merge($extraparams,array('listtype' => 'backports')), 'filters_parameters' => true));
+$latestGroup->addMenuItem($backports);
+
+$backportsCan = new menuItem('Backport candidates', 'rpm/list', array('extra_parameters' => array_merge($extraparams,array('listtype' => 'backports_testing')), 'filters_parameters' => true));
+$latestGroup->addMenuItem($backportsCan);
+
 $menuGroup->addMenuGroup($latestGroup);
 
 
-$item = new MenuItem('Homepage', '@homepage', array('filters_parameters' => true));
-$menuGroup->addMenuItem($item);
+$browseGroup = new menuGroup('Browse');
+
+$groupItem = new menuItem('By group', 'group/list', array('extra_parameters' => $extraparams, 'filters_parameters' => true));
+$browseGroup->addMenuItem($groupItem);
+
+//$popularityItem = new menuItem('By popularity');
+//$browseGroup->addMenuItem($popularityItem);
+
+$nameItem = new menuItem('By name', 'package/list', array('extra_parameters' => $extraparams, 'filters_parameters' => true));
+$browseGroup->addMenuItem($nameItem);
+
+$menuGroup->addMenuGroup($browseGroup);
+
 
 $renderer = new menuRenderer($madbcontext, $madbUrl);
-//<div id="menu"></div>
+
 $expected = <<<EOF
 <ul>
-  <li><a href="/index.php/?distrelease=2010&application=1">Homepage</a></li>
-  <li>
-    <h2>Latest</h2>
-    <ul>
-      <li><a href="/index.php/rpm/list/distrelease/2010/application/1/arch/1%2C2/media/1%2C2%2C3/source/0%2C1/listtype/updates">Updates</a></li>
-      <li><a href="/index.php/rpm/list/distrelease/2010/application/1/arch/1%2C2/media/1%2C2%2C3/sourcea/0%2C1/listtype/updates_testing">Update candidates</a></li>
-      <li><a href="/index.php/rpm/list/distrelease/2010/application/1/arch/1%2C2/media/1%2C2%2C3/source/0%2C1/listtype/backports">Backports</a></li>
-      <li><a href="/index.php/rpm/list/distrelease/2010/application/1/arch/1%2C2/media/1%2C2%2C3/source/0%2C1/listtype/backports_testing">Backport candidates</a></li>
-    </ul>
-  </li>
-  <li>
-    <h2>Browse</h2>
-    <ul>
-      <li><a href="/frontend_dev.php/group/list/distrelease/1%2C2%2C3/application/1%2C0/arch/1%2C2/media/1%2C2%2C3/source/0%2C1">By group</a></li>
-      <li>By popularity</li>
-      <li><a href="/frontend_dev.php/package/list/distrelease/1%2C2%2C3/application/1%2C0/arch/1%2C2/media/1%2C2%2C3/source/0%2C1">By name</a></li>
-    </ul>
-  </li>
+<li><a href="/index.php/?distrelease=2010&application=1">Homepage</a></li>
+<li>
+<h2>Latest</h2>
+<ul>
+<li><a href="/index.php/rpm/list/distrelease/2010/application/1/arch/1/media/1/source/0/listtype/updates">Updates</a></li>
+<li><a href="/index.php/rpm/list/distrelease/2010/application/1/arch/1/media/1/source/0/listtype/updates_testing">Update candidates</a></li>
+<li><a href="/index.php/rpm/list/distrelease/2010/application/1/arch/1/media/1/source/0/listtype/backports">Backports</a></li>
+<li><a href="/index.php/rpm/list/distrelease/2010/application/1/arch/1/media/1/source/0/listtype/backports_testing">Backport candidates</a></li>
 </ul>
+</li>
+<li>
+<h2>Browse</h2>
+<ul>
+<li><a href="/index.php/group/list/distrelease/2010/application/1/arch/1/media/1/source/0">By group</a></li>
+<li><a href="/index.php/package/list/distrelease/2010/application/1/arch/1/media/1/source/0">By name</a></li>
+</ul>
+</li>
+</ul>
+
 EOF;
 $t->is($renderer->render($menuGroup), $expected, 'render works');
 
