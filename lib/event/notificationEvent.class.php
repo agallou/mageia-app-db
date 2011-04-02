@@ -22,7 +22,7 @@ class NotificationEvent
         $eventType = $event['event'];
         $rpm = $event->getSubject();
         
-        if( !($rpm instanceof Rpm) ) throw new madbException ("Typecast error. Instance of Rpm expected.", "???", "");
+        if( !($rpm instanceof Rpm) ) throw new madbException ("Typecast error. Instance of Rpm expected.");
 
         $c = new Criteria();
 
@@ -53,12 +53,13 @@ class NotificationEvent
         $crPackageID->addAnd($crRpmGroupID);
 
         $c->add($crPackageID);
+        $c->addJoin(NotificationPeer::ID, NotificationElementPeer::NOTIFICATION_ID);
 
-        $notificationElements = NotificationElementPeer::doSelect($c);
-        foreach($notificationElements as $notificationElement)
+        $notifications = NotificationPeer::doSelect($c);
+        foreach($notifications as $notification)
         {
             //do something with each matched notification element
-            self::sendByMail($rpm, $notificationElement, $eventType);
+            self::sendByMail($rpm, $notification, $eventType);
         }
     }
 
@@ -93,8 +94,9 @@ class NotificationEvent
      * @param NotificationElement $notificationElement elemnt of user subscription, matched package criteria
      * @param enum $eventType type of event, that happened with the package
      */
-    private static function sendByMail($rpm, $notificationElement, $eventType)
+    private static function sendByMail($rpm, $notification, $eventType)
     {
+            //get text explanation about that happened with RPM
             $eventText = self::getEventTextByEnum($eventType);
             
             //TODO: replace this line with settings
@@ -103,10 +105,10 @@ class NotificationEvent
             );
 
             //TODO: use real user mail from db
-            $to = $notificationElement->getNotification()->getUser()->getLogin()."@madb.phobos.home";
-            //$to = "blinov.vyacheslav@gmail.com";
+            $to = $notification->getUser()->getLogin()."@madb.phobos.home";
 
-            $prefix = $notificationElement->getNotification()->getMailPrefix();
+            //get mailing prefix 4 user to sort incoming mails by filter
+            $prefix = $notification->getMailPrefix();
             //FIXME: set better mails here - use Settings
             $header = "[".$prefix."] Package ".$rpm->getPackage()->getName()." ".$eventText;
 
