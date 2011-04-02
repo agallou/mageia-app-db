@@ -50,6 +50,12 @@ class RpmImporter
       $rpmGroup->save();
     }
     $rpm->save();
+
+    // trigger rpm event to send notifications
+    //FIXME: change 'event' from hardcoded UPDATE enum to values, mirroring real process
+    sfContext::getInstance()->getEventDispatcher()->notify(new sfEvent($rpm,"rpm.event",array(
+        'event' => NotificationEvent::UPDATE
+    )));
     
     // If it's a source RPM, update the relationship with its binary RPM, if present in database
     if ($rpm->getIsSource())
