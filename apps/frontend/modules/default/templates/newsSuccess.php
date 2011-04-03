@@ -42,6 +42,7 @@
   </table>
 </div>
 
+<?php if ($has_updates) : ?>
 <div id="updates">
   <div class="content_group">Latest updates</div>
   <?php include_component('rpm', 'list', array(
@@ -65,7 +66,9 @@
           )
         ); ?>
 </div>
+<?php endif; ?>
 
+<?php if ($has_backports) : ?>
 <div id="backports">
   <div class="content_group">Latest backports</div>
   <?php include_component('rpm', 'list', array(
@@ -89,3 +92,4 @@
           )
         ); ?>
 </div>
+<?php endif; ?>
