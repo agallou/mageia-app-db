@@ -3,10 +3,18 @@
   <li>
       <h2>Latest</h2>
     <ul>
+    <?php if ($has_updates) : ?>
       <li><?php echo link_to('Updates', $madburl->urlFor('rpm/list', $madbcontext, array('extra_parameters' => array('listtype' => 'updates'), 'filters_parameters' => true))) ?></li>
+    <?php endif; ?>
+    <?php if ($has_updates_testing) : ?>
       <li><?php echo link_to('Update candidates', $madburl->urlFor('rpm/list', $madbcontext, array('extra_parameters' => array('listtype' => 'updates_testing'), 'filters_parameters' => true))) ?></li>
+    <?php endif; ?>
+    <?php if ($has_backports) : ?>
       <li><?php echo link_to('Backports', $madburl->urlFor('rpm/list', $madbcontext, array('extra_parameters' => array('listtype' => 'backports'), 'filters_parameters' => true))) ?></li>
+    <?php endif; ?>
+    <?php if ($has_backports_testing) : ?>
       <li><?php echo link_to('Backport candidates', $madburl->urlFor('rpm/list', $madbcontext, array('extra_parameters' => array('listtype' => 'backports_testing'), 'filters_parameters' => true))) ?></li>
+    <?php endif; ?>
     </ul>
   </li>
   <li>
