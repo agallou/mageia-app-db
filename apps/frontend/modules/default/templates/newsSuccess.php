@@ -52,6 +52,18 @@
     'limit'          => sfConfig::get('app_homepage_rpm_limit'),
     'short'          => true,
   )) ?>
+  <br/>
+  <?php echo link_to(
+          "More updates...", 
+          $madburl->urlFor('rpm/list', 
+            $madbcontext, 
+             array( 
+               'extra_parameters' => array(
+                  'listtype' => 'updates'
+               )
+             )
+          )
+        ); ?>
 </div>
 
 <div id="backports">
@@ -64,4 +76,16 @@
     'limit'          => sfConfig::get('app_homepage_rpm_limit'),
     'short'          => true,
   )) ?>
+  <br/>
+  <?php echo link_to(
+          "More backports...", 
+          $madburl->urlFor('rpm/list', 
+            $madbcontext, 
+             array( 
+               'extra_parameters' => array(
+                  'listtype' => 'backports'
+               )
+             )
+          )
+        ); ?>
 </div>
