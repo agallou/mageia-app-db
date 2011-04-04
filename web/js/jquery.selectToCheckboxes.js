@@ -4,6 +4,7 @@
       apply: function(){},
       defaults: [],
       searchfield: true,
+      namespace: 'selectToCheckboxes_',
     }
     if (options)
     {
@@ -11,6 +12,7 @@
     }
     this.each(function() {
       var select = $(this);
+      var prefix = settings.namespace + select.attr('id');
       var foo = [];
       $('option', select).each(function(i, selected){
         var toto = [];
@@ -52,10 +54,10 @@
         var regepx = new RegExp('/.*' + letext + '.*/');
         $.each(foo, function(key, row)
         {
-          if (row[1].toLowerCase().match('.*' + letext.toLowerCase() + '.*')) {
-            $('#span_' + row[0]).show();
+          if (row[1].toLowerCase().lastIndexOf(letext.toLowerCase()) != -1) {
+            $('#' + prefix + 'span_' + row[0]).show();
           } else {
-            $('#span_' + row[0]).hide();
+            $('#' + prefix + 'span_' + row[0]).hide();
           }
         });
       });
@@ -73,7 +75,7 @@
       });
       $.each(foo, function(key, value)
       {
-        var jSpan = $('<span>', { id: 'span_' + value[0], });
+        var jSpan = $('<span>', { id: prefix + 'span_' + value[0], });
 
         $("<input>", {
           type    : "checkbox",
