@@ -16,6 +16,9 @@ class newsAction extends madbActions
 
     $stmt         = RpmGroupPeer::doSelectStmt($criteria);
     $this->groups = $stmt->fetchAll();
-   
+    
+    // Menu entries depend on the list of media
+    $this->has_updates = MediaPeer::countMediaByType(true, false, false) + count(DistreleasePeer::getDevels());
+    $this->has_backports = MediaPeer::countMediaByType(false, true, false);
   }
 }

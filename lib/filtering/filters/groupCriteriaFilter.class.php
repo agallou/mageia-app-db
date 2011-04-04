@@ -10,7 +10,9 @@ class groupCriteriaFilter extends baseCriteriaFilterChoice
   public function getValues()
   {
     $values = array();
-    $groups = RpmGroupPeer::doSelect(new Criteria);
+    $criteria = new Criteria();
+    $criteria->addAscendingOrderByColumn(RpmGroupPeer::NAME);
+    $groups = RpmGroupPeer::doSelect($criteria);
     //TODO some callback to a statement.
     foreach ($groups as $group)
     {

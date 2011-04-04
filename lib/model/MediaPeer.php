@@ -105,4 +105,23 @@ class MediaPeer extends BaseMediaPeer {
     }
     return $names;
   }
+  
+  /**
+   * 
+   * Returns a number of media according to some params
+   * 
+   * @param boolean $is_updates
+   * @param boolean $is_backports
+   * @param boolean $is_testing
+   */
+  public static function countMediaByType($is_updates, $is_backports, $is_testing)
+  {
+    $criteria = new Criteria();
+    $criteria->add(MediaPeer::IS_UPDATES, $is_updates);
+    $criteria->add(MediaPeer::IS_BACKPORTS, $is_backports);
+    $criteria->add(MediaPeer::IS_TESTING, $is_testing);
+    $count = MediaPeer::doCount($criteria);
+    
+    return $count;
+  }
 } // MediaPeer

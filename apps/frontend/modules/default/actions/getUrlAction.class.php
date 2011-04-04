@@ -25,6 +25,8 @@ class getUrlAction extends madbActions
     unset($parameters['action']);
     unset($parameters['sf_culture']);
 
+    $baseParams  = $parameters;
+
     $filterIteratorFactory = new filterIteratorFactory();
     $filterIterator        = $filterIteratorFactory->create();
     foreach ($filterIterator as $filter)
@@ -39,11 +41,11 @@ class getUrlAction extends madbActions
        $parameters[$name] = implode(',', $parameter);
       }
     }
-
     $this->newUrl = $this->getMadbUrl()->urlFor(sprintf('%s/%s', $parsedUrl['module'], $parsedUrl['action']), null, array(
       'extra_parameters' => $parameters,
       'absolute'         => true,
     ));
+    $this->changed = (int)(bool)(count(array_diff_assoc($baseParams, $parameters)) + count(array_diff_assoc($parameters, $baseParams)));
     $this->getResponse()->sethttpHeader('Content-type','application/json');
   }
 
