@@ -71,17 +71,16 @@ class RpmImporter
     
 
      // trigger rpm event to send notifications
-    //FIXME: use options from task to enable/disable sending notifications
-    if($options['notify'])
-    {
-        if($media->getIsUpdates() && !$media->getIsTesting()) $event = NotificationEvent::UPDATE;
-        if($media->getIsUpdates() &&  $media->getIsTesting()) $event = NotificationEvent::UPDATE_CANDIDATE;
-        if($media->getIsUpdates() && !$media->getIsTesting()) $event = NotificationEvent::NEW_VERSION;
-        if($media->getIsUpdates() &&  $media->getIsTesting()) $event = NotificationEvent::NEW_VERSION_CANDIDATE;
+    //FIXME: we cant read this option directly here
+    //TODO: add notify setting in app.yml and use it everythere
+    //if($options['notify'])
+        if($media->getIsUpdates() && !$media->getIsTesting())   $event = NotificationEvent::UPDATE;
+        if($media->getIsUpdates() &&  $media->getIsTesting())   $event = NotificationEvent::UPDATE_CANDIDATE;
+        if($media->getIsBackports() && !$media->getIsTesting()) $event = NotificationEvent::NEW_VERSION;
+        if($media->getIsBackports() &&  $media->getIsTesting()) $event = NotificationEvent::NEW_VERSION_CANDIDATE;
         sfContext::getInstance()->getEventDispatcher()->notify(new sfEvent($package,"package.import",array(
             'event' => $event
     )));
-    }
 
     if (isset($binary_rpms))
     {
