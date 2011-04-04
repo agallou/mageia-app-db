@@ -50,12 +50,6 @@ class RpmImporter
       $rpmGroup->save();
     }
     $rpm->save();
-
-    // trigger rpm event to send notifications
-    //FIXME: change 'event' from hardcoded UPDATE enum to values, mirroring real process
-    sfContext::getInstance()->getEventDispatcher()->notify(new sfEvent($rpm,"rpm.event",array(
-        'event' => NotificationEvent::UPDATE
-    )));
     
     // If it's a source RPM, update the relationship with its binary RPM, if present in database
     if ($rpm->getIsSource())
@@ -75,7 +69,20 @@ class RpmImporter
     // description
     $package->updateSummaryAndDescription();    
     
-    // TODO : Process notifications
+
+     // trigger rpm event to send notifications
+    //FIXME: use options from task to enable/disable sending notifications
+    if($options['notify'])
+    {
+        if($media->getIsUpdates() && !$media->getIsTesting()) $event = NotificationEvent::UPDATE;
+        if($media->getIsUpdates() &&  $media->getIsTesting()) $event = NotificationEvent::UPDATE_CANDIDATE;
+        if($media->getIsUpdates() && !$media->getIsTesting()) $event = NotificationEvent::NEW_VERSION;
+        if($media->getIsUpdates() &&  $media->getIsTesting()) $event = NotificationEvent::NEW_VERSION_CANDIDATE;
+        sfContext::getInstance()->getEventDispatcher()->notify(new sfEvent($package,"package.import",array(
+            'event' => $event
+    )));
+    }
+
     if (isset($binary_rpms))
     {
       foreach ($binary_rpms as $binary_rpm)

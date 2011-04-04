@@ -12,24 +12,25 @@ class NotificationEvent
 
     /**
      *
-     * This is slot connected to signal that emmited everytime
-     * there is some of User-Notificated events triggered
-     * 
+     * This is slot connected package.import signal
+     * it is executed each time there are some new rpm imported in a package $package
      * @param sfEvent $event symfony event object
      */
-    static function rpmEventSlot(sfEvent $event)
+    public static function packageImportSlot(sfEvent $event)
     {
         $eventType = $event['event'];
-        $rpm = $event->getSubject();
+        $package = $event->getSubject();
         
-        if( !($rpm instanceof Rpm) ) throw new madbException ("Typecast error. Instance of Rpm expected.");
+        if( !($package instanceof Package) ) throw new madbException ("Typecast error. Instance of Package expected.");
 
         $c = new Criteria();
 
         // package match or is null
-        $crPackageID = $c->getNewCriterion(NotificationElementPeer::PACKAGE_ID, $rpm->getPackageId());
+        $crPackageID = $c->getNewCriterion(NotificationElementPeer::PACKAGE_ID, $package->getId());
         $crPackageID->addOr($c->getNewCriterion(NotificationElementPeer::PACKAGE_ID, NULL, Criteria::ISNULL));
 
+        foreach($package->getRpms() as $rpm)
+        {
         // rpm group match or is null
         $crRpmGroupID = $c->getNewCriterion(NotificationElementPeer::RPM_GROUP_ID, $rpm->getRpmGroupId());
         $crRpmGroupID->addOr($c->getNewCriterion(NotificationElementPeer::RPM_GROUP_ID, NULL, Criteria::ISNULL));
@@ -51,6 +52,7 @@ class NotificationEvent
         $crArchID->addAnd($crDistreleaseID);
         $crRpmGroupID->addAnd($crArchID);
         $crPackageID->addAnd($crRpmGroupID);
+        }
 
         $c->add($crPackageID);
         $c->addJoin(NotificationPeer::ID, NotificationElementPeer::NOTIFICATION_ID);
@@ -59,11 +61,18 @@ class NotificationEvent
         foreach($notifications as $notification)
         {
             //do something with each matched notification element
-            self::sendByMail($rpm, $notification, $eventType);
+            self::sendByMail($package, $notification, $eventType);
         }
     }
 
-    
+    /**
+     * This slot is called each time package.comment signal is emmited
+     * @param sfEvent $event symfony event object
+     */
+    public static function packageCommentsSlot(sfEvent $event)
+    {
+        //TODO: implement comments notifications here
+    }
 
     /**
      * This function returns what to say about event.
@@ -94,7 +103,7 @@ class NotificationEvent
      * @param NotificationElement $notificationElement elemnt of user subscription, matched package criteria
      * @param enum $eventType type of event, that happened with the package
      */
-    private static function sendByMail($rpm, $notification, $eventType)
+    private static function sendByMail($package, $notification, $eventType)
     {
             //get text explanation about that happened with RPM
             $eventText = self::getEventTextByEnum($eventType);
@@ -110,9 +119,9 @@ class NotificationEvent
             //get mailing prefix 4 user to sort incoming mails by filter
             $prefix = $notification->getMailPrefix();
             //FIXME: set better mails here - use Settings
-            $header = "[".$prefix."] Package ".$rpm->getPackage()->getName()." ".$eventText;
+            $header = "[".$prefix."] Package ".$package->getName()." ".$eventText;
 
-            $text = "You recieved this notification because RPM package ".$rpm->getName() ." ". $eventText;
+            $text = "You recieved this notification because package ".$package->getName() ." ". $eventText;
 
             //sends mail directly
             sfContext::getInstance()->getMailer()->composeAndSend(
