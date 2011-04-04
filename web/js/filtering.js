@@ -32,7 +32,7 @@ $(document).ready(function(){
   $('span#linkmore').click(function(){
     $('div#otherFilters').toggle();
   });
-  if (window.location.href.lastIndexOf('media') != -1 || window.location.href.lastIndexOf('group') != -1)
+  if (window.location.href.lastIndexOf('/media/') != -1 || window.location.href.match('\/group\/[0-9]*\/'))
   {
     $('div#otherFilters').show();
   }
