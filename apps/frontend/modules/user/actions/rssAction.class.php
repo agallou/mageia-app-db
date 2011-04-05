@@ -13,9 +13,9 @@ class rssAction extends sfActions
     $userId = $this->getUser()->getAttribute("id", 1);
 
     // get all the users rss_feeds
-    $c = new Criteria();
-    $c->add(RssFeedPeer::USER_ID,$userId);
-    $this->rssFeeds = RssFeedPeer::doSelect($c);
+    $rssCriteria = new Criteria();
+    $rssCriteria->add(RssFeedPeer::USER_ID,$userId);
+    $this->rssFeeds = RssFeedPeer::doSelect($rssCriteria);
 
     //no feed is selected! redirect to selecting of the feed
     if( $feedId == 0 || !is_numeric($feedId) ) return "Select";
@@ -32,49 +32,64 @@ class rssAction extends sfActions
     foreach($this->feed->getNotifications() as $notification)
     {
         $notification instanceof Notification;
-        if($notification->getUpdate() != NULL)
+
+        $rpmCriteria = new Criteria();
+        
+        foreach($notification->getNotificationElements() as $notificationElement)
         {
-            $updateCriteria = new Criteria();
-            $updateCriteria->addJoin(RpmPeer::MEDIA_ID,MediaPeer::ID);
-            $updateCriteria->addJoin(RpmPeer::DISTRELEASE_ID,DistreleasePeer::ID);
-            $criterion = $updateCriteria->getNewCriterion(MediaPeer::IS_UPDATES, true, Criteria::EQUAL);
-            $criterion->addOr($updateCriteria->getNewCriterion(DistreleasePeer::IS_DEV_VERSION, true, Criteria::EQUAL));
-            $updateCriteria->add($criterion);
-            $updateCriteria->add(MediaPeer::IS_TESTING, false, Criteria::EQUAL);
+            $notificationElement instanceof NotificationElement;
+            //set here additional scope criterions
+            if($notificationElement->getMediaId()       != NULL) $notificationElementCriterion = $rpmCriteria->getNewCriterion(RpmPeer::ARCH_ID,$notificationElement->getMediaId());
+            if($notificationElement->getArchId()        != NULL) 
+                    if(isset($notificationElementCriterion)) $notificationElementCriterion->addAnd($rpmCriteria->getNewCriterion(RpmPeer::ARCH_ID,$notificationElement->getArchId()));
+                    else $notificationElementCriterion = $rpmCriteria->getNewCriterion(RpmPeer::ARCH_ID,$notificationElement->getArchId());
+            if($notificationElement->getDistreleaseId() != NULL) 
+                    if(isset($notificationElementCriterion)) $notificationElementCriterion->addAnd($rpmCriteria->getNewCriterion(RpmPeer::DISTRELEASE_ID,$notificationElement->getDistreleaseId()));
+                    else $notificationElementCriterion = $rpmCriteria->getNewCriterion(RpmPeer::DISTRELEASE_ID,$notificationElement->getDistreleaseId());
+            if($notificationElement->getPackageId()     != NULL) 
+                    if(isset($notificationElementCriterion)) $notificationElementCriterion->addAnd($rpmCriteria->getNewCriterion(RpmPeer::PACKAGE_ID,$notificationElement->getPackageId()));
+                    else $notificationElementCriterion = $rpmCriteria->getNewCriterion(RpmPeer::PACKAGE_ID,$notificationElement->getPackageId());
+            //and Or this to rpm criteria
+            $rpmCriteria->addOr($notificationElementCriterion);
         }
-        /*
-        else $updateCriteria = NULL;
-        if($notification->getUpdateCandidate() != NULL)
+
+        //setup criteria for media based on notification's settings
+        if($notification->getUpdate())
         {
-            $updateCandidateCriteria = $this->getCriteria(filterPerimeters::RPM);
-            $updateCandidateCriteria->addJoin(RpmPeer::MEDIA_ID, MediaPeer::ID, Criteria::JOIN);
-            $updateCandidateCriteria->add(MediaPeer::IS_UPDATES, true, Criteria::EQUAL);
-            $updateCandidateCriteria->add(MediaPeer::IS_TESTING, true, Criteria::EQUAL);
+            $updateMediaCriterion = $rpmCriteria->getNewCriterion(MediaPeer::IS_UPDATES, true);
+            $updateMediaCriterion->addAnd($rpmCriteria->getNewCriterion(MediaPeer::IS_TESTING, false));
+            $rpmCriteria->addOr($updateMediaCriterion);
         }
-        else $updateCandidateCriteria = NULL;
-        if($notification->getNewVersion() != NULL)
+
+        if($notification->getUpdateCandidate())
         {
-            $newVersionCriteria = $this->getCriteria(filterPerimeters::RPM);
-            $newVersionCriteria->addJoin(RpmPeer::MEDIA_ID, MediaPeer::ID, Criteria::JOIN);
-            $newVersionCriteria->add(MediaPeer::IS_BACKPORTS, true, Criteria::EQUAL);
-            $newVersionCriteria->add(MediaPeer::IS_TESTING, false, Criteria::EQUAL);
+            $updateCandidateMediaCriterion = $rpmCriteria->getNewCriterion(MediaPeer::IS_UPDATES, true);
+            $updateCandidateMediaCriterion->addAnd($rpmCriteria->getNewCriterion(MediaPeer::IS_TESTING, true));
+            $rpmCriteria->addOr($updateCandidateMediaCriterion);
         }
-        else $newVersionCriteria = NULL;
-        if($notification->getNewVersionCandidate() != NULL)
+
+        if($notification->getNewVersion())
         {
-            $newVersionCandidateCriteria = $this->getCriteria(filterPerimeters::RPM);
-            $newVersionCandidateCriteria->addJoin(RpmPeer::MEDIA_ID, MediaPeer::ID, Criteria::JOIN);
-            $newVersionCandidateCriteria->add(MediaPeer::IS_BACKPORTS, true, Criteria::EQUAL);
-            $newVersionCandidateCriteria->add(MediaPeer::IS_TESTING, true, Criteria::EQUAL);
+            $newVersionMediaCriterion = $rpmCriteria->getNewCriterion(MediaPeer::IS_UPDATES, true);
+            $newVersionMediaCriterion->addAnd($rpmCriteria->getNewCriterion(MediaPeer::IS_TESTING, false));
+            $rpmCriteria->addOr($newVersionMediaCriterion);
         }
-        else $newVersionCandidateCriteria = NULL;
-        */
+
+        if($notification->getNewVersionCandidate())
+        {
+            $newVersionCandidateMediaCriterion = $rpmCriteria->getNewCriterion(MediaPeer::IS_UPDATES, true);
+            $newVersionCandidateMediaCriterion->addAnd($rpmCriteria->getNewCriterion(MediaPeer::IS_TESTING, true));
+            $rpmCriteria->addOr($newVersionCandidateMediaCriterion);
+        }
 
         
-        $updateCriteria->addDescendingOrderByColumn(RpmPeer::BUILD_TIME);
-        $updateCriteria->setLimit("10");
-        $rpms = RpmPeer::doSelect($updateCriteria);
-        $this->updateCr = $updateCriteria;
+        $rpmCriteria->addJoin(RpmPeer::MEDIA_ID, MediaPeer::ID);
+        $rpmCriteria->addJoin(RpmPeer::ARCH_ID, ArchPeer::ID);
+        $rpmCriteria->addJoin(RpmPeer::DISTRELEASE_ID, DistreleasePeer::ID);
+        $rpmCriteria->addJoin(RpmPeer::PACKAGE_ID, PackagePeer::ID);
+        $rpmCriteria->setLimit(20);
+        $rpms = RpmPeer::doSelect($rpmCriteria);
+
         foreach($rpms as $rpm)
         {
             $this->rss[] = $rpm;
@@ -83,7 +98,9 @@ class rssAction extends sfActions
     }
 
     //set RSS layout
-    $this->setLayout("rss");
+    if( !$this->getContext()->getConfiguration()->isDebug()) $this->setLayout("rss");
+        
     return "View";
+         
   }
 }
