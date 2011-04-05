@@ -16,21 +16,19 @@ class NotificationEvent
      * it is executed each time there are some new rpm imported in a package $package
      * @param sfEvent $event symfony event object
      */
-    public static function packageImportSlot(sfEvent $event)
+    public static function rpmImportSlot(sfEvent $event)
     {
         $eventType = $event['event'];
         $package = $event->getSubject();
         
-        if( !($package instanceof Package) ) throw new madbException ("Typecast error. Instance of Package expected.");
+        if( !($rpm instanceof Rpm) ) throw new madbException ("Typecast error. Instance of Rpm expected as event subject.");
 
         $c = new Criteria();
 
         // package match or is null
-        $crPackageID = $c->getNewCriterion(NotificationElementPeer::PACKAGE_ID, $package->getId());
+        $crPackageID = $c->getNewCriterion(NotificationElementPeer::PACKAGE_ID, $rpm->getPackageId());
         $crPackageID->addOr($c->getNewCriterion(NotificationElementPeer::PACKAGE_ID, NULL, Criteria::ISNULL));
 
-        foreach($package->getRpms() as $rpm)
-        {
         // rpm group match or is null
         $crRpmGroupID = $c->getNewCriterion(NotificationElementPeer::RPM_GROUP_ID, $rpm->getRpmGroupId());
         $crRpmGroupID->addOr($c->getNewCriterion(NotificationElementPeer::RPM_GROUP_ID, NULL, Criteria::ISNULL));
@@ -52,7 +50,6 @@ class NotificationEvent
         $crArchID->addAnd($crDistreleaseID);
         $crRpmGroupID->addAnd($crArchID);
         $crPackageID->addAnd($crRpmGroupID);
-        }
 
         $c->add($crPackageID);
         $c->addJoin(NotificationPeer::ID, NotificationElementPeer::NOTIFICATION_ID);
@@ -61,7 +58,7 @@ class NotificationEvent
         foreach($notifications as $notification)
         {
             //do something with each matched notification element
-            self::sendByMail($package, $notification, $eventType);
+            self::sendByMail($rpm, $notification, $eventType);
         }
     }
 
@@ -103,7 +100,7 @@ class NotificationEvent
      * @param NotificationElement $notificationElement elemnt of user subscription, matched package criteria
      * @param enum $eventType type of event, that happened with the package
      */
-    private static function sendByMail($package, $notification, $eventType)
+    private static function sendByMail($rpm, $notification, $eventType)
     {
             //get text explanation about that happened with RPM
             $eventText = self::getEventTextByEnum($eventType);
@@ -119,9 +116,9 @@ class NotificationEvent
             //get mailing prefix 4 user to sort incoming mails by filter
             $prefix = $notification->getMailPrefix();
             //FIXME: set better mails here - use Settings
-            $header = "[".$prefix."] Package ".$package->getName()." ".$eventText;
+            $header = "[".$prefix."] Package ".$rpm->getPackage()->getName()." ".$eventText;
 
-            $text = "You recieved this notification because package ".$package->getName() ." ". $eventText;
+            $text = "You recieved this notification because package ".$rpm->getPackage->getName() ." ". $eventText;
 
             //sends mail directly
             sfContext::getInstance()->getMailer()->composeAndSend(

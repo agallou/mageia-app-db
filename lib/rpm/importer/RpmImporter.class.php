@@ -78,7 +78,7 @@ class RpmImporter
         if($media->getIsUpdates() &&  $media->getIsTesting())   $event = NotificationEvent::UPDATE_CANDIDATE;
         if($media->getIsBackports() && !$media->getIsTesting()) $event = NotificationEvent::NEW_VERSION;
         if($media->getIsBackports() &&  $media->getIsTesting()) $event = NotificationEvent::NEW_VERSION_CANDIDATE;
-        sfContext::getInstance()->getEventDispatcher()->notify(new sfEvent($package,"package.import",array(
+        sfContext::getInstance()->getEventDispatcher()->notify(new sfEvent($rpm,"rpm.import",array(
             'event' => $event
     )));
 
