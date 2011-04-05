@@ -20,7 +20,7 @@ class NotificationEvent
     {
         $eventType = $event['event'];
         $package = $event->getSubject();
-        
+
         if( !($rpm instanceof Rpm) ) throw new madbException ("Typecast error. Instance of Rpm expected as event subject.");
 
         $c = new Criteria();

@@ -26,7 +26,7 @@ class madbFetchRpmsTask extends madbBaseTask
     sfContext::createInstance($this->createConfiguration('frontend', 'prod'));
     $con = Propel::getConnection();
     Propel::disableInstancePooling();
-    
+
     $distribution = $options['distro'];
     $config_file = $options['config'] ? $options['config'] : dirname(__FILE__) . '/../../data/distros/' . $distribution . '/distro.yml';
     
@@ -517,9 +517,10 @@ class madbFetchRpmsTask extends madbBaseTask
       }    
     }    
     
-    
+    if(isset($option['notify'])) $notify = true;
+    else $notify = false;
     // Now fetch RPM lists and treat them
-    $rpmImporter = new RpmImporter();
+    $rpmImporter = new RpmImporter($notify);
     $nbFailedRpms = 0;
     $nbRetrievedRpms = 0;
     $nbRemovedRpms = 0;

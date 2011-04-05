@@ -1,6 +1,15 @@
 <?php
 class RpmImporter
 {
+    /**
+     * This var holds bool, thereever to enable notifications of user or not
+     * @var bool 
+     */
+    var $notify;
+
+    public function  __construct($notify) {
+        $this->notify = $notify;
+    }
   /**
    * 
    * Insert RPM in database and update related tables
@@ -71,9 +80,9 @@ class RpmImporter
     
 
      // trigger rpm event to send notifications
-    //FIXME: we cant read this option directly here
-    //TODO: add notify setting in app.yml and use it everythere
-    //if($options['notify'])
+    // trigger user notifications only if it is enabled
+    if($this->notify)
+    {
         if($media->getIsUpdates() && !$media->getIsTesting())   $event = NotificationEvent::UPDATE;
         if($media->getIsUpdates() &&  $media->getIsTesting())   $event = NotificationEvent::UPDATE_CANDIDATE;
         if($media->getIsBackports() && !$media->getIsTesting()) $event = NotificationEvent::NEW_VERSION;
@@ -81,6 +90,7 @@ class RpmImporter
         sfContext::getInstance()->getEventDispatcher()->notify(new sfEvent($rpm,"rpm.import",array(
             'event' => $event
     )));
+    }
 
     if (isset($binary_rpms))
     {
