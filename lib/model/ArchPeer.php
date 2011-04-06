@@ -28,4 +28,21 @@ class ArchPeer extends BaseArchPeer {
     $arch = ArchPeer::doSelectOne($criteria, $con);
     return $arch;
   }
+  
+  /**
+   * Retrieve a single object by name.
+   *
+   * @param      int $name the name.
+   * @param      PropelPDO $con the connection to use
+   * @return     Arch
+   */
+  public static function listByNameLike($pattern, PropelPDO $con = null)
+  {
+    $criteria = new Criteria();
+    $criteria->add(ArchPeer::NAME, $pattern, Criteria::LIKE);
+    
+    $arch = ArchPeer::doSelect($criteria, $con);
+    return $arch;
+  }
+  
 } // ArchPeer
