@@ -16,6 +16,11 @@ h1
   font-size:x-large;
 }
 
+h1 a
+{
+  color:black;
+}
+
 a
 {
   text-decoration:none;
