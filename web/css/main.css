@@ -16,11 +16,6 @@ h1
   font-size:x-large;
 }
 
-h1 a
-{
-  color:white;
-}
-
 a
 {
   text-decoration:none;
@@ -53,6 +48,11 @@ a
 {
     color: white;
     font-size: 24pt;
+}
+
+#header h1 a
+{
+  color:white;
 }
 
 #user_infos
