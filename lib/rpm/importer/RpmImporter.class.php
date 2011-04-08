@@ -9,6 +9,8 @@ class RpmImporter
 
     public function  __construct($notify) {
         $this->notify = $notify;
+        if($notify) echo "DEBUG: constructor asked with notify enabled\n";
+        else echo "DEBUG: constructor asked without notify enabled\n";
     }
   /**
    * 

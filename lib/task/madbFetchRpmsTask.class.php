@@ -517,8 +517,12 @@ class madbFetchRpmsTask extends madbBaseTask
       }    
     }    
     
-    if(isset($option['notify'])) $notify = true;
-    else $notify = false;
+    if($options['notify']) $notify = true;
+    else
+    {
+        echo "\033[1;33m"."Warning: notifications will not be sended"."\033[0m"."\n";
+        $notify = false;
+    }
     // Now fetch RPM lists and treat them
     $rpmImporter = new RpmImporter($notify);
     $nbFailedRpms = 0;

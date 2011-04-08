@@ -19,7 +19,7 @@ class NotificationEvent
     public static function rpmImportSlot(sfEvent $event)
     {
         $eventType = $event['event'];
-        $package = $event->getSubject();
+        $rpm = $event->getSubject();
 
         if( !($rpm instanceof Rpm) ) throw new madbException ("Typecast error. Instance of Rpm expected as event subject.");
 
@@ -118,17 +118,19 @@ class NotificationEvent
             //FIXME: set better mails here - use Settings
             $header = "[".$prefix."] Package ".$rpm->getPackage()->getName()." ".$eventText;
 
-            $text = "You recieved this notification because package ".$rpm->getPackage->getName() ." ". $eventText;
+            $text = "You recieved this notification because package ".$rpm->getPackage()->getName() ." ". $eventText;
 
             //sends mail directly
-            sfContext::getInstance()->getMailer()->composeAndSend(
+            /*sfContext::getInstance()->getMailer()->composeAndSend(
                 $from,
                 $to,
                 $header,
                 $text
                 );
+             * &/
+             */
             // fancy console debug line :)
-            // echo "\n\033[". "1;34" ."m". "Mailsending triggered: [$from]:[$to] h:[$header] [$text]" . "\033[0m\n";
+             echo "\n\033[". "1;34" ."m". "Mailsending triggered: [$from]:[$to] h:[$header] [$text]" . "\033[0m\n";
     }
 }
 ?>
