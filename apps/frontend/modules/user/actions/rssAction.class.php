@@ -29,17 +29,17 @@ class rssAction extends sfActions
     $this->feed = $selectedFeed;
     //dummy array for rss
     $this->rss  = array();
+
+    
     foreach($this->feed->getNotifications() as $notification)
     {
         $notification instanceof Notification;
-
         $rpmCriteria = new Criteria();
-        
         foreach($notification->getNotificationElements() as $notificationElement)
         {
             $notificationElement instanceof NotificationElement;
             //set here additional scope criterions
-            if($notificationElement->getMediaId()       != NULL) $notificationElementCriterion = $rpmCriteria->getNewCriterion(RpmPeer::ARCH_ID,$notificationElement->getMediaId());
+            if($notificationElement->getMediaId()       != NULL) $notificationElementCriterion = $rpmCriteria->getNewCriterion(RpmPeer::MEDIA_ID,$notificationElement->getMediaId());
             if($notificationElement->getArchId()        != NULL) 
                     if(isset($notificationElementCriterion)) $notificationElementCriterion->addAnd($rpmCriteria->getNewCriterion(RpmPeer::ARCH_ID,$notificationElement->getArchId()));
                     else $notificationElementCriterion = $rpmCriteria->getNewCriterion(RpmPeer::ARCH_ID,$notificationElement->getArchId());
@@ -50,7 +50,11 @@ class rssAction extends sfActions
                     if(isset($notificationElementCriterion)) $notificationElementCriterion->addAnd($rpmCriteria->getNewCriterion(RpmPeer::PACKAGE_ID,$notificationElement->getPackageId()));
                     else $notificationElementCriterion = $rpmCriteria->getNewCriterion(RpmPeer::PACKAGE_ID,$notificationElement->getPackageId());
             //and Or this to rpm criteria
-            $rpmCriteria->addOr($notificationElementCriterion);
+            if(isset($notificationElementCriterion))
+                {
+                $rpmCriteria->addOr($notificationElementCriterion);
+                unset($notificationElementCriterion);
+                }
         }
 
         //setup criteria for media based on notification's settings
@@ -70,37 +74,42 @@ class rssAction extends sfActions
 
         if($notification->getNewVersion())
         {
-            $newVersionMediaCriterion = $rpmCriteria->getNewCriterion(MediaPeer::IS_UPDATES, true);
+            $newVersionMediaCriterion = $rpmCriteria->getNewCriterion(MediaPeer::IS_BACKPORTS, true);
             $newVersionMediaCriterion->addAnd($rpmCriteria->getNewCriterion(MediaPeer::IS_TESTING, false));
             $rpmCriteria->addOr($newVersionMediaCriterion);
         }
 
         if($notification->getNewVersionCandidate())
         {
-            $newVersionCandidateMediaCriterion = $rpmCriteria->getNewCriterion(MediaPeer::IS_UPDATES, true);
+            $newVersionCandidateMediaCriterion = $rpmCriteria->getNewCriterion(MediaPeer::IS_BACKPORTS, true);
             $newVersionCandidateMediaCriterion->addAnd($rpmCriteria->getNewCriterion(MediaPeer::IS_TESTING, true));
             $rpmCriteria->addOr($newVersionCandidateMediaCriterion);
         }
 
-        
-        $rpmCriteria->addJoin(RpmPeer::MEDIA_ID, MediaPeer::ID);
-        $rpmCriteria->addJoin(RpmPeer::ARCH_ID, ArchPeer::ID);
-        $rpmCriteria->addJoin(RpmPeer::DISTRELEASE_ID, DistreleasePeer::ID);
-        $rpmCriteria->addJoin(RpmPeer::PACKAGE_ID, PackagePeer::ID);
-        $rpmCriteria->setLimit(20);
-        $rpms = RpmPeer::doSelect($rpmCriteria);
+    }
 
-        foreach($rpms as $rpm)
+    $rpmCriteria->addJoin(RpmPeer::MEDIA_ID, MediaPeer::ID);
+    $rpmCriteria->addJoin(RpmPeer::ARCH_ID, ArchPeer::ID);
+    $rpmCriteria->addJoin(RpmPeer::DISTRELEASE_ID, DistreleasePeer::ID);
+    $rpmCriteria->addJoin(RpmPeer::PACKAGE_ID, PackagePeer::ID);
+    $rpmCriteria->setLimit(20);
+    $rpms[] = RpmPeer::doSelect($rpmCriteria);
+
+    foreach($rpms as $rpmPack)
+        foreach($rpmPack as $rpm)
         {
             $this->rss[] = $rpm;
             $this->logMessage("RPM added: ".$rpm->getName());
         }
-    }
+
 
     //set RSS layout
-    if( !$this->getContext()->getConfiguration()->isDebug()) $this->setLayout("rss");
-        
-    return "View";
+    if( $this->getContext()->getConfiguration()->isDebug()) return "Debug";
+
+        $this->setLayout("rss");
+        return "View";
+
+    
          
   }
 }
