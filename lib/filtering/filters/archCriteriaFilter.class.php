@@ -9,13 +9,14 @@ class archCriteriaFilter extends baseCriteriaFilterChoice
 
   public function getDefault()
   {
-    if ($arch = ArchPeer::retrieveByName('i586'))
+    $archs = ArchPeer::listByNameLike('i_86');
+    if (!empty($archs))
     {
-      return $arch->getId();
+      return $archs[0]->getId();
     }
     else
     {
-      return null;
+      return ArchPeer::doSelectOne(new Criteria());
     }
   }
 

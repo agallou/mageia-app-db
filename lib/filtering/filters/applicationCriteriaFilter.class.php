@@ -15,8 +15,8 @@ class applicationCriteriaFilter extends baseCriteriaFilterChoice
   public function getValues()
   {
     return array(
-      '1' => 'Yes',
-      '0' => 'No',
+      '1' => 'Show only applications',
+      '0' => 'Show all packages',
     );
   }
 
@@ -32,17 +32,23 @@ class applicationCriteriaFilter extends baseCriteriaFilterChoice
     $criterion = null;
     foreach ($value as $val)
     {
-      $unCriterion = $criteria->getNewCriterion(PackagePeer::IS_APPLICATION, (bool)$val);
-      if (is_null($criterion))
+      if ($val == 1)
       {
-        $criterion = $unCriterion;
-      }
-      else
-      {
-        $criterion->addOr($unCriterion);
+        $unCriterion = $criteria->getNewCriterion(PackagePeer::IS_APPLICATION, true);
+        if (is_null($criterion))
+        {
+          $criterion = $unCriterion;
+        }
+        else
+        {
+          $criterion->addOr($unCriterion);
+        }
       }
     }
-    $criteria->addAnd($criterion);
+    if (!is_null($criterion))
+    {
+      $criteria->addAnd($criterion);
+    }
     return $criteria;
   }
 

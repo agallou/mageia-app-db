@@ -20,6 +20,11 @@ div.filters
   background-color:#E1E7E8;
 }
 
+div.filters form span
+{
+  cursor:default;
+}
+
 div.filters img.delete
 {
   vertical-align:middle;
