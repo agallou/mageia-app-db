@@ -6,9 +6,11 @@ abstract class menuGroupBuilder
   private $menuGroupFactory = null;
   private $menuItemFactory = null;
   private $sfUser = null;
+  private $request = null;
 
-  public function __construct(menuGroupFactory $menuGroupFactory, menuItemFactory $menuItemFactory, sfUser $user = null)
+  public function __construct(sfUser $user)
   {
+    $this->menuGroup = new menuGroup();
     $this->build();
   }
 
@@ -24,18 +26,23 @@ abstract class menuGroupBuilder
     return false; //TODO
   }
 
-  protected function createItem($name, $internalUri, array $options)
+  protected function createItem($name, $internalUri = null, array $options = array())
   {
-    return $this->menuItemFactory->create($name, $internalUri, $optiondOB);
+    return new menuItem($name, $internalUri, $options);
   }
 
   protected function addItem(menuItem $item)
   {
-    $this->menuGroup->addItem($item);
+    $this->menuGroup->addMenuItem($item);
   }
 
-  protected function addGroup(menuGroup $group)
+  protected function addGroup($name, array $values)
   {
+    $group = new menuGroup($name);
+    foreach ($values as $value)
+    {
+      $group->append($value);
+    }
     $this->menuGroup->addMenuGroup($group);
   }
 }

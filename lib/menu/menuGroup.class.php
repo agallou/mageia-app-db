@@ -29,11 +29,11 @@ class menuGroup extends ArrayIterator
   {
     if ($value instanceof menuItem || $value instanceof menuGroup)
     {
-        parent::append($value);
+      parent::append($value);
     }
     else
     {
-         throw new menuGroupException();
+      throw new menuGroupException('append value must be a menuGroup or menuItem');
     }
   }
 

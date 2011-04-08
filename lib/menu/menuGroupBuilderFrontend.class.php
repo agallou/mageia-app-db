@@ -4,7 +4,7 @@ class menuGroupBuilderFrontend extends menuGroupBuilder
 
   protected function build()
   {
-    $this->addItem($this->createItem('Homepage', '@homepage', array('fiter_parameters' => true)));
+    $this->addItem($this->createItem('Homepage', '@homepage', array('fiter_parameters' => true, 'extra_active' => array('default/news'))));
     $this->addGroup('Latest', array(
       $this->createItem('Updates', 'rpm/list', array('extra_parameters' => array('listtype' => 'updates'), 'filters_parameters' => true)),
       $this->createItem('Update candidates', 'rpm/list', array('extra_parameters' => array('listtype' => 'updates_testing'), 'filters_parameters' => true)),

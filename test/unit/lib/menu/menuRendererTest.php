@@ -1,7 +1,8 @@
 <?php
 include dirname(__FILE__) . '/../../../bootstrap/unit.php';
 
-$_SERVER['SCRIPT_NAME'] = '/index.php';                                                                                                                                      
+$_SERVER['SCRIPT_NAME'] = '/index.php';
+
 $configuration = ProjectConfiguration::getApplicationConfiguration('frontend', 'dev', true);
 $context       = sfContext::createInstance($configuration);
 
@@ -16,7 +17,9 @@ $parameterHolder->add($parameters);
 $madbcontext = new madbContext($parameterHolder);
 $madbUrl     = new madbUrl($context);
 
-$renderer = new menuItemRenderer($madbcontext, $madbUrl);
+$request = new sfWebRequest(new sfEventDispatcher());
+
+$renderer = new menuItemRenderer($madbcontext, $madbUrl, $request);
 
 $menuGroup = new menuGroup();
 
@@ -56,7 +59,7 @@ $browseGroup->addMenuItem($nameItem);
 $menuGroup->addMenuGroup($browseGroup);
 
 
-$renderer = new menuRenderer($madbcontext, $madbUrl);
+$renderer = new menuRenderer($madbcontext, $madbUrl, $request);
 
 $expected = <<<EOF
 <ul>

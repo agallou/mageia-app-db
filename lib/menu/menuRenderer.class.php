@@ -2,10 +2,11 @@
 class menuRenderer
 {
 
-  public function __construct(madbContext $context, madbUrl $madbUrl)
+  public function __construct(madbContext $context, madbUrl $madbUrl, sfRequest $request)
   {
     $this->context = $context;
     $this->madburl = $madbUrl;
+    $this->request = $request;
   }
 
   public function render(menuGroup $group)
@@ -14,19 +15,47 @@ class menuRenderer
     $render = '<ul>'.PHP_EOL;
     foreach ($group as $groupOrItem)
     {
-        var_dump($groupOrItem);
-
       if ($groupOrItem instanceof menuGroup)
       {
         $render .= "<li>".PHP_EOL."<h2>".$groupOrItem->getName()."</h2>".PHP_EOL.$this->render($groupOrItem).'</li>'.PHP_EOL;
       }
       elseif ($groupOrItem instanceof menuItem)
       {
-        $render .= $menuItemRenderer->render($groupOrItem).PHP_EOL;
+        $render .= $menuItemRenderer->render($groupOrItem, $this->isCurrentItem($groupOrItem)) . PHP_EOL;
       }
     }
     $render .= '</ul>'.PHP_EOL;
     return $render;
+  }
+
+  private function isCurrentItem(menuItem $item)
+  {
+    $options       = $item->getOptions();
+    $sameModAction = $this->isInternalUriCurrent($item->getInternalUri());
+    if (!$sameModAction && isset($options['extra_active']))
+    {
+      foreach ($options['extra_active'] as $extra)
+      {
+        if (!$sameModAction)
+        {
+          $sameModAction = $this->isInternalUriCurrent($extra);
+        }
+      }
+    }
+    $isCurrent     = $sameModAction;
+    if ($sameModAction && isset($options['extra_parameters']))
+    {
+      foreach ($options['extra_parameters'] as $name => $value)
+      {
+        $isCurrent = ($this->request->hasParameter($name) && $this->request->getParameter($name) == $value);
+      }
+    }
+    return $isCurrent;
+  }
+
+  private function isInternalUriCurrent($internalUri)
+  {
+    return strpos($internalUri, sprintf('%s/%s', $this->request['module'], $this->request['action'])) > -1;
   }
 
 }

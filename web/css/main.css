@@ -126,6 +126,11 @@ div#header div#search form input[type=submit]
     font-size: 10pt;
 }
 
+#menu li.current
+{
+  background-color:#507AAA;
+}
+
 #menu li a
 {
     text-decoration:none;
@@ -142,6 +147,11 @@ div#header div#search form input[type=submit]
 {
     margin: 0px 0px 1px 0px;
     text-indent: 4px;
+}
+
+#menu ul ul li.current
+{
+  background-color:#507AAA;
 }
 
 /* RIGHT Column stuff a.k.a Content */

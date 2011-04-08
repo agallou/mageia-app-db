@@ -16,6 +16,10 @@ class menuItemRenderer
 
   public function render(menuItem $item, $isCurrent = false)
   {
+    if (null === $item->getInternalUri())
+    {
+      return sprintf('<li>%s</li>', $item->getName());
+    }
     $current = $isCurrent ? ' class="current"' : '';
     $render  = sprintf('<li%s><a href="%s">%s</a></li>', $current, $this->madbUrl->urlFor($item->getInternalUri(), $this->context, $item->getOptions()), $item->getName());
     return $render;
