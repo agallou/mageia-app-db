@@ -1,0 +1,33 @@
+name: Mandriva
+only_releases:
+  - '2007\.0'
+  - '2007\.1'
+  - '2008\.0'
+  - '2008\.1'
+  - '2009\.0'
+  - '2009\.1'
+  - '2010\.0'
+  - '2010\.1'
+  - '2010\.2'
+  - 'cooker'
+exclude_releases:
+only_medias:
+exclude_medias: ^.*-debug$
+only_archs:
+exclude_archs:
+only_rpms:
+exclude_rpms:
+  - .*\.new$ # buggy RPM
+  - ^flightgear-0\.9\.10-2mdv2007\.0\.x86_64\.rpm\.S0ogYx$
+  - ^vegastrike-data-0\.4\.3-2mdk\.noarch\.rpm\.H2JCbn$
+
+devel_releases:
+  - cooker
+latest_stable_release: '2010.2'
+
+updates_medias: 
+  - ^.*-updates.*$
+  - ^.*-testing.*$
+testing_medias: ^.*-testing.*$
+backports_medias: ^.*-backports.*$
+third_party_medias: ^plf.*$

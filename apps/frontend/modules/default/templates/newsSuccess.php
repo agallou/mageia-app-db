@@ -23,7 +23,7 @@
                 $madbcontext, 
                  array( 
                    'extra_parameters' => array(
-                      't_group'    => implode(',', RpmGroupPeer::getGroupsIdsWhereNameLike($values['the_name'] . "%")),
+                      't_group'    => implode(',', RpmGroupPeer::getChildGroupsFor($values['the_name'], true)),
                       'level'      =>  1 + 1,
                       'group_name' => str_replace('/', '|', $values['the_name'])
                    )
@@ -42,6 +42,7 @@
   </table>
 </div>
 
+<?php if ($has_updates) : ?>
 <div id="updates">
   <div class="content_group">Latest updates</div>
   <?php include_component('rpm', 'list', array(
@@ -52,8 +53,22 @@
     'limit'          => sfConfig::get('app_homepage_rpm_limit'),
     'short'          => true,
   )) ?>
+  <br/>
+  <?php echo link_to(
+          "More updates...", 
+          $madburl->urlFor('rpm/list', 
+            $madbcontext, 
+             array( 
+               'extra_parameters' => array(
+                  'listtype' => 'updates'
+               )
+             )
+          )
+        ); ?>
 </div>
+<?php endif; ?>
 
+<?php if ($has_backports) : ?>
 <div id="backports">
   <div class="content_group">Latest backports</div>
   <?php include_component('rpm', 'list', array(
@@ -64,4 +79,17 @@
     'limit'          => sfConfig::get('app_homepage_rpm_limit'),
     'short'          => true,
   )) ?>
+  <br/>
+  <?php echo link_to(
+          "More backports...", 
+          $madburl->urlFor('rpm/list', 
+            $madbcontext, 
+             array( 
+               'extra_parameters' => array(
+                  'listtype' => 'backports'
+               )
+             )
+          )
+        ); ?>
 </div>
+<?php endif; ?>

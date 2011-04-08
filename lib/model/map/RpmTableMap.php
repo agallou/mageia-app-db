@@ -42,7 +42,9 @@ class RpmTableMap extends TableMap {
 		$this->addForeignKey('MEDIA_ID', 'MediaId', 'INTEGER', 'media', 'ID', true, null, null);
 		$this->addForeignKey('RPM_GROUP_ID', 'RpmGroupId', 'INTEGER', 'rpm_group', 'ID', true, null, null);
 		$this->addColumn('LICENCE', 'Licence', 'VARCHAR', true, 255, null);
-		$this->addColumn('NAME', 'Name', 'VARCHAR', true, 255, null);
+		$this->addColumn('NAME', 'Name', 'VARCHAR', true, 900, null);
+		$this->addColumn('MD5_NAME', 'Md5Name', 'VARCHAR', true, 32, null);
+		$this->addColumn('FILENAME', 'Filename', 'VARCHAR', true, 900, null);
 		$this->addColumn('SHORT_NAME', 'ShortName', 'VARCHAR', true, 255, null);
 		$this->addColumn('EVR', 'Evr', 'VARCHAR', true, 255, null);
 		$this->addColumn('VERSION', 'Version', 'VARCHAR', true, 255, null);
@@ -56,7 +58,8 @@ class RpmTableMap extends TableMap {
 		$this->addColumn('REALARCH', 'Realarch', 'VARCHAR', true, 45, null);
 		$this->addForeignKey('ARCH_ID', 'ArchId', 'INTEGER', 'arch', 'ID', true, null, null);
 		$this->addColumn('IS_SOURCE', 'IsSource', 'BOOLEAN', true, null, null);
-		$this->addForeignKey('SOURCE_RPM_ID', 'SourceRpmId', 'INTEGER', 'rpm', 'ID', true, null, null);
+		$this->addForeignKey('SOURCE_RPM_ID', 'SourceRpmId', 'INTEGER', 'rpm', 'ID', false, null, null);
+		$this->addColumn('SOURCE_RPM_NAME', 'SourceRpmName', 'VARCHAR', false, 900, null);
 		// validators
 	} // initialize()
 

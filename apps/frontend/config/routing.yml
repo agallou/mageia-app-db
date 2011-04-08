@@ -13,6 +13,7 @@ logout:
 
 homepage:
   url:   /
+  class: madbHomepageRoute
   param: { module: default, action: news }
 
 # generic rules

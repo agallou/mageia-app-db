@@ -37,7 +37,7 @@ class PackageTableMap extends TableMap {
 		$this->setUseIdGenerator(true);
 		// columns
 		$this->addPrimaryKey('ID', 'Id', 'INTEGER', true, null, null);
-		$this->addColumn('NAME', 'Name', 'VARCHAR', true, 1024, null);
+		$this->addColumn('NAME', 'Name', 'VARCHAR', true, 900, null);
 		$this->addColumn('MD5_NAME', 'Md5Name', 'CHAR', true, 32, null);
 		$this->addColumn('IS_APPLICATION', 'IsApplication', 'BOOLEAN', true, null, null);
 		$this->addColumn('IS_SOURCE', 'IsSource', 'BOOLEAN', true, null, null);

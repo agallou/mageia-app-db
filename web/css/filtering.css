@@ -1,0 +1,31 @@
+#linkmore
+{
+  cursor:pointer;
+  margin-right:14px;
+  position: absolute;
+  top: 4;
+  right: 0;
+}
+
+#otherFilters
+{
+  margin-top:7px;
+}
+
+div.filters
+{
+  margin:0px 0px 2px 0px;
+  padding: 6px;
+  border:1px solid #ccc;
+  background-color:#E1E7E8;
+}
+
+div.filters form span
+{
+  cursor:default;
+}
+
+div.filters img.delete
+{
+  vertical-align:middle;
+}

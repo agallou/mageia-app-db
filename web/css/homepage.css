@@ -1,15 +1,15 @@
 #backports
 {
-  height:60px;
-  position:absolute;
-  right:5px;
-  width:49%
+  position: relative;
+  width:49% ;
+  float: right;
 }
 
 #updates
 {
-  position:absolute;
+  position: relative;
   width:49%;
+  float: left;
 }
 
 #intro p

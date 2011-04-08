@@ -13,7 +13,10 @@ default:
     #language:     en
     #robots:       index, follow
 
-  stylesheets:    [main.css]
+  stylesheets:
+    - main.css
+    - selectToCheckboxes.css
+    - filtering.css
 
   javascripts:
     - jquery-1.4.4.js

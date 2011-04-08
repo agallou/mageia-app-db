@@ -3,6 +3,8 @@
     var settings = {
       apply: function(){},
       defaults: [],
+      searchfield: true,
+      namespace: 'selectToCheckboxes_',
     }
     if (options)
     {
@@ -10,6 +12,7 @@
     }
     this.each(function() {
       var select = $(this);
+      var prefix = settings.namespace + select.attr('id');
       var foo = [];
       $('option', select).each(function(i, selected){
         var toto = [];
@@ -41,17 +44,20 @@
       ng1.append(div);
       global.append(ng1);
       var recherche = $('<input>', { type: 'text', id: 'recherche_' + selectId});
-      div.append(recherche);
+      if (settings.searchfield)
+      {
+        div.append(recherche);
+      }
       div.append('<br>');
       recherche.keyup(function(e){
         var letext = $(e.target).val();
         var regepx = new RegExp('/.*' + letext + '.*/');
         $.each(foo, function(key, row)
         {
-          if (row[1].toLowerCase().match('.*' + letext.toLowerCase() + '.*')) {
-            $('#span_' + row[0]).show();
+          if (row[1].toLowerCase().lastIndexOf(letext.toLowerCase()) != -1) {
+            $('#' + prefix + 'span_' + row[0]).show();
           } else {
-            $('#span_' + row[0]).hide();
+            $('#' + prefix + 'span_' + row[0]).hide();
           }
         });
       });
@@ -69,7 +75,7 @@
       });
       $.each(foo, function(key, value)
       {
-        var jSpan = $('<span>', { id: 'span_' + value[0], });
+        var jSpan = $('<span>', { id: prefix + 'span_' + value[0], });
 
         $("<input>", {
           type    : "checkbox",
@@ -78,10 +84,19 @@
           checked : (jQuery.inArray(value[0], settings.defaults) > -1),
           id      : 'inp_' + selectId + '_' + value[0],
          }).appendTo(jSpan);
-        $('<label>', {
+        var label = $('<label>', {
           'for' : 'inp_' + selectId + '_' + value[0],
           text   : value[1],
-        }).appendTo(jSpan);
+        });
+        label.appendTo(jSpan);
+        label.click(function(){
+          //TODO only to that if option auto_something to true (default)
+          //TODO same as jApply, factorize that ???
+          ng1.hide();
+          $('input[name=' + selectId + ']:checked').removeAttr('checked')
+          $('input[id=' + $(this).attr('for') + ']').attr("checked", "checked");
+          settings.apply.apply(this, [$('input[name=' + selectId + ']:checked')]);
+        });
         $('<br>').appendTo(jSpan);
 
         div.append(jSpan);
@@ -89,6 +104,18 @@
       ng1.toggle();
       select.remove();
       label.remove();
+      $(document).mousedown(function(event){
+        var $target = $(event.target);
+        if ($('#' + 'new' + selectId + '1').css('display') != 'none'
+          && $target[0].id != 'new' + selectId + '1'
+          && $target[0].id != 'span' + selectId
+          && $target.parents('#' + 'new' + selectId + '1').length == 0
+        )
+        {
+          ng1.hide();
+          settings.apply.apply(this, [$('input[name=' + selectId + ']:checked')]);
+        }
+      });
     });
   };
 })(jQuery);

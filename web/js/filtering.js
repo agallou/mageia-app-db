@@ -3,6 +3,7 @@ $(document).ready(function(){
   $('#application').selectToCheckboxes({
     apply: function(d){afterCheckboxChange(d)},
     defaults: getAllVals($('#application option[selected=selected]')),
+    searchfield: false,
   });
   $('#group').selectToCheckboxes({
     apply: function(d){afterCheckboxChange(d)},
@@ -15,6 +16,7 @@ $(document).ready(function(){
   $('#arch').selectToCheckboxes({
 	    apply: function(d){afterCheckboxChange(d)},
 	    defaults: getAllVals($('#arch option[selected=selected]')),
+      searchfield: false,
 	  });
   $('#media').selectToCheckboxes({
 	    apply: function(d){afterCheckboxChange(d)},
@@ -25,6 +27,15 @@ $(document).ready(function(){
 	    defaults: getAllVals($('#source option[selected=selected]')),
 	  });
   $('div#filtering form:first input[type=submit]').remove();
+
+  $('div#otherFilters').toggle();
+  $('span#linkmore').click(function(){
+    $('div#otherFilters').toggle();
+  });
+  if (window.location.href.lastIndexOf('/media/') != -1 || window.location.href.match('\/group\/[0-9%2C]*\/'))
+  {
+    $('div#otherFilters').show();
+  }
 });
 
 
@@ -70,7 +81,7 @@ function updateResults(filtering)
   var baseUri = window.location.href.substr(0, (window.location.href.lastIndexOf('.php') + 4));   
    $.post(baseUri + '/default/getUrl', { baseurl: $.base64.encode(window.location.href), extraParams: filtering},
    function(data){
-     if (window.location.href != data.url) {
+     if (data.changed) {
        window.location = data.url;
      }
    });

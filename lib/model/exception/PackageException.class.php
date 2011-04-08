@@ -1,4 +1,4 @@
 <?php
-class PackageException extends sfException 
+class PackagePeerException extends madbException 
 {
 }

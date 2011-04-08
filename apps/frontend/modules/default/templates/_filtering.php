@@ -1,16 +1,44 @@
+<div class="filters">
 <form>
-<?php echo $form ?>
-<input type="submit" value="Filter" />
-</form>
+<?php $partialParameters = array(
+  'filters'            => $filters,
+  'unremoveableFilters'=> $unremoveableFilters,
+  'madburl'            => $madburl,
+  'moduleaction'       => $moduleaction,
+  'madbcontext'        => $madbcontext,
+); ?>
 
-<div id="filtersInfo">
-<?php foreach ($filters as $name => $values): ?>
-  <span class="name"><?php echo $name ?></span>:
-  <?php echo implode(',', $values); ?>
-  <?php if (!in_array($name, $unremoveableFilters)): ?>
-    <?php echo link_to(image_tag('icons/cross'), $madburl->urlFor($moduleaction, $madbcontext, array('ignored_parameters' => array($name)))); ?>
+<?php $otherFilters = array('group', 'source', 'media'); ?>
+<?php $order = array('distrelease', 'application', 'arch'); ?>
+<?php foreach ($order as $name) : ?>
+  <?php $formField = $form[$name]; ?>
+  <?php if (!in_array($name, $otherFilters)): ?>
+    <?php include_partial('default/filter', array_merge($partialParameters, array(
+      'name'        => $name,
+      'formField'   => $formField,
+      'show_delete' => false,
+    ))) ?>
   <?php endif; ?>
-  <br />
+<?php endforeach; ?>
+
+<span id="linkmore">More...</span>
+
+<div id="otherFilters">
+<?php $order = array('source', 'media', 'group'); ?>
+<?php foreach ($order as $name) : ?>
+  <?php $formField = $form[$name]; ?>
+  <?php if (in_array($name, $otherFilters)): ?>
+    <?php include_partial('default/filter', array_merge($partialParameters, array(
+      'name'        => $name,
+      'formField'   => $formField,
+      'show_delete' => true,
+    ))) ?>
+  <?php endif; ?>
 <?php endforeach; ?>
 </div>
+
+<input type="submit" value="Filter" />
+</form>
+</div>
+
 <?php include_component_slot('searching') ?>

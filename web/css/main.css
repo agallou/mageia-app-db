@@ -16,6 +16,11 @@ h1
   font-size:x-large;
 }
 
+a
+{
+  text-decoration:none;
+}
+
 #container
 {
     display: block;
@@ -45,6 +50,11 @@ h1
     font-size: 24pt;
 }
 
+#header h1 a
+{
+  color:white;
+}
+
 #user_infos
 {
     padding: 5px;
@@ -64,6 +74,7 @@ div#header div#search
     width:420px;
     margin:0px auto;
     margin-top:-30px;
+    position: relative;
 }
 
 div#header div#search form input[type=text]
@@ -147,20 +158,30 @@ div#header div#search form input[type=submit]
     display: block;
     border-left: 1px solid #DDDDDD;
 }
+#content ul
+{
+    list-style-type: none;
+}
 
 #content h1
 {
     border-bottom: 1px solid #BBBBBB;
-    margin-bottom: 5px;
+    margin: 10px 0px 10px 0px;
 }
 
 div.pager
 {
-    margin: 0px 0px 5px 0px;
+    margin: 10px 0px 10px 0px;
+    /*margin: 0px 0px 5px 0px;
     margin-left:auto;
-    margin-right:auto;
+    margin-right:auto;*/
     width:100%;
     text-align:center;
+}
+
+.pager ul
+{
+    margin-bottom: 15px;
 }
 
 .pager li
@@ -176,14 +197,6 @@ div.pager
   font-weight:bold;
   font-family:verdana;
   font-size:small;
-}
-
-div.pager
-{
-/*  margin-left:auto;
-  margin-right:auto;
-  width:100%*/
-  text-align:center;
 }
 
 .pager li
@@ -232,6 +245,15 @@ div.pager
     min-height: 7%;
     height: 7%;
     border-top: 1px solid #DDDDDD;
+    position: relative;
+}
+
+.content
+{
+    position: absolute;
+    padding: 10px;
+    bottom: 0px;
+    right: 0px;
 }
 
 /* Package List Stuff */
@@ -258,80 +280,11 @@ div.pager
     outline: 1px solid #507AAA;
 }
 
-.new1
-{
-  height:150px;
-  background-color:#ccc;
-  overflow:auto;
-  border:1px solid #996A75;
-  position:absolute;
-}
 
-.new1 span
-{
-  font-family:verdana;
-  font-size:small;
-}
-
-.new1 input
-{
-  width:95%;
-  margin-left:2px;
-  margin-top:2px;
-  
-}
-
-.span
-{
-  border:1px solid;
-  padding:2px 5px 2px 5px ;
-  font-size:small;
-  border-color: #ccc #666 #666 #ccc; 
-  color:#000;
-}
-
-.span:hover
-{
-  border-color: #666; 
-}
-
-.new
-{
-  margin-top:4px;
-}
-
-div.apply
-{
-  text-align:center;
-  font-weight:bold;
-  margin:1px 5px 1px 5px;
-}
-
-div.apply:hover
-{
-  background-color:#666;
-  cursor:pointer;
-}
-.fleche
-{
-  font-weight:bolder;
-}
 
 .todo 
 {
   background-color:yellow;
-  font-weight:bold;
-}
-
-#filtersInfo
-{
-  margin-top:8px;
-  border:1px solid #ccc;
-  background-color:#E1E7E8;
-}
-
-#filtersInfo .name
-{
   font-weight:bold;
 }
 
@@ -347,4 +300,9 @@ img
   color: #fff;
   font-weight:bold;
   margin-top: 15px;
+}
+
+td /* All table cells have 1px padding, they looked to me a bit close to each other */
+{
+    padding: 1px;
 }

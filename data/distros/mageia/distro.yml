@@ -1,0 +1,19 @@
+name: Mageia
+only_releases:
+  - cauldron
+exclude_releases:
+only_medias:
+exclude_medias: ^.*-debug$
+only_archs:
+exclude_archs:
+only_rpms:
+exclude_rpms:
+  - ^@\d+:rpmlint.*$ #transient pb, rpms with @ in them
+devel_releases: 
+  - cauldron
+latest_stable_release:
+
+updates_medias: ^.*-updates.*$
+testing_medias: ^.*[-_]testing.*$
+backports_medias: ^.*-backports.*$
+third_party_medias: 

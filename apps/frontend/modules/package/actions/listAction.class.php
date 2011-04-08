@@ -17,7 +17,7 @@ class listAction extends madbActions
     $criteria = $this->getCriteria(filterPerimeters::PACKAGE);
     
     $criteria->addAscendingOrderByColumn(PackagePeer::NAME);
-    $this->pager = new PropelPager($criteria, Package::PEER, 'doSelect', $page, 50);
+    $this->pager = new PropelPager($criteria, 'PackagePeer', 'doSelect', $page, 50);
   }
 
 }

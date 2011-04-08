@@ -9,24 +9,27 @@ class archCriteriaFilter extends baseCriteriaFilterChoice
 
   public function getDefault()
   {
-    try
+    $archs = ArchPeer::listByNameLike('i_86');
+    if (!empty($archs))
     {
-      return ArchPeer::retrieveByName('i586')->getId();
+      return $archs[0]->getId();
     }
-    catch(ArchPeerException $e)
+    else
     {
-      return null;
+      return ArchPeer::doSelectOne(new Criteria());
     }
   }
 
   public function getValues()
   {
     $values = array();
-    $archs = ArchPeer::doSelect(new Criteria);
-    //TODO some callback to a statement.
-    foreach ($archs as $arch)
+    if ($archs = ArchPeer::doSelect(new Criteria))
     {
-      $values[$arch->getId()] = $arch->getName();
+      //TODO some callback to a statement.
+      foreach ($archs as $arch)
+      {
+        $values[$arch->getId()] = $arch->getName();
+      }
     }
     return $values;
   }

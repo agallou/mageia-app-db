@@ -14,7 +14,10 @@ class listComponent extends madbComponent
     {
       case 'updates':
         $criteria->addJoin(RpmPeer::MEDIA_ID, MediaPeer::ID, Criteria::JOIN);
-        $criteria->add(MediaPeer::IS_UPDATES, true, Criteria::EQUAL);
+        $criteria->addJoin(RpmPeer::DISTRELEASE_ID, DistreleasePeer::ID, Criteria::JOIN);
+        $criterion = $criteria->getNewCriterion(MediaPeer::IS_UPDATES, true, Criteria::EQUAL);
+        $criterion->addOr($criteria->getNewCriterion(DistreleasePeer::IS_DEV_VERSION, true, Criteria::EQUAL));
+        $criteria->add($criterion);
         $criteria->add(MediaPeer::IS_TESTING, false, Criteria::EQUAL);
         $criteria->addDescendingOrderByColumn(RpmPeer::BUILD_TIME);
         $this->title = 'Updates (security and bugfix)';
@@ -44,7 +47,7 @@ class listComponent extends madbComponent
         throw new Exception('Unknown value for listtype : \'' . $this->listtype . '\'');
         break;
     }
-    $this->pager = new PropelPager($criteria, Rpm::PEER, 'doSelect', $this->page, $this->limit);
+    $this->pager = new PropelPager($criteria, 'RpmPeer', 'doSelect', $this->page, $this->limit);
   }
 
 }

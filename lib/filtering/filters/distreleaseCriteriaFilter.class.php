@@ -9,14 +9,15 @@ class distreleaseCriteriaFilter extends baseCriteriaFilterChoice
 
   public function getDefault()
   {
-    try
+    if ($latest = DistreleasePeer::getLatest())
     {
-      return DistreleasePeer::getLatest()->getId();
-    }
-    catch(DistreleasePeerException $e)
+      return $latest->getId();
+    } 
+    elseif ($devels = DistreleasePeer::getDevels())
     {
-      return null;
+      return $devels[0]->getId();
     }
+    return null;
   }
 
   public function getValues()

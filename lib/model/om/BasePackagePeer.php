@@ -758,7 +758,7 @@ abstract class BasePackagePeer {
 	 */
 	static public function getUniqueColumnNames()
 	{
-	  return array(array('md5_name'));
+	  return array(array('md5_name', 'is_source'));
 	}
 
 	// symfony_behaviors behavior
