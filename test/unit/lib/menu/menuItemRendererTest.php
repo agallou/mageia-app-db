@@ -20,11 +20,11 @@ $madbUrl     = new madbUrl($context);
 
 $renderer = new menuItemRenderer($madbcontext, $madbUrl);
 $expected = <<<EOF
-<li><a href="/index.php/?distrelease=2010&application=1">Homepage</a></li>
+<li><a href="/index.php/default/news/distrelease/2010/application/1">Homepage</a></li>
 EOF;
 
 $expectedCurrent = <<<EOF
-<li class="current"><a href="/index.php/?distrelease=2010&application=1">Homepage</a></li>
+<li class="current"><a href="/index.php/default/news/distrelease/2010/application/1">Homepage</a></li>
 EOF;
 
 $t->is($renderer->render($item), $expected, 'render if not current (is default value) works');

@@ -63,7 +63,7 @@ $renderer = new menuRenderer($madbcontext, $madbUrl, $request);
 
 $expected = <<<EOF
 <ul>
-<li><a href="/index.php/?distrelease=2010&application=1">Homepage</a></li>
+<li><a href="/index.php/default/news/distrelease/2010/application/1">Homepage</a></li>
 <li>
 <h2>Latest</h2>
 <ul>
