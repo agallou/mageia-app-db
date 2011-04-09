@@ -7,7 +7,7 @@ class searchingComponent extends madbComponent
     $module      = $this->module_to ? $this->module_to : $request['module'];
     $action      = $this->action_to ? $this->action_to : $request['action'];
     $internalUri = sprintf('%s/%s', $module, $action);
-    $ignored     = array('t_search', 'search');
+    $ignored     = array('t_search', 'search', 'page');
     if ($this->module_to)
     {
       $ignored[] = 't_group';
