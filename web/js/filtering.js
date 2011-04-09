@@ -13,6 +13,7 @@ $(document).ready(function(){
   $('#distrelease').selectToCheckboxes({
     apply: function(d){afterCheckboxChange(d)},
     defaults: getAllVals($('#distrelease option[selected=selected]')),
+    searchfield: false,
     multi: false,
   });
   $('#arch').selectToCheckboxes({
