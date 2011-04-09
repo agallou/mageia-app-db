@@ -27,7 +27,7 @@
       var widget = $('<div>', {id : 'global_' + selectId, 'class' : 'filterwidget'});
       select.after(widget);
 
-      var button = $('<span>', {id : 'button' + selectId, 'class' : 'button'});
+      var button = $('<div>', {id : 'button' + selectId, 'class' : 'button'});
       
       button.appendTo(widget);
       
@@ -45,6 +45,10 @@
       });
 
       var ng1 = $('<div>', { id: 'widgetcontent_' + selectId + '1', 'class' : 'widgetcontent1', });
+      if (settings.multi)
+      {
+        ng1.addClass('multi');
+      }
       var div = $('<div>', { id: 'widgetcontent_' + selectId, 'class' : 'widgetcontent' });
       ng1.append(div);
       widget.append(ng1);
@@ -83,7 +87,7 @@
 
       $.each(foo, function(key, value)
       {
-        var jSpan = $('<span>', { id: prefix + 'span_' + value[0], });
+        var jSpan = $('<div>', { id: prefix + 'span_' + value[0], });
         var input = $("<input>", {
             type    : "checkbox",
             name    : selectId,
@@ -117,13 +121,13 @@
       select.remove();
       label.remove();
       $(document).mousedown(function(event){
-        var $target = $(event.target);
+        var target = $(event.target);
         if ($('#' + 'widgetcontent_' + selectId + '1').css('display') != 'none'
-          && $target[0].id != 'widgetcontent_' + selectId + '1'
-          && $target[0].id != 'button' + selectId
-          && $target[0].id != 'buttontext' + selectId
-          && $target[0].id != 'buttonarrow' + selectId
-          && $target.parents('#' + 'widgetcontent_' + selectId + '1').length == 0
+          && target[0].id != 'widgetcontent_' + selectId + '1'
+          && target[0].id != 'button' + selectId
+          && target[0].id != 'buttontext' + selectId
+          && target[0].id != 'buttonarrow' + selectId
+          && target.parents('#' + 'widgetcontent_' + selectId + '1').length == 0
         )
         {
           ng1.hide();
@@ -132,6 +136,7 @@
       });
       ng1.hide();
     });
+    $('.filterwidget div.widgetcontent input:checked').parent().addClass('selected');
   };
 })(jQuery);
 

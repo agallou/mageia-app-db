@@ -15,7 +15,7 @@
 
 .filterwidget .button:hover
 {
-  background-color: #999;
+  background-color: #bbb;
 }
 
 .filterwidget div.apply
@@ -27,7 +27,7 @@
 
 .filterwidget  div.apply:hover
 {
-  background-color:#666;
+  background-color:#bbb;
   cursor:pointer;
 }
 
@@ -44,13 +44,13 @@
 .filterwidget .widgetcontent1
 {
   max-height:250px;
-  background-color:#ccc;
+  background-color:#eee;
   overflow:auto;
   border:1px solid #996A75;
   position:absolute;
 }
 
-.filterwidget .widgetcontent1 span
+.filterwidget .widgetcontent1
 {
   font-family:verdana;
   font-size:small;
@@ -63,33 +63,33 @@
   margin-top:2px;
 }
 
+.filterwidget div.widgetcontent div
+{
+  width:100%;
+}
+
+.filterwidget div.widgetcontent div:hover
+{
+  background-color: #bbb;
+}
+
 .filterwidget .widgetcontent label
 {
   cursor:pointer;
 }
 
-.filterwidget div.widgetcontent input
-{
-  clear:left;
-  float:left;
-}
-
 .filterwidget div.widgetcontent label
 {
   cursor:pointer;
-  display:block;
-  width:90%;
-  float:left;
-  nowrap;
+  white-space: nowrap;
 }
 
 .filterwidget div.widgetcontent label:hover
 {
-  background-color: #999;
   cursor:pointer;
 }
 
-.filterwidget div.widgetcontent input[type="checkbox"]:checked+label
-{ 
-  background-color: #999; 
-} 
+.filterwidget div.widgetcontent div.selected
+{
+  background-color:#bbb;
+}
