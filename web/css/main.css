@@ -16,7 +16,7 @@ h1
   font-size:x-large;
 }
 
-a
+a, a:visited
 {
   text-decoration:none;
 }
@@ -50,7 +50,7 @@ a
     font-size: 24pt;
 }
 
-#header h1 a
+#header h1 a, #header h1 a:visited
 {
   color:white;
 }
@@ -63,7 +63,7 @@ a
     right: 0;
 }
 
-#user_infos a, #user_infos span
+#user_infos a, #user_infos span, #user_infos a:visited
 {
     text-decoration:none;
     color: white;
@@ -126,9 +126,15 @@ div#header div#search form input[type=submit]
     font-size: 10pt;
 }
 
-#menu li a
+#menu li.current
 {
-    text-decoration:none;
+ background-color:#ccccff;
+}
+
+#menu li a, #menu li a:visited
+{
+  color:#0000EE;
+  text-decoration:none;
 }
 
 #menu ul h2
@@ -142,6 +148,12 @@ div#header div#search form input[type=submit]
 {
     margin: 0px 0px 1px 0px;
     text-indent: 4px;
+}
+
+#menu ul ul li.current
+{
+ background-color:#ccccff;
+
 }
 
 /* RIGHT Column stuff a.k.a Content */
@@ -268,13 +280,13 @@ div.pager
     padding: 0px 2px 2px 0px;
 }
 
-.packlist li a, .links a
+.packlist li a, .links a, .links a:visited
 {
     text-decoration: none;
     color: blue;
 }
 
-.packlist li a:hover, .links a:hover
+.packlist li a:hover, .links a:hover, .links a:visited
 {
     background-color: #DDDDDD;
     outline: 1px solid #507AAA;
