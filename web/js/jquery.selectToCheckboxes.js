@@ -41,7 +41,7 @@
 
       button.click(function(){
         document.getElementById('widgetcontent_' + selectId + '1').style.left = buttontext.position().left + 'px';
-        $('#widgetcontent_' + selectId + '1').show();
+        $('#widgetcontent_' + selectId + '1').toggle();
       });
 
       var ng1 = $('<div>', { id: 'widgetcontent_' + selectId + '1', 'class' : 'widgetcontent1', });
