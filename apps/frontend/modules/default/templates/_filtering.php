@@ -22,7 +22,7 @@
 <?php endforeach; ?>
 
 <span id="linkmore">More...</span>
-
+<br style="clear:left;"/>
 <div id="otherFilters">
 <?php $order = array('source', 'media', 'group'); ?>
 <?php foreach ($order as $name) : ?>

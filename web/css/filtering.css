@@ -18,6 +18,8 @@ div.filters
   padding: 6px;
   border:1px solid #ccc;
   background-color:#E1E7E8;
+  overflow: hidden;
+  height: 1%;
 }
 
 div.filters form span
@@ -28,4 +30,14 @@ div.filters form span
 div.filters img.delete
 {
   vertical-align:middle;
+  float:left;
 }
+
+div.filters .filtervalues
+{
+  float:left;
+  padding-right: 20px;
+  padding-top: 2px;
+  padding-left: 3px;
+}
+

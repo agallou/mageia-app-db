@@ -1,54 +1,9 @@
-.new
+.filterwidget
 {
-  margin-top:4px;
+  float:left;
 }
 
-div.apply
-{
-  text-align:center;
-  font-weight:bold;
-  margin:1px 5px 1px 5px;
-}
-
-div.apply:hover
-{
-  background-color:#666;
-  cursor:pointer;
-}
-
-.fleche
-{
-  font-weight:bolder;
-}
-
-.new1
-{
-  height:150px;
-  background-color:#ccc;
-  overflow:auto;
-  border:1px solid #996A75;
-  position:absolute;
-}
-
-.new1 span
-{
-  font-family:verdana;
-  font-size:small;
-}
-
-.new1 input[type=text]
-{
-  width:95%;
-  margin-left:2px;
-  margin-top:2px;
-}
-
-.new label
-{
-  cursor:pointer;
-}
-
-.span
+.filterwidget .button
 {
   border:1px solid;
   padding:2px 5px 2px 5px ;
@@ -58,7 +13,83 @@ div.apply:hover
   color:#000;
 }
 
-.span:hover
+.filterwidget .button:hover
 {
-  border-color: #666;
+  background-color: #999;
 }
+
+.filterwidget div.apply
+{
+  text-align:center;
+  font-weight:bold;
+  margin:1px 5px 1px 5px;
+}
+
+.filterwidget  div.apply:hover
+{
+  background-color:#666;
+  cursor:pointer;
+}
+
+.filterwidget .arrow
+{
+  font-weight:bolder;
+}
+
+.filterwidget .widgetcontent
+{
+  margin-top:4px;
+}
+
+.filterwidget .widgetcontent1
+{
+  max-height:250px;
+  background-color:#ccc;
+  overflow:auto;
+  border:1px solid #996A75;
+  position:absolute;
+}
+
+.filterwidget .widgetcontent1 span
+{
+  font-family:verdana;
+  font-size:small;
+}
+
+.filterwidget .widgetcontent1 input[type=text]
+{
+  width:95%;
+  margin-left:2px;
+  margin-top:2px;
+}
+
+.filterwidget .widgetcontent label
+{
+  cursor:pointer;
+}
+
+.filterwidget div.widgetcontent input
+{
+  clear:left;
+  float:left;
+}
+
+.filterwidget div.widgetcontent label
+{
+  cursor:pointer;
+  display:block;
+  width:90%;
+  float:left;
+  nowrap;
+}
+
+.filterwidget div.widgetcontent label:hover
+{
+  background-color: #999;
+  cursor:pointer;
+}
+
+.filterwidget div.widgetcontent input[type="checkbox"]:checked+label
+{ 
+  background-color: #999; 
+} 
