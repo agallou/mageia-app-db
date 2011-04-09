@@ -121,6 +121,7 @@
           settings.apply.apply(this, [$('input[name=' + selectId + ']:checked')]);
         }
       });
+      ng1.hide();
     });
   };
 })(jQuery);

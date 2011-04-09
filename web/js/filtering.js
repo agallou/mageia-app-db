@@ -39,6 +39,7 @@ $(document).ready(function(){
   {
     $('div#otherFilters').show();
   }
+  $('.filters').removeAttr('style');
 });
 
 
