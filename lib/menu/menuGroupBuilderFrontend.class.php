@@ -5,12 +5,24 @@ class menuGroupBuilderFrontend extends menuGroupBuilder
   protected function build()
   {
     $this->addItem($this->createItem('Homepage', '@homepage', array('fiter_parameters' => true, 'extra_active' => array('default/news'))));
-    $this->addGroup('Latest', array(
-      $this->createItem('Updates', 'rpm/list', array('extra_parameters' => array('listtype' => 'updates'), 'filters_parameters' => true)),
-      $this->createItem('Update candidates', 'rpm/list', array('extra_parameters' => array('listtype' => 'updates_testing'), 'filters_parameters' => true)),
-      $this->createItem('Backports', 'rpm/list', array('extra_parameters' => array('listtype' => 'backports'), 'filters_parameters' => true)),
-      $this->createItem('Backport candidates', 'rpm/list', array('extra_parameters' => array('listtype' => 'backports_testing'), 'filters_parameters' => true))
-    ));
+    $items = array();
+    if (MediaPeer::countMediaByType(true, false, false) + count(DistreleasePeer::getDevels()))
+    {
+      $items[] = $this->createItem('Updates', 'rpm/list', array('extra_parameters' => array('listtype' => 'updates'), 'filters_parameters' => true));
+    }
+    if (MediaPeer::countMediaByType(true, false, true))
+    {
+      $items[] = $this->createItem('Update candidates', 'rpm/list', array('extra_parameters' => array('listtype' => 'updates_testing'), 'filters_parameters' => true));
+    }
+    if (MediaPeer::countMediaByType(false, true, false))
+    {
+      $items[] = $this->createItem('Backports', 'rpm/list', array('extra_parameters' => array('listtype' => 'backports'), 'filters_parameters' => true));
+    }
+    if (MediaPeer::countMediaByType(false, true, true))
+    {
+      $items[] = $this->createItem('Backport candidates', 'rpm/list', array('extra_parameters' => array('listtype' => 'backports_testing'), 'filters_parameters' => true));
+    }
+    $this->addGroup('Latest', $items);
     $this->addGroup('Browse', array(
       $this->createItem('By group', 'group/list', array('filters_parameters' => true)),
       $this->createItem('By popularity'),
