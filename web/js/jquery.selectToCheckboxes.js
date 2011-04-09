@@ -4,6 +4,7 @@
       apply: function(){},
       defaults: [],
       searchfield: true,
+      multi: true,
       namespace: 'selectToCheckboxes_',
     }
     if (options)
@@ -76,14 +77,18 @@
       $.each(foo, function(key, value)
       {
         var jSpan = $('<span>', { id: prefix + 'span_' + value[0], });
-
-        $("<input>", {
-          type    : "checkbox",
-          name    : selectId,
-          val     : value[0],
-          checked : (jQuery.inArray(value[0], settings.defaults) > -1),
-          id      : 'inp_' + selectId + '_' + value[0],
-         }).appendTo(jSpan);
+        var input = $("<input>", {
+            type    : "checkbox",
+            name    : selectId,
+            val     : value[0],
+            checked : (jQuery.inArray(value[0], settings.defaults) > -1),
+            id      : 'inp_' + selectId + '_' + value[0],
+           });
+        input.appendTo(jSpan);
+        if (!settings.multi)
+        {
+          input.hide();
+        }
         var label = $('<label>', {
           'for' : 'inp_' + selectId + '_' + value[0],
           text   : value[1],

@@ -4,6 +4,7 @@ $(document).ready(function(){
     apply: function(d){afterCheckboxChange(d)},
     defaults: getAllVals($('#application option[selected=selected]')),
     searchfield: false,
+    multi: false,
   });
   $('#group').selectToCheckboxes({
     apply: function(d){afterCheckboxChange(d)},
@@ -17,6 +18,7 @@ $(document).ready(function(){
 	    apply: function(d){afterCheckboxChange(d)},
 	    defaults: getAllVals($('#arch option[selected=selected]')),
       searchfield: false,
+      multi: false,
 	  });
   $('#media').selectToCheckboxes({
 	    apply: function(d){afterCheckboxChange(d)},
@@ -25,6 +27,7 @@ $(document).ready(function(){
   $('#source').selectToCheckboxes({
 	    apply: function(d){afterCheckboxChange(d)},
 	    defaults: getAllVals($('#source option[selected=selected]')),
+	    multi: false,
 	  });
   $('div#filtering form:first input[type=submit]').remove();
 
