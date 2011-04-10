@@ -105,13 +105,19 @@
           text   : value[1],
         });
         label.appendTo(jSpan);
-        label.click(function(){
+        if (settings.multi) {
+          var clickable = label;
+        } else {
+          var clickable = jSpan;
+        }
+        $(clickable).click(function(){
           //TODO only to that if option auto_something to true (default)
           //TODO same as jApply, factorize that ???
           ng1.hide();
+
           $('input[name=' + selectId + ']:checked').removeAttr('checked')
-          $('input[id=' + $(this).attr('for') + ']').attr("checked", "checked");
-          settings.apply.apply(this, [$('input[name=' + selectId + ']:checked')]);
+          $('input[id=' + $(label).attr('for') + ']').attr("checked", "checked");
+          settings.apply.apply(label, [$('input[name=' + selectId + ']:checked')]);
         });
         $('<br>').appendTo(jSpan);
 
