@@ -58,7 +58,7 @@ class sourceCriteriaFilter extends baseCriteriaFilterChoice
    */
   public function getName()
   {
-    return 'Source'; //Internationalisation ? outside, allways in english here.
+    return 'Regular/Source'; //Internationalisation ? outside, allways in english here.
   }
 
 }

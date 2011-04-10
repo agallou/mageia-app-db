@@ -70,7 +70,7 @@ class distreleaseCriteriaFilter extends baseCriteriaFilterChoice
    */
   public function getName()
   {
-    return 'Release'; //Internationalisation ? outside, allways in english here.
+    return 'Distribution'; //Internationalisation ? outside, allways in english here.
   }
 
 }
