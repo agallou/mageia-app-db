@@ -11,7 +11,7 @@ abstract class baseCriteriaFilterChoice extends baseCriteriaFilter
   {
     $values = array();
     $values = $values + $this->getValues();
-    $form->setWidget($this->getCode(), new sfWidgetFormChoice(array('choices' => $values, 'multiple' => true)));
+    $form->setWidget($this->getCode(), new sfWidgetFormChoice(array('choices' => $values, 'multiple' => true, 'label' => $this->getName())));
     $form->setValidator($this->getCode(), new myValidatorChoice(array('choices' => array_keys($values), 'required' => false)));
     return $form;
   }

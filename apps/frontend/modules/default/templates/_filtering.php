@@ -1,4 +1,4 @@
-<div class="filters">
+<div class="filters" style="display:none">
 <form>
 <?php $partialParameters = array(
   'filters'            => $filters,
@@ -22,7 +22,7 @@
 <?php endforeach; ?>
 
 <span id="linkmore">More...</span>
-
+<br style="clear:left;"/>
 <div id="otherFilters">
 <?php $order = array('source', 'media', 'group'); ?>
 <?php foreach ($order as $name) : ?>
@@ -40,5 +40,7 @@
 <input type="submit" value="Filter" />
 </form>
 </div>
-
+<script>
+  $('.filters').hide();
+</script>
 <?php include_component_slot('searching') ?>

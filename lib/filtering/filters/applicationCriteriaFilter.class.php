@@ -64,7 +64,7 @@ class applicationCriteriaFilter extends baseCriteriaFilterChoice
    */
   public function getName()
   {
-    return 'Type'; //Internationalisation ? outside, allways in english here.
+    return 'Applications'; //Internationalisation ? outside, allways in english here.
   }
 
 }

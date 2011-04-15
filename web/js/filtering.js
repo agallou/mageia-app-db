@@ -4,6 +4,7 @@ $(document).ready(function(){
     apply: function(d){afterCheckboxChange(d)},
     defaults: getAllVals($('#application option[selected=selected]')),
     searchfield: false,
+    multi: false,
   });
   $('#group').selectToCheckboxes({
     apply: function(d){afterCheckboxChange(d)},
@@ -12,23 +13,28 @@ $(document).ready(function(){
   $('#distrelease').selectToCheckboxes({
     apply: function(d){afterCheckboxChange(d)},
     defaults: getAllVals($('#distrelease option[selected=selected]')),
+    searchfield: false,
+    multi: false,
   });
   $('#arch').selectToCheckboxes({
-	    apply: function(d){afterCheckboxChange(d)},
-	    defaults: getAllVals($('#arch option[selected=selected]')),
-      searchfield: false,
-	  });
+    apply: function(d){afterCheckboxChange(d)},
+    defaults: getAllVals($('#arch option[selected=selected]')),
+    searchfield: false,
+    multi: false,
+  });
   $('#media').selectToCheckboxes({
-	    apply: function(d){afterCheckboxChange(d)},
-	    defaults: getAllVals($('#media option[selected=selected]')),
-	  });
+    apply: function(d){afterCheckboxChange(d)},
+    defaults: getAllVals($('#media option[selected=selected]')),
+  });
   $('#source').selectToCheckboxes({
-	    apply: function(d){afterCheckboxChange(d)},
-	    defaults: getAllVals($('#source option[selected=selected]')),
-	  });
+    apply: function(d){afterCheckboxChange(d)},
+    defaults: getAllVals($('#source option[selected=selected]')),
+    searchfield: false,
+    multi: false,
+  });
   $('div#filtering form:first input[type=submit]').remove();
 
-  $('div#otherFilters').toggle();
+  $('div#otherFilters').hide();
   $('span#linkmore').click(function(){
     $('div#otherFilters').toggle();
   });
@@ -36,6 +42,7 @@ $(document).ready(function(){
   {
     $('div#otherFilters').show();
   }
+  $('.filters').removeAttr('style');
 });
 
 

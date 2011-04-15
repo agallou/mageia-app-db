@@ -4,6 +4,7 @@
       apply: function(){},
       defaults: [],
       searchfield: true,
+      multi: true,
       namespace: 'selectToCheckboxes_',
     }
     if (options)
@@ -23,32 +24,40 @@
       var selectId = select.attr('id');
       var label = $('label[for=' + selectId + ']');
 
-      var global = $('<span>', {id : 'global_' + selectId, });
-      select.after(global);
+      var widget = $('<div>', {id : 'global_' + selectId, 'class' : 'filterwidget'});
+      select.after(widget);
 
-      var spangroup = $('<span>', {
-        id      : 'span' + selectId,
-        'class' : 'span',
+      var button = $('<div>', {id : 'button' + selectId, 'class' : 'button'});
+      
+      button.appendTo(widget);
+      
+      var buttontext = $('<span>', {
+        id : 'buttontext' + selectId,
+        'class' : 'buttontext',
         text    : label.text(),
       });
-      $('<span>', { 'class' : 'fleche', html: '&darr;', }).appendTo(spangroup);
-      spangroup.appendTo(global);
+      buttontext.appendTo(button);
+      $('<span>', { id : 'buttonarrow' + selectId,'class' : 'arrow', html: '&darr;', }).appendTo(button);
 
-      spangroup.click(function(){
-        document.getElementById('new' + selectId + '1').style.left = spangroup.position().left + 'px';
-        $('#new' + selectId + '1').toggle();
+      button.click(function(){
+        document.getElementById('widgetcontent_' + selectId + '1').style.left = buttontext.position().left + 'px';
+        $('#widgetcontent_' + selectId + '1').toggle();
       });
 
-      var ng1 = $('<div>', { id : 'new' + selectId + '1', 'class' : 'new1', });
-      var div = $('<span>', { id: 'new' + selectId, 'class' : 'new' });
+      var ng1 = $('<div>', { id: 'widgetcontent_' + selectId + '1', 'class' : 'widgetcontent1', });
+      if (settings.multi)
+      {
+        ng1.addClass('multi');
+      }
+      var div = $('<div>', { id: 'widgetcontent_' + selectId, 'class' : 'widgetcontent' });
       ng1.append(div);
-      global.append(ng1);
+      widget.append(ng1);
       var recherche = $('<input>', { type: 'text', id: 'recherche_' + selectId});
       if (settings.searchfield)
       {
         div.append(recherche);
+        div.append('<br>');
       }
-      div.append('<br>');
       recherche.keyup(function(e){
         var letext = $(e.target).val();
         var regepx = new RegExp('/.*' + letext + '.*/');
@@ -62,40 +71,53 @@
         });
       });
 
-      var jApply = $('<div>', {
-        id      : 'apply' + selectId,
-        'class' : 'apply',
-        text    : 'Apply',
-      });
-      jApply.appendTo(div);
+      if (settings.multi)
+      {
+        var jApply = $('<div>', {
+          id      : 'apply' + selectId,
+          'class' : 'apply',
+          text    : 'Apply',
+        });
+        jApply.appendTo(div);
+        jApply.click(function(){
+          ng1.hide();
+          settings.apply.apply(this, [$('input[name=' + selectId + ']:checked')]);
+        });
+      }
 
-      jApply.click(function(){
-        ng1.hide();
-        settings.apply.apply(this, [$('input[name=' + selectId + ']:checked')]);
-      });
       $.each(foo, function(key, value)
       {
-        var jSpan = $('<span>', { id: prefix + 'span_' + value[0], });
-
-        $("<input>", {
-          type    : "checkbox",
-          name    : selectId,
-          val     : value[0],
-          checked : (jQuery.inArray(value[0], settings.defaults) > -1),
-          id      : 'inp_' + selectId + '_' + value[0],
-         }).appendTo(jSpan);
+        var jSpan = $('<div>', { id: prefix + 'span_' + value[0], });
+        var input = $("<input>", {
+            type    : "checkbox",
+            name    : selectId,
+            val     : value[0],
+            checked : (jQuery.inArray(value[0], settings.defaults) > -1),
+            id      : 'inp_' + selectId + '_' + value[0],
+           });
+        input.appendTo(jSpan);
+        if (!settings.multi)
+        {
+          input.hide();
+        }
         var label = $('<label>', {
           'for' : 'inp_' + selectId + '_' + value[0],
           text   : value[1],
         });
         label.appendTo(jSpan);
-        label.click(function(){
+        if (settings.multi) {
+          var clickable = label;
+        } else {
+          var clickable = jSpan;
+        }
+        $(clickable).click(function(){
           //TODO only to that if option auto_something to true (default)
           //TODO same as jApply, factorize that ???
           ng1.hide();
+
           $('input[name=' + selectId + ']:checked').removeAttr('checked')
-          $('input[id=' + $(this).attr('for') + ']').attr("checked", "checked");
-          settings.apply.apply(this, [$('input[name=' + selectId + ']:checked')]);
+          $('input[id=' + $(label).attr('for') + ']').attr("checked", "checked");
+          settings.apply.apply(label, [$('input[name=' + selectId + ']:checked')]);
         });
         $('<br>').appendTo(jSpan);
 
@@ -105,18 +127,22 @@
       select.remove();
       label.remove();
       $(document).mousedown(function(event){
-        var $target = $(event.target);
-        if ($('#' + 'new' + selectId + '1').css('display') != 'none'
-          && $target[0].id != 'new' + selectId + '1'
-          && $target[0].id != 'span' + selectId
-          && $target.parents('#' + 'new' + selectId + '1').length == 0
+        var target = $(event.target);
+        if ($('#' + 'widgetcontent_' + selectId + '1').css('display') != 'none'
+          && target[0].id != 'widgetcontent_' + selectId + '1'
+          && target[0].id != 'button' + selectId
+          && target[0].id != 'buttontext' + selectId
+          && target[0].id != 'buttonarrow' + selectId
+          && target.parents('#' + 'widgetcontent_' + selectId + '1').length == 0
         )
         {
           ng1.hide();
           settings.apply.apply(this, [$('input[name=' + selectId + ']:checked')]);
         }
       });
+      ng1.hide();
     });
+    $('.filterwidget div.widgetcontent input:checked').parent().addClass('selected');
   };
 })(jQuery);
 
