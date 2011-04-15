@@ -130,7 +130,7 @@ class NotificationEvent
              * &/
              */
             // fancy console debug line :)
-             echo "\n\033[". "1;34" ."m". "Mailsending triggered: [$from]:[$to] h:[$header] [$text]" . "\033[0m\n";
+             echo "\n\033[". "1;34" ."m". "Mailsending triggered: from:[$from]->to:[$to] h:$header b:[$text]" . "\033[0m\n";
     }
 }
 ?>
