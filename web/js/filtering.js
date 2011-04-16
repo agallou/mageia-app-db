@@ -4,33 +4,33 @@ $(document).ready(function(){
     apply: function(d){afterCheckboxChange(d)},
     defaults: getAllVals($('#application option[selected=selected]')),
     searchfield: false,
-    multi: false,
+    multi: false
   });
   $('#group').selectToCheckboxes({
     apply: function(d){afterCheckboxChange(d)},
-    defaults: getAllVals($('#group option[selected=selected]')),
+    defaults: getAllVals($('#group option[selected=selected]'))
   });
   $('#distrelease').selectToCheckboxes({
     apply: function(d){afterCheckboxChange(d)},
     defaults: getAllVals($('#distrelease option[selected=selected]')),
     searchfield: false,
-    multi: false,
+    multi: false
   });
   $('#arch').selectToCheckboxes({
     apply: function(d){afterCheckboxChange(d)},
     defaults: getAllVals($('#arch option[selected=selected]')),
     searchfield: false,
-    multi: false,
+    multi: false
   });
   $('#media').selectToCheckboxes({
     apply: function(d){afterCheckboxChange(d)},
-    defaults: getAllVals($('#media option[selected=selected]')),
+    defaults: getAllVals($('#media option[selected=selected]'))
   });
   $('#source').selectToCheckboxes({
     apply: function(d){afterCheckboxChange(d)},
     defaults: getAllVals($('#source option[selected=selected]')),
     searchfield: false,
-    multi: false,
+    multi: false
   });
   $('div#filtering form:first input[type=submit]').remove();
 
