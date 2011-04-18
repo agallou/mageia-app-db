@@ -55,13 +55,11 @@
     echo "NOT IN DATABASE ?!";
   }?></li>
   <li>Build time : <?php echo $rpm->getBuildtime() ?></li>
-  <li>Changelog : <span class='todo'>TODO : query Sophie</span></li>
-  <li>Files : <span class='todo'>TODO : query Sophie</span></li>
-  <li>Provides : <span class='todo'>TODO : query Sophie</span></li>
-  <li>Requires : <span class='todo'>TODO : query Sophie</span></li>
-  <li>Obsoletes : <span class='todo'>TODO : query Sophie</span></li>
-  <li>Suggests : <span class='todo'>TODO : query Sophie</span></li>
+  <li>Changelog : <?php echo link_to("View in Sophie", $sophie->getUrlForPkgId($rpm->getRpmPkgId()) . '/changelog') ?></li>
+  <li>Files : <?php echo link_to("View in Sophie", $sophie->getUrlForPkgId($rpm->getRpmPkgId()) . '/files') ?></li>
+  <li>Dependencies : <?php echo link_to("View in Sophie", $sophie->getUrlForPkgId($rpm->getRpmPkgId()) . '/deps') ?></li>
   <li>installed size : <span class='todo'>TODO</span></li>
 </ul>
-
+<br/>
+<?php echo link_to("View in Sophie", $sophie->getUrlForPkgId($rpm->getRpmPkgId())) ?>
 </div>
