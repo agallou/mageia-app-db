@@ -107,7 +107,7 @@ class NotificationEvent
             
             //TODO: replace this line with settings
             $from = array(
-                "madb@phobos.home" => "madb notification"
+                sfConfig::get('app_notifications_mail_address', "madb@phobos.home") => sfConfig::get('app_notifications_mail_name', "madb notification")
             );
 
             //TODO: use real user mail from db
@@ -121,16 +121,14 @@ class NotificationEvent
             $text = "You recieved this notification because package ".$rpm->getPackage()->getName() ." ". $eventText;
 
             //sends mail directly
-            /*sfContext::getInstance()->getMailer()->composeAndSend(
+            sfContext::getInstance()->getMailer()->composeAndSend(
                 $from,
                 $to,
                 $header,
                 $text
                 );
-             * &/
-             */
-            // fancy console debug line :)
-             echo "\n\033[". "1;34" ."m". "Mailsending triggered: from:[$from]->to:[$to] h:$header b:[$text]" . "\033[0m\n";
+            //TODO: fancy console notice line, should be configurable :)
+             echo "\n\033[". "1;34" ."m". "Mailsending triggered: from:[".$from[key($from)]." <".key($from).">]->to:[$to] h:$header b:[$text]" . "\033[0m\n";
     }
 }
 ?>
