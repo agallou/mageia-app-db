@@ -2144,3 +2144,10 @@ zsnes
 zygrib
 zynaddsubfx
 zynjacku
+libreoffice-base
+libreoffice-calc
+libreoffice-common
+libreoffice-draw
+libreoffice-impress
+libreoffice-math
+libreoffice-writer

@@ -53,16 +53,19 @@ class RpmGroupPeer extends BaseRpmGroupPeer {
    * @param string $parent_name
    * @param bool $include_parent
    */
-  public static function getChildGroupsFor($parent_name, $include_parent = false)
+  public static function getChildGroupsFor($parent_name, $include_parent = false, $include_children = true)
   {
     $results = array();
     if ($include_parent and $rpm_group = self::retrieveByName($parent_name))
     {
       $results[] = $rpm_group->getId();
     }
-    foreach (self::getGroupsWhereNameLike($parent_name . '/%') as $rpm_group)
+    if ($include_children)
     {
-      $results[] = $rpm_group->getId();
+      foreach (self::getGroupsWhereNameLike($parent_name . '/%') as $rpm_group)
+      {
+        $results[] = $rpm_group->getId();
+      }
     }
     return $results;
   }

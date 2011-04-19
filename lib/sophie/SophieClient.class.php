@@ -213,4 +213,9 @@ class SophieClient
   {
     return $media . '-src';
   }
+  
+  public function getUrlForPkgId($pkgid)
+  {
+    return $this->getUrlSophie() . "/rpms/" . $pkgid;
+  }
 }
