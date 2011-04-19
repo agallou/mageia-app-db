@@ -60,31 +60,56 @@ class rssAction extends sfActions
         //setup criteria for media based on notification's settings
         if($notification->getUpdate())
         {
-            $updateMediaCriterion = $rpmCriteria->getNewCriterion(MediaPeer::IS_UPDATES, true);
-            $updateMediaCriterion->addAnd($rpmCriteria->getNewCriterion(MediaPeer::IS_TESTING, false));
-            $rpmCriteria->addOr($updateMediaCriterion);
+            $notificationCriterion = $rpmCriteria->getNewCriterion(MediaPeer::IS_UPDATES, true);
+            $notificationCriterion->addAnd($rpmCriteria->getNewCriterion(MediaPeer::IS_TESTING, false));
         }
 
         if($notification->getUpdateCandidate())
         {
-            $updateCandidateMediaCriterion = $rpmCriteria->getNewCriterion(MediaPeer::IS_UPDATES, true);
-            $updateCandidateMediaCriterion->addAnd($rpmCriteria->getNewCriterion(MediaPeer::IS_TESTING, true));
-            $rpmCriteria->addOr($updateCandidateMediaCriterion);
+            if(isset($notificationCriterion))
+            {
+            $notificationCriterion2 = $rpmCriteria->getNewCriterion(MediaPeer::IS_UPDATES, true);
+            $notificationCriterion2->addAnd($rpmCriteria->getNewCriterion(MediaPeer::IS_TESTING, true));
+            $notificationCriterion->addOr($notificationCriterion2);
+            }
+            else
+            {
+            $notificationCriterion = $rpmCriteria->getNewCriterion(MediaPeer::IS_UPDATES, true);
+            $notificationCriterion->addAnd($rpmCriteria->getNewCriterion(MediaPeer::IS_TESTING, true));
+            }
         }
 
         if($notification->getNewVersion())
         {
-            $newVersionMediaCriterion = $rpmCriteria->getNewCriterion(MediaPeer::IS_BACKPORTS, true);
-            $newVersionMediaCriterion->addAnd($rpmCriteria->getNewCriterion(MediaPeer::IS_TESTING, false));
-            $rpmCriteria->addOr($newVersionMediaCriterion);
+            if(isset($notificationCriterion))
+            {
+            $notificationCriterion2 = $rpmCriteria->getNewCriterion(MediaPeer::IS_BACKPORTS, true);
+            $notificationCriterion2->addAnd($rpmCriteria->getNewCriterion(MediaPeer::IS_TESTING, false));
+            $notificationCriterion->addOr($notificationCriterion2);
+            }
+            else
+            {
+            $notificationCriterion = $rpmCriteria->getNewCriterion(MediaPeer::IS_UPDATES, true);
+            $notificationCriterion->addAnd($rpmCriteria->getNewCriterion(MediaPeer::IS_TESTING, false));
+            }
         }
 
         if($notification->getNewVersionCandidate())
         {
-            $newVersionCandidateMediaCriterion = $rpmCriteria->getNewCriterion(MediaPeer::IS_BACKPORTS, true);
-            $newVersionCandidateMediaCriterion->addAnd($rpmCriteria->getNewCriterion(MediaPeer::IS_TESTING, true));
-            $rpmCriteria->addOr($newVersionCandidateMediaCriterion);
+            if(isset($notificationCriterion))
+            {
+            $notificationCriterion2 = $rpmCriteria->getNewCriterion(MediaPeer::IS_BACKPORTS, true);
+            $notificationCriterion2->addAnd($rpmCriteria->getNewCriterion(MediaPeer::IS_TESTING, true));
+            $notificationCriterion->addOr($notificationCriterion2);
+            }
+            else
+            {
+            $notificationCriterion = $rpmCriteria->getNewCriterion(MediaPeer::IS_UPDATES, true);
+            $notificationCriterion->addAnd($rpmCriteria->getNewCriterion(MediaPeer::IS_TESTING, true));
+            }
         }
+        if(isset($notificationCriterion))
+            $rpmCriteria->addOr($notificationCriterion);
 
     }
 
@@ -92,6 +117,8 @@ class rssAction extends sfActions
     $rpmCriteria->addJoin(RpmPeer::ARCH_ID, ArchPeer::ID);
     $rpmCriteria->addJoin(RpmPeer::DISTRELEASE_ID, DistreleasePeer::ID);
     $rpmCriteria->addJoin(RpmPeer::PACKAGE_ID, PackagePeer::ID);
+
+    $rpmCriteria->addDescendingOrderByColumn(RpmPeer::BUILD_TIME);
     $rpmCriteria->setLimit(20);
     $rpms[] = RpmPeer::doSelect($rpmCriteria);
 
