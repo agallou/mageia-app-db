@@ -19,13 +19,11 @@
                     )) ?>
                 </div>
                 <div id="user_infos">
-                    <?php if (false): ?>
                     <?php if ($sf_user->isAuthenticated()): ?>
                         <?php echo link_to('Logout', url_for('@logout')); ?>
                     <?php else: ?>
                         <span>Register? |</span>
                         <?php echo link_to('Login', url_for('@login')) ?>
-                    <?php endif; ?>
                     <?php endif; ?>
                 </div>
             </div>
