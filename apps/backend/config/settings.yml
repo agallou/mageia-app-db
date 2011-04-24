@@ -1,4 +1,4 @@
-# You can find more information about this file on the symfony website:
+#a You can find more information about this file on the symfony website:
 # http://www.symfony-project.org/reference/1_4/en/04-Settings
 
 prod:
@@ -33,3 +33,8 @@ all:
 
     # Enable the database manager
     use_database:           true
+    enabled_modules:
+      - default
+      - sfGuardGroup
+      - sfGuardUser
+      - sfGuardPermission
