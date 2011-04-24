@@ -5,12 +5,13 @@ abstract class menuGroupBuilder
   private $menuGroup = null;
   private $menuGroupFactory = null;
   private $menuItemFactory = null;
-  private $sfUser = null;
+  private $user = null;
   private $request = null;
 
   public function __construct(sfUser $user)
   {
     $this->menuGroup = new menuGroup();
+    $this->user      = $user;
     $this->build();
   }
 
@@ -23,7 +24,7 @@ abstract class menuGroupBuilder
 
   protected function isUserAuthenticated()
   {
-    return false; //TODO
+    return $this->user->isAuthenticated();
   }
 
   protected function createItem($name, $internalUri = null, array $options = array())
