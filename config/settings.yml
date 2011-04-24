@@ -9,7 +9,10 @@ all:
   .settings:
     enabled_modules:
       - sfGuardAuth
-
+    standard_helpers:
+      - Partial
+      - Cache
+      - crossAppLink
 
 prod:
  .settings:

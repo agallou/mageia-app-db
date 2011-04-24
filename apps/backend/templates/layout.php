@@ -12,6 +12,7 @@
     <?php if ($sf_user->isAuthenticated()): ?>
       <?php echo link_to('Logout', url_for('@logout')); ?> -
       <?php echo link_to('Homepage', url_for('@homepage')); ?> -
+      <?php echo link_to('Frontend', cross_app_url_for('frontend', '@homepage', true)) ?>
     <?php endif; ?>
     <?php echo $sf_content ?>
   </body>
