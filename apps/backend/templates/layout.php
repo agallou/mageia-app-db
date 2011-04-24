@@ -9,6 +9,10 @@
     <?php include_javascripts() ?>
   </head>
   <body>
+    <?php if ($sf_user->isAuthenticated()): ?>
+      <?php echo link_to('Logout', url_for('@logout')); ?> -
+      <?php echo link_to('Homepage', url_for('@homepage')); ?> -
+    <?php endif; ?>
     <?php echo $sf_content ?>
   </body>
 </html>

@@ -15,14 +15,10 @@ default_index:
 default:
   url:   /:module/:action/*
 
-sf_guard_signin:
-  url:   /login
-  param: { module: sfGuardAuth, action: signin }
+login:
+  url: /login
+  param: { module: user, action: login }
 
-sf_guard_signout:
-  url:   /logout
-  param: { module: sfGuardAuth, action: signout }
-
-sf_guard_password:
-  url:   /request_password
-  param: { module: sfGuardAuth, action: password }
+logout:
+  url: /logout
+  param: { module: user, action: logout }
