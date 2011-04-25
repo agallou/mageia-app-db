@@ -10,6 +10,7 @@ class madbInitTask extends madbBaseTask
     $this->addOption('insert-test-data', null, sfCommandOption::PARAMETER_NONE, 'insert test data');
     $this->addOption('reinit', null, sfCommandOption::PARAMETER_NONE, 'reconfigure database connection information');
     $this->addOption('no-confirmation', null, sfCommandOption::PARAMETER_NONE, 'do not ask any confirmation');
+    $this->addOption('admin-password', null, sfCommandOption::PARAMETER_OPTIONAL, 'do not ask any confirmation', 'admin');
   }
   protected function execute($arguments = array(), $options = array())
   {
@@ -81,5 +82,10 @@ class madbInitTask extends madbBaseTask
     }
     $task = new sfCacheClearTask($this->dispatcher, $this->formatter);
     $task->run();
+    $task = new sfGuardCreateUserTask($this->dispatcher, $this->formatter);
+    $task->run(array('username' => 'admin', 'password' => $options['admin-password']));
+    $task = new sfGuardPromoteSuperAdminTask($this->dispatcher, $this->formatter);
+    $task->run(array('username' => 'admin'));
+
   }
 }
