@@ -35,7 +35,5 @@ all:
     use_database:           true
     enabled_modules:
       - default
-      - sfGuardGroup
       - sfGuardUser
       - sfGuardAuth
-      - sfGuardPermission
