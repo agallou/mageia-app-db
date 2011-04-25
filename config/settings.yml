@@ -1,7 +1,18 @@
 all:
   .actions:
-    login_module: user
-    login_action: login
+    login_module: sfGuardAuth
+    login_action: signin
+
+    secure_module: sfGuardAuth
+    secure_action: secure
+
+  .settings:
+    enabled_modules:
+      - sfGuardAuth
+    standard_helpers:
+      - Partial
+      - Cache
+      - crossAppLink
 
 prod:
  .settings:

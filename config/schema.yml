@@ -19,7 +19,7 @@ propel:
     rpm_group_id:                                                      { type: integer, required: true, foreignTable: rpm_group, foreignReference: id }
     licence:                                                           { type: varchar(255), required: true }
     name:                                                              { type: varchar(900), required: true }
-    md5_name:                                                          { type: varchar(32), required: true }
+    md5_name:                                                          { type: varchar, size:32, required: true }
     filename:                                                          { type: varchar(900), required: true }
     short_name:                                                        { type: varchar(255), required: true }
     evr:                                                               { type: varchar(255), required: true }
@@ -60,10 +60,14 @@ propel:
       unique_name:                                                     [ name ]
   user:
     id:                                                                ~
-    name:                                                              { type: longvarchar, required: true }
-    login:                                                             { type: varchar(255), required: true }
+    sf_guard_user_id: { type:integer, foreignTable: sf_guard_user, foreignReference: id, required: true, onDelete: cascade }
+    first_name:                                                        { type: varchar(20), required: true }
+    last_name:                                                         { type: varchar(20), required: true }
+    mail:                                                              { type: varchar(45) }
     _indexes:
-      unique_login:                                                    [ login ]
+      unique_login:                                                    [ last_name ]
+    _uniques:
+      sf_guard_user_id_UNIQUE:                                         [ sf_guard_user_id ]
   user_comments_package:
     id:                                                                ~
     package_id:                                                        { type: integer, required: true, foreignTable: package, foreignReference: id }
@@ -213,3 +217,4 @@ propel:
   version:
     id:                                                                ~
     version:                                                           { type: varchar(10) }
+

@@ -7,6 +7,10 @@ class ProjectConfiguration extends sfProjectConfiguration
 {
   public function setup()
   {
-    $this->enablePlugins('sfPropelPlugin');
+    if (sfConfig::get('sf_environment') == 'dev')
+    {
+      ini_set('memory_limit', '128M');
+    }
+    $this->enablePlugins('sfPropelPlugin', 'sfGuardPlugin', 'omCrossAppUrlPlugin');
   }
 }

@@ -1,12 +1,5 @@
 <?php
-class madbUser extends sfBasicSecurityUser
+class madbUser extends sfGuardSecurityUser
 {
-  public function login($login, $password)
-  {
-    $user = UserPeer::retrieveByLogin($login);
-    if (!is_null($user))
-    {
-      $this->setAuthenticated(true);
-    }
-  }
+
 }
