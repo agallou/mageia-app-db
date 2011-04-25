@@ -5,7 +5,7 @@
       defaults: [],
       searchfield: true,
       multi: true,
-      namespace: 'selectToCheckboxes_',
+      namespace: 'selectToCheckboxes_'
     }
     if (options)
     {
@@ -34,17 +34,17 @@
       var buttontext = $('<span>', {
         id : 'buttontext' + selectId,
         'class' : 'buttontext',
-        text    : label.text(),
+        text    : label.text()
       });
       buttontext.appendTo(button);
-      $('<span>', { id : 'buttonarrow' + selectId,'class' : 'arrow', html: '&darr;', }).appendTo(button);
+      $('<span>', { id : 'buttonarrow' + selectId,'class' : 'arrow', html: '&darr;' }).appendTo(button);
 
       button.click(function(){
         document.getElementById('widgetcontent_' + selectId + '1').style.left = buttontext.position().left + 'px';
         $('#widgetcontent_' + selectId + '1').toggle();
       });
 
-      var ng1 = $('<div>', { id: 'widgetcontent_' + selectId + '1', 'class' : 'widgetcontent1', });
+      var ng1 = $('<div>', { id: 'widgetcontent_' + selectId + '1', 'class' : 'widgetcontent1' });
       if (settings.multi)
       {
         ng1.addClass('multi');
@@ -60,7 +60,7 @@
       }
       recherche.keyup(function(e){
         var letext = $(e.target).val();
-        var regepx = new RegExp('/.*' + letext + '.*/');
+        var regepx = new RegExp('/.*' + letext + '.*/'); // regepx is unused
         $.each(foo, function(key, row)
         {
           if (row[1].toLowerCase().lastIndexOf(letext.toLowerCase()) != -1) {
@@ -76,7 +76,7 @@
         var jApply = $('<div>', {
           id      : 'apply' + selectId,
           'class' : 'apply',
-          text    : 'Apply',
+          text    : 'Apply'
         });
         jApply.appendTo(div);
         jApply.click(function(){
@@ -87,13 +87,13 @@
 
       $.each(foo, function(key, value)
       {
-        var jSpan = $('<div>', { id: prefix + 'span_' + value[0], });
+        var jSpan = $('<div>', { id: prefix + 'span_' + value[0] });
         var input = $("<input>", {
             type    : "checkbox",
             name    : selectId,
             val     : value[0],
             checked : (jQuery.inArray(value[0], settings.defaults) > -1),
-            id      : 'inp_' + selectId + '_' + value[0],
+            id      : 'inp_' + selectId + '_' + value[0]
            });
         input.appendTo(jSpan);
         if (!settings.multi)
@@ -102,13 +102,13 @@
         }
         var label = $('<label>', {
           'for' : 'inp_' + selectId + '_' + value[0],
-          text   : value[1],
+          text   : value[1]
         });
         label.appendTo(jSpan);
         if (settings.multi) {
           var clickable = label;
         } else {
-          var clickable = jSpan;
+          clickable = jSpan; //clickable all ready declared no need to redeclare
         }
         $(clickable).click(function(){
           //TODO only to that if option auto_something to true (default)
@@ -145,4 +145,3 @@
     $('.filterwidget div.widgetcontent input:checked').parent().addClass('selected');
   };
 })(jQuery);
-

@@ -37,8 +37,10 @@ class UserTableMap extends TableMap {
 		$this->setUseIdGenerator(true);
 		// columns
 		$this->addPrimaryKey('ID', 'Id', 'INTEGER', true, null, null);
-		$this->addColumn('NAME', 'Name', 'LONGVARCHAR', true, null, null);
-		$this->addColumn('LOGIN', 'Login', 'VARCHAR', true, 255, null);
+		$this->addForeignKey('SF_GUARD_USER_ID', 'SfGuardUserId', 'INTEGER', 'sf_guard_user', 'ID', true, null, null);
+		$this->addColumn('FIRST_NAME', 'FirstName', 'VARCHAR', true, 20, null);
+		$this->addColumn('LAST_NAME', 'LastName', 'VARCHAR', true, 20, null);
+		$this->addColumn('MAIL', 'Mail', 'VARCHAR', false, 45, null);
 		// validators
 	} // initialize()
 
@@ -47,6 +49,7 @@ class UserTableMap extends TableMap {
 	 */
 	public function buildRelations()
 	{
+    $this->addRelation('sfGuardUser', 'sfGuardUser', RelationMap::MANY_TO_ONE, array('sf_guard_user_id' => 'id', ), 'CASCADE', null);
     $this->addRelation('UserCommentsPackage', 'UserCommentsPackage', RelationMap::ONE_TO_MANY, array('id' => 'user_id', ), null, null);
     $this->addRelation('NewVersionRequest', 'NewVersionRequest', RelationMap::ONE_TO_MANY, array('id' => 'user_id', ), null, null);
     $this->addRelation('SoftwareRequest', 'SoftwareRequest', RelationMap::ONE_TO_MANY, array('id' => 'user_id', ), null, null);

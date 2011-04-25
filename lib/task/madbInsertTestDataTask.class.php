@@ -52,7 +52,5 @@ class madbInsertTestDataTask extends madbBaseTask
       echo "No file named $archive_name found, aborting test data insertion.";
       return false;
     }
-    
-    $dbCli->execute("insert into user(name, login) values ('admin', 'admin');");
   }
 }

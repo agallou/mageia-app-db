@@ -5,21 +5,35 @@
 <div>
 <ul class="packlist">
 <?php foreach ($results as $values): ?>
-  <li><?php $exploded_name = explode('/', $values['the_name']);
-  $name = $exploded_name[count($exploded_name)-1];
-  echo link_to( $name, 
-                $madburl->urlFor( 'group/list', 
-                                  $madbcontext, 
-                                  array( 
-                                    'extra_parameters' => array(
-                                      't_group' => implode(',', RpmGroupPeer::getChildGroupsFor($values['the_name'], true)),
-                                      'level' => $level + 1,
-                                      'group_name' => str_replace('/', '|', $values['the_name'])
+  <li><?php 
+  if ($values['the_name'] == $group_name) :
+    echo link_to( "[packages directly contained in this group]", 
+                  $madburl->urlFor( 'package/list', 
+                                    $madbcontext, 
+                                    array( 
+                                      'extra_parameters' => array(
+                                        't_group' => implode(',', RpmGroupPeer::getChildGroupsFor($values['the_name'], true, false)),
+                                      )
                                     )
                                   )
-                                )
-              ); 
-  echo ' : ' . $values['nb_of_packages']; 
+                ); 
+  else :
+    $exploded_name = explode('/', $values['the_name']);
+    $name = $exploded_name[count($exploded_name)-1];
+    echo link_to( $name, 
+                  $madburl->urlFor( 'group/list', 
+                                    $madbcontext, 
+                                    array( 
+                                      'extra_parameters' => array(
+                                        't_group' => implode(',', RpmGroupPeer::getChildGroupsFor($values['the_name'], true)),
+                                        'level' => $level + 1,
+                                        'group_name' => str_replace('/', '|', $values['the_name'])
+                                      )
+                                    )
+                                  )
+                ); 
+  endif; 
+  echo ' : ' . $values['nb_of_packages'];
   ?></li>
 <?php endforeach; ?>
 </ul>

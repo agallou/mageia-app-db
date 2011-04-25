@@ -25,16 +25,33 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 	protected $id;
 
 	/**
-	 * The value for the name field.
-	 * @var        string
+	 * The value for the sf_guard_user_id field.
+	 * @var        int
 	 */
-	protected $name;
+	protected $sf_guard_user_id;
 
 	/**
-	 * The value for the login field.
+	 * The value for the first_name field.
 	 * @var        string
 	 */
-	protected $login;
+	protected $first_name;
+
+	/**
+	 * The value for the last_name field.
+	 * @var        string
+	 */
+	protected $last_name;
+
+	/**
+	 * The value for the mail field.
+	 * @var        string
+	 */
+	protected $mail;
+
+	/**
+	 * @var        sfGuardUser
+	 */
+	protected $asfGuardUser;
 
 	/**
 	 * @var        array UserCommentsPackage[] Collection to store aggregation of UserCommentsPackage objects.
@@ -155,23 +172,43 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 	}
 
 	/**
-	 * Get the [name] column value.
+	 * Get the [sf_guard_user_id] column value.
 	 * 
-	 * @return     string
+	 * @return     int
 	 */
-	public function getName()
+	public function getSfGuardUserId()
 	{
-		return $this->name;
+		return $this->sf_guard_user_id;
 	}
 
 	/**
-	 * Get the [login] column value.
+	 * Get the [first_name] column value.
 	 * 
 	 * @return     string
 	 */
-	public function getLogin()
+	public function getFirstName()
 	{
-		return $this->login;
+		return $this->first_name;
+	}
+
+	/**
+	 * Get the [last_name] column value.
+	 * 
+	 * @return     string
+	 */
+	public function getLastName()
+	{
+		return $this->last_name;
+	}
+
+	/**
+	 * Get the [mail] column value.
+	 * 
+	 * @return     string
+	 */
+	public function getMail()
+	{
+		return $this->mail;
 	}
 
 	/**
@@ -195,44 +232,88 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 	} // setId()
 
 	/**
-	 * Set the value of [name] column.
+	 * Set the value of [sf_guard_user_id] column.
 	 * 
-	 * @param      string $v new value
+	 * @param      int $v new value
 	 * @return     User The current object (for fluent API support)
 	 */
-	public function setName($v)
+	public function setSfGuardUserId($v)
 	{
 		if ($v !== null) {
-			$v = (string) $v;
+			$v = (int) $v;
 		}
 
-		if ($this->name !== $v) {
-			$this->name = $v;
-			$this->modifiedColumns[] = UserPeer::NAME;
+		if ($this->sf_guard_user_id !== $v) {
+			$this->sf_guard_user_id = $v;
+			$this->modifiedColumns[] = UserPeer::SF_GUARD_USER_ID;
+		}
+
+		if ($this->asfGuardUser !== null && $this->asfGuardUser->getId() !== $v) {
+			$this->asfGuardUser = null;
 		}
 
 		return $this;
-	} // setName()
+	} // setSfGuardUserId()
 
 	/**
-	 * Set the value of [login] column.
+	 * Set the value of [first_name] column.
 	 * 
 	 * @param      string $v new value
 	 * @return     User The current object (for fluent API support)
 	 */
-	public function setLogin($v)
+	public function setFirstName($v)
 	{
 		if ($v !== null) {
 			$v = (string) $v;
 		}
 
-		if ($this->login !== $v) {
-			$this->login = $v;
-			$this->modifiedColumns[] = UserPeer::LOGIN;
+		if ($this->first_name !== $v) {
+			$this->first_name = $v;
+			$this->modifiedColumns[] = UserPeer::FIRST_NAME;
 		}
 
 		return $this;
-	} // setLogin()
+	} // setFirstName()
+
+	/**
+	 * Set the value of [last_name] column.
+	 * 
+	 * @param      string $v new value
+	 * @return     User The current object (for fluent API support)
+	 */
+	public function setLastName($v)
+	{
+		if ($v !== null) {
+			$v = (string) $v;
+		}
+
+		if ($this->last_name !== $v) {
+			$this->last_name = $v;
+			$this->modifiedColumns[] = UserPeer::LAST_NAME;
+		}
+
+		return $this;
+	} // setLastName()
+
+	/**
+	 * Set the value of [mail] column.
+	 * 
+	 * @param      string $v new value
+	 * @return     User The current object (for fluent API support)
+	 */
+	public function setMail($v)
+	{
+		if ($v !== null) {
+			$v = (string) $v;
+		}
+
+		if ($this->mail !== $v) {
+			$this->mail = $v;
+			$this->modifiedColumns[] = UserPeer::MAIL;
+		}
+
+		return $this;
+	} // setMail()
 
 	/**
 	 * Indicates whether the columns in this object are only set to default values.
@@ -267,8 +348,10 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 		try {
 
 			$this->id = ($row[$startcol + 0] !== null) ? (int) $row[$startcol + 0] : null;
-			$this->name = ($row[$startcol + 1] !== null) ? (string) $row[$startcol + 1] : null;
-			$this->login = ($row[$startcol + 2] !== null) ? (string) $row[$startcol + 2] : null;
+			$this->sf_guard_user_id = ($row[$startcol + 1] !== null) ? (int) $row[$startcol + 1] : null;
+			$this->first_name = ($row[$startcol + 2] !== null) ? (string) $row[$startcol + 2] : null;
+			$this->last_name = ($row[$startcol + 3] !== null) ? (string) $row[$startcol + 3] : null;
+			$this->mail = ($row[$startcol + 4] !== null) ? (string) $row[$startcol + 4] : null;
 			$this->resetModified();
 
 			$this->setNew(false);
@@ -278,7 +361,7 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 			}
 
 			// FIXME - using NUM_COLUMNS may be clearer.
-			return $startcol + 3; // 3 = UserPeer::NUM_COLUMNS - UserPeer::NUM_LAZY_LOAD_COLUMNS).
+			return $startcol + 5; // 5 = UserPeer::NUM_COLUMNS - UserPeer::NUM_LAZY_LOAD_COLUMNS).
 
 		} catch (Exception $e) {
 			throw new PropelException("Error populating User object", $e);
@@ -301,6 +384,9 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 	public function ensureConsistency()
 	{
 
+		if ($this->asfGuardUser !== null && $this->sf_guard_user_id !== $this->asfGuardUser->getId()) {
+			$this->asfGuardUser = null;
+		}
 	} // ensureConsistency
 
 	/**
@@ -340,6 +426,7 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 
 		if ($deep) {  // also de-associate any related objects?
 
+			$this->asfGuardUser = null;
 			$this->collUserCommentsPackages = null;
 			$this->lastUserCommentsPackageCriteria = null;
 
@@ -509,6 +596,18 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 		if (!$this->alreadyInSave) {
 			$this->alreadyInSave = true;
 
+			// We call the save method on the following object(s) if they
+			// were passed to this object by their coresponding set
+			// method.  This object relates to these object(s) by a
+			// foreign key reference.
+
+			if ($this->asfGuardUser !== null) {
+				if ($this->asfGuardUser->isModified() || $this->asfGuardUser->isNew()) {
+					$affectedRows += $this->asfGuardUser->save($con);
+				}
+				$this->setsfGuardUser($this->asfGuardUser);
+			}
+
 			if ($this->isNew() ) {
 				$this->modifiedColumns[] = UserPeer::ID;
 			}
@@ -669,6 +768,18 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 			$failureMap = array();
 
 
+			// We call the validate method on the following object(s) if they
+			// were passed to this object by their coresponding set
+			// method.  This object relates to these object(s) by a
+			// foreign key reference.
+
+			if ($this->asfGuardUser !== null) {
+				if (!$this->asfGuardUser->validate($columns)) {
+					$failureMap = array_merge($failureMap, $this->asfGuardUser->getValidationFailures());
+				}
+			}
+
+
 			if (($retval = UserPeer::doValidate($this, $columns)) !== true) {
 				$failureMap = array_merge($failureMap, $retval);
 			}
@@ -783,10 +894,16 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 				return $this->getId();
 				break;
 			case 1:
-				return $this->getName();
+				return $this->getSfGuardUserId();
 				break;
 			case 2:
-				return $this->getLogin();
+				return $this->getFirstName();
+				break;
+			case 3:
+				return $this->getLastName();
+				break;
+			case 4:
+				return $this->getMail();
 				break;
 			default:
 				return null;
@@ -810,8 +927,10 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 		$keys = UserPeer::getFieldNames($keyType);
 		$result = array(
 			$keys[0] => $this->getId(),
-			$keys[1] => $this->getName(),
-			$keys[2] => $this->getLogin(),
+			$keys[1] => $this->getSfGuardUserId(),
+			$keys[2] => $this->getFirstName(),
+			$keys[3] => $this->getLastName(),
+			$keys[4] => $this->getMail(),
 		);
 		return $result;
 	}
@@ -847,10 +966,16 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 				$this->setId($value);
 				break;
 			case 1:
-				$this->setName($value);
+				$this->setSfGuardUserId($value);
 				break;
 			case 2:
-				$this->setLogin($value);
+				$this->setFirstName($value);
+				break;
+			case 3:
+				$this->setLastName($value);
+				break;
+			case 4:
+				$this->setMail($value);
 				break;
 		} // switch()
 	}
@@ -877,8 +1002,10 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 		$keys = UserPeer::getFieldNames($keyType);
 
 		if (array_key_exists($keys[0], $arr)) $this->setId($arr[$keys[0]]);
-		if (array_key_exists($keys[1], $arr)) $this->setName($arr[$keys[1]]);
-		if (array_key_exists($keys[2], $arr)) $this->setLogin($arr[$keys[2]]);
+		if (array_key_exists($keys[1], $arr)) $this->setSfGuardUserId($arr[$keys[1]]);
+		if (array_key_exists($keys[2], $arr)) $this->setFirstName($arr[$keys[2]]);
+		if (array_key_exists($keys[3], $arr)) $this->setLastName($arr[$keys[3]]);
+		if (array_key_exists($keys[4], $arr)) $this->setMail($arr[$keys[4]]);
 	}
 
 	/**
@@ -891,8 +1018,10 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 		$criteria = new Criteria(UserPeer::DATABASE_NAME);
 
 		if ($this->isColumnModified(UserPeer::ID)) $criteria->add(UserPeer::ID, $this->id);
-		if ($this->isColumnModified(UserPeer::NAME)) $criteria->add(UserPeer::NAME, $this->name);
-		if ($this->isColumnModified(UserPeer::LOGIN)) $criteria->add(UserPeer::LOGIN, $this->login);
+		if ($this->isColumnModified(UserPeer::SF_GUARD_USER_ID)) $criteria->add(UserPeer::SF_GUARD_USER_ID, $this->sf_guard_user_id);
+		if ($this->isColumnModified(UserPeer::FIRST_NAME)) $criteria->add(UserPeer::FIRST_NAME, $this->first_name);
+		if ($this->isColumnModified(UserPeer::LAST_NAME)) $criteria->add(UserPeer::LAST_NAME, $this->last_name);
+		if ($this->isColumnModified(UserPeer::MAIL)) $criteria->add(UserPeer::MAIL, $this->mail);
 
 		return $criteria;
 	}
@@ -947,9 +1076,13 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 	public function copyInto($copyObj, $deepCopy = false)
 	{
 
-		$copyObj->setName($this->name);
+		$copyObj->setSfGuardUserId($this->sf_guard_user_id);
 
-		$copyObj->setLogin($this->login);
+		$copyObj->setFirstName($this->first_name);
+
+		$copyObj->setLastName($this->last_name);
+
+		$copyObj->setMail($this->mail);
 
 
 		if ($deepCopy) {
@@ -1056,6 +1189,55 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 			self::$peer = new UserPeer();
 		}
 		return self::$peer;
+	}
+
+	/**
+	 * Declares an association between this object and a sfGuardUser object.
+	 *
+	 * @param      sfGuardUser $v
+	 * @return     User The current object (for fluent API support)
+	 * @throws     PropelException
+	 */
+	public function setsfGuardUser(sfGuardUser $v = null)
+	{
+		if ($v === null) {
+			$this->setSfGuardUserId(NULL);
+		} else {
+			$this->setSfGuardUserId($v->getId());
+		}
+
+		$this->asfGuardUser = $v;
+
+		// Add binding for other direction of this n:n relationship.
+		// If this object has already been added to the sfGuardUser object, it will not be re-added.
+		if ($v !== null) {
+			$v->addUser($this);
+		}
+
+		return $this;
+	}
+
+
+	/**
+	 * Get the associated sfGuardUser object
+	 *
+	 * @param      PropelPDO Optional Connection object.
+	 * @return     sfGuardUser The associated sfGuardUser object.
+	 * @throws     PropelException
+	 */
+	public function getsfGuardUser(PropelPDO $con = null)
+	{
+		if ($this->asfGuardUser === null && ($this->sf_guard_user_id !== null)) {
+			$this->asfGuardUser = sfGuardUserPeer::retrieveByPk($this->sf_guard_user_id);
+			/* The following can be used additionally to
+			   guarantee the related object contains a reference
+			   to this object.  This level of coupling may, however, be
+			   undesirable since it could result in an only partially populated collection
+			   in the referenced object.
+			   $this->asfGuardUser->addUsers($this);
+			 */
+		}
+		return $this->asfGuardUser;
 	}
 
 	/**
@@ -2888,6 +3070,7 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 		$this->collUserHasNewVersionRequests = null;
 		$this->collNotifications = null;
 		$this->collRssFeeds = null;
+			$this->asfGuardUser = null;
 	}
 
 	// symfony_behaviors behavior

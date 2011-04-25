@@ -1,0 +1,24 @@
+This plugin aims to simply resolve the problem of doing **cross app links** for Symfony 1.2. 
+
+It's done using the symfony core classes and some context switch, so you can really use the routing defined in each application. 
+
+
+# Usage 
+
+This plugin provide an helper you can simply use as decribed [in the book](http://www.symfony-project.org/book/1_2/07-Inside-the-View-Layer#Helpers). For now just the url_for copycat is available : cross_app_url_for
+
+    function cross_app_url_for($appname, $url, $absolute = 'false', $env = null, $debug = 'false')
+
+Options are self-explanatory. $url is an internal uri as specified in the routing.ym off the $app application.
+
+# TODO 
+* investigate to check the overhead of the function
+* try catch the context creation 
+* dig more to find the adequat main controler (instead of lauching an exeception)
+
+# Changelog
+## 01/12/2008 
+* initial realease - cross_app_url_for function
+
+# On the web
+[http://www.glagla.org/weblog/2008/11/10/liens-inter-applications-avec-symfony-12/](http://www.glagla.org/weblog/2008/11/10/liens-inter-applications-avec-symfony-12/)
