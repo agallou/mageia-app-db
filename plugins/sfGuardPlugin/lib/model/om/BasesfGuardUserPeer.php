@@ -381,6 +381,9 @@ abstract class BasesfGuardUserPeer {
 	 */
 	public static function clearRelatedInstancePool()
 	{
+		// invalidate objects in UserPeer instance pool, since one or more of them may be deleted by ON DELETE CASCADE rule.
+		UserPeer::clearInstancePool();
+
 		// invalidate objects in sfGuardUserPermissionPeer instance pool, since one or more of them may be deleted by ON DELETE CASCADE rule.
 		sfGuardUserPermissionPeer::clearInstancePool();
 
@@ -705,6 +708,12 @@ abstract class BasesfGuardUserPeer {
 		$objects = sfGuardUserPeer::doSelect($criteria, $con);
 		foreach ($objects as $obj) {
 
+
+			// delete related User objects
+			$criteria = new Criteria(UserPeer::DATABASE_NAME);
+			
+			$criteria->add(UserPeer::SF_GUARD_USER_ID, $obj->getId());
+			$affectedRows += UserPeer::doDelete($criteria, $con);
 
 			// delete related sfGuardUserPermission objects
 			$criteria = new Criteria(sfGuardUserPermissionPeer::DATABASE_NAME);
