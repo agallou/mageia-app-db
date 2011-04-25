@@ -3,3 +3,6 @@ all:
   homepage:
     groups_line: 5
     rpm_limit: 6
+  sf_guard_plugin:
+    profile_class: User
+    profile_field_name: sf_guard_user_id

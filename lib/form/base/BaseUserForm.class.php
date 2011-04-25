@@ -15,19 +15,27 @@ abstract class BaseUserForm extends BaseFormPropel
   {
     $this->setWidgets(array(
       'id'                                => new sfWidgetFormInputHidden(),
-      'name'                              => new sfWidgetFormTextarea(),
-      'login'                             => new sfWidgetFormInputText(),
+      'sf_guard_user_id'                  => new sfWidgetFormPropelChoice(array('model' => 'sfGuardUser', 'add_empty' => false)),
+      'first_name'                        => new sfWidgetFormInputText(),
+      'last_name'                         => new sfWidgetFormInputText(),
+      'mail'                              => new sfWidgetFormInputText(),
       'user_has_software_request_list'    => new sfWidgetFormPropelChoice(array('multiple' => true, 'model' => 'SoftwareRequest')),
       'user_has_new_version_request_list' => new sfWidgetFormPropelChoice(array('multiple' => true, 'model' => 'NewVersionRequest')),
     ));
 
     $this->setValidators(array(
       'id'                                => new sfValidatorChoice(array('choices' => array($this->getObject()->getId()), 'empty_value' => $this->getObject()->getId(), 'required' => false)),
-      'name'                              => new sfValidatorString(),
-      'login'                             => new sfValidatorString(array('max_length' => 255)),
+      'sf_guard_user_id'                  => new sfValidatorPropelChoice(array('model' => 'sfGuardUser', 'column' => 'id')),
+      'first_name'                        => new sfValidatorString(array('max_length' => 20)),
+      'last_name'                         => new sfValidatorString(array('max_length' => 20)),
+      'mail'                              => new sfValidatorString(array('max_length' => 45, 'required' => false)),
       'user_has_software_request_list'    => new sfValidatorPropelChoice(array('multiple' => true, 'model' => 'SoftwareRequest', 'required' => false)),
       'user_has_new_version_request_list' => new sfValidatorPropelChoice(array('multiple' => true, 'model' => 'NewVersionRequest', 'required' => false)),
     ));
+
+    $this->validatorSchema->setPostValidator(
+      new sfValidatorPropelUnique(array('model' => 'User', 'column' => array('sf_guard_user_id')))
+    );
 
     $this->widgetSchema->setNameFormat('user[%s]');
 
