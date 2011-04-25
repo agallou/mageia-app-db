@@ -120,10 +120,9 @@ class rssAction extends sfActions
 
     $rpmCriteria->addDescendingOrderByColumn(RpmPeer::BUILD_TIME);
     $rpmCriteria->setLimit(20);
-    $rpms[] = RpmPeer::doSelect($rpmCriteria);
+    $rpms = RpmPeer::doSelect($rpmCriteria);
 
-    foreach($rpms as $rpmPack)
-        foreach($rpmPack as $rpm)
+        foreach($rpms as $rpm)
         {
             $this->rss[] = $rpm;
             $this->logMessage("RPM added: ".$rpm->getName());
@@ -135,8 +134,6 @@ class rssAction extends sfActions
 
         $this->setLayout("rss");
         return "View";
-
-    
          
   }
 }
