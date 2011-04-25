@@ -1,6 +1,9 @@
 showSuccess:
   stylesheets:
     - package.css
+  javascripts:
+    - jquery.flyout-1.2.min.js
+    - package.js
 listSuccess:
   javascripts:
 listSuccess:
