@@ -14,4 +14,11 @@
  */
 class User extends BaseUser {
 
+  public function checkPassword($username, $password, PluginsfGuardUser $user)
+  {
+    $madbConnectorFactory = new madbUserConnectorFactory($this, $user, $username, $password);
+    $madbConnector        = $madbConnectorFactory->create(sfConfig::get('app_user_connector'));
+    return $madbConnector->checkPassword();
+  }
+
 } // User
