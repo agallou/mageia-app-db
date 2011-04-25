@@ -20,6 +20,7 @@
                 </div>
                 <div id="user_infos">
                     <?php if ($sf_user->isAuthenticated()): ?>
+                        <?php echo $sf_user->getUsername() ?>
                         <?php echo link_to('Logout', url_for('@logout')); ?>
                     <?php else: ?>
                         <span>Register? |</span>
