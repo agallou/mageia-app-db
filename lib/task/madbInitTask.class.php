@@ -14,7 +14,7 @@ class madbInitTask extends madbBaseTask
   }
   protected function execute($arguments = array(), $options = array())
   {
-    ini_set('memory_limit', '64M'); //we need this because we load a lot of propel classes.
+    ini_set('memory_limit', '128M'); //we need this because we load a lot of propel classes.
     if (!file_exists(sfConfig::get('sf_config_dir') . DIRECTORY_SEPARATOR . 'databases.yml')
     || !file_exists(sfConfig::get('sf_config_dir') . DIRECTORY_SEPARATOR . 'propel.ini'))
     {

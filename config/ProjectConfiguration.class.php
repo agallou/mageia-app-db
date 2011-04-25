@@ -9,7 +9,7 @@ class ProjectConfiguration extends sfProjectConfiguration
   {
     if (sfConfig::get('sf_environment') == 'dev')
     {
-      ini_set('memory_limit', '32M');
+      ini_set('memory_limit', '128M');
     }
     $this->enablePlugins('sfPropelPlugin', 'sfGuardPlugin', 'omCrossAppUrlPlugin');
   }
