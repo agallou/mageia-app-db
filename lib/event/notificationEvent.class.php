@@ -111,7 +111,9 @@ class NotificationEvent
             );
 
             //TODO: use real user mail from db
-            $to = $notification->getUser()->getLogin()."@madb.phobos.home";
+            $to = array(
+                $notification->getUser()->getMail() => $notification->getUser()->getFirstName()." ".$notification->getUser()->getLastName()
+            );
 
             //get mailing prefix 4 user to sort incoming mails by filter
             $prefix = $notification->getMailPrefix();
@@ -120,6 +122,8 @@ class NotificationEvent
 
             $text = "You recieved this notification because package ".$rpm->getPackage()->getName() ." ". $eventText;
 
+            if(key($to) !== NULL)
+            {
             //sends mail directly
             sfContext::getInstance()->getMailer()->composeAndSend(
                 $from,
@@ -129,6 +133,7 @@ class NotificationEvent
                 );
             //TODO: fancy console notice line, should be configurable :)
              echo "\n\033[". "1;34" ."m". "Mailsending triggered: from:[".$from[key($from)]." <".key($from).">]->to:[$to] h:$header b:[$text]" . "\033[0m\n";
+            }
     }
 }
 ?>
