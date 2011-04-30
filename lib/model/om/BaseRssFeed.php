@@ -48,14 +48,14 @@ abstract class BaseRssFeed extends BaseObject  implements Persistent {
 	protected $aUser;
 
 	/**
-	 * @var        array Notification[] Collection to store aggregation of Notification objects.
+	 * @var        array Subscription[] Collection to store aggregation of Subscription objects.
 	 */
-	protected $collNotifications;
+	protected $collSubscriptions;
 
 	/**
-	 * @var        Criteria The criteria used to select the current contents of collNotifications.
+	 * @var        Criteria The criteria used to select the current contents of collSubscriptions.
 	 */
-	private $lastNotificationCriteria = null;
+	private $lastSubscriptionCriteria = null;
 
 	/**
 	 * Flag to prevent endless save loop, if this object is referenced
@@ -310,8 +310,8 @@ abstract class BaseRssFeed extends BaseObject  implements Persistent {
 		if ($deep) {  // also de-associate any related objects?
 
 			$this->aUser = null;
-			$this->collNotifications = null;
-			$this->lastNotificationCriteria = null;
+			$this->collSubscriptions = null;
+			$this->lastSubscriptionCriteria = null;
 
 		} // if (deep)
 	}
@@ -489,8 +489,8 @@ abstract class BaseRssFeed extends BaseObject  implements Persistent {
 				$this->resetModified(); // [HL] After being saved an object is no longer 'modified'
 			}
 
-			if ($this->collNotifications !== null) {
-				foreach ($this->collNotifications as $referrerFK) {
+			if ($this->collSubscriptions !== null) {
+				foreach ($this->collSubscriptions as $referrerFK) {
 					if (!$referrerFK->isDeleted()) {
 						$affectedRows += $referrerFK->save($con);
 					}
@@ -580,8 +580,8 @@ abstract class BaseRssFeed extends BaseObject  implements Persistent {
 			}
 
 
-				if ($this->collNotifications !== null) {
-					foreach ($this->collNotifications as $referrerFK) {
+				if ($this->collSubscriptions !== null) {
+					foreach ($this->collSubscriptions as $referrerFK) {
 						if (!$referrerFK->validate($columns)) {
 							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
 						}
@@ -810,9 +810,9 @@ abstract class BaseRssFeed extends BaseObject  implements Persistent {
 			// the getter/setter methods for fkey referrer objects.
 			$copyObj->setNew(false);
 
-			foreach ($this->getNotifications() as $relObj) {
+			foreach ($this->getSubscriptions() as $relObj) {
 				if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
-					$copyObj->addNotification($relObj->copy($deepCopy));
+					$copyObj->addSubscription($relObj->copy($deepCopy));
 				}
 			}
 
@@ -913,47 +913,47 @@ abstract class BaseRssFeed extends BaseObject  implements Persistent {
 	}
 
 	/**
-	 * Clears out the collNotifications collection (array).
+	 * Clears out the collSubscriptions collection (array).
 	 *
 	 * This does not modify the database; however, it will remove any associated objects, causing
 	 * them to be refetched by subsequent calls to accessor method.
 	 *
 	 * @return     void
-	 * @see        addNotifications()
+	 * @see        addSubscriptions()
 	 */
-	public function clearNotifications()
+	public function clearSubscriptions()
 	{
-		$this->collNotifications = null; // important to set this to NULL since that means it is uninitialized
+		$this->collSubscriptions = null; // important to set this to NULL since that means it is uninitialized
 	}
 
 	/**
-	 * Initializes the collNotifications collection (array).
+	 * Initializes the collSubscriptions collection (array).
 	 *
-	 * By default this just sets the collNotifications collection to an empty array (like clearcollNotifications());
+	 * By default this just sets the collSubscriptions collection to an empty array (like clearcollSubscriptions());
 	 * however, you may wish to override this method in your stub class to provide setting appropriate
 	 * to your application -- for example, setting the initial array to the values stored in database.
 	 *
 	 * @return     void
 	 */
-	public function initNotifications()
+	public function initSubscriptions()
 	{
-		$this->collNotifications = array();
+		$this->collSubscriptions = array();
 	}
 
 	/**
-	 * Gets an array of Notification objects which contain a foreign key that references this object.
+	 * Gets an array of Subscription objects which contain a foreign key that references this object.
 	 *
 	 * If this collection has already been initialized with an identical Criteria, it returns the collection.
 	 * Otherwise if this RssFeed has previously been saved, it will retrieve
-	 * related Notifications from storage. If this RssFeed is new, it will return
+	 * related Subscriptions from storage. If this RssFeed is new, it will return
 	 * an empty collection or the current collection, the criteria is ignored on a new object.
 	 *
 	 * @param      PropelPDO $con
 	 * @param      Criteria $criteria
-	 * @return     array Notification[]
+	 * @return     array Subscription[]
 	 * @throws     PropelException
 	 */
-	public function getNotifications($criteria = null, PropelPDO $con = null)
+	public function getSubscriptions($criteria = null, PropelPDO $con = null)
 	{
 		if ($criteria === null) {
 			$criteria = new Criteria(RssFeedPeer::DATABASE_NAME);
@@ -963,15 +963,15 @@ abstract class BaseRssFeed extends BaseObject  implements Persistent {
 			$criteria = clone $criteria;
 		}
 
-		if ($this->collNotifications === null) {
+		if ($this->collSubscriptions === null) {
 			if ($this->isNew()) {
-			   $this->collNotifications = array();
+			   $this->collSubscriptions = array();
 			} else {
 
-				$criteria->add(NotificationPeer::RSS_FEED_ID, $this->id);
+				$criteria->add(SubscriptionPeer::RSS_FEED_ID, $this->id);
 
-				NotificationPeer::addSelectColumns($criteria);
-				$this->collNotifications = NotificationPeer::doSelect($criteria, $con);
+				SubscriptionPeer::addSelectColumns($criteria);
+				$this->collSubscriptions = SubscriptionPeer::doSelect($criteria, $con);
 			}
 		} else {
 			// criteria has no effect for a new object
@@ -981,28 +981,28 @@ abstract class BaseRssFeed extends BaseObject  implements Persistent {
 				// one, just return the collection.
 
 
-				$criteria->add(NotificationPeer::RSS_FEED_ID, $this->id);
+				$criteria->add(SubscriptionPeer::RSS_FEED_ID, $this->id);
 
-				NotificationPeer::addSelectColumns($criteria);
-				if (!isset($this->lastNotificationCriteria) || !$this->lastNotificationCriteria->equals($criteria)) {
-					$this->collNotifications = NotificationPeer::doSelect($criteria, $con);
+				SubscriptionPeer::addSelectColumns($criteria);
+				if (!isset($this->lastSubscriptionCriteria) || !$this->lastSubscriptionCriteria->equals($criteria)) {
+					$this->collSubscriptions = SubscriptionPeer::doSelect($criteria, $con);
 				}
 			}
 		}
-		$this->lastNotificationCriteria = $criteria;
-		return $this->collNotifications;
+		$this->lastSubscriptionCriteria = $criteria;
+		return $this->collSubscriptions;
 	}
 
 	/**
-	 * Returns the number of related Notification objects.
+	 * Returns the number of related Subscription objects.
 	 *
 	 * @param      Criteria $criteria
 	 * @param      boolean $distinct
 	 * @param      PropelPDO $con
-	 * @return     int Count of related Notification objects.
+	 * @return     int Count of related Subscription objects.
 	 * @throws     PropelException
 	 */
-	public function countNotifications(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+	public function countSubscriptions(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
 	{
 		if ($criteria === null) {
 			$criteria = new Criteria(RssFeedPeer::DATABASE_NAME);
@@ -1016,14 +1016,14 @@ abstract class BaseRssFeed extends BaseObject  implements Persistent {
 
 		$count = null;
 
-		if ($this->collNotifications === null) {
+		if ($this->collSubscriptions === null) {
 			if ($this->isNew()) {
 				$count = 0;
 			} else {
 
-				$criteria->add(NotificationPeer::RSS_FEED_ID, $this->id);
+				$criteria->add(SubscriptionPeer::RSS_FEED_ID, $this->id);
 
-				$count = NotificationPeer::doCount($criteria, false, $con);
+				$count = SubscriptionPeer::doCount($criteria, false, $con);
 			}
 		} else {
 			// criteria has no effect for a new object
@@ -1033,35 +1033,35 @@ abstract class BaseRssFeed extends BaseObject  implements Persistent {
 				// one, just return count of the collection.
 
 
-				$criteria->add(NotificationPeer::RSS_FEED_ID, $this->id);
+				$criteria->add(SubscriptionPeer::RSS_FEED_ID, $this->id);
 
-				if (!isset($this->lastNotificationCriteria) || !$this->lastNotificationCriteria->equals($criteria)) {
-					$count = NotificationPeer::doCount($criteria, false, $con);
+				if (!isset($this->lastSubscriptionCriteria) || !$this->lastSubscriptionCriteria->equals($criteria)) {
+					$count = SubscriptionPeer::doCount($criteria, false, $con);
 				} else {
-					$count = count($this->collNotifications);
+					$count = count($this->collSubscriptions);
 				}
 			} else {
-				$count = count($this->collNotifications);
+				$count = count($this->collSubscriptions);
 			}
 		}
 		return $count;
 	}
 
 	/**
-	 * Method called to associate a Notification object to this object
-	 * through the Notification foreign key attribute.
+	 * Method called to associate a Subscription object to this object
+	 * through the Subscription foreign key attribute.
 	 *
-	 * @param      Notification $l Notification
+	 * @param      Subscription $l Subscription
 	 * @return     void
 	 * @throws     PropelException
 	 */
-	public function addNotification(Notification $l)
+	public function addSubscription(Subscription $l)
 	{
-		if ($this->collNotifications === null) {
-			$this->initNotifications();
+		if ($this->collSubscriptions === null) {
+			$this->initSubscriptions();
 		}
-		if (!in_array($l, $this->collNotifications, true)) { // only add it if the **same** object is not already associated
-			array_push($this->collNotifications, $l);
+		if (!in_array($l, $this->collSubscriptions, true)) { // only add it if the **same** object is not already associated
+			array_push($this->collSubscriptions, $l);
 			$l->setRssFeed($this);
 		}
 	}
@@ -1072,13 +1072,13 @@ abstract class BaseRssFeed extends BaseObject  implements Persistent {
 	 * an identical criteria, it returns the collection.
 	 * Otherwise if this RssFeed is new, it will return
 	 * an empty collection; or if this RssFeed has previously
-	 * been saved, it will retrieve related Notifications from storage.
+	 * been saved, it will retrieve related Subscriptions from storage.
 	 *
 	 * This method is protected by default in order to keep the public
 	 * api reasonable.  You can provide public methods for those you
 	 * actually need in RssFeed.
 	 */
-	public function getNotificationsJoinUser($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public function getSubscriptionsJoinUser($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
 		if ($criteria === null) {
 			$criteria = new Criteria(RssFeedPeer::DATABASE_NAME);
@@ -1088,29 +1088,29 @@ abstract class BaseRssFeed extends BaseObject  implements Persistent {
 			$criteria = clone $criteria;
 		}
 
-		if ($this->collNotifications === null) {
+		if ($this->collSubscriptions === null) {
 			if ($this->isNew()) {
-				$this->collNotifications = array();
+				$this->collSubscriptions = array();
 			} else {
 
-				$criteria->add(NotificationPeer::RSS_FEED_ID, $this->id);
+				$criteria->add(SubscriptionPeer::RSS_FEED_ID, $this->id);
 
-				$this->collNotifications = NotificationPeer::doSelectJoinUser($criteria, $con, $join_behavior);
+				$this->collSubscriptions = SubscriptionPeer::doSelectJoinUser($criteria, $con, $join_behavior);
 			}
 		} else {
 			// the following code is to determine if a new query is
 			// called for.  If the criteria is the same as the last
 			// one, just return the collection.
 
-			$criteria->add(NotificationPeer::RSS_FEED_ID, $this->id);
+			$criteria->add(SubscriptionPeer::RSS_FEED_ID, $this->id);
 
-			if (!isset($this->lastNotificationCriteria) || !$this->lastNotificationCriteria->equals($criteria)) {
-				$this->collNotifications = NotificationPeer::doSelectJoinUser($criteria, $con, $join_behavior);
+			if (!isset($this->lastSubscriptionCriteria) || !$this->lastSubscriptionCriteria->equals($criteria)) {
+				$this->collSubscriptions = SubscriptionPeer::doSelectJoinUser($criteria, $con, $join_behavior);
 			}
 		}
-		$this->lastNotificationCriteria = $criteria;
+		$this->lastSubscriptionCriteria = $criteria;
 
-		return $this->collNotifications;
+		return $this->collSubscriptions;
 	}
 
 	/**
@@ -1125,14 +1125,14 @@ abstract class BaseRssFeed extends BaseObject  implements Persistent {
 	public function clearAllReferences($deep = false)
 	{
 		if ($deep) {
-			if ($this->collNotifications) {
-				foreach ((array) $this->collNotifications as $o) {
+			if ($this->collSubscriptions) {
+				foreach ((array) $this->collSubscriptions as $o) {
 					$o->clearAllReferences($deep);
 				}
 			}
 		} // if ($deep)
 
-		$this->collNotifications = null;
+		$this->collSubscriptions = null;
 			$this->aUser = null;
 	}
 

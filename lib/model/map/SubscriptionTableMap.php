@@ -2,7 +2,7 @@
 
 
 /**
- * This class defines the structure of the 'rss_feed' table.
+ * This class defines the structure of the 'subscription' table.
  *
  *
  *
@@ -13,12 +13,12 @@
  *
  * @package    lib.model.map
  */
-class RssFeedTableMap extends TableMap {
+class SubscriptionTableMap extends TableMap {
 
 	/**
 	 * The (dot-path) name of this class
 	 */
-	const CLASS_NAME = 'lib.model.map.RssFeedTableMap';
+	const CLASS_NAME = 'lib.model.map.SubscriptionTableMap';
 
 	/**
 	 * Initialize the table attributes, columns and validators
@@ -30,16 +30,22 @@ class RssFeedTableMap extends TableMap {
 	public function initialize()
 	{
 	  // attributes
-		$this->setName('rss_feed');
-		$this->setPhpName('RssFeed');
-		$this->setClassname('RssFeed');
+		$this->setName('subscription');
+		$this->setPhpName('Subscription');
+		$this->setClassname('Subscription');
 		$this->setPackage('lib.model');
 		$this->setUseIdGenerator(true);
 		// columns
 		$this->addPrimaryKey('ID', 'Id', 'INTEGER', true, null, null);
-		$this->addColumn('NAME', 'Name', 'VARCHAR', false, 45, null);
-		$this->addColumn('HASH', 'Hash', 'VARCHAR', true, 45, null);
 		$this->addForeignKey('USER_ID', 'UserId', 'INTEGER', 'user', 'ID', true, null, null);
+		$this->addColumn('UPDATE', 'Update', 'BOOLEAN', true, null, false);
+		$this->addColumn('NEW_VERSION', 'NewVersion', 'BOOLEAN', true, null, false);
+		$this->addColumn('UPDATE_CANDIDATE', 'UpdateCandidate', 'BOOLEAN', true, null, false);
+		$this->addColumn('NEW_VERSION_CANDIDATE', 'NewVersionCandidate', 'BOOLEAN', true, null, false);
+		$this->addColumn('COMMENTS', 'Comments', 'BOOLEAN', true, null, false);
+		$this->addColumn('MAIL_NOTIFICATION', 'MailNotification', 'BOOLEAN', true, null, false);
+		$this->addColumn('MAIL_PREFIX', 'MailPrefix', 'VARCHAR', false, 45, null);
+		$this->addForeignKey('RSS_FEED_ID', 'RssFeedId', 'INTEGER', 'rss_feed', 'ID', false, null, null);
 		// validators
 	} // initialize()
 
@@ -49,7 +55,9 @@ class RssFeedTableMap extends TableMap {
 	public function buildRelations()
 	{
     $this->addRelation('User', 'User', RelationMap::MANY_TO_ONE, array('user_id' => 'id', ), null, null);
-    $this->addRelation('Subscription', 'Subscription', RelationMap::ONE_TO_MANY, array('id' => 'rss_feed_id', ), null, null);
+    $this->addRelation('RssFeed', 'RssFeed', RelationMap::MANY_TO_ONE, array('rss_feed_id' => 'id', ), null, null);
+    $this->addRelation('SubscriptionElement', 'SubscriptionElement', RelationMap::ONE_TO_MANY, array('id' => 'subscription_id', ), null, null);
+    $this->addRelation('Notification', 'Notification', RelationMap::ONE_TO_MANY, array('id' => 'subscription_id', ), null, null);
 	} // buildRelations()
 
 	/**
@@ -66,4 +74,4 @@ class RssFeedTableMap extends TableMap {
 		);
 	} // getBehaviors()
 
-} // RssFeedTableMap
+} // SubscriptionTableMap

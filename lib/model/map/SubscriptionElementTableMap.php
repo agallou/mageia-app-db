@@ -2,7 +2,7 @@
 
 
 /**
- * This class defines the structure of the 'notification' table.
+ * This class defines the structure of the 'subscription_element' table.
  *
  *
  *
@@ -13,12 +13,12 @@
  *
  * @package    lib.model.map
  */
-class NotificationTableMap extends TableMap {
+class SubscriptionElementTableMap extends TableMap {
 
 	/**
 	 * The (dot-path) name of this class
 	 */
-	const CLASS_NAME = 'lib.model.map.NotificationTableMap';
+	const CLASS_NAME = 'lib.model.map.SubscriptionElementTableMap';
 
 	/**
 	 * Initialize the table attributes, columns and validators
@@ -30,15 +30,19 @@ class NotificationTableMap extends TableMap {
 	public function initialize()
 	{
 	  // attributes
-		$this->setName('notification');
-		$this->setPhpName('Notification');
-		$this->setClassname('Notification');
+		$this->setName('subscription_element');
+		$this->setPhpName('SubscriptionElement');
+		$this->setClassname('SubscriptionElement');
 		$this->setPackage('lib.model');
 		$this->setUseIdGenerator(true);
 		// columns
 		$this->addPrimaryKey('ID', 'Id', 'INTEGER', true, null, null);
 		$this->addForeignKey('SUBSCRIPTION_ID', 'SubscriptionId', 'INTEGER', 'subscription', 'ID', true, null, null);
-		$this->addForeignKey('RPM_ID', 'RpmId', 'INTEGER', 'rpm', 'ID', true, null, null);
+		$this->addForeignKey('PACKAGE_ID', 'PackageId', 'INTEGER', 'package', 'ID', false, null, null);
+		$this->addForeignKey('RPM_GROUP_ID', 'RpmGroupId', 'INTEGER', 'rpm_group', 'ID', false, null, null);
+		$this->addForeignKey('DISTRELEASE_ID', 'DistreleaseId', 'INTEGER', 'distrelease', 'ID', false, null, null);
+		$this->addForeignKey('ARCH_ID', 'ArchId', 'INTEGER', 'arch', 'ID', false, null, null);
+		$this->addForeignKey('MEDIA_ID', 'MediaId', 'INTEGER', 'media', 'ID', false, null, null);
 		// validators
 	} // initialize()
 
@@ -48,7 +52,11 @@ class NotificationTableMap extends TableMap {
 	public function buildRelations()
 	{
     $this->addRelation('Subscription', 'Subscription', RelationMap::MANY_TO_ONE, array('subscription_id' => 'id', ), null, null);
-    $this->addRelation('Rpm', 'Rpm', RelationMap::MANY_TO_ONE, array('rpm_id' => 'id', ), null, null);
+    $this->addRelation('Package', 'Package', RelationMap::MANY_TO_ONE, array('package_id' => 'id', ), null, null);
+    $this->addRelation('RpmGroup', 'RpmGroup', RelationMap::MANY_TO_ONE, array('rpm_group_id' => 'id', ), null, null);
+    $this->addRelation('Distrelease', 'Distrelease', RelationMap::MANY_TO_ONE, array('distrelease_id' => 'id', ), null, null);
+    $this->addRelation('Arch', 'Arch', RelationMap::MANY_TO_ONE, array('arch_id' => 'id', ), null, null);
+    $this->addRelation('Media', 'Media', RelationMap::MANY_TO_ONE, array('media_id' => 'id', ), null, null);
 	} // buildRelations()
 
 	/**
@@ -65,4 +73,4 @@ class NotificationTableMap extends TableMap {
 		);
 	} // getBehaviors()
 
-} // NotificationTableMap
+} // SubscriptionElementTableMap

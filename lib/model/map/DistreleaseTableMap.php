@@ -51,7 +51,7 @@ class DistreleaseTableMap extends TableMap {
 	{
     $this->addRelation('Rpm', 'Rpm', RelationMap::ONE_TO_MANY, array('id' => 'distrelease_id', ), null, null);
     $this->addRelation('NewVersionRequest', 'NewVersionRequest', RelationMap::ONE_TO_MANY, array('id' => 'distrelease_id', ), null, null);
-    $this->addRelation('NotificationElement', 'NotificationElement', RelationMap::ONE_TO_MANY, array('id' => 'distrelease_id', ), null, null);
+    $this->addRelation('SubscriptionElement', 'SubscriptionElement', RelationMap::ONE_TO_MANY, array('id' => 'distrelease_id', ), null, null);
 	} // buildRelations()
 
 	/**

@@ -57,7 +57,7 @@ class PackageTableMap extends TableMap {
     $this->addRelation('PackageScreenshots', 'PackageScreenshots', RelationMap::ONE_TO_MANY, array('id' => 'package_id', ), null, null);
     $this->addRelation('PackageLinks', 'PackageLinks', RelationMap::ONE_TO_MANY, array('id' => 'package_id', ), null, null);
     $this->addRelation('NewVersionRequest', 'NewVersionRequest', RelationMap::ONE_TO_MANY, array('id' => 'package_id', ), null, null);
-    $this->addRelation('NotificationElement', 'NotificationElement', RelationMap::ONE_TO_MANY, array('id' => 'package_id', ), null, null);
+    $this->addRelation('SubscriptionElement', 'SubscriptionElement', RelationMap::ONE_TO_MANY, array('id' => 'package_id', ), null, null);
 	} // buildRelations()
 
 	/**

@@ -1,20 +1,20 @@
 <?php
 
 /**
- * Base class that represents a row from the 'notification' table.
+ * Base class that represents a row from the 'subscription_element' table.
  *
  * 
  *
  * @package    lib.model.om
  */
-abstract class BaseNotification extends BaseObject  implements Persistent {
+abstract class BaseSubscriptionElement extends BaseObject  implements Persistent {
 
 
 	/**
 	 * The Peer class.
 	 * Instance provides a convenient way of calling static methods on a class
 	 * that calling code may not be able to identify.
-	 * @var        NotificationPeer
+	 * @var        SubscriptionElementPeer
 	 */
 	protected static $peer;
 
@@ -31,10 +31,34 @@ abstract class BaseNotification extends BaseObject  implements Persistent {
 	protected $subscription_id;
 
 	/**
-	 * The value for the rpm_id field.
+	 * The value for the package_id field.
 	 * @var        int
 	 */
-	protected $rpm_id;
+	protected $package_id;
+
+	/**
+	 * The value for the rpm_group_id field.
+	 * @var        int
+	 */
+	protected $rpm_group_id;
+
+	/**
+	 * The value for the distrelease_id field.
+	 * @var        int
+	 */
+	protected $distrelease_id;
+
+	/**
+	 * The value for the arch_id field.
+	 * @var        int
+	 */
+	protected $arch_id;
+
+	/**
+	 * The value for the media_id field.
+	 * @var        int
+	 */
+	protected $media_id;
 
 	/**
 	 * @var        Subscription
@@ -42,9 +66,29 @@ abstract class BaseNotification extends BaseObject  implements Persistent {
 	protected $aSubscription;
 
 	/**
-	 * @var        Rpm
+	 * @var        Package
 	 */
-	protected $aRpm;
+	protected $aPackage;
+
+	/**
+	 * @var        RpmGroup
+	 */
+	protected $aRpmGroup;
+
+	/**
+	 * @var        Distrelease
+	 */
+	protected $aDistrelease;
+
+	/**
+	 * @var        Arch
+	 */
+	protected $aArch;
+
+	/**
+	 * @var        Media
+	 */
+	protected $aMedia;
 
 	/**
 	 * Flag to prevent endless save loop, if this object is referenced
@@ -62,7 +106,7 @@ abstract class BaseNotification extends BaseObject  implements Persistent {
 
 	// symfony behavior
 	
-	const PEER = 'NotificationPeer';
+	const PEER = 'SubscriptionElementPeer';
 
 	/**
 	 * Get the [id] column value.
@@ -85,20 +129,60 @@ abstract class BaseNotification extends BaseObject  implements Persistent {
 	}
 
 	/**
-	 * Get the [rpm_id] column value.
+	 * Get the [package_id] column value.
 	 * 
 	 * @return     int
 	 */
-	public function getRpmId()
+	public function getPackageId()
 	{
-		return $this->rpm_id;
+		return $this->package_id;
+	}
+
+	/**
+	 * Get the [rpm_group_id] column value.
+	 * 
+	 * @return     int
+	 */
+	public function getRpmGroupId()
+	{
+		return $this->rpm_group_id;
+	}
+
+	/**
+	 * Get the [distrelease_id] column value.
+	 * 
+	 * @return     int
+	 */
+	public function getDistreleaseId()
+	{
+		return $this->distrelease_id;
+	}
+
+	/**
+	 * Get the [arch_id] column value.
+	 * 
+	 * @return     int
+	 */
+	public function getArchId()
+	{
+		return $this->arch_id;
+	}
+
+	/**
+	 * Get the [media_id] column value.
+	 * 
+	 * @return     int
+	 */
+	public function getMediaId()
+	{
+		return $this->media_id;
 	}
 
 	/**
 	 * Set the value of [id] column.
 	 * 
 	 * @param      int $v new value
-	 * @return     Notification The current object (for fluent API support)
+	 * @return     SubscriptionElement The current object (for fluent API support)
 	 */
 	public function setId($v)
 	{
@@ -108,7 +192,7 @@ abstract class BaseNotification extends BaseObject  implements Persistent {
 
 		if ($this->id !== $v) {
 			$this->id = $v;
-			$this->modifiedColumns[] = NotificationPeer::ID;
+			$this->modifiedColumns[] = SubscriptionElementPeer::ID;
 		}
 
 		return $this;
@@ -118,7 +202,7 @@ abstract class BaseNotification extends BaseObject  implements Persistent {
 	 * Set the value of [subscription_id] column.
 	 * 
 	 * @param      int $v new value
-	 * @return     Notification The current object (for fluent API support)
+	 * @return     SubscriptionElement The current object (for fluent API support)
 	 */
 	public function setSubscriptionId($v)
 	{
@@ -128,7 +212,7 @@ abstract class BaseNotification extends BaseObject  implements Persistent {
 
 		if ($this->subscription_id !== $v) {
 			$this->subscription_id = $v;
-			$this->modifiedColumns[] = NotificationPeer::SUBSCRIPTION_ID;
+			$this->modifiedColumns[] = SubscriptionElementPeer::SUBSCRIPTION_ID;
 		}
 
 		if ($this->aSubscription !== null && $this->aSubscription->getId() !== $v) {
@@ -139,28 +223,124 @@ abstract class BaseNotification extends BaseObject  implements Persistent {
 	} // setSubscriptionId()
 
 	/**
-	 * Set the value of [rpm_id] column.
+	 * Set the value of [package_id] column.
 	 * 
 	 * @param      int $v new value
-	 * @return     Notification The current object (for fluent API support)
+	 * @return     SubscriptionElement The current object (for fluent API support)
 	 */
-	public function setRpmId($v)
+	public function setPackageId($v)
 	{
 		if ($v !== null) {
 			$v = (int) $v;
 		}
 
-		if ($this->rpm_id !== $v) {
-			$this->rpm_id = $v;
-			$this->modifiedColumns[] = NotificationPeer::RPM_ID;
+		if ($this->package_id !== $v) {
+			$this->package_id = $v;
+			$this->modifiedColumns[] = SubscriptionElementPeer::PACKAGE_ID;
 		}
 
-		if ($this->aRpm !== null && $this->aRpm->getId() !== $v) {
-			$this->aRpm = null;
+		if ($this->aPackage !== null && $this->aPackage->getId() !== $v) {
+			$this->aPackage = null;
 		}
 
 		return $this;
-	} // setRpmId()
+	} // setPackageId()
+
+	/**
+	 * Set the value of [rpm_group_id] column.
+	 * 
+	 * @param      int $v new value
+	 * @return     SubscriptionElement The current object (for fluent API support)
+	 */
+	public function setRpmGroupId($v)
+	{
+		if ($v !== null) {
+			$v = (int) $v;
+		}
+
+		if ($this->rpm_group_id !== $v) {
+			$this->rpm_group_id = $v;
+			$this->modifiedColumns[] = SubscriptionElementPeer::RPM_GROUP_ID;
+		}
+
+		if ($this->aRpmGroup !== null && $this->aRpmGroup->getId() !== $v) {
+			$this->aRpmGroup = null;
+		}
+
+		return $this;
+	} // setRpmGroupId()
+
+	/**
+	 * Set the value of [distrelease_id] column.
+	 * 
+	 * @param      int $v new value
+	 * @return     SubscriptionElement The current object (for fluent API support)
+	 */
+	public function setDistreleaseId($v)
+	{
+		if ($v !== null) {
+			$v = (int) $v;
+		}
+
+		if ($this->distrelease_id !== $v) {
+			$this->distrelease_id = $v;
+			$this->modifiedColumns[] = SubscriptionElementPeer::DISTRELEASE_ID;
+		}
+
+		if ($this->aDistrelease !== null && $this->aDistrelease->getId() !== $v) {
+			$this->aDistrelease = null;
+		}
+
+		return $this;
+	} // setDistreleaseId()
+
+	/**
+	 * Set the value of [arch_id] column.
+	 * 
+	 * @param      int $v new value
+	 * @return     SubscriptionElement The current object (for fluent API support)
+	 */
+	public function setArchId($v)
+	{
+		if ($v !== null) {
+			$v = (int) $v;
+		}
+
+		if ($this->arch_id !== $v) {
+			$this->arch_id = $v;
+			$this->modifiedColumns[] = SubscriptionElementPeer::ARCH_ID;
+		}
+
+		if ($this->aArch !== null && $this->aArch->getId() !== $v) {
+			$this->aArch = null;
+		}
+
+		return $this;
+	} // setArchId()
+
+	/**
+	 * Set the value of [media_id] column.
+	 * 
+	 * @param      int $v new value
+	 * @return     SubscriptionElement The current object (for fluent API support)
+	 */
+	public function setMediaId($v)
+	{
+		if ($v !== null) {
+			$v = (int) $v;
+		}
+
+		if ($this->media_id !== $v) {
+			$this->media_id = $v;
+			$this->modifiedColumns[] = SubscriptionElementPeer::MEDIA_ID;
+		}
+
+		if ($this->aMedia !== null && $this->aMedia->getId() !== $v) {
+			$this->aMedia = null;
+		}
+
+		return $this;
+	} // setMediaId()
 
 	/**
 	 * Indicates whether the columns in this object are only set to default values.
@@ -196,7 +376,11 @@ abstract class BaseNotification extends BaseObject  implements Persistent {
 
 			$this->id = ($row[$startcol + 0] !== null) ? (int) $row[$startcol + 0] : null;
 			$this->subscription_id = ($row[$startcol + 1] !== null) ? (int) $row[$startcol + 1] : null;
-			$this->rpm_id = ($row[$startcol + 2] !== null) ? (int) $row[$startcol + 2] : null;
+			$this->package_id = ($row[$startcol + 2] !== null) ? (int) $row[$startcol + 2] : null;
+			$this->rpm_group_id = ($row[$startcol + 3] !== null) ? (int) $row[$startcol + 3] : null;
+			$this->distrelease_id = ($row[$startcol + 4] !== null) ? (int) $row[$startcol + 4] : null;
+			$this->arch_id = ($row[$startcol + 5] !== null) ? (int) $row[$startcol + 5] : null;
+			$this->media_id = ($row[$startcol + 6] !== null) ? (int) $row[$startcol + 6] : null;
 			$this->resetModified();
 
 			$this->setNew(false);
@@ -206,10 +390,10 @@ abstract class BaseNotification extends BaseObject  implements Persistent {
 			}
 
 			// FIXME - using NUM_COLUMNS may be clearer.
-			return $startcol + 3; // 3 = NotificationPeer::NUM_COLUMNS - NotificationPeer::NUM_LAZY_LOAD_COLUMNS).
+			return $startcol + 7; // 7 = SubscriptionElementPeer::NUM_COLUMNS - SubscriptionElementPeer::NUM_LAZY_LOAD_COLUMNS).
 
 		} catch (Exception $e) {
-			throw new PropelException("Error populating Notification object", $e);
+			throw new PropelException("Error populating SubscriptionElement object", $e);
 		}
 	}
 
@@ -232,8 +416,20 @@ abstract class BaseNotification extends BaseObject  implements Persistent {
 		if ($this->aSubscription !== null && $this->subscription_id !== $this->aSubscription->getId()) {
 			$this->aSubscription = null;
 		}
-		if ($this->aRpm !== null && $this->rpm_id !== $this->aRpm->getId()) {
-			$this->aRpm = null;
+		if ($this->aPackage !== null && $this->package_id !== $this->aPackage->getId()) {
+			$this->aPackage = null;
+		}
+		if ($this->aRpmGroup !== null && $this->rpm_group_id !== $this->aRpmGroup->getId()) {
+			$this->aRpmGroup = null;
+		}
+		if ($this->aDistrelease !== null && $this->distrelease_id !== $this->aDistrelease->getId()) {
+			$this->aDistrelease = null;
+		}
+		if ($this->aArch !== null && $this->arch_id !== $this->aArch->getId()) {
+			$this->aArch = null;
+		}
+		if ($this->aMedia !== null && $this->media_id !== $this->aMedia->getId()) {
+			$this->aMedia = null;
 		}
 	} // ensureConsistency
 
@@ -258,13 +454,13 @@ abstract class BaseNotification extends BaseObject  implements Persistent {
 		}
 
 		if ($con === null) {
-			$con = Propel::getConnection(NotificationPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+			$con = Propel::getConnection(SubscriptionElementPeer::DATABASE_NAME, Propel::CONNECTION_READ);
 		}
 
 		// We don't need to alter the object instance pool; we're just modifying this instance
 		// already in the pool.
 
-		$stmt = NotificationPeer::doSelectStmt($this->buildPkeyCriteria(), $con);
+		$stmt = SubscriptionElementPeer::doSelectStmt($this->buildPkeyCriteria(), $con);
 		$row = $stmt->fetch(PDO::FETCH_NUM);
 		$stmt->closeCursor();
 		if (!$row) {
@@ -275,7 +471,11 @@ abstract class BaseNotification extends BaseObject  implements Persistent {
 		if ($deep) {  // also de-associate any related objects?
 
 			$this->aSubscription = null;
-			$this->aRpm = null;
+			$this->aPackage = null;
+			$this->aRpmGroup = null;
+			$this->aDistrelease = null;
+			$this->aArch = null;
+			$this->aMedia = null;
 		} // if (deep)
 	}
 
@@ -295,14 +495,14 @@ abstract class BaseNotification extends BaseObject  implements Persistent {
 		}
 
 		if ($con === null) {
-			$con = Propel::getConnection(NotificationPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+			$con = Propel::getConnection(SubscriptionElementPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
 		}
 		
 		$con->beginTransaction();
 		try {
 			$ret = $this->preDelete($con);
 			// symfony_behaviors behavior
-			foreach (sfMixer::getCallables('BaseNotification:delete:pre') as $callable)
+			foreach (sfMixer::getCallables('BaseSubscriptionElement:delete:pre') as $callable)
 			{
 			  if (call_user_func($callable, $this, $con))
 			  {
@@ -313,10 +513,10 @@ abstract class BaseNotification extends BaseObject  implements Persistent {
 			}
 
 			if ($ret) {
-				NotificationPeer::doDelete($this, $con);
+				SubscriptionElementPeer::doDelete($this, $con);
 				$this->postDelete($con);
 				// symfony_behaviors behavior
-				foreach (sfMixer::getCallables('BaseNotification:delete:post') as $callable)
+				foreach (sfMixer::getCallables('BaseSubscriptionElement:delete:post') as $callable)
 				{
 				  call_user_func($callable, $this, $con);
 				}
@@ -352,7 +552,7 @@ abstract class BaseNotification extends BaseObject  implements Persistent {
 		}
 
 		if ($con === null) {
-			$con = Propel::getConnection(NotificationPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+			$con = Propel::getConnection(SubscriptionElementPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
 		}
 		
 		$con->beginTransaction();
@@ -360,7 +560,7 @@ abstract class BaseNotification extends BaseObject  implements Persistent {
 		try {
 			$ret = $this->preSave($con);
 			// symfony_behaviors behavior
-			foreach (sfMixer::getCallables('BaseNotification:save:pre') as $callable)
+			foreach (sfMixer::getCallables('BaseSubscriptionElement:save:pre') as $callable)
 			{
 			  if (is_integer($affectedRows = call_user_func($callable, $this, $con)))
 			  {
@@ -384,12 +584,12 @@ abstract class BaseNotification extends BaseObject  implements Persistent {
 				}
 				$this->postSave($con);
 				// symfony_behaviors behavior
-				foreach (sfMixer::getCallables('BaseNotification:save:post') as $callable)
+				foreach (sfMixer::getCallables('BaseSubscriptionElement:save:post') as $callable)
 				{
 				  call_user_func($callable, $this, $con, $affectedRows);
 				}
 
-				NotificationPeer::addInstanceToPool($this);
+				SubscriptionElementPeer::addInstanceToPool($this);
 			} else {
 				$affectedRows = 0;
 			}
@@ -430,21 +630,49 @@ abstract class BaseNotification extends BaseObject  implements Persistent {
 				$this->setSubscription($this->aSubscription);
 			}
 
-			if ($this->aRpm !== null) {
-				if ($this->aRpm->isModified() || $this->aRpm->isNew()) {
-					$affectedRows += $this->aRpm->save($con);
+			if ($this->aPackage !== null) {
+				if ($this->aPackage->isModified() || $this->aPackage->isNew()) {
+					$affectedRows += $this->aPackage->save($con);
 				}
-				$this->setRpm($this->aRpm);
+				$this->setPackage($this->aPackage);
+			}
+
+			if ($this->aRpmGroup !== null) {
+				if ($this->aRpmGroup->isModified() || $this->aRpmGroup->isNew()) {
+					$affectedRows += $this->aRpmGroup->save($con);
+				}
+				$this->setRpmGroup($this->aRpmGroup);
+			}
+
+			if ($this->aDistrelease !== null) {
+				if ($this->aDistrelease->isModified() || $this->aDistrelease->isNew()) {
+					$affectedRows += $this->aDistrelease->save($con);
+				}
+				$this->setDistrelease($this->aDistrelease);
+			}
+
+			if ($this->aArch !== null) {
+				if ($this->aArch->isModified() || $this->aArch->isNew()) {
+					$affectedRows += $this->aArch->save($con);
+				}
+				$this->setArch($this->aArch);
+			}
+
+			if ($this->aMedia !== null) {
+				if ($this->aMedia->isModified() || $this->aMedia->isNew()) {
+					$affectedRows += $this->aMedia->save($con);
+				}
+				$this->setMedia($this->aMedia);
 			}
 
 			if ($this->isNew() ) {
-				$this->modifiedColumns[] = NotificationPeer::ID;
+				$this->modifiedColumns[] = SubscriptionElementPeer::ID;
 			}
 
 			// If this object has been modified, then save it to the database.
 			if ($this->isModified()) {
 				if ($this->isNew()) {
-					$pk = NotificationPeer::doInsert($this, $con);
+					$pk = SubscriptionElementPeer::doInsert($this, $con);
 					$affectedRows += 1; // we are assuming that there is only 1 row per doInsert() which
 										 // should always be true here (even though technically
 										 // BasePeer::doInsert() can insert multiple rows).
@@ -453,7 +681,7 @@ abstract class BaseNotification extends BaseObject  implements Persistent {
 
 					$this->setNew(false);
 				} else {
-					$affectedRows += NotificationPeer::doUpdate($this, $con);
+					$affectedRows += SubscriptionElementPeer::doUpdate($this, $con);
 				}
 
 				$this->resetModified(); // [HL] After being saved an object is no longer 'modified'
@@ -536,14 +764,38 @@ abstract class BaseNotification extends BaseObject  implements Persistent {
 				}
 			}
 
-			if ($this->aRpm !== null) {
-				if (!$this->aRpm->validate($columns)) {
-					$failureMap = array_merge($failureMap, $this->aRpm->getValidationFailures());
+			if ($this->aPackage !== null) {
+				if (!$this->aPackage->validate($columns)) {
+					$failureMap = array_merge($failureMap, $this->aPackage->getValidationFailures());
+				}
+			}
+
+			if ($this->aRpmGroup !== null) {
+				if (!$this->aRpmGroup->validate($columns)) {
+					$failureMap = array_merge($failureMap, $this->aRpmGroup->getValidationFailures());
+				}
+			}
+
+			if ($this->aDistrelease !== null) {
+				if (!$this->aDistrelease->validate($columns)) {
+					$failureMap = array_merge($failureMap, $this->aDistrelease->getValidationFailures());
+				}
+			}
+
+			if ($this->aArch !== null) {
+				if (!$this->aArch->validate($columns)) {
+					$failureMap = array_merge($failureMap, $this->aArch->getValidationFailures());
+				}
+			}
+
+			if ($this->aMedia !== null) {
+				if (!$this->aMedia->validate($columns)) {
+					$failureMap = array_merge($failureMap, $this->aMedia->getValidationFailures());
 				}
 			}
 
 
-			if (($retval = NotificationPeer::doValidate($this, $columns)) !== true) {
+			if (($retval = SubscriptionElementPeer::doValidate($this, $columns)) !== true) {
 				$failureMap = array_merge($failureMap, $retval);
 			}
 
@@ -566,7 +818,7 @@ abstract class BaseNotification extends BaseObject  implements Persistent {
 	 */
 	public function getByName($name, $type = BasePeer::TYPE_PHPNAME)
 	{
-		$pos = NotificationPeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
+		$pos = SubscriptionElementPeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
 		$field = $this->getByPosition($pos);
 		return $field;
 	}
@@ -588,7 +840,19 @@ abstract class BaseNotification extends BaseObject  implements Persistent {
 				return $this->getSubscriptionId();
 				break;
 			case 2:
-				return $this->getRpmId();
+				return $this->getPackageId();
+				break;
+			case 3:
+				return $this->getRpmGroupId();
+				break;
+			case 4:
+				return $this->getDistreleaseId();
+				break;
+			case 5:
+				return $this->getArchId();
+				break;
+			case 6:
+				return $this->getMediaId();
 				break;
 			default:
 				return null;
@@ -609,11 +873,15 @@ abstract class BaseNotification extends BaseObject  implements Persistent {
 	 */
 	public function toArray($keyType = BasePeer::TYPE_PHPNAME, $includeLazyLoadColumns = true)
 	{
-		$keys = NotificationPeer::getFieldNames($keyType);
+		$keys = SubscriptionElementPeer::getFieldNames($keyType);
 		$result = array(
 			$keys[0] => $this->getId(),
 			$keys[1] => $this->getSubscriptionId(),
-			$keys[2] => $this->getRpmId(),
+			$keys[2] => $this->getPackageId(),
+			$keys[3] => $this->getRpmGroupId(),
+			$keys[4] => $this->getDistreleaseId(),
+			$keys[5] => $this->getArchId(),
+			$keys[6] => $this->getMediaId(),
 		);
 		return $result;
 	}
@@ -630,7 +898,7 @@ abstract class BaseNotification extends BaseObject  implements Persistent {
 	 */
 	public function setByName($name, $value, $type = BasePeer::TYPE_PHPNAME)
 	{
-		$pos = NotificationPeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
+		$pos = SubscriptionElementPeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
 		return $this->setByPosition($pos, $value);
 	}
 
@@ -652,7 +920,19 @@ abstract class BaseNotification extends BaseObject  implements Persistent {
 				$this->setSubscriptionId($value);
 				break;
 			case 2:
-				$this->setRpmId($value);
+				$this->setPackageId($value);
+				break;
+			case 3:
+				$this->setRpmGroupId($value);
+				break;
+			case 4:
+				$this->setDistreleaseId($value);
+				break;
+			case 5:
+				$this->setArchId($value);
+				break;
+			case 6:
+				$this->setMediaId($value);
 				break;
 		} // switch()
 	}
@@ -676,11 +956,15 @@ abstract class BaseNotification extends BaseObject  implements Persistent {
 	 */
 	public function fromArray($arr, $keyType = BasePeer::TYPE_PHPNAME)
 	{
-		$keys = NotificationPeer::getFieldNames($keyType);
+		$keys = SubscriptionElementPeer::getFieldNames($keyType);
 
 		if (array_key_exists($keys[0], $arr)) $this->setId($arr[$keys[0]]);
 		if (array_key_exists($keys[1], $arr)) $this->setSubscriptionId($arr[$keys[1]]);
-		if (array_key_exists($keys[2], $arr)) $this->setRpmId($arr[$keys[2]]);
+		if (array_key_exists($keys[2], $arr)) $this->setPackageId($arr[$keys[2]]);
+		if (array_key_exists($keys[3], $arr)) $this->setRpmGroupId($arr[$keys[3]]);
+		if (array_key_exists($keys[4], $arr)) $this->setDistreleaseId($arr[$keys[4]]);
+		if (array_key_exists($keys[5], $arr)) $this->setArchId($arr[$keys[5]]);
+		if (array_key_exists($keys[6], $arr)) $this->setMediaId($arr[$keys[6]]);
 	}
 
 	/**
@@ -690,11 +974,15 @@ abstract class BaseNotification extends BaseObject  implements Persistent {
 	 */
 	public function buildCriteria()
 	{
-		$criteria = new Criteria(NotificationPeer::DATABASE_NAME);
+		$criteria = new Criteria(SubscriptionElementPeer::DATABASE_NAME);
 
-		if ($this->isColumnModified(NotificationPeer::ID)) $criteria->add(NotificationPeer::ID, $this->id);
-		if ($this->isColumnModified(NotificationPeer::SUBSCRIPTION_ID)) $criteria->add(NotificationPeer::SUBSCRIPTION_ID, $this->subscription_id);
-		if ($this->isColumnModified(NotificationPeer::RPM_ID)) $criteria->add(NotificationPeer::RPM_ID, $this->rpm_id);
+		if ($this->isColumnModified(SubscriptionElementPeer::ID)) $criteria->add(SubscriptionElementPeer::ID, $this->id);
+		if ($this->isColumnModified(SubscriptionElementPeer::SUBSCRIPTION_ID)) $criteria->add(SubscriptionElementPeer::SUBSCRIPTION_ID, $this->subscription_id);
+		if ($this->isColumnModified(SubscriptionElementPeer::PACKAGE_ID)) $criteria->add(SubscriptionElementPeer::PACKAGE_ID, $this->package_id);
+		if ($this->isColumnModified(SubscriptionElementPeer::RPM_GROUP_ID)) $criteria->add(SubscriptionElementPeer::RPM_GROUP_ID, $this->rpm_group_id);
+		if ($this->isColumnModified(SubscriptionElementPeer::DISTRELEASE_ID)) $criteria->add(SubscriptionElementPeer::DISTRELEASE_ID, $this->distrelease_id);
+		if ($this->isColumnModified(SubscriptionElementPeer::ARCH_ID)) $criteria->add(SubscriptionElementPeer::ARCH_ID, $this->arch_id);
+		if ($this->isColumnModified(SubscriptionElementPeer::MEDIA_ID)) $criteria->add(SubscriptionElementPeer::MEDIA_ID, $this->media_id);
 
 		return $criteria;
 	}
@@ -709,9 +997,9 @@ abstract class BaseNotification extends BaseObject  implements Persistent {
 	 */
 	public function buildPkeyCriteria()
 	{
-		$criteria = new Criteria(NotificationPeer::DATABASE_NAME);
+		$criteria = new Criteria(SubscriptionElementPeer::DATABASE_NAME);
 
-		$criteria->add(NotificationPeer::ID, $this->id);
+		$criteria->add(SubscriptionElementPeer::ID, $this->id);
 
 		return $criteria;
 	}
@@ -742,7 +1030,7 @@ abstract class BaseNotification extends BaseObject  implements Persistent {
 	 * If desired, this method can also make copies of all associated (fkey referrers)
 	 * objects.
 	 *
-	 * @param      object $copyObj An object of Notification (or compatible) type.
+	 * @param      object $copyObj An object of SubscriptionElement (or compatible) type.
 	 * @param      boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
 	 * @throws     PropelException
 	 */
@@ -751,7 +1039,15 @@ abstract class BaseNotification extends BaseObject  implements Persistent {
 
 		$copyObj->setSubscriptionId($this->subscription_id);
 
-		$copyObj->setRpmId($this->rpm_id);
+		$copyObj->setPackageId($this->package_id);
+
+		$copyObj->setRpmGroupId($this->rpm_group_id);
+
+		$copyObj->setDistreleaseId($this->distrelease_id);
+
+		$copyObj->setArchId($this->arch_id);
+
+		$copyObj->setMediaId($this->media_id);
 
 
 		$copyObj->setNew(true);
@@ -769,7 +1065,7 @@ abstract class BaseNotification extends BaseObject  implements Persistent {
 	 * objects.
 	 *
 	 * @param      boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
-	 * @return     Notification Clone of current object.
+	 * @return     SubscriptionElement Clone of current object.
 	 * @throws     PropelException
 	 */
 	public function copy($deepCopy = false)
@@ -788,12 +1084,12 @@ abstract class BaseNotification extends BaseObject  implements Persistent {
 	 * same instance for all member of this class. The method could therefore
 	 * be static, but this would prevent one from overriding the behavior.
 	 *
-	 * @return     NotificationPeer
+	 * @return     SubscriptionElementPeer
 	 */
 	public function getPeer()
 	{
 		if (self::$peer === null) {
-			self::$peer = new NotificationPeer();
+			self::$peer = new SubscriptionElementPeer();
 		}
 		return self::$peer;
 	}
@@ -802,7 +1098,7 @@ abstract class BaseNotification extends BaseObject  implements Persistent {
 	 * Declares an association between this object and a Subscription object.
 	 *
 	 * @param      Subscription $v
-	 * @return     Notification The current object (for fluent API support)
+	 * @return     SubscriptionElement The current object (for fluent API support)
 	 * @throws     PropelException
 	 */
 	public function setSubscription(Subscription $v = null)
@@ -818,7 +1114,7 @@ abstract class BaseNotification extends BaseObject  implements Persistent {
 		// Add binding for other direction of this n:n relationship.
 		// If this object has already been added to the Subscription object, it will not be re-added.
 		if ($v !== null) {
-			$v->addNotification($this);
+			$v->addSubscriptionElement($this);
 		}
 
 		return $this;
@@ -841,33 +1137,33 @@ abstract class BaseNotification extends BaseObject  implements Persistent {
 			   to this object.  This level of coupling may, however, be
 			   undesirable since it could result in an only partially populated collection
 			   in the referenced object.
-			   $this->aSubscription->addNotifications($this);
+			   $this->aSubscription->addSubscriptionElements($this);
 			 */
 		}
 		return $this->aSubscription;
 	}
 
 	/**
-	 * Declares an association between this object and a Rpm object.
+	 * Declares an association between this object and a Package object.
 	 *
-	 * @param      Rpm $v
-	 * @return     Notification The current object (for fluent API support)
+	 * @param      Package $v
+	 * @return     SubscriptionElement The current object (for fluent API support)
 	 * @throws     PropelException
 	 */
-	public function setRpm(Rpm $v = null)
+	public function setPackage(Package $v = null)
 	{
 		if ($v === null) {
-			$this->setRpmId(NULL);
+			$this->setPackageId(NULL);
 		} else {
-			$this->setRpmId($v->getId());
+			$this->setPackageId($v->getId());
 		}
 
-		$this->aRpm = $v;
+		$this->aPackage = $v;
 
 		// Add binding for other direction of this n:n relationship.
-		// If this object has already been added to the Rpm object, it will not be re-added.
+		// If this object has already been added to the Package object, it will not be re-added.
 		if ($v !== null) {
-			$v->addNotification($this);
+			$v->addSubscriptionElement($this);
 		}
 
 		return $this;
@@ -875,25 +1171,221 @@ abstract class BaseNotification extends BaseObject  implements Persistent {
 
 
 	/**
-	 * Get the associated Rpm object
+	 * Get the associated Package object
 	 *
 	 * @param      PropelPDO Optional Connection object.
-	 * @return     Rpm The associated Rpm object.
+	 * @return     Package The associated Package object.
 	 * @throws     PropelException
 	 */
-	public function getRpm(PropelPDO $con = null)
+	public function getPackage(PropelPDO $con = null)
 	{
-		if ($this->aRpm === null && ($this->rpm_id !== null)) {
-			$this->aRpm = RpmPeer::retrieveByPk($this->rpm_id);
+		if ($this->aPackage === null && ($this->package_id !== null)) {
+			$this->aPackage = PackagePeer::retrieveByPk($this->package_id);
 			/* The following can be used additionally to
 			   guarantee the related object contains a reference
 			   to this object.  This level of coupling may, however, be
 			   undesirable since it could result in an only partially populated collection
 			   in the referenced object.
-			   $this->aRpm->addNotifications($this);
+			   $this->aPackage->addSubscriptionElements($this);
 			 */
 		}
-		return $this->aRpm;
+		return $this->aPackage;
+	}
+
+	/**
+	 * Declares an association between this object and a RpmGroup object.
+	 *
+	 * @param      RpmGroup $v
+	 * @return     SubscriptionElement The current object (for fluent API support)
+	 * @throws     PropelException
+	 */
+	public function setRpmGroup(RpmGroup $v = null)
+	{
+		if ($v === null) {
+			$this->setRpmGroupId(NULL);
+		} else {
+			$this->setRpmGroupId($v->getId());
+		}
+
+		$this->aRpmGroup = $v;
+
+		// Add binding for other direction of this n:n relationship.
+		// If this object has already been added to the RpmGroup object, it will not be re-added.
+		if ($v !== null) {
+			$v->addSubscriptionElement($this);
+		}
+
+		return $this;
+	}
+
+
+	/**
+	 * Get the associated RpmGroup object
+	 *
+	 * @param      PropelPDO Optional Connection object.
+	 * @return     RpmGroup The associated RpmGroup object.
+	 * @throws     PropelException
+	 */
+	public function getRpmGroup(PropelPDO $con = null)
+	{
+		if ($this->aRpmGroup === null && ($this->rpm_group_id !== null)) {
+			$this->aRpmGroup = RpmGroupPeer::retrieveByPk($this->rpm_group_id);
+			/* The following can be used additionally to
+			   guarantee the related object contains a reference
+			   to this object.  This level of coupling may, however, be
+			   undesirable since it could result in an only partially populated collection
+			   in the referenced object.
+			   $this->aRpmGroup->addSubscriptionElements($this);
+			 */
+		}
+		return $this->aRpmGroup;
+	}
+
+	/**
+	 * Declares an association between this object and a Distrelease object.
+	 *
+	 * @param      Distrelease $v
+	 * @return     SubscriptionElement The current object (for fluent API support)
+	 * @throws     PropelException
+	 */
+	public function setDistrelease(Distrelease $v = null)
+	{
+		if ($v === null) {
+			$this->setDistreleaseId(NULL);
+		} else {
+			$this->setDistreleaseId($v->getId());
+		}
+
+		$this->aDistrelease = $v;
+
+		// Add binding for other direction of this n:n relationship.
+		// If this object has already been added to the Distrelease object, it will not be re-added.
+		if ($v !== null) {
+			$v->addSubscriptionElement($this);
+		}
+
+		return $this;
+	}
+
+
+	/**
+	 * Get the associated Distrelease object
+	 *
+	 * @param      PropelPDO Optional Connection object.
+	 * @return     Distrelease The associated Distrelease object.
+	 * @throws     PropelException
+	 */
+	public function getDistrelease(PropelPDO $con = null)
+	{
+		if ($this->aDistrelease === null && ($this->distrelease_id !== null)) {
+			$this->aDistrelease = DistreleasePeer::retrieveByPk($this->distrelease_id);
+			/* The following can be used additionally to
+			   guarantee the related object contains a reference
+			   to this object.  This level of coupling may, however, be
+			   undesirable since it could result in an only partially populated collection
+			   in the referenced object.
+			   $this->aDistrelease->addSubscriptionElements($this);
+			 */
+		}
+		return $this->aDistrelease;
+	}
+
+	/**
+	 * Declares an association between this object and a Arch object.
+	 *
+	 * @param      Arch $v
+	 * @return     SubscriptionElement The current object (for fluent API support)
+	 * @throws     PropelException
+	 */
+	public function setArch(Arch $v = null)
+	{
+		if ($v === null) {
+			$this->setArchId(NULL);
+		} else {
+			$this->setArchId($v->getId());
+		}
+
+		$this->aArch = $v;
+
+		// Add binding for other direction of this n:n relationship.
+		// If this object has already been added to the Arch object, it will not be re-added.
+		if ($v !== null) {
+			$v->addSubscriptionElement($this);
+		}
+
+		return $this;
+	}
+
+
+	/**
+	 * Get the associated Arch object
+	 *
+	 * @param      PropelPDO Optional Connection object.
+	 * @return     Arch The associated Arch object.
+	 * @throws     PropelException
+	 */
+	public function getArch(PropelPDO $con = null)
+	{
+		if ($this->aArch === null && ($this->arch_id !== null)) {
+			$this->aArch = ArchPeer::retrieveByPk($this->arch_id);
+			/* The following can be used additionally to
+			   guarantee the related object contains a reference
+			   to this object.  This level of coupling may, however, be
+			   undesirable since it could result in an only partially populated collection
+			   in the referenced object.
+			   $this->aArch->addSubscriptionElements($this);
+			 */
+		}
+		return $this->aArch;
+	}
+
+	/**
+	 * Declares an association between this object and a Media object.
+	 *
+	 * @param      Media $v
+	 * @return     SubscriptionElement The current object (for fluent API support)
+	 * @throws     PropelException
+	 */
+	public function setMedia(Media $v = null)
+	{
+		if ($v === null) {
+			$this->setMediaId(NULL);
+		} else {
+			$this->setMediaId($v->getId());
+		}
+
+		$this->aMedia = $v;
+
+		// Add binding for other direction of this n:n relationship.
+		// If this object has already been added to the Media object, it will not be re-added.
+		if ($v !== null) {
+			$v->addSubscriptionElement($this);
+		}
+
+		return $this;
+	}
+
+
+	/**
+	 * Get the associated Media object
+	 *
+	 * @param      PropelPDO Optional Connection object.
+	 * @return     Media The associated Media object.
+	 * @throws     PropelException
+	 */
+	public function getMedia(PropelPDO $con = null)
+	{
+		if ($this->aMedia === null && ($this->media_id !== null)) {
+			$this->aMedia = MediaPeer::retrieveByPk($this->media_id);
+			/* The following can be used additionally to
+			   guarantee the related object contains a reference
+			   to this object.  This level of coupling may, however, be
+			   undesirable since it could result in an only partially populated collection
+			   in the referenced object.
+			   $this->aMedia->addSubscriptionElements($this);
+			 */
+		}
+		return $this->aMedia;
 	}
 
 	/**
@@ -911,7 +1403,11 @@ abstract class BaseNotification extends BaseObject  implements Persistent {
 		} // if ($deep)
 
 			$this->aSubscription = null;
-			$this->aRpm = null;
+			$this->aPackage = null;
+			$this->aRpmGroup = null;
+			$this->aDistrelease = null;
+			$this->aArch = null;
+			$this->aMedia = null;
 	}
 
 	// symfony_behaviors behavior
@@ -921,9 +1417,9 @@ abstract class BaseNotification extends BaseObject  implements Persistent {
 	 */
 	public function __call($method, $arguments)
 	{
-	  if (!$callable = sfMixer::getCallable('BaseNotification:'.$method))
+	  if (!$callable = sfMixer::getCallable('BaseSubscriptionElement:'.$method))
 	  {
-	    throw new sfException(sprintf('Call to undefined method BaseNotification::%s', $method));
+	    throw new sfException(sprintf('Call to undefined method BaseSubscriptionElement::%s', $method));
 	  }
 	
 	  array_unshift($arguments, $this);
@@ -931,4 +1427,4 @@ abstract class BaseNotification extends BaseObject  implements Persistent {
 	  return call_user_func_array($callable, $arguments);
 	}
 
-} // BaseNotification
+} // BaseSubscriptionElement

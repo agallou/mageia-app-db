@@ -1,49 +1,70 @@
 <?php
 
 /**
- * Base static class for performing query and update operations on the 'notification' table.
+ * Base static class for performing query and update operations on the 'subscription' table.
  *
  * 
  *
  * @package    lib.model.om
  */
-abstract class BaseNotificationPeer {
+abstract class BaseSubscriptionPeer {
 
 	/** the default database name for this class */
 	const DATABASE_NAME = 'propel';
 
 	/** the table name for this class */
-	const TABLE_NAME = 'notification';
+	const TABLE_NAME = 'subscription';
 
 	/** the related Propel class for this table */
-	const OM_CLASS = 'Notification';
+	const OM_CLASS = 'Subscription';
 
 	/** A class that can be returned by this peer. */
-	const CLASS_DEFAULT = 'lib.model.Notification';
+	const CLASS_DEFAULT = 'lib.model.Subscription';
 
 	/** the related TableMap class for this table */
-	const TM_CLASS = 'NotificationTableMap';
+	const TM_CLASS = 'SubscriptionTableMap';
 	
 	/** The total number of columns. */
-	const NUM_COLUMNS = 3;
+	const NUM_COLUMNS = 10;
 
 	/** The number of lazy-loaded columns. */
 	const NUM_LAZY_LOAD_COLUMNS = 0;
 
 	/** the column name for the ID field */
-	const ID = 'notification.ID';
+	const ID = 'subscription.ID';
 
-	/** the column name for the SUBSCRIPTION_ID field */
-	const SUBSCRIPTION_ID = 'notification.SUBSCRIPTION_ID';
+	/** the column name for the USER_ID field */
+	const USER_ID = 'subscription.USER_ID';
 
-	/** the column name for the RPM_ID field */
-	const RPM_ID = 'notification.RPM_ID';
+	/** the column name for the UPDATE field */
+	const UPDATE = 'subscription.UPDATE';
+
+	/** the column name for the NEW_VERSION field */
+	const NEW_VERSION = 'subscription.NEW_VERSION';
+
+	/** the column name for the UPDATE_CANDIDATE field */
+	const UPDATE_CANDIDATE = 'subscription.UPDATE_CANDIDATE';
+
+	/** the column name for the NEW_VERSION_CANDIDATE field */
+	const NEW_VERSION_CANDIDATE = 'subscription.NEW_VERSION_CANDIDATE';
+
+	/** the column name for the COMMENTS field */
+	const COMMENTS = 'subscription.COMMENTS';
+
+	/** the column name for the MAIL_NOTIFICATION field */
+	const MAIL_NOTIFICATION = 'subscription.MAIL_NOTIFICATION';
+
+	/** the column name for the MAIL_PREFIX field */
+	const MAIL_PREFIX = 'subscription.MAIL_PREFIX';
+
+	/** the column name for the RSS_FEED_ID field */
+	const RSS_FEED_ID = 'subscription.RSS_FEED_ID';
 
 	/**
-	 * An identiy map to hold any loaded instances of Notification objects.
+	 * An identiy map to hold any loaded instances of Subscription objects.
 	 * This must be public so that other peer classes can access this when hydrating from JOIN
 	 * queries.
-	 * @var        array Notification[]
+	 * @var        array Subscription[]
 	 */
 	public static $instances = array();
 
@@ -62,11 +83,11 @@ abstract class BaseNotificationPeer {
 	 * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
 	 */
 	private static $fieldNames = array (
-		BasePeer::TYPE_PHPNAME => array ('Id', 'SubscriptionId', 'RpmId', ),
-		BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'subscriptionId', 'rpmId', ),
-		BasePeer::TYPE_COLNAME => array (self::ID, self::SUBSCRIPTION_ID, self::RPM_ID, ),
-		BasePeer::TYPE_FIELDNAME => array ('id', 'subscription_id', 'rpm_id', ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, )
+		BasePeer::TYPE_PHPNAME => array ('Id', 'UserId', 'Update', 'NewVersion', 'UpdateCandidate', 'NewVersionCandidate', 'Comments', 'MailNotification', 'MailPrefix', 'RssFeedId', ),
+		BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'userId', 'update', 'newVersion', 'updateCandidate', 'newVersionCandidate', 'comments', 'mailNotification', 'mailPrefix', 'rssFeedId', ),
+		BasePeer::TYPE_COLNAME => array (self::ID, self::USER_ID, self::UPDATE, self::NEW_VERSION, self::UPDATE_CANDIDATE, self::NEW_VERSION_CANDIDATE, self::COMMENTS, self::MAIL_NOTIFICATION, self::MAIL_PREFIX, self::RSS_FEED_ID, ),
+		BasePeer::TYPE_FIELDNAME => array ('id', 'user_id', 'update', 'new_version', 'update_candidate', 'new_version_candidate', 'comments', 'mail_notification', 'mail_prefix', 'rss_feed_id', ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, )
 	);
 
 	/**
@@ -76,11 +97,11 @@ abstract class BaseNotificationPeer {
 	 * e.g. self::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
 	 */
 	private static $fieldKeys = array (
-		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'SubscriptionId' => 1, 'RpmId' => 2, ),
-		BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'subscriptionId' => 1, 'rpmId' => 2, ),
-		BasePeer::TYPE_COLNAME => array (self::ID => 0, self::SUBSCRIPTION_ID => 1, self::RPM_ID => 2, ),
-		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'subscription_id' => 1, 'rpm_id' => 2, ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, )
+		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'UserId' => 1, 'Update' => 2, 'NewVersion' => 3, 'UpdateCandidate' => 4, 'NewVersionCandidate' => 5, 'Comments' => 6, 'MailNotification' => 7, 'MailPrefix' => 8, 'RssFeedId' => 9, ),
+		BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'userId' => 1, 'update' => 2, 'newVersion' => 3, 'updateCandidate' => 4, 'newVersionCandidate' => 5, 'comments' => 6, 'mailNotification' => 7, 'mailPrefix' => 8, 'rssFeedId' => 9, ),
+		BasePeer::TYPE_COLNAME => array (self::ID => 0, self::USER_ID => 1, self::UPDATE => 2, self::NEW_VERSION => 3, self::UPDATE_CANDIDATE => 4, self::NEW_VERSION_CANDIDATE => 5, self::COMMENTS => 6, self::MAIL_NOTIFICATION => 7, self::MAIL_PREFIX => 8, self::RSS_FEED_ID => 9, ),
+		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'user_id' => 1, 'update' => 2, 'new_version' => 3, 'update_candidate' => 4, 'new_version_candidate' => 5, 'comments' => 6, 'mail_notification' => 7, 'mail_prefix' => 8, 'rss_feed_id' => 9, ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, )
 	);
 
 	/**
@@ -129,12 +150,12 @@ abstract class BaseNotificationPeer {
 	 *		$c->addJoin(TablePeer::alias("alias1", TablePeer::PRIMARY_KEY_COLUMN), TablePeer::PRIMARY_KEY_COLUMN);
 	 * </code>
 	 * @param      string $alias The alias for the current table.
-	 * @param      string $column The column name for current table. (i.e. NotificationPeer::COLUMN_NAME).
+	 * @param      string $column The column name for current table. (i.e. SubscriptionPeer::COLUMN_NAME).
 	 * @return     string
 	 */
 	public static function alias($alias, $column)
 	{
-		return str_replace(NotificationPeer::TABLE_NAME.'.', $alias.'.', $column);
+		return str_replace(SubscriptionPeer::TABLE_NAME.'.', $alias.'.', $column);
 	}
 
 	/**
@@ -150,9 +171,16 @@ abstract class BaseNotificationPeer {
 	 */
 	public static function addSelectColumns(Criteria $criteria)
 	{
-		$criteria->addSelectColumn(NotificationPeer::ID);
-		$criteria->addSelectColumn(NotificationPeer::SUBSCRIPTION_ID);
-		$criteria->addSelectColumn(NotificationPeer::RPM_ID);
+		$criteria->addSelectColumn(SubscriptionPeer::ID);
+		$criteria->addSelectColumn(SubscriptionPeer::USER_ID);
+		$criteria->addSelectColumn(SubscriptionPeer::UPDATE);
+		$criteria->addSelectColumn(SubscriptionPeer::NEW_VERSION);
+		$criteria->addSelectColumn(SubscriptionPeer::UPDATE_CANDIDATE);
+		$criteria->addSelectColumn(SubscriptionPeer::NEW_VERSION_CANDIDATE);
+		$criteria->addSelectColumn(SubscriptionPeer::COMMENTS);
+		$criteria->addSelectColumn(SubscriptionPeer::MAIL_NOTIFICATION);
+		$criteria->addSelectColumn(SubscriptionPeer::MAIL_PREFIX);
+		$criteria->addSelectColumn(SubscriptionPeer::RSS_FEED_ID);
 	}
 
 	/**
@@ -171,26 +199,26 @@ abstract class BaseNotificationPeer {
 		// We need to set the primary table name, since in the case that there are no WHERE columns
 		// it will be impossible for the BasePeer::createSelectSql() method to determine which
 		// tables go into the FROM clause.
-		$criteria->setPrimaryTableName(NotificationPeer::TABLE_NAME);
+		$criteria->setPrimaryTableName(SubscriptionPeer::TABLE_NAME);
 
 		if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
 			$criteria->setDistinct();
 		}
 
 		if (!$criteria->hasSelectClause()) {
-			NotificationPeer::addSelectColumns($criteria);
+			SubscriptionPeer::addSelectColumns($criteria);
 		}
 
 		$criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
 		$criteria->setDbName(self::DATABASE_NAME); // Set the correct dbName
 
 		if ($con === null) {
-			$con = Propel::getConnection(NotificationPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+			$con = Propel::getConnection(SubscriptionPeer::DATABASE_NAME, Propel::CONNECTION_READ);
 		}
 		// symfony_behaviors behavior
 		foreach (sfMixer::getCallables(self::getMixerPreSelectHook(__FUNCTION__)) as $sf_hook)
 		{
-		  call_user_func($sf_hook, 'BaseNotificationPeer', $criteria, $con);
+		  call_user_func($sf_hook, 'BaseSubscriptionPeer', $criteria, $con);
 		}
 
 		// BasePeer returns a PDOStatement
@@ -209,7 +237,7 @@ abstract class BaseNotificationPeer {
 	 *
 	 * @param      Criteria $criteria object used to create the SELECT statement.
 	 * @param      PropelPDO $con
-	 * @return     Notification
+	 * @return     Subscription
 	 * @throws     PropelException Any exceptions caught during processing will be
 	 *		 rethrown wrapped into a PropelException.
 	 */
@@ -217,7 +245,7 @@ abstract class BaseNotificationPeer {
 	{
 		$critcopy = clone $criteria;
 		$critcopy->setLimit(1);
-		$objects = NotificationPeer::doSelect($critcopy, $con);
+		$objects = SubscriptionPeer::doSelect($critcopy, $con);
 		if ($objects) {
 			return $objects[0];
 		}
@@ -234,7 +262,7 @@ abstract class BaseNotificationPeer {
 	 */
 	public static function doSelect(Criteria $criteria, PropelPDO $con = null)
 	{
-		return NotificationPeer::populateObjects(NotificationPeer::doSelectStmt($criteria, $con));
+		return SubscriptionPeer::populateObjects(SubscriptionPeer::doSelectStmt($criteria, $con));
 	}
 	/**
 	 * Prepares the Criteria object and uses the parent doSelect() method to execute a PDOStatement.
@@ -252,12 +280,12 @@ abstract class BaseNotificationPeer {
 	public static function doSelectStmt(Criteria $criteria, PropelPDO $con = null)
 	{
 		if ($con === null) {
-			$con = Propel::getConnection(NotificationPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+			$con = Propel::getConnection(SubscriptionPeer::DATABASE_NAME, Propel::CONNECTION_READ);
 		}
 
 		if (!$criteria->hasSelectClause()) {
 			$criteria = clone $criteria;
-			NotificationPeer::addSelectColumns($criteria);
+			SubscriptionPeer::addSelectColumns($criteria);
 		}
 
 		// Set the correct dbName
@@ -265,7 +293,7 @@ abstract class BaseNotificationPeer {
 		// symfony_behaviors behavior
 		foreach (sfMixer::getCallables(self::getMixerPreSelectHook(__FUNCTION__)) as $sf_hook)
 		{
-		  call_user_func($sf_hook, 'BaseNotificationPeer', $criteria, $con);
+		  call_user_func($sf_hook, 'BaseSubscriptionPeer', $criteria, $con);
 		}
 
 
@@ -281,10 +309,10 @@ abstract class BaseNotificationPeer {
 	 * to the cache in order to ensure that the same objects are always returned by doSelect*()
 	 * and retrieveByPK*() calls.
 	 *
-	 * @param      Notification $value A Notification object.
+	 * @param      Subscription $value A Subscription object.
 	 * @param      string $key (optional) key to use for instance map (for performance boost if key was already calculated externally).
 	 */
-	public static function addInstanceToPool(Notification $obj, $key = null)
+	public static function addInstanceToPool(Subscription $obj, $key = null)
 	{
 		if (Propel::isInstancePoolingEnabled()) {
 			if ($key === null) {
@@ -302,18 +330,18 @@ abstract class BaseNotificationPeer {
 	 * methods in your stub classes -- you may need to explicitly remove objects
 	 * from the cache in order to prevent returning objects that no longer exist.
 	 *
-	 * @param      mixed $value A Notification object or a primary key value.
+	 * @param      mixed $value A Subscription object or a primary key value.
 	 */
 	public static function removeInstanceFromPool($value)
 	{
 		if (Propel::isInstancePoolingEnabled() && $value !== null) {
-			if (is_object($value) && $value instanceof Notification) {
+			if (is_object($value) && $value instanceof Subscription) {
 				$key = (string) $value->getId();
 			} elseif (is_scalar($value)) {
 				// assume we've been passed a primary key
 				$key = (string) $value;
 			} else {
-				$e = new PropelException("Invalid value passed to removeInstanceFromPool().  Expected primary key or Notification object; got " . (is_object($value) ? get_class($value) . ' object.' : var_export($value,true)));
+				$e = new PropelException("Invalid value passed to removeInstanceFromPool().  Expected primary key or Subscription object; got " . (is_object($value) ? get_class($value) . ' object.' : var_export($value,true)));
 				throw $e;
 			}
 
@@ -328,7 +356,7 @@ abstract class BaseNotificationPeer {
 	 * a multi-column primary key, a serialize()d version of the primary key will be returned.
 	 *
 	 * @param      string $key The key (@see getPrimaryKeyHash()) for this instance.
-	 * @return     Notification Found object or NULL if 1) no instance exists for specified key or 2) instance pooling has been disabled.
+	 * @return     Subscription Found object or NULL if 1) no instance exists for specified key or 2) instance pooling has been disabled.
 	 * @see        getPrimaryKeyHash()
 	 */
 	public static function getInstanceFromPool($key)
@@ -352,7 +380,7 @@ abstract class BaseNotificationPeer {
 	}
 	
 	/**
-	 * Method to invalidate the instance pool of all tables related to notification
+	 * Method to invalidate the instance pool of all tables related to subscription
 	 * by a foreign key with ON DELETE CASCADE
 	 */
 	public static function clearRelatedInstancePool()
@@ -390,11 +418,11 @@ abstract class BaseNotificationPeer {
 		$results = array();
 	
 		// set the class once to avoid overhead in the loop
-		$cls = NotificationPeer::getOMClass(false);
+		$cls = SubscriptionPeer::getOMClass(false);
 		// populate the object(s)
 		while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
-			$key = NotificationPeer::getPrimaryKeyHashFromRow($row, 0);
-			if (null !== ($obj = NotificationPeer::getInstanceFromPool($key))) {
+			$key = SubscriptionPeer::getPrimaryKeyHashFromRow($row, 0);
+			if (null !== ($obj = SubscriptionPeer::getInstanceFromPool($key))) {
 				// We no longer rehydrate the object, since this can cause data loss.
 				// See http://propel.phpdb.org/trac/ticket/509
 				// $obj->hydrate($row, 0, true); // rehydrate
@@ -403,7 +431,7 @@ abstract class BaseNotificationPeer {
 				$obj = new $cls();
 				$obj->hydrate($row);
 				$results[] = $obj;
-				NotificationPeer::addInstanceToPool($obj, $key);
+				SubscriptionPeer::addInstanceToPool($obj, $key);
 			} // if key exists
 		}
 		$stmt->closeCursor();
@@ -411,7 +439,7 @@ abstract class BaseNotificationPeer {
 	}
 
 	/**
-	 * Returns the number of rows matching criteria, joining the related Subscription table
+	 * Returns the number of rows matching criteria, joining the related User table
 	 *
 	 * @param      Criteria $criteria
 	 * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
@@ -419,7 +447,7 @@ abstract class BaseNotificationPeer {
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
 	 * @return     int Number of matching rows.
 	 */
-	public static function doCountJoinSubscription(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public static function doCountJoinUser(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
 		// we're going to modify criteria, so copy it first
 		$criteria = clone $criteria;
@@ -427,14 +455,14 @@ abstract class BaseNotificationPeer {
 		// We need to set the primary table name, since in the case that there are no WHERE columns
 		// it will be impossible for the BasePeer::createSelectSql() method to determine which
 		// tables go into the FROM clause.
-		$criteria->setPrimaryTableName(NotificationPeer::TABLE_NAME);
+		$criteria->setPrimaryTableName(SubscriptionPeer::TABLE_NAME);
 
 		if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
 			$criteria->setDistinct();
 		}
 
 		if (!$criteria->hasSelectClause()) {
-			NotificationPeer::addSelectColumns($criteria);
+			SubscriptionPeer::addSelectColumns($criteria);
 		}
 		
 		$criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
@@ -443,15 +471,15 @@ abstract class BaseNotificationPeer {
 		$criteria->setDbName(self::DATABASE_NAME);
 
 		if ($con === null) {
-			$con = Propel::getConnection(NotificationPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+			$con = Propel::getConnection(SubscriptionPeer::DATABASE_NAME, Propel::CONNECTION_READ);
 		}
 
-		$criteria->addJoin(NotificationPeer::SUBSCRIPTION_ID, SubscriptionPeer::ID, $join_behavior);
+		$criteria->addJoin(SubscriptionPeer::USER_ID, UserPeer::ID, $join_behavior);
 
 		// symfony_behaviors behavior
 		foreach (sfMixer::getCallables(self::getMixerPreSelectHook(__FUNCTION__)) as $sf_hook)
 		{
-		  call_user_func($sf_hook, 'BaseNotificationPeer', $criteria, $con);
+		  call_user_func($sf_hook, 'BaseSubscriptionPeer', $criteria, $con);
 		}
 
 		$stmt = BasePeer::doCount($criteria, $con);
@@ -467,7 +495,7 @@ abstract class BaseNotificationPeer {
 
 
 	/**
-	 * Returns the number of rows matching criteria, joining the related Rpm table
+	 * Returns the number of rows matching criteria, joining the related RssFeed table
 	 *
 	 * @param      Criteria $criteria
 	 * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
@@ -475,7 +503,7 @@ abstract class BaseNotificationPeer {
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
 	 * @return     int Number of matching rows.
 	 */
-	public static function doCountJoinRpm(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public static function doCountJoinRssFeed(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
 		// we're going to modify criteria, so copy it first
 		$criteria = clone $criteria;
@@ -483,14 +511,14 @@ abstract class BaseNotificationPeer {
 		// We need to set the primary table name, since in the case that there are no WHERE columns
 		// it will be impossible for the BasePeer::createSelectSql() method to determine which
 		// tables go into the FROM clause.
-		$criteria->setPrimaryTableName(NotificationPeer::TABLE_NAME);
+		$criteria->setPrimaryTableName(SubscriptionPeer::TABLE_NAME);
 
 		if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
 			$criteria->setDistinct();
 		}
 
 		if (!$criteria->hasSelectClause()) {
-			NotificationPeer::addSelectColumns($criteria);
+			SubscriptionPeer::addSelectColumns($criteria);
 		}
 		
 		$criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
@@ -499,15 +527,15 @@ abstract class BaseNotificationPeer {
 		$criteria->setDbName(self::DATABASE_NAME);
 
 		if ($con === null) {
-			$con = Propel::getConnection(NotificationPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+			$con = Propel::getConnection(SubscriptionPeer::DATABASE_NAME, Propel::CONNECTION_READ);
 		}
 
-		$criteria->addJoin(NotificationPeer::RPM_ID, RpmPeer::ID, $join_behavior);
+		$criteria->addJoin(SubscriptionPeer::RSS_FEED_ID, RssFeedPeer::ID, $join_behavior);
 
 		// symfony_behaviors behavior
 		foreach (sfMixer::getCallables(self::getMixerPreSelectHook(__FUNCTION__)) as $sf_hook)
 		{
-		  call_user_func($sf_hook, 'BaseNotificationPeer', $criteria, $con);
+		  call_user_func($sf_hook, 'BaseSubscriptionPeer', $criteria, $con);
 		}
 
 		$stmt = BasePeer::doCount($criteria, $con);
@@ -523,15 +551,15 @@ abstract class BaseNotificationPeer {
 
 
 	/**
-	 * Selects a collection of Notification objects pre-filled with their Subscription objects.
+	 * Selects a collection of Subscription objects pre-filled with their User objects.
 	 * @param      Criteria  $criteria
 	 * @param      PropelPDO $con
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
-	 * @return     array Array of Notification objects.
+	 * @return     array Array of Subscription objects.
 	 * @throws     PropelException Any exceptions caught during processing will be
 	 *		 rethrown wrapped into a PropelException.
 	 */
-	public static function doSelectJoinSubscription(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public static function doSelectJoinUser(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
 		$criteria = clone $criteria;
 
@@ -540,50 +568,50 @@ abstract class BaseNotificationPeer {
 			$criteria->setDbName(self::DATABASE_NAME);
 		}
 
-		NotificationPeer::addSelectColumns($criteria);
-		$startcol = (NotificationPeer::NUM_COLUMNS - NotificationPeer::NUM_LAZY_LOAD_COLUMNS);
 		SubscriptionPeer::addSelectColumns($criteria);
+		$startcol = (SubscriptionPeer::NUM_COLUMNS - SubscriptionPeer::NUM_LAZY_LOAD_COLUMNS);
+		UserPeer::addSelectColumns($criteria);
 
-		$criteria->addJoin(NotificationPeer::SUBSCRIPTION_ID, SubscriptionPeer::ID, $join_behavior);
+		$criteria->addJoin(SubscriptionPeer::USER_ID, UserPeer::ID, $join_behavior);
 
 		// symfony_behaviors behavior
 		foreach (sfMixer::getCallables(self::getMixerPreSelectHook(__FUNCTION__)) as $sf_hook)
 		{
-		  call_user_func($sf_hook, 'BaseNotificationPeer', $criteria, $con);
+		  call_user_func($sf_hook, 'BaseSubscriptionPeer', $criteria, $con);
 		}
 
 		$stmt = BasePeer::doSelect($criteria, $con);
 		$results = array();
 
 		while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
-			$key1 = NotificationPeer::getPrimaryKeyHashFromRow($row, 0);
-			if (null !== ($obj1 = NotificationPeer::getInstanceFromPool($key1))) {
+			$key1 = SubscriptionPeer::getPrimaryKeyHashFromRow($row, 0);
+			if (null !== ($obj1 = SubscriptionPeer::getInstanceFromPool($key1))) {
 				// We no longer rehydrate the object, since this can cause data loss.
 				// See http://propel.phpdb.org/trac/ticket/509
 				// $obj1->hydrate($row, 0, true); // rehydrate
 			} else {
 
-				$cls = NotificationPeer::getOMClass(false);
+				$cls = SubscriptionPeer::getOMClass(false);
 
 				$obj1 = new $cls();
 				$obj1->hydrate($row);
-				NotificationPeer::addInstanceToPool($obj1, $key1);
+				SubscriptionPeer::addInstanceToPool($obj1, $key1);
 			} // if $obj1 already loaded
 
-			$key2 = SubscriptionPeer::getPrimaryKeyHashFromRow($row, $startcol);
+			$key2 = UserPeer::getPrimaryKeyHashFromRow($row, $startcol);
 			if ($key2 !== null) {
-				$obj2 = SubscriptionPeer::getInstanceFromPool($key2);
+				$obj2 = UserPeer::getInstanceFromPool($key2);
 				if (!$obj2) {
 
-					$cls = SubscriptionPeer::getOMClass(false);
+					$cls = UserPeer::getOMClass(false);
 
 					$obj2 = new $cls();
 					$obj2->hydrate($row, $startcol);
-					SubscriptionPeer::addInstanceToPool($obj2, $key2);
+					UserPeer::addInstanceToPool($obj2, $key2);
 				} // if obj2 already loaded
 				
-				// Add the $obj1 (Notification) to $obj2 (Subscription)
-				$obj2->addNotification($obj1);
+				// Add the $obj1 (Subscription) to $obj2 (User)
+				$obj2->addSubscription($obj1);
 
 			} // if joined row was not null
 
@@ -595,15 +623,15 @@ abstract class BaseNotificationPeer {
 
 
 	/**
-	 * Selects a collection of Notification objects pre-filled with their Rpm objects.
+	 * Selects a collection of Subscription objects pre-filled with their RssFeed objects.
 	 * @param      Criteria  $criteria
 	 * @param      PropelPDO $con
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
-	 * @return     array Array of Notification objects.
+	 * @return     array Array of Subscription objects.
 	 * @throws     PropelException Any exceptions caught during processing will be
 	 *		 rethrown wrapped into a PropelException.
 	 */
-	public static function doSelectJoinRpm(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public static function doSelectJoinRssFeed(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
 		$criteria = clone $criteria;
 
@@ -612,50 +640,50 @@ abstract class BaseNotificationPeer {
 			$criteria->setDbName(self::DATABASE_NAME);
 		}
 
-		NotificationPeer::addSelectColumns($criteria);
-		$startcol = (NotificationPeer::NUM_COLUMNS - NotificationPeer::NUM_LAZY_LOAD_COLUMNS);
-		RpmPeer::addSelectColumns($criteria);
+		SubscriptionPeer::addSelectColumns($criteria);
+		$startcol = (SubscriptionPeer::NUM_COLUMNS - SubscriptionPeer::NUM_LAZY_LOAD_COLUMNS);
+		RssFeedPeer::addSelectColumns($criteria);
 
-		$criteria->addJoin(NotificationPeer::RPM_ID, RpmPeer::ID, $join_behavior);
+		$criteria->addJoin(SubscriptionPeer::RSS_FEED_ID, RssFeedPeer::ID, $join_behavior);
 
 		// symfony_behaviors behavior
 		foreach (sfMixer::getCallables(self::getMixerPreSelectHook(__FUNCTION__)) as $sf_hook)
 		{
-		  call_user_func($sf_hook, 'BaseNotificationPeer', $criteria, $con);
+		  call_user_func($sf_hook, 'BaseSubscriptionPeer', $criteria, $con);
 		}
 
 		$stmt = BasePeer::doSelect($criteria, $con);
 		$results = array();
 
 		while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
-			$key1 = NotificationPeer::getPrimaryKeyHashFromRow($row, 0);
-			if (null !== ($obj1 = NotificationPeer::getInstanceFromPool($key1))) {
+			$key1 = SubscriptionPeer::getPrimaryKeyHashFromRow($row, 0);
+			if (null !== ($obj1 = SubscriptionPeer::getInstanceFromPool($key1))) {
 				// We no longer rehydrate the object, since this can cause data loss.
 				// See http://propel.phpdb.org/trac/ticket/509
 				// $obj1->hydrate($row, 0, true); // rehydrate
 			} else {
 
-				$cls = NotificationPeer::getOMClass(false);
+				$cls = SubscriptionPeer::getOMClass(false);
 
 				$obj1 = new $cls();
 				$obj1->hydrate($row);
-				NotificationPeer::addInstanceToPool($obj1, $key1);
+				SubscriptionPeer::addInstanceToPool($obj1, $key1);
 			} // if $obj1 already loaded
 
-			$key2 = RpmPeer::getPrimaryKeyHashFromRow($row, $startcol);
+			$key2 = RssFeedPeer::getPrimaryKeyHashFromRow($row, $startcol);
 			if ($key2 !== null) {
-				$obj2 = RpmPeer::getInstanceFromPool($key2);
+				$obj2 = RssFeedPeer::getInstanceFromPool($key2);
 				if (!$obj2) {
 
-					$cls = RpmPeer::getOMClass(false);
+					$cls = RssFeedPeer::getOMClass(false);
 
 					$obj2 = new $cls();
 					$obj2->hydrate($row, $startcol);
-					RpmPeer::addInstanceToPool($obj2, $key2);
+					RssFeedPeer::addInstanceToPool($obj2, $key2);
 				} // if obj2 already loaded
 				
-				// Add the $obj1 (Notification) to $obj2 (Rpm)
-				$obj2->addNotification($obj1);
+				// Add the $obj1 (Subscription) to $obj2 (RssFeed)
+				$obj2->addSubscription($obj1);
 
 			} // if joined row was not null
 
@@ -683,14 +711,14 @@ abstract class BaseNotificationPeer {
 		// We need to set the primary table name, since in the case that there are no WHERE columns
 		// it will be impossible for the BasePeer::createSelectSql() method to determine which
 		// tables go into the FROM clause.
-		$criteria->setPrimaryTableName(NotificationPeer::TABLE_NAME);
+		$criteria->setPrimaryTableName(SubscriptionPeer::TABLE_NAME);
 
 		if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
 			$criteria->setDistinct();
 		}
 
 		if (!$criteria->hasSelectClause()) {
-			NotificationPeer::addSelectColumns($criteria);
+			SubscriptionPeer::addSelectColumns($criteria);
 		}
 		
 		$criteria->clearOrderByColumns(); // ORDER BY won't ever affect the count
@@ -699,17 +727,17 @@ abstract class BaseNotificationPeer {
 		$criteria->setDbName(self::DATABASE_NAME);
 
 		if ($con === null) {
-			$con = Propel::getConnection(NotificationPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+			$con = Propel::getConnection(SubscriptionPeer::DATABASE_NAME, Propel::CONNECTION_READ);
 		}
 
-		$criteria->addJoin(NotificationPeer::SUBSCRIPTION_ID, SubscriptionPeer::ID, $join_behavior);
+		$criteria->addJoin(SubscriptionPeer::USER_ID, UserPeer::ID, $join_behavior);
 
-		$criteria->addJoin(NotificationPeer::RPM_ID, RpmPeer::ID, $join_behavior);
+		$criteria->addJoin(SubscriptionPeer::RSS_FEED_ID, RssFeedPeer::ID, $join_behavior);
 
 		// symfony_behaviors behavior
 		foreach (sfMixer::getCallables(self::getMixerPreSelectHook(__FUNCTION__)) as $sf_hook)
 		{
-		  call_user_func($sf_hook, 'BaseNotificationPeer', $criteria, $con);
+		  call_user_func($sf_hook, 'BaseSubscriptionPeer', $criteria, $con);
 		}
 
 		$stmt = BasePeer::doCount($criteria, $con);
@@ -724,12 +752,12 @@ abstract class BaseNotificationPeer {
 	}
 
 	/**
-	 * Selects a collection of Notification objects pre-filled with all related objects.
+	 * Selects a collection of Subscription objects pre-filled with all related objects.
 	 *
 	 * @param      Criteria  $criteria
 	 * @param      PropelPDO $con
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
-	 * @return     array Array of Notification objects.
+	 * @return     array Array of Subscription objects.
 	 * @throws     PropelException Any exceptions caught during processing will be
 	 *		 rethrown wrapped into a PropelException.
 	 */
@@ -742,76 +770,76 @@ abstract class BaseNotificationPeer {
 			$criteria->setDbName(self::DATABASE_NAME);
 		}
 
-		NotificationPeer::addSelectColumns($criteria);
-		$startcol2 = (NotificationPeer::NUM_COLUMNS - NotificationPeer::NUM_LAZY_LOAD_COLUMNS);
-
 		SubscriptionPeer::addSelectColumns($criteria);
-		$startcol3 = $startcol2 + (SubscriptionPeer::NUM_COLUMNS - SubscriptionPeer::NUM_LAZY_LOAD_COLUMNS);
+		$startcol2 = (SubscriptionPeer::NUM_COLUMNS - SubscriptionPeer::NUM_LAZY_LOAD_COLUMNS);
 
-		RpmPeer::addSelectColumns($criteria);
-		$startcol4 = $startcol3 + (RpmPeer::NUM_COLUMNS - RpmPeer::NUM_LAZY_LOAD_COLUMNS);
+		UserPeer::addSelectColumns($criteria);
+		$startcol3 = $startcol2 + (UserPeer::NUM_COLUMNS - UserPeer::NUM_LAZY_LOAD_COLUMNS);
 
-		$criteria->addJoin(NotificationPeer::SUBSCRIPTION_ID, SubscriptionPeer::ID, $join_behavior);
+		RssFeedPeer::addSelectColumns($criteria);
+		$startcol4 = $startcol3 + (RssFeedPeer::NUM_COLUMNS - RssFeedPeer::NUM_LAZY_LOAD_COLUMNS);
 
-		$criteria->addJoin(NotificationPeer::RPM_ID, RpmPeer::ID, $join_behavior);
+		$criteria->addJoin(SubscriptionPeer::USER_ID, UserPeer::ID, $join_behavior);
+
+		$criteria->addJoin(SubscriptionPeer::RSS_FEED_ID, RssFeedPeer::ID, $join_behavior);
 
 		// symfony_behaviors behavior
 		foreach (sfMixer::getCallables(self::getMixerPreSelectHook(__FUNCTION__)) as $sf_hook)
 		{
-		  call_user_func($sf_hook, 'BaseNotificationPeer', $criteria, $con);
+		  call_user_func($sf_hook, 'BaseSubscriptionPeer', $criteria, $con);
 		}
 
 		$stmt = BasePeer::doSelect($criteria, $con);
 		$results = array();
 
 		while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
-			$key1 = NotificationPeer::getPrimaryKeyHashFromRow($row, 0);
-			if (null !== ($obj1 = NotificationPeer::getInstanceFromPool($key1))) {
+			$key1 = SubscriptionPeer::getPrimaryKeyHashFromRow($row, 0);
+			if (null !== ($obj1 = SubscriptionPeer::getInstanceFromPool($key1))) {
 				// We no longer rehydrate the object, since this can cause data loss.
 				// See http://propel.phpdb.org/trac/ticket/509
 				// $obj1->hydrate($row, 0, true); // rehydrate
 			} else {
-				$cls = NotificationPeer::getOMClass(false);
+				$cls = SubscriptionPeer::getOMClass(false);
 
 				$obj1 = new $cls();
 				$obj1->hydrate($row);
-				NotificationPeer::addInstanceToPool($obj1, $key1);
+				SubscriptionPeer::addInstanceToPool($obj1, $key1);
 			} // if obj1 already loaded
 
-			// Add objects for joined Subscription rows
+			// Add objects for joined User rows
 
-			$key2 = SubscriptionPeer::getPrimaryKeyHashFromRow($row, $startcol2);
+			$key2 = UserPeer::getPrimaryKeyHashFromRow($row, $startcol2);
 			if ($key2 !== null) {
-				$obj2 = SubscriptionPeer::getInstanceFromPool($key2);
+				$obj2 = UserPeer::getInstanceFromPool($key2);
 				if (!$obj2) {
 
-					$cls = SubscriptionPeer::getOMClass(false);
+					$cls = UserPeer::getOMClass(false);
 
 					$obj2 = new $cls();
 					$obj2->hydrate($row, $startcol2);
-					SubscriptionPeer::addInstanceToPool($obj2, $key2);
+					UserPeer::addInstanceToPool($obj2, $key2);
 				} // if obj2 loaded
 
-				// Add the $obj1 (Notification) to the collection in $obj2 (Subscription)
-				$obj2->addNotification($obj1);
+				// Add the $obj1 (Subscription) to the collection in $obj2 (User)
+				$obj2->addSubscription($obj1);
 			} // if joined row not null
 
-			// Add objects for joined Rpm rows
+			// Add objects for joined RssFeed rows
 
-			$key3 = RpmPeer::getPrimaryKeyHashFromRow($row, $startcol3);
+			$key3 = RssFeedPeer::getPrimaryKeyHashFromRow($row, $startcol3);
 			if ($key3 !== null) {
-				$obj3 = RpmPeer::getInstanceFromPool($key3);
+				$obj3 = RssFeedPeer::getInstanceFromPool($key3);
 				if (!$obj3) {
 
-					$cls = RpmPeer::getOMClass(false);
+					$cls = RssFeedPeer::getOMClass(false);
 
 					$obj3 = new $cls();
 					$obj3->hydrate($row, $startcol3);
-					RpmPeer::addInstanceToPool($obj3, $key3);
+					RssFeedPeer::addInstanceToPool($obj3, $key3);
 				} // if obj3 loaded
 
-				// Add the $obj1 (Notification) to the collection in $obj3 (Rpm)
-				$obj3->addNotification($obj1);
+				// Add the $obj1 (Subscription) to the collection in $obj3 (RssFeed)
+				$obj3->addSubscription($obj1);
 			} // if joined row not null
 
 			$results[] = $obj1;
@@ -822,7 +850,7 @@ abstract class BaseNotificationPeer {
 
 
 	/**
-	 * Returns the number of rows matching criteria, joining the related Subscription table
+	 * Returns the number of rows matching criteria, joining the related User table
 	 *
 	 * @param      Criteria $criteria
 	 * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
@@ -830,7 +858,7 @@ abstract class BaseNotificationPeer {
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
 	 * @return     int Number of matching rows.
 	 */
-	public static function doCountJoinAllExceptSubscription(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public static function doCountJoinAllExceptUser(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
 		// we're going to modify criteria, so copy it first
 		$criteria = clone $criteria;
@@ -838,14 +866,14 @@ abstract class BaseNotificationPeer {
 		// We need to set the primary table name, since in the case that there are no WHERE columns
 		// it will be impossible for the BasePeer::createSelectSql() method to determine which
 		// tables go into the FROM clause.
-		$criteria->setPrimaryTableName(NotificationPeer::TABLE_NAME);
+		$criteria->setPrimaryTableName(SubscriptionPeer::TABLE_NAME);
 		
 		if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
 			$criteria->setDistinct();
 		}
 
 		if (!$criteria->hasSelectClause()) {
-			NotificationPeer::addSelectColumns($criteria);
+			SubscriptionPeer::addSelectColumns($criteria);
 		}
 		
 		$criteria->clearOrderByColumns(); // ORDER BY should not affect count
@@ -854,15 +882,15 @@ abstract class BaseNotificationPeer {
 		$criteria->setDbName(self::DATABASE_NAME);
 
 		if ($con === null) {
-			$con = Propel::getConnection(NotificationPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+			$con = Propel::getConnection(SubscriptionPeer::DATABASE_NAME, Propel::CONNECTION_READ);
 		}
 	
-		$criteria->addJoin(NotificationPeer::RPM_ID, RpmPeer::ID, $join_behavior);
+		$criteria->addJoin(SubscriptionPeer::RSS_FEED_ID, RssFeedPeer::ID, $join_behavior);
 
 		// symfony_behaviors behavior
 		foreach (sfMixer::getCallables(self::getMixerPreSelectHook(__FUNCTION__)) as $sf_hook)
 		{
-		  call_user_func($sf_hook, 'BaseNotificationPeer', $criteria, $con);
+		  call_user_func($sf_hook, 'BaseSubscriptionPeer', $criteria, $con);
 		}
 
 		$stmt = BasePeer::doCount($criteria, $con);
@@ -878,7 +906,7 @@ abstract class BaseNotificationPeer {
 
 
 	/**
-	 * Returns the number of rows matching criteria, joining the related Rpm table
+	 * Returns the number of rows matching criteria, joining the related RssFeed table
 	 *
 	 * @param      Criteria $criteria
 	 * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
@@ -886,7 +914,7 @@ abstract class BaseNotificationPeer {
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
 	 * @return     int Number of matching rows.
 	 */
-	public static function doCountJoinAllExceptRpm(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public static function doCountJoinAllExceptRssFeed(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
 		// we're going to modify criteria, so copy it first
 		$criteria = clone $criteria;
@@ -894,14 +922,14 @@ abstract class BaseNotificationPeer {
 		// We need to set the primary table name, since in the case that there are no WHERE columns
 		// it will be impossible for the BasePeer::createSelectSql() method to determine which
 		// tables go into the FROM clause.
-		$criteria->setPrimaryTableName(NotificationPeer::TABLE_NAME);
+		$criteria->setPrimaryTableName(SubscriptionPeer::TABLE_NAME);
 		
 		if ($distinct && !in_array(Criteria::DISTINCT, $criteria->getSelectModifiers())) {
 			$criteria->setDistinct();
 		}
 
 		if (!$criteria->hasSelectClause()) {
-			NotificationPeer::addSelectColumns($criteria);
+			SubscriptionPeer::addSelectColumns($criteria);
 		}
 		
 		$criteria->clearOrderByColumns(); // ORDER BY should not affect count
@@ -910,15 +938,15 @@ abstract class BaseNotificationPeer {
 		$criteria->setDbName(self::DATABASE_NAME);
 
 		if ($con === null) {
-			$con = Propel::getConnection(NotificationPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+			$con = Propel::getConnection(SubscriptionPeer::DATABASE_NAME, Propel::CONNECTION_READ);
 		}
 	
-		$criteria->addJoin(NotificationPeer::SUBSCRIPTION_ID, SubscriptionPeer::ID, $join_behavior);
+		$criteria->addJoin(SubscriptionPeer::USER_ID, UserPeer::ID, $join_behavior);
 
 		// symfony_behaviors behavior
 		foreach (sfMixer::getCallables(self::getMixerPreSelectHook(__FUNCTION__)) as $sf_hook)
 		{
-		  call_user_func($sf_hook, 'BaseNotificationPeer', $criteria, $con);
+		  call_user_func($sf_hook, 'BaseSubscriptionPeer', $criteria, $con);
 		}
 
 		$stmt = BasePeer::doCount($criteria, $con);
@@ -934,16 +962,16 @@ abstract class BaseNotificationPeer {
 
 
 	/**
-	 * Selects a collection of Notification objects pre-filled with all related objects except Subscription.
+	 * Selects a collection of Subscription objects pre-filled with all related objects except User.
 	 *
 	 * @param      Criteria  $criteria
 	 * @param      PropelPDO $con
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
-	 * @return     array Array of Notification objects.
+	 * @return     array Array of Subscription objects.
 	 * @throws     PropelException Any exceptions caught during processing will be
 	 *		 rethrown wrapped into a PropelException.
 	 */
-	public static function doSelectJoinAllExceptSubscription(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public static function doSelectJoinAllExceptUser(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
 		$criteria = clone $criteria;
 
@@ -954,18 +982,18 @@ abstract class BaseNotificationPeer {
 			$criteria->setDbName(self::DATABASE_NAME);
 		}
 
-		NotificationPeer::addSelectColumns($criteria);
-		$startcol2 = (NotificationPeer::NUM_COLUMNS - NotificationPeer::NUM_LAZY_LOAD_COLUMNS);
+		SubscriptionPeer::addSelectColumns($criteria);
+		$startcol2 = (SubscriptionPeer::NUM_COLUMNS - SubscriptionPeer::NUM_LAZY_LOAD_COLUMNS);
 
-		RpmPeer::addSelectColumns($criteria);
-		$startcol3 = $startcol2 + (RpmPeer::NUM_COLUMNS - RpmPeer::NUM_LAZY_LOAD_COLUMNS);
+		RssFeedPeer::addSelectColumns($criteria);
+		$startcol3 = $startcol2 + (RssFeedPeer::NUM_COLUMNS - RssFeedPeer::NUM_LAZY_LOAD_COLUMNS);
 
-		$criteria->addJoin(NotificationPeer::RPM_ID, RpmPeer::ID, $join_behavior);
+		$criteria->addJoin(SubscriptionPeer::RSS_FEED_ID, RssFeedPeer::ID, $join_behavior);
 
 		// symfony_behaviors behavior
 		foreach (sfMixer::getCallables(self::getMixerPreSelectHook(__FUNCTION__)) as $sf_hook)
 		{
-		  call_user_func($sf_hook, 'BaseNotificationPeer', $criteria, $con);
+		  call_user_func($sf_hook, 'BaseSubscriptionPeer', $criteria, $con);
 		}
 
 
@@ -973,35 +1001,35 @@ abstract class BaseNotificationPeer {
 		$results = array();
 
 		while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
-			$key1 = NotificationPeer::getPrimaryKeyHashFromRow($row, 0);
-			if (null !== ($obj1 = NotificationPeer::getInstanceFromPool($key1))) {
+			$key1 = SubscriptionPeer::getPrimaryKeyHashFromRow($row, 0);
+			if (null !== ($obj1 = SubscriptionPeer::getInstanceFromPool($key1))) {
 				// We no longer rehydrate the object, since this can cause data loss.
 				// See http://propel.phpdb.org/trac/ticket/509
 				// $obj1->hydrate($row, 0, true); // rehydrate
 			} else {
-				$cls = NotificationPeer::getOMClass(false);
+				$cls = SubscriptionPeer::getOMClass(false);
 
 				$obj1 = new $cls();
 				$obj1->hydrate($row);
-				NotificationPeer::addInstanceToPool($obj1, $key1);
+				SubscriptionPeer::addInstanceToPool($obj1, $key1);
 			} // if obj1 already loaded
 
-				// Add objects for joined Rpm rows
+				// Add objects for joined RssFeed rows
 
-				$key2 = RpmPeer::getPrimaryKeyHashFromRow($row, $startcol2);
+				$key2 = RssFeedPeer::getPrimaryKeyHashFromRow($row, $startcol2);
 				if ($key2 !== null) {
-					$obj2 = RpmPeer::getInstanceFromPool($key2);
+					$obj2 = RssFeedPeer::getInstanceFromPool($key2);
 					if (!$obj2) {
 	
-						$cls = RpmPeer::getOMClass(false);
+						$cls = RssFeedPeer::getOMClass(false);
 
 					$obj2 = new $cls();
 					$obj2->hydrate($row, $startcol2);
-					RpmPeer::addInstanceToPool($obj2, $key2);
+					RssFeedPeer::addInstanceToPool($obj2, $key2);
 				} // if $obj2 already loaded
 
-				// Add the $obj1 (Notification) to the collection in $obj2 (Rpm)
-				$obj2->addNotification($obj1);
+				// Add the $obj1 (Subscription) to the collection in $obj2 (RssFeed)
+				$obj2->addSubscription($obj1);
 
 			} // if joined row is not null
 
@@ -1013,16 +1041,16 @@ abstract class BaseNotificationPeer {
 
 
 	/**
-	 * Selects a collection of Notification objects pre-filled with all related objects except Rpm.
+	 * Selects a collection of Subscription objects pre-filled with all related objects except RssFeed.
 	 *
 	 * @param      Criteria  $criteria
 	 * @param      PropelPDO $con
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
-	 * @return     array Array of Notification objects.
+	 * @return     array Array of Subscription objects.
 	 * @throws     PropelException Any exceptions caught during processing will be
 	 *		 rethrown wrapped into a PropelException.
 	 */
-	public static function doSelectJoinAllExceptRpm(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public static function doSelectJoinAllExceptRssFeed(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
 		$criteria = clone $criteria;
 
@@ -1033,18 +1061,18 @@ abstract class BaseNotificationPeer {
 			$criteria->setDbName(self::DATABASE_NAME);
 		}
 
-		NotificationPeer::addSelectColumns($criteria);
-		$startcol2 = (NotificationPeer::NUM_COLUMNS - NotificationPeer::NUM_LAZY_LOAD_COLUMNS);
-
 		SubscriptionPeer::addSelectColumns($criteria);
-		$startcol3 = $startcol2 + (SubscriptionPeer::NUM_COLUMNS - SubscriptionPeer::NUM_LAZY_LOAD_COLUMNS);
+		$startcol2 = (SubscriptionPeer::NUM_COLUMNS - SubscriptionPeer::NUM_LAZY_LOAD_COLUMNS);
 
-		$criteria->addJoin(NotificationPeer::SUBSCRIPTION_ID, SubscriptionPeer::ID, $join_behavior);
+		UserPeer::addSelectColumns($criteria);
+		$startcol3 = $startcol2 + (UserPeer::NUM_COLUMNS - UserPeer::NUM_LAZY_LOAD_COLUMNS);
+
+		$criteria->addJoin(SubscriptionPeer::USER_ID, UserPeer::ID, $join_behavior);
 
 		// symfony_behaviors behavior
 		foreach (sfMixer::getCallables(self::getMixerPreSelectHook(__FUNCTION__)) as $sf_hook)
 		{
-		  call_user_func($sf_hook, 'BaseNotificationPeer', $criteria, $con);
+		  call_user_func($sf_hook, 'BaseSubscriptionPeer', $criteria, $con);
 		}
 
 
@@ -1052,35 +1080,35 @@ abstract class BaseNotificationPeer {
 		$results = array();
 
 		while ($row = $stmt->fetch(PDO::FETCH_NUM)) {
-			$key1 = NotificationPeer::getPrimaryKeyHashFromRow($row, 0);
-			if (null !== ($obj1 = NotificationPeer::getInstanceFromPool($key1))) {
+			$key1 = SubscriptionPeer::getPrimaryKeyHashFromRow($row, 0);
+			if (null !== ($obj1 = SubscriptionPeer::getInstanceFromPool($key1))) {
 				// We no longer rehydrate the object, since this can cause data loss.
 				// See http://propel.phpdb.org/trac/ticket/509
 				// $obj1->hydrate($row, 0, true); // rehydrate
 			} else {
-				$cls = NotificationPeer::getOMClass(false);
+				$cls = SubscriptionPeer::getOMClass(false);
 
 				$obj1 = new $cls();
 				$obj1->hydrate($row);
-				NotificationPeer::addInstanceToPool($obj1, $key1);
+				SubscriptionPeer::addInstanceToPool($obj1, $key1);
 			} // if obj1 already loaded
 
-				// Add objects for joined Subscription rows
+				// Add objects for joined User rows
 
-				$key2 = SubscriptionPeer::getPrimaryKeyHashFromRow($row, $startcol2);
+				$key2 = UserPeer::getPrimaryKeyHashFromRow($row, $startcol2);
 				if ($key2 !== null) {
-					$obj2 = SubscriptionPeer::getInstanceFromPool($key2);
+					$obj2 = UserPeer::getInstanceFromPool($key2);
 					if (!$obj2) {
 	
-						$cls = SubscriptionPeer::getOMClass(false);
+						$cls = UserPeer::getOMClass(false);
 
 					$obj2 = new $cls();
 					$obj2->hydrate($row, $startcol2);
-					SubscriptionPeer::addInstanceToPool($obj2, $key2);
+					UserPeer::addInstanceToPool($obj2, $key2);
 				} // if $obj2 already loaded
 
-				// Add the $obj1 (Notification) to the collection in $obj2 (Subscription)
-				$obj2->addNotification($obj1);
+				// Add the $obj1 (Subscription) to the collection in $obj2 (User)
+				$obj2->addSubscription($obj1);
 
 			} // if joined row is not null
 
@@ -1107,10 +1135,10 @@ abstract class BaseNotificationPeer {
 	 */
 	public static function buildTableMap()
 	{
-	  $dbMap = Propel::getDatabaseMap(BaseNotificationPeer::DATABASE_NAME);
-	  if (!$dbMap->hasTable(BaseNotificationPeer::TABLE_NAME))
+	  $dbMap = Propel::getDatabaseMap(BaseSubscriptionPeer::DATABASE_NAME);
+	  if (!$dbMap->hasTable(BaseSubscriptionPeer::TABLE_NAME))
 	  {
-	    $dbMap->addTableObject(new NotificationTableMap());
+	    $dbMap->addTableObject(new SubscriptionTableMap());
 	  }
 	}
 
@@ -1127,13 +1155,13 @@ abstract class BaseNotificationPeer {
 	 */
 	public static function getOMClass($withPrefix = true)
 	{
-		return $withPrefix ? NotificationPeer::CLASS_DEFAULT : NotificationPeer::OM_CLASS;
+		return $withPrefix ? SubscriptionPeer::CLASS_DEFAULT : SubscriptionPeer::OM_CLASS;
 	}
 
 	/**
-	 * Method perform an INSERT on the database, given a Notification or Criteria object.
+	 * Method perform an INSERT on the database, given a Subscription or Criteria object.
 	 *
-	 * @param      mixed $values Criteria or Notification object containing data that is used to create the INSERT statement.
+	 * @param      mixed $values Criteria or Subscription object containing data that is used to create the INSERT statement.
 	 * @param      PropelPDO $con the PropelPDO connection to use
 	 * @return     mixed The new primary key.
 	 * @throws     PropelException Any exceptions caught during processing will be
@@ -1142,26 +1170,26 @@ abstract class BaseNotificationPeer {
 	public static function doInsert($values, PropelPDO $con = null)
 	{
     // symfony_behaviors behavior
-    foreach (sfMixer::getCallables('BaseNotificationPeer:doInsert:pre') as $sf_hook)
+    foreach (sfMixer::getCallables('BaseSubscriptionPeer:doInsert:pre') as $sf_hook)
     {
-      if (false !== $sf_hook_retval = call_user_func($sf_hook, 'BaseNotificationPeer', $values, $con))
+      if (false !== $sf_hook_retval = call_user_func($sf_hook, 'BaseSubscriptionPeer', $values, $con))
       {
         return $sf_hook_retval;
       }
     }
 
 		if ($con === null) {
-			$con = Propel::getConnection(NotificationPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+			$con = Propel::getConnection(SubscriptionPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
 		}
 
 		if ($values instanceof Criteria) {
 			$criteria = clone $values; // rename for clarity
 		} else {
-			$criteria = $values->buildCriteria(); // build Criteria from Notification object
+			$criteria = $values->buildCriteria(); // build Criteria from Subscription object
 		}
 
-		if ($criteria->containsKey(NotificationPeer::ID) && $criteria->keyContainsValue(NotificationPeer::ID) ) {
-			throw new PropelException('Cannot insert a value for auto-increment primary key ('.NotificationPeer::ID.')');
+		if ($criteria->containsKey(SubscriptionPeer::ID) && $criteria->keyContainsValue(SubscriptionPeer::ID) ) {
+			throw new PropelException('Cannot insert a value for auto-increment primary key ('.SubscriptionPeer::ID.')');
 		}
 
 
@@ -1180,18 +1208,18 @@ abstract class BaseNotificationPeer {
 		}
 
     // symfony_behaviors behavior
-    foreach (sfMixer::getCallables('BaseNotificationPeer:doInsert:post') as $sf_hook)
+    foreach (sfMixer::getCallables('BaseSubscriptionPeer:doInsert:post') as $sf_hook)
     {
-      call_user_func($sf_hook, 'BaseNotificationPeer', $values, $con, $pk);
+      call_user_func($sf_hook, 'BaseSubscriptionPeer', $values, $con, $pk);
     }
 
 		return $pk;
 	}
 
 	/**
-	 * Method perform an UPDATE on the database, given a Notification or Criteria object.
+	 * Method perform an UPDATE on the database, given a Subscription or Criteria object.
 	 *
-	 * @param      mixed $values Criteria or Notification object containing data that is used to create the UPDATE statement.
+	 * @param      mixed $values Criteria or Subscription object containing data that is used to create the UPDATE statement.
 	 * @param      PropelPDO $con The connection to use (specify PropelPDO connection object to exert more control over transactions).
 	 * @return     int The number of affected rows (if supported by underlying database driver).
 	 * @throws     PropelException Any exceptions caught during processing will be
@@ -1200,16 +1228,16 @@ abstract class BaseNotificationPeer {
 	public static function doUpdate($values, PropelPDO $con = null)
 	{
     // symfony_behaviors behavior
-    foreach (sfMixer::getCallables('BaseNotificationPeer:doUpdate:pre') as $sf_hook)
+    foreach (sfMixer::getCallables('BaseSubscriptionPeer:doUpdate:pre') as $sf_hook)
     {
-      if (false !== $sf_hook_retval = call_user_func($sf_hook, 'BaseNotificationPeer', $values, $con))
+      if (false !== $sf_hook_retval = call_user_func($sf_hook, 'BaseSubscriptionPeer', $values, $con))
       {
         return $sf_hook_retval;
       }
     }
 
 		if ($con === null) {
-			$con = Propel::getConnection(NotificationPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+			$con = Propel::getConnection(SubscriptionPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
 		}
 
 		$selectCriteria = new Criteria(self::DATABASE_NAME);
@@ -1217,10 +1245,10 @@ abstract class BaseNotificationPeer {
 		if ($values instanceof Criteria) {
 			$criteria = clone $values; // rename for clarity
 
-			$comparison = $criteria->getComparison(NotificationPeer::ID);
-			$selectCriteria->add(NotificationPeer::ID, $criteria->remove(NotificationPeer::ID), $comparison);
+			$comparison = $criteria->getComparison(SubscriptionPeer::ID);
+			$selectCriteria->add(SubscriptionPeer::ID, $criteria->remove(SubscriptionPeer::ID), $comparison);
 
-		} else { // $values is Notification object
+		} else { // $values is Subscription object
 			$criteria = $values->buildCriteria(); // gets full criteria
 			$selectCriteria = $values->buildPkeyCriteria(); // gets criteria w/ primary key(s)
 		}
@@ -1231,35 +1259,35 @@ abstract class BaseNotificationPeer {
 		$ret = BasePeer::doUpdate($selectCriteria, $criteria, $con);
 
     // symfony_behaviors behavior
-    foreach (sfMixer::getCallables('BaseNotificationPeer:doUpdate:post') as $sf_hook)
+    foreach (sfMixer::getCallables('BaseSubscriptionPeer:doUpdate:post') as $sf_hook)
     {
-      call_user_func($sf_hook, 'BaseNotificationPeer', $values, $con, $ret);
+      call_user_func($sf_hook, 'BaseSubscriptionPeer', $values, $con, $ret);
     }
 
     return $ret;
 	}
 
 	/**
-	 * Method to DELETE all rows from the notification table.
+	 * Method to DELETE all rows from the subscription table.
 	 *
 	 * @return     int The number of affected rows (if supported by underlying database driver).
 	 */
 	public static function doDeleteAll($con = null)
 	{
 		if ($con === null) {
-			$con = Propel::getConnection(NotificationPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+			$con = Propel::getConnection(SubscriptionPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
 		}
 		$affectedRows = 0; // initialize var to track total num of affected rows
 		try {
 			// use transaction because $criteria could contain info
 			// for more than one table or we could emulating ON DELETE CASCADE, etc.
 			$con->beginTransaction();
-			$affectedRows += BasePeer::doDeleteAll(NotificationPeer::TABLE_NAME, $con);
+			$affectedRows += BasePeer::doDeleteAll(SubscriptionPeer::TABLE_NAME, $con);
 			// Because this db requires some delete cascade/set null emulation, we have to
 			// clear the cached instance *after* the emulation has happened (since
 			// instances get re-added by the select statement contained therein).
-			NotificationPeer::clearInstancePool();
-			NotificationPeer::clearRelatedInstancePool();
+			SubscriptionPeer::clearInstancePool();
+			SubscriptionPeer::clearRelatedInstancePool();
 			$con->commit();
 			return $affectedRows;
 		} catch (PropelException $e) {
@@ -1269,9 +1297,9 @@ abstract class BaseNotificationPeer {
 	}
 
 	/**
-	 * Method perform a DELETE on the database, given a Notification or Criteria object OR a primary key value.
+	 * Method perform a DELETE on the database, given a Subscription or Criteria object OR a primary key value.
 	 *
-	 * @param      mixed $values Criteria or Notification object or primary key or array of primary keys
+	 * @param      mixed $values Criteria or Subscription object or primary key or array of primary keys
 	 *              which is used to create the DELETE statement
 	 * @param      PropelPDO $con the connection to use
 	 * @return     int 	The number of affected rows (if supported by underlying database driver).  This includes CASCADE-related rows
@@ -1282,27 +1310,27 @@ abstract class BaseNotificationPeer {
 	 public static function doDelete($values, PropelPDO $con = null)
 	 {
 		if ($con === null) {
-			$con = Propel::getConnection(NotificationPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
+			$con = Propel::getConnection(SubscriptionPeer::DATABASE_NAME, Propel::CONNECTION_WRITE);
 		}
 
 		if ($values instanceof Criteria) {
 			// invalidate the cache for all objects of this type, since we have no
 			// way of knowing (without running a query) what objects should be invalidated
 			// from the cache based on this Criteria.
-			NotificationPeer::clearInstancePool();
+			SubscriptionPeer::clearInstancePool();
 			// rename for clarity
 			$criteria = clone $values;
-		} elseif ($values instanceof Notification) { // it's a model object
+		} elseif ($values instanceof Subscription) { // it's a model object
 			// invalidate the cache for this single object
-			NotificationPeer::removeInstanceFromPool($values);
+			SubscriptionPeer::removeInstanceFromPool($values);
 			// create criteria based on pk values
 			$criteria = $values->buildPkeyCriteria();
 		} else { // it's a primary key, or an array of pks
 			$criteria = new Criteria(self::DATABASE_NAME);
-			$criteria->add(NotificationPeer::ID, (array) $values, Criteria::IN);
+			$criteria->add(SubscriptionPeer::ID, (array) $values, Criteria::IN);
 			// invalidate the cache for this object(s)
 			foreach ((array) $values as $singleval) {
-				NotificationPeer::removeInstanceFromPool($singleval);
+				SubscriptionPeer::removeInstanceFromPool($singleval);
 			}
 		}
 
@@ -1317,7 +1345,7 @@ abstract class BaseNotificationPeer {
 			$con->beginTransaction();
 			
 			$affectedRows += BasePeer::doDelete($criteria, $con);
-			NotificationPeer::clearRelatedInstancePool();
+			SubscriptionPeer::clearRelatedInstancePool();
 			$con->commit();
 			return $affectedRows;
 		} catch (PropelException $e) {
@@ -1327,24 +1355,24 @@ abstract class BaseNotificationPeer {
 	}
 
 	/**
-	 * Validates all modified columns of given Notification object.
+	 * Validates all modified columns of given Subscription object.
 	 * If parameter $columns is either a single column name or an array of column names
 	 * than only those columns are validated.
 	 *
 	 * NOTICE: This does not apply to primary or foreign keys for now.
 	 *
-	 * @param      Notification $obj The object to validate.
+	 * @param      Subscription $obj The object to validate.
 	 * @param      mixed $cols Column name or array of column names.
 	 *
 	 * @return     mixed TRUE if all columns are valid or the error message of the first invalid column.
 	 */
-	public static function doValidate(Notification $obj, $cols = null)
+	public static function doValidate(Subscription $obj, $cols = null)
 	{
 		$columns = array();
 
 		if ($cols) {
-			$dbMap = Propel::getDatabaseMap(NotificationPeer::DATABASE_NAME);
-			$tableMap = $dbMap->getTable(NotificationPeer::TABLE_NAME);
+			$dbMap = Propel::getDatabaseMap(SubscriptionPeer::DATABASE_NAME);
+			$tableMap = $dbMap->getTable(SubscriptionPeer::TABLE_NAME);
 
 			if (! is_array($cols)) {
 				$cols = array($cols);
@@ -1360,7 +1388,7 @@ abstract class BaseNotificationPeer {
 
 		}
 
-		return BasePeer::doValidate(NotificationPeer::DATABASE_NAME, NotificationPeer::TABLE_NAME, $columns);
+		return BasePeer::doValidate(SubscriptionPeer::DATABASE_NAME, SubscriptionPeer::TABLE_NAME, $columns);
 	}
 
 	/**
@@ -1368,23 +1396,23 @@ abstract class BaseNotificationPeer {
 	 *
 	 * @param      int $pk the primary key.
 	 * @param      PropelPDO $con the connection to use
-	 * @return     Notification
+	 * @return     Subscription
 	 */
 	public static function retrieveByPK($pk, PropelPDO $con = null)
 	{
 
-		if (null !== ($obj = NotificationPeer::getInstanceFromPool((string) $pk))) {
+		if (null !== ($obj = SubscriptionPeer::getInstanceFromPool((string) $pk))) {
 			return $obj;
 		}
 
 		if ($con === null) {
-			$con = Propel::getConnection(NotificationPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+			$con = Propel::getConnection(SubscriptionPeer::DATABASE_NAME, Propel::CONNECTION_READ);
 		}
 
-		$criteria = new Criteria(NotificationPeer::DATABASE_NAME);
-		$criteria->add(NotificationPeer::ID, $pk);
+		$criteria = new Criteria(SubscriptionPeer::DATABASE_NAME);
+		$criteria->add(SubscriptionPeer::ID, $pk);
 
-		$v = NotificationPeer::doSelect($criteria, $con);
+		$v = SubscriptionPeer::doSelect($criteria, $con);
 
 		return !empty($v) > 0 ? $v[0] : null;
 	}
@@ -1400,16 +1428,16 @@ abstract class BaseNotificationPeer {
 	public static function retrieveByPKs($pks, PropelPDO $con = null)
 	{
 		if ($con === null) {
-			$con = Propel::getConnection(NotificationPeer::DATABASE_NAME, Propel::CONNECTION_READ);
+			$con = Propel::getConnection(SubscriptionPeer::DATABASE_NAME, Propel::CONNECTION_READ);
 		}
 
 		$objs = null;
 		if (empty($pks)) {
 			$objs = array();
 		} else {
-			$criteria = new Criteria(NotificationPeer::DATABASE_NAME);
-			$criteria->add(NotificationPeer::ID, $pks, Criteria::IN);
-			$objs = NotificationPeer::doSelect($criteria, $con);
+			$criteria = new Criteria(SubscriptionPeer::DATABASE_NAME);
+			$criteria->add(SubscriptionPeer::ID, $pks, Criteria::IN);
+			$objs = SubscriptionPeer::doSelect($criteria, $con);
 		}
 		return $objs;
 	}
@@ -1441,15 +1469,15 @@ abstract class BaseNotificationPeer {
 	{
 	  if (preg_match('/^do(Select|Count)(Join(All(Except)?)?|Stmt)?/', $method, $match))
 	  {
-	    return sprintf('BaseNotificationPeer:%s:%1$s', 'Count' == $match[1] ? 'doCount' : $match[0]);
+	    return sprintf('BaseSubscriptionPeer:%s:%1$s', 'Count' == $match[1] ? 'doCount' : $match[0]);
 	  }
 	
 	  throw new LogicException(sprintf('Unrecognized function "%s"', $method));
 	}
 
-} // BaseNotificationPeer
+} // BaseSubscriptionPeer
 
 // This is the static code needed to register the TableMap for this table with the main Propel class.
 //
-BaseNotificationPeer::buildTableMap();
+BaseSubscriptionPeer::buildTableMap();
 

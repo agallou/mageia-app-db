@@ -9,3 +9,9 @@ all:
     signin_form: madbFormSignin
   user:
     connector: default
+  notifications:
+    mail:
+      name:    madb notification
+      # warning! address can be ignored by transport
+      # especially smtp servers
+      address: madb@madbserver

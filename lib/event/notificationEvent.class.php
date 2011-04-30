@@ -26,24 +26,24 @@ class NotificationEvent
         $c = new Criteria();
 
         // package match or is null
-        $crPackageID = $c->getNewCriterion(NotificationElementPeer::PACKAGE_ID, $rpm->getPackageId());
-        $crPackageID->addOr($c->getNewCriterion(NotificationElementPeer::PACKAGE_ID, NULL, Criteria::ISNULL));
+        $crPackageID = $c->getNewCriterion(SubscriptionElementPeer::PACKAGE_ID, $rpm->getPackageId());
+        $crPackageID->addOr($c->getNewCriterion(SubscriptionElementPeer::PACKAGE_ID, NULL, Criteria::ISNULL));
 
         // rpm group match or is null
-        $crRpmGroupID = $c->getNewCriterion(NotificationElementPeer::RPM_GROUP_ID, $rpm->getRpmGroupId());
-        $crRpmGroupID->addOr($c->getNewCriterion(NotificationElementPeer::RPM_GROUP_ID, NULL, Criteria::ISNULL));
+        $crRpmGroupID = $c->getNewCriterion(SubscriptionElementPeer::RPM_GROUP_ID, $rpm->getRpmGroupId());
+        $crRpmGroupID->addOr($c->getNewCriterion(SubscriptionElementPeer::RPM_GROUP_ID, NULL, Criteria::ISNULL));
 
         // arch match or is null
-        $crArchID = $c->getNewCriterion(NotificationElementPeer::ARCH_ID, $rpm->getArchId());
-        $crArchID->addOr($c->getNewCriterion(NotificationElementPeer::ARCH_ID, NULL, Criteria::ISNULL));
+        $crArchID = $c->getNewCriterion(SubscriptionElementPeer::ARCH_ID, $rpm->getArchId());
+        $crArchID->addOr($c->getNewCriterion(SubscriptionElementPeer::ARCH_ID, NULL, Criteria::ISNULL));
 
         // distrelease match or is null
-        $crDistreleaseID = $c->getNewCriterion(NotificationElementPeer::DISTRELEASE_ID, $rpm->getDistreleaseId());
-        $crDistreleaseID->addOr($c->getNewCriterion(NotificationElementPeer::DISTRELEASE_ID, NULL, Criteria::ISNULL));
+        $crDistreleaseID = $c->getNewCriterion(SubscriptionElementPeer::DISTRELEASE_ID, $rpm->getDistreleaseId());
+        $crDistreleaseID->addOr($c->getNewCriterion(SubscriptionElementPeer::DISTRELEASE_ID, NULL, Criteria::ISNULL));
 
         // media match or is null
-        $crMediaID = $c->getNewCriterion(NotificationElementPeer::MEDIA_ID, $rpm->getMediaId());
-        $crMediaID->addOr($c->getNewCriterion(NotificationElementPeer::MEDIA_ID, NULL, Criteria::ISNULL));
+        $crMediaID = $c->getNewCriterion(SubscriptionElementPeer::MEDIA_ID, $rpm->getMediaId());
+        $crMediaID->addOr($c->getNewCriterion(SubscriptionElementPeer::MEDIA_ID, NULL, Criteria::ISNULL));
 
 
         $crDistreleaseID->addAnd($crMediaID);
@@ -52,13 +52,13 @@ class NotificationEvent
         $crPackageID->addAnd($crRpmGroupID);
 
         $c->add($crPackageID);
-        $c->addJoin(NotificationPeer::ID, NotificationElementPeer::NOTIFICATION_ID);
+        $c->addJoin(SubscriptionPeer::ID, SubscriptionElementPeer::SUBSCRIPTION_ID);
 
-        $notifications = NotificationPeer::doSelect($c);
-        foreach($notifications as $notification)
+        $subscriptions = SubscriptionPeer::doSelect($c);
+        foreach($subscriptions as $subscription)
         {
-            //do something with each matched notification element
-            self::sendByMail($rpm, $notification, $eventType);
+            //do something with each matched subscription element
+            self::sendByMail($rpm, $subscription, $eventType);
         }
     }
 
@@ -68,7 +68,7 @@ class NotificationEvent
      */
     public static function packageCommentsSlot(sfEvent $event)
     {
-        //TODO: implement comments notifications here
+        //TODO: implement comments subscriptions here
     }
 
     /**
@@ -90,33 +90,32 @@ class NotificationEvent
             case NotificationEvent::COMMENTS:
                 return "has new comments on its page";
             default:
-                throw new madbException("Argument is not a valid NotificationEventListener enum");
+                throw new madbException("Argument is not a valid NotificationEvent enum");
         }
     }
 
     /**
      * Sends a e-mail to user
      * @param Rpm $rpm Package, witch caused event
-     * @param NotificationElement $notificationElement elemnt of user subscription, matched package criteria
+     * @param SubscriptionElement $subscriptionElement element of user subscription, matched package criteria
      * @param enum $eventType type of event, that happened with the package
      */
-    private static function sendByMail($rpm, $notification, $eventType)
+    private static function sendByMail($rpm, $subscription, $eventType)
     {
             //get text explanation about that happened with RPM
             $eventText = self::getEventTextByEnum($eventType);
             
-            //TODO: replace this line with settings
             $from = array(
-                sfConfig::get('app_notifications_mail_address', "madb@phobos.home") => sfConfig::get('app_notifications_mail_name', "madb notification")
+                sfConfig::get('app_notifications_mail_address', "madb@localhost") => sfConfig::get('app_notifications_mail_name', "madb notification")
             );
 
             //TODO: use real user mail from db
             $to = array(
-                $notification->getUser()->getMail() => $notification->getUser()->getFirstName()." ".$notification->getUser()->getLastName()
+                $subscription->getUser()->getMail() => $subscription->getUser()->getFirstName()." ".$subscription->getUser()->getLastName()
             );
 
             //get mailing prefix 4 user to sort incoming mails by filter
-            $prefix = $notification->getMailPrefix();
+            $prefix = $subscription->getMailPrefix();
             //FIXME: set better mails here - use Settings
             $header = "[".$prefix."] Package ".$rpm->getPackage()->getName()." ".$eventText;
 
