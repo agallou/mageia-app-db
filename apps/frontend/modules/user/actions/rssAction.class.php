@@ -24,92 +24,93 @@ class rssAction extends sfActions
     $selectedFeed = RssFeedPeer::retrieveByPK($feedId);
     // but first let's check if used "selected" his own feed :D
     // and if not show him Select
-    if($selectedFeed->getUserId() != $userId)  return "Select";
+    // TODO: see previous TODO and FIXME
+    // if($selectedFeed->getUserId() != $userId)  return "Select";
 
     $this->feed = $selectedFeed;
     //dummy array for rss
     $this->rss  = array();
 
     
-    foreach($this->feed->getNotifications() as $notification)
+    foreach($this->feed->getSubscriptions() as $subscription)
     {
-        $notification instanceof Notification;
+        $subscription instanceof Subscription;
         $rpmCriteria = new Criteria();
-        foreach($notification->getNotificationElements() as $notificationElement)
+        foreach($subscription->getSubscriptionElements() as $subscriptionElement)
         {
-            $notificationElement instanceof NotificationElement;
+            $subscriptionElement instanceof SubscriptionElement;
             //set here additional scope criterions
-            if($notificationElement->getMediaId()       != NULL) $notificationElementCriterion = $rpmCriteria->getNewCriterion(RpmPeer::MEDIA_ID,$notificationElement->getMediaId());
-            if($notificationElement->getArchId()        != NULL) 
-                    if(isset($notificationElementCriterion)) $notificationElementCriterion->addAnd($rpmCriteria->getNewCriterion(RpmPeer::ARCH_ID,$notificationElement->getArchId()));
-                    else $notificationElementCriterion = $rpmCriteria->getNewCriterion(RpmPeer::ARCH_ID,$notificationElement->getArchId());
-            if($notificationElement->getDistreleaseId() != NULL) 
-                    if(isset($notificationElementCriterion)) $notificationElementCriterion->addAnd($rpmCriteria->getNewCriterion(RpmPeer::DISTRELEASE_ID,$notificationElement->getDistreleaseId()));
-                    else $notificationElementCriterion = $rpmCriteria->getNewCriterion(RpmPeer::DISTRELEASE_ID,$notificationElement->getDistreleaseId());
-            if($notificationElement->getPackageId()     != NULL) 
-                    if(isset($notificationElementCriterion)) $notificationElementCriterion->addAnd($rpmCriteria->getNewCriterion(RpmPeer::PACKAGE_ID,$notificationElement->getPackageId()));
-                    else $notificationElementCriterion = $rpmCriteria->getNewCriterion(RpmPeer::PACKAGE_ID,$notificationElement->getPackageId());
+            if($subscriptionElement->getMediaId()       != NULL) $subscriptionElementCriterion = $rpmCriteria->getNewCriterion(RpmPeer::MEDIA_ID,$subscriptionElement->getMediaId());
+            if($subscriptionElement->getArchId()        != NULL) 
+                    if(isset($subscriptionElementCriterion)) $subscriptionElementCriterion->addAnd($rpmCriteria->getNewCriterion(RpmPeer::ARCH_ID,$subscriptionElement->getArchId()));
+                    else $subscriptionElementCriterion = $rpmCriteria->getNewCriterion(RpmPeer::ARCH_ID,$subscriptionElement->getArchId());
+            if($subscriptionElement->getDistreleaseId() != NULL) 
+                    if(isset($subscriptionElementCriterion)) $subscriptionElementCriterion->addAnd($rpmCriteria->getNewCriterion(RpmPeer::DISTRELEASE_ID,$subscriptionElement->getDistreleaseId()));
+                    else $subscriptionElementCriterion = $rpmCriteria->getNewCriterion(RpmPeer::DISTRELEASE_ID,$subscriptionElement->getDistreleaseId());
+            if($subscriptionElement->getPackageId()     != NULL) 
+                    if(isset($subscriptionElementCriterion)) $subscriptionElementCriterion->addAnd($rpmCriteria->getNewCriterion(RpmPeer::PACKAGE_ID,$subscriptionElement->getPackageId()));
+                    else $subscriptionElementCriterion = $rpmCriteria->getNewCriterion(RpmPeer::PACKAGE_ID,$subscriptionElement->getPackageId());
             //and Or this to rpm criteria
-            if(isset($notificationElementCriterion))
+            if(isset($subscriptionElementCriterion))
                 {
-                $rpmCriteria->addOr($notificationElementCriterion);
-                unset($notificationElementCriterion);
+                $rpmCriteria->addOr($subscriptionElementCriterion);
+                unset($subscriptionElementCriterion);
                 }
         }
 
-        //setup criteria for media based on notification's settings
-        if($notification->getUpdate())
+        //setup criteria for media based on subscription's settings
+        if($subscription->getUpdate())
         {
-            $notificationCriterion = $rpmCriteria->getNewCriterion(MediaPeer::IS_UPDATES, true);
-            $notificationCriterion->addAnd($rpmCriteria->getNewCriterion(MediaPeer::IS_TESTING, false));
+            $subscriptionCriterion = $rpmCriteria->getNewCriterion(MediaPeer::IS_UPDATES, true);
+            $subscriptionCriterion->addAnd($rpmCriteria->getNewCriterion(MediaPeer::IS_TESTING, false));
         }
 
-        if($notification->getUpdateCandidate())
+        if($subscription->getUpdateCandidate())
         {
-            if(isset($notificationCriterion))
+            if(isset($subscriptionCriterion))
             {
-            $notificationCriterion2 = $rpmCriteria->getNewCriterion(MediaPeer::IS_UPDATES, true);
-            $notificationCriterion2->addAnd($rpmCriteria->getNewCriterion(MediaPeer::IS_TESTING, true));
-            $notificationCriterion->addOr($notificationCriterion2);
+            $subscriptionCriterion2 = $rpmCriteria->getNewCriterion(MediaPeer::IS_UPDATES, true);
+            $subscriptionCriterion2->addAnd($rpmCriteria->getNewCriterion(MediaPeer::IS_TESTING, true));
+            $subscriptionCriterion->addOr($subscriptionCriterion2);
             }
             else
             {
-            $notificationCriterion = $rpmCriteria->getNewCriterion(MediaPeer::IS_UPDATES, true);
-            $notificationCriterion->addAnd($rpmCriteria->getNewCriterion(MediaPeer::IS_TESTING, true));
+            $subscriptionCriterion = $rpmCriteria->getNewCriterion(MediaPeer::IS_UPDATES, true);
+            $subscriptionCriterion->addAnd($rpmCriteria->getNewCriterion(MediaPeer::IS_TESTING, true));
             }
         }
 
-        if($notification->getNewVersion())
+        if($subscription->getNewVersion())
         {
-            if(isset($notificationCriterion))
+            if(isset($subscriptionCriterion))
             {
-            $notificationCriterion2 = $rpmCriteria->getNewCriterion(MediaPeer::IS_BACKPORTS, true);
-            $notificationCriterion2->addAnd($rpmCriteria->getNewCriterion(MediaPeer::IS_TESTING, false));
-            $notificationCriterion->addOr($notificationCriterion2);
+            $subscriptionCriterion2 = $rpmCriteria->getNewCriterion(MediaPeer::IS_BACKPORTS, true);
+            $subscriptionCriterion2->addAnd($rpmCriteria->getNewCriterion(MediaPeer::IS_TESTING, false));
+            $subscriptionCriterion->addOr($subscriptionCriterion2);
             }
             else
             {
-            $notificationCriterion = $rpmCriteria->getNewCriterion(MediaPeer::IS_UPDATES, true);
-            $notificationCriterion->addAnd($rpmCriteria->getNewCriterion(MediaPeer::IS_TESTING, false));
+            $subscriptionCriterion = $rpmCriteria->getNewCriterion(MediaPeer::IS_UPDATES, true);
+            $subscriptionCriterion->addAnd($rpmCriteria->getNewCriterion(MediaPeer::IS_TESTING, false));
             }
         }
 
-        if($notification->getNewVersionCandidate())
+        if($subscription->getNewVersionCandidate())
         {
-            if(isset($notificationCriterion))
+            if(isset($subscriptionCriterion))
             {
-            $notificationCriterion2 = $rpmCriteria->getNewCriterion(MediaPeer::IS_BACKPORTS, true);
-            $notificationCriterion2->addAnd($rpmCriteria->getNewCriterion(MediaPeer::IS_TESTING, true));
-            $notificationCriterion->addOr($notificationCriterion2);
+            $subscriptionCriterion2 = $rpmCriteria->getNewCriterion(MediaPeer::IS_BACKPORTS, true);
+            $subscriptionCriterion2->addAnd($rpmCriteria->getNewCriterion(MediaPeer::IS_TESTING, true));
+            $subscriptionCriterion->addOr($subscriptionCriterion2);
             }
             else
             {
-            $notificationCriterion = $rpmCriteria->getNewCriterion(MediaPeer::IS_UPDATES, true);
-            $notificationCriterion->addAnd($rpmCriteria->getNewCriterion(MediaPeer::IS_TESTING, true));
+            $subscriptionCriterion = $rpmCriteria->getNewCriterion(MediaPeer::IS_UPDATES, true);
+            $subscriptionCriterion->addAnd($rpmCriteria->getNewCriterion(MediaPeer::IS_TESTING, true));
             }
         }
-        if(isset($notificationCriterion))
-            $rpmCriteria->addOr($notificationCriterion);
+        if(isset($subscriptionCriterion))
+            $rpmCriteria->addOr($subscriptionCriterion);
 
     }
 

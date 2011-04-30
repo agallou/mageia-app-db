@@ -7,8 +7,8 @@
 <?php foreach ($rss as $item): ?>
     <item>
         <title><?php echo $item->getPackage()->getName() ?></title>
-        <link>user/rss</link>
-        <description>New update of rpm <?php echo $item->getName() ?> in Package <?php echo $item->getPackage()->getName() ?> on media <?php echo $item->getMedia()->getName() ?></description>
+        <link><?php url_for("package/show?media=".$item->getMedia()->getId()."&distrelease=".$item->getDistrelease()->getId()."&arch=".$item->getArch()->getId()."&source=".intval($item->getIsSource())."&application=".intval($item->getPackage()->getIsApplication())."&id=".$item->getPackage()->getId()) ?></link>
+        <description>Update in Package <?php echo $item->getPackage()->getName() ?> on media <?php echo $item->getMedia()->getName() ?></description>
     </item>
 <?php endforeach; ?>
 </chanell>
