@@ -25,7 +25,7 @@ abstract class BaseNotificationPeer {
 	const TM_CLASS = 'NotificationTableMap';
 	
 	/** The total number of columns. */
-	const NUM_COLUMNS = 3;
+	const NUM_COLUMNS = 4;
 
 	/** The number of lazy-loaded columns. */
 	const NUM_LAZY_LOAD_COLUMNS = 0;
@@ -38,6 +38,9 @@ abstract class BaseNotificationPeer {
 
 	/** the column name for the RPM_ID field */
 	const RPM_ID = 'notification.RPM_ID';
+
+	/** the column name for the EVENT_TYPE field */
+	const EVENT_TYPE = 'notification.EVENT_TYPE';
 
 	/**
 	 * An identiy map to hold any loaded instances of Notification objects.
@@ -62,11 +65,11 @@ abstract class BaseNotificationPeer {
 	 * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
 	 */
 	private static $fieldNames = array (
-		BasePeer::TYPE_PHPNAME => array ('Id', 'SubscriptionId', 'RpmId', ),
-		BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'subscriptionId', 'rpmId', ),
-		BasePeer::TYPE_COLNAME => array (self::ID, self::SUBSCRIPTION_ID, self::RPM_ID, ),
-		BasePeer::TYPE_FIELDNAME => array ('id', 'subscription_id', 'rpm_id', ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, )
+		BasePeer::TYPE_PHPNAME => array ('Id', 'SubscriptionId', 'RpmId', 'EventType', ),
+		BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'subscriptionId', 'rpmId', 'eventType', ),
+		BasePeer::TYPE_COLNAME => array (self::ID, self::SUBSCRIPTION_ID, self::RPM_ID, self::EVENT_TYPE, ),
+		BasePeer::TYPE_FIELDNAME => array ('id', 'subscription_id', 'rpm_id', 'event_type', ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, )
 	);
 
 	/**
@@ -76,11 +79,11 @@ abstract class BaseNotificationPeer {
 	 * e.g. self::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
 	 */
 	private static $fieldKeys = array (
-		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'SubscriptionId' => 1, 'RpmId' => 2, ),
-		BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'subscriptionId' => 1, 'rpmId' => 2, ),
-		BasePeer::TYPE_COLNAME => array (self::ID => 0, self::SUBSCRIPTION_ID => 1, self::RPM_ID => 2, ),
-		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'subscription_id' => 1, 'rpm_id' => 2, ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, )
+		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'SubscriptionId' => 1, 'RpmId' => 2, 'EventType' => 3, ),
+		BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'subscriptionId' => 1, 'rpmId' => 2, 'eventType' => 3, ),
+		BasePeer::TYPE_COLNAME => array (self::ID => 0, self::SUBSCRIPTION_ID => 1, self::RPM_ID => 2, self::EVENT_TYPE => 3, ),
+		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'subscription_id' => 1, 'rpm_id' => 2, 'event_type' => 3, ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, )
 	);
 
 	/**
@@ -153,6 +156,7 @@ abstract class BaseNotificationPeer {
 		$criteria->addSelectColumn(NotificationPeer::ID);
 		$criteria->addSelectColumn(NotificationPeer::SUBSCRIPTION_ID);
 		$criteria->addSelectColumn(NotificationPeer::RPM_ID);
+		$criteria->addSelectColumn(NotificationPeer::EVENT_TYPE);
 	}
 
 	/**

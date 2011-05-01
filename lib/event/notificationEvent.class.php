@@ -58,7 +58,7 @@ class NotificationEvent
         foreach($subscriptions as $subscription)
         {
             //do something with each matched subscription element
-            self::sendByMail($rpm, $subscription, $eventType);
+            self::createNotification($rpm, $subscription, $eventType);
         }
     }
 
@@ -95,12 +95,12 @@ class NotificationEvent
     }
 
     /**
-     * Sends a e-mail to user
+     * Creates Notification object
      * @param Rpm $rpm Package, witch caused event
      * @param SubscriptionElement $subscriptionElement element of user subscription, matched package criteria
      * @param enum $eventType type of event, that happened with the package
      */
-    private static function sendByMail($rpm, $subscription, $eventType)
+    private static function createNotification($rpm, $subscription, $eventType)
     {
             //get text explanation about that happened with RPM
             $eventText = self::getEventTextByEnum($eventType);
@@ -123,15 +123,15 @@ class NotificationEvent
 
             if(key($to) !== NULL)
             {
-            //sends mail directly
-            sfContext::getInstance()->getMailer()->composeAndSend(
-                $from,
-                $to,
-                $header,
-                $text
-                );
-            //TODO: fancy console notice line, should be configurable :)
-             echo "\n\033[". "1;34" ."m". "Mailsending triggered: from:[".$from[key($from)]." <".key($from).">]->to:[$to] h:$header b:[$text]" . "\033[0m\n";
+            //put a notification in a notification spool
+            $notification = new Notification();
+            $notification->setSubscriptionId($subscription->getId());
+            $notification->setRpmId($rpm->getId());
+            $notification->setEventType($eventType);
+            $notification->save();
+
+            //by default if not setted up to see notifications trigering it will not be displayed
+            if(sfConfig::get('app_notifications_display_notice', "false")) echo "\n\033[". "1;34" ."m". "Mailsending triggered: from:[".$from[key($from)]." <".key($from).">]->to:[".$to[key($to)]." <".key($to).">] h:$header b:[$text]" . "\033[0m\n";
             }
     }
 }

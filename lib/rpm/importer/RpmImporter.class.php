@@ -9,8 +9,6 @@ class RpmImporter
 
     public function  __construct($notify) {
         $this->notify = $notify;
-        if($notify) echo "DEBUG: constructor asked with notify enabled\n";
-        else echo "DEBUG: constructor asked without notify enabled\n";
     }
   /**
    * 
@@ -85,8 +83,13 @@ class RpmImporter
     // trigger user notifications only if it is enabled
     if($this->notify)
     {
-        if($media->getIsUpdates() && !$media->getIsTesting())   $event = NotificationEvent::UPDATE;
-        if($media->getIsUpdates() &&  $media->getIsTesting())   $event = NotificationEvent::UPDATE_CANDIDATE;
+	// we mean that if media is updates and it isn't testing branch it always updates
+	// but rpm's added to core media and etc is updates too
+	// TODO: is core updates just updates and not update candidates?
+	// just uncomment next line if you feel there is no need to notify about core updates
+        /*if($media->getIsUpdates()   && !$media->getIsTesting())*/
+	$event = NotificationEvent::UPDATE;
+        if($media->getIsUpdates()   &&  $media->getIsTesting()) $event = NotificationEvent::UPDATE_CANDIDATE;
         if($media->getIsBackports() && !$media->getIsTesting()) $event = NotificationEvent::NEW_VERSION;
         if($media->getIsBackports() &&  $media->getIsTesting()) $event = NotificationEvent::NEW_VERSION_CANDIDATE;
         sfContext::getInstance()->getEventDispatcher()->notify(new sfEvent($rpm,"rpm.import",array(

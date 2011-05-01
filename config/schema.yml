@@ -221,6 +221,7 @@ propel:
     id:                                                                ~
     subscription_id:                                                   { type: integer, required: true, foreignTable: subscription, foreignReference: id }
     rpm_id:                                                            { type: integer, required: true, foreignTable: rpm, foreignReference: id }
+    event_type:                                                        { type: integer, required: true }
     _indexes:
       fk_notification_subscription1:                                   [ subscription_id ]
       fk_notification_rpm1:                                            [ rpm_id ]

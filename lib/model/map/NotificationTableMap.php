@@ -39,6 +39,7 @@ class NotificationTableMap extends TableMap {
 		$this->addPrimaryKey('ID', 'Id', 'INTEGER', true, null, null);
 		$this->addForeignKey('SUBSCRIPTION_ID', 'SubscriptionId', 'INTEGER', 'subscription', 'ID', true, null, null);
 		$this->addForeignKey('RPM_ID', 'RpmId', 'INTEGER', 'rpm', 'ID', true, null, null);
+		$this->addColumn('EVENT_TYPE', 'EventType', 'INTEGER', true, null, null);
 		// validators
 	} // initialize()
 

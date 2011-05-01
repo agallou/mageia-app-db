@@ -37,6 +37,12 @@ abstract class BaseNotification extends BaseObject  implements Persistent {
 	protected $rpm_id;
 
 	/**
+	 * The value for the event_type field.
+	 * @var        int
+	 */
+	protected $event_type;
+
+	/**
 	 * @var        Subscription
 	 */
 	protected $aSubscription;
@@ -92,6 +98,16 @@ abstract class BaseNotification extends BaseObject  implements Persistent {
 	public function getRpmId()
 	{
 		return $this->rpm_id;
+	}
+
+	/**
+	 * Get the [event_type] column value.
+	 * 
+	 * @return     int
+	 */
+	public function getEventType()
+	{
+		return $this->event_type;
 	}
 
 	/**
@@ -163,6 +179,26 @@ abstract class BaseNotification extends BaseObject  implements Persistent {
 	} // setRpmId()
 
 	/**
+	 * Set the value of [event_type] column.
+	 * 
+	 * @param      int $v new value
+	 * @return     Notification The current object (for fluent API support)
+	 */
+	public function setEventType($v)
+	{
+		if ($v !== null) {
+			$v = (int) $v;
+		}
+
+		if ($this->event_type !== $v) {
+			$this->event_type = $v;
+			$this->modifiedColumns[] = NotificationPeer::EVENT_TYPE;
+		}
+
+		return $this;
+	} // setEventType()
+
+	/**
 	 * Indicates whether the columns in this object are only set to default values.
 	 *
 	 * This method can be used in conjunction with isModified() to indicate whether an object is both
@@ -197,6 +233,7 @@ abstract class BaseNotification extends BaseObject  implements Persistent {
 			$this->id = ($row[$startcol + 0] !== null) ? (int) $row[$startcol + 0] : null;
 			$this->subscription_id = ($row[$startcol + 1] !== null) ? (int) $row[$startcol + 1] : null;
 			$this->rpm_id = ($row[$startcol + 2] !== null) ? (int) $row[$startcol + 2] : null;
+			$this->event_type = ($row[$startcol + 3] !== null) ? (int) $row[$startcol + 3] : null;
 			$this->resetModified();
 
 			$this->setNew(false);
@@ -206,7 +243,7 @@ abstract class BaseNotification extends BaseObject  implements Persistent {
 			}
 
 			// FIXME - using NUM_COLUMNS may be clearer.
-			return $startcol + 3; // 3 = NotificationPeer::NUM_COLUMNS - NotificationPeer::NUM_LAZY_LOAD_COLUMNS).
+			return $startcol + 4; // 4 = NotificationPeer::NUM_COLUMNS - NotificationPeer::NUM_LAZY_LOAD_COLUMNS).
 
 		} catch (Exception $e) {
 			throw new PropelException("Error populating Notification object", $e);
@@ -590,6 +627,9 @@ abstract class BaseNotification extends BaseObject  implements Persistent {
 			case 2:
 				return $this->getRpmId();
 				break;
+			case 3:
+				return $this->getEventType();
+				break;
 			default:
 				return null;
 				break;
@@ -614,6 +654,7 @@ abstract class BaseNotification extends BaseObject  implements Persistent {
 			$keys[0] => $this->getId(),
 			$keys[1] => $this->getSubscriptionId(),
 			$keys[2] => $this->getRpmId(),
+			$keys[3] => $this->getEventType(),
 		);
 		return $result;
 	}
@@ -654,6 +695,9 @@ abstract class BaseNotification extends BaseObject  implements Persistent {
 			case 2:
 				$this->setRpmId($value);
 				break;
+			case 3:
+				$this->setEventType($value);
+				break;
 		} // switch()
 	}
 
@@ -681,6 +725,7 @@ abstract class BaseNotification extends BaseObject  implements Persistent {
 		if (array_key_exists($keys[0], $arr)) $this->setId($arr[$keys[0]]);
 		if (array_key_exists($keys[1], $arr)) $this->setSubscriptionId($arr[$keys[1]]);
 		if (array_key_exists($keys[2], $arr)) $this->setRpmId($arr[$keys[2]]);
+		if (array_key_exists($keys[3], $arr)) $this->setEventType($arr[$keys[3]]);
 	}
 
 	/**
@@ -695,6 +740,7 @@ abstract class BaseNotification extends BaseObject  implements Persistent {
 		if ($this->isColumnModified(NotificationPeer::ID)) $criteria->add(NotificationPeer::ID, $this->id);
 		if ($this->isColumnModified(NotificationPeer::SUBSCRIPTION_ID)) $criteria->add(NotificationPeer::SUBSCRIPTION_ID, $this->subscription_id);
 		if ($this->isColumnModified(NotificationPeer::RPM_ID)) $criteria->add(NotificationPeer::RPM_ID, $this->rpm_id);
+		if ($this->isColumnModified(NotificationPeer::EVENT_TYPE)) $criteria->add(NotificationPeer::EVENT_TYPE, $this->event_type);
 
 		return $criteria;
 	}
@@ -752,6 +798,8 @@ abstract class BaseNotification extends BaseObject  implements Persistent {
 		$copyObj->setSubscriptionId($this->subscription_id);
 
 		$copyObj->setRpmId($this->rpm_id);
+
+		$copyObj->setEventType($this->event_type);
 
 
 		$copyObj->setNew(true);
