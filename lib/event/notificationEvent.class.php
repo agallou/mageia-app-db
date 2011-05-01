@@ -102,25 +102,6 @@ class NotificationEvent
      */
     private static function createNotification($rpm, $subscription, $eventType)
     {
-            //get text explanation about that happened with RPM
-            $eventText = self::getEventTextByEnum($eventType);
-            
-            $from = array(
-                sfConfig::get('app_notifications_mail_address', "madb@localhost") => sfConfig::get('app_notifications_mail_name', "madb notification")
-            );
-
-            //TODO: use real user mail from db
-            $to = array(
-                $subscription->getUser()->getMail() => $subscription->getUser()->getFirstName()." ".$subscription->getUser()->getLastName()
-            );
-
-            //get mailing prefix 4 user to sort incoming mails by filter
-            $prefix = $subscription->getMailPrefix();
-            //FIXME: set better mails here - use Settings
-            $header = "[".$prefix."] Package ".$rpm->getPackage()->getName()." ".$eventText;
-
-            $text = "You recieved this notification because package ".$rpm->getPackage()->getName() ." ". $eventText;
-
             if(key($to) !== NULL)
             {
             //put a notification in a notification spool
@@ -132,6 +113,47 @@ class NotificationEvent
 
             //by default if not setted up to see notifications trigering it will not be displayed
             if(sfConfig::get('app_notifications_display_notice', "false")) echo "\n\033[". "1;34" ."m". "Mailsending triggered: from:[".$from[key($from)]." <".key($from).">]->to:[".$to[key($to)]." <".key($to).">] h:$header b:[$text]" . "\033[0m\n";
+            }
+    }
+    
+    
+    public static function sendMail($rpm, $subscription, $eventType)
+    {
+            //get text explanation about that happened with RPM
+            $eventText = self::getEventTextByEnum($eventType);
+            
+            $from = array(
+                sfConfig::get('app_notifications_mail_address', "madb@localhost") => sfConfig::get('app_notifications_mail_name', "madb notification")
+            );
+
+            $to = array(
+                $subscription->getUser()->getMail() => $subscription->getUser()->getFirstName()." ".$subscription->getUser()->getLastName()
+            );
+
+            //get mailing prefix 4 user to sort incoming mails by filter
+            $prefix = $subscription->getMailPrefix();
+            //FIXME: set better mails here, maybe use Settings
+            $header = "[".$prefix."] Package ".$rpm->getPackage()->getName()." ".$eventText;
+
+            $text = "Package ".$rpm->getPackage()->getName() ." ". $eventText . "
+            
+            You recieved this message because you are subscribed to get mail notifications from
+            madb. If you don't want to recieve any more of these, you can change subscription
+            options in your account settings.
+            ";
+
+            if(key($to) !== NULL)
+            {
+            //sends mail
+            sfContext::getInstance()->getMailer()->composeAndSend(
+                $from,
+                $to,
+                $header,
+                $text
+            );
+
+            //TODO: return real result here
+            return true;
             }
     }
 }
