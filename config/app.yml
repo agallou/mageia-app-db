@@ -11,7 +11,7 @@ all:
     connector: default
   notifications:
     # display notice on fetchRpm task
-    display_notice:         false
+    display_notice: true
     mail:
       name:    madb notification
       # warning! address can be ignored by transport
