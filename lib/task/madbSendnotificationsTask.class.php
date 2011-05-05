@@ -1,6 +1,6 @@
 <?php
 
-class madbSendnotificationsTask extends sfBaseTask
+class madbSendnotificationsTask extends madbBaseTask
 {
   protected function configure()
   {
@@ -54,7 +54,7 @@ EOF;
       
       //finished to work with notification object
       //now it should be deleted
-      $nofitication->delete();
+      $notification->delete();
     }
   }
 }

@@ -14,6 +14,6 @@ all:
     display_notice: true
     mail:
       name:    madb notification
-      # warning! address can be ignored by transport
-      # especially smtp servers
+      # warning! address option may be ignored by some
+      # smtp servers like smtp.gmail.com for security reasons
       address: madb@madbserver
