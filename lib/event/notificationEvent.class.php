@@ -103,8 +103,6 @@ class NotificationEvent
    */
   private static function createNotification($rpm, $subscription, $eventType)
   {
-    if(key($to) !== NULL)
-    {
     //put a notification in a notification spool
     $notification = new Notification();
     $notification->setSubscriptionId($subscription->getId());
@@ -113,8 +111,7 @@ class NotificationEvent
     $notification->save();
 
     //by default if not setted up to see notifications trigering it will not be displayed
-    if(sfConfig::get('app_notifications_display_notice', "false")) echo "\n\033[". "1;34" ."m". "Mailsending triggered: from:[".$from[key($from)]." <".key($from).">]->to:[".$to[key($to)]." <".key($to).">] h:$header b:[$text]" . "\033[0m\n";
-    }
+    if(sfConfig::get('app_notifications_display_notice', "false")) echo "\n\033[". "1;34" ."m". "Notification triggered." . "\033[0m\n";
   }
 
 
@@ -122,9 +119,12 @@ class NotificationEvent
   {
     //get text explanation about that happened with RPM
     $eventText = self::getEventTextByEnum($eventType);
-
+      $mail = sfConfig::get('app_notifications_mail', array (
+        "address" => "madb@localhost",
+        "name"    => "madb notification")
+      );
     $from = array(
-      sfConfig::get('app_notifications_mail_address', "madb@localhost") => sfConfig::get('app_notifications_mail_name', "madb notification")
+      $mail["address"] => $mail["name"]
     );
 
     $to = array(
@@ -141,6 +141,7 @@ class NotificationEvent
     You recieved this message because you are subscribed to get mail notifications from
     madb. If you don't want to recieve any more of these, you can change subscription
     options in your account settings.
+
     ";
 
     if(key($to) !== NULL)
