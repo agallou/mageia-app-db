@@ -98,7 +98,7 @@ class NotificationEvent
   /**
    * Creates Notification object
    * @param Rpm $rpm Package, witch caused event
-   * @param SubscriptionElement $subscriptionElement element of user subscription, matched package criteria
+   * @param Subscription $subscription element of user subscription, matched package criteria
    * @param enum $eventType type of event, that happened with the package
    */
   private static function createNotification($rpm, $subscription, $eventType)
@@ -115,6 +115,14 @@ class NotificationEvent
   }
 
 
+  /**
+   * @brief Sends mail
+   * Used by notifications sending task to send email, based on params
+   * @param rpm
+   * @param subscription
+   * @param eventType
+   * @return bool
+   **/
   public static function sendMail($rpm, $subscription, $eventType)
   {
     //get text explanation about that happened with RPM
