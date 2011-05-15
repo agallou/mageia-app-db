@@ -30,39 +30,58 @@ class rssAction extends sfActions
     //dummy array for rss
     $this->rss  = array();
 
-
+    
     foreach($this->feed->getSubscriptions() as $subscription)
     {
-      $subscription instanceof Subscription;
       $rpmCriteria = new Criteria();
       foreach($subscription->getSubscriptionElements() as $subscriptionElement)
       {
-        $subscriptionElement instanceof SubscriptionElement;
         //set here additional scope criterions
-        if($subscriptionElement->getMediaId()       != NULL) $subscriptionElementCriterion = $rpmCriteria->getNewCriterion(RpmPeer::MEDIA_ID,$subscriptionElement->getMediaId());
-        if($subscriptionElement->getArchId()        != NULL)
+        if($subscriptionElement->getMediaId()       !== null) 
         {
           if(isset($subscriptionElementCriterion))
+          {
+            $subscriptionElementCriterion->addAnd($rpmCriteria->getNewCriterion(RpmPeer::MEDIA_ID,$subscriptionElement->getMediaId()));
+          }
+          else
+          {
+            $subscriptionElementCriterion = $rpmCriteria->getNewCriterion(RpmPeer::MEDIA_ID,$subscriptionElement->getMediaId());
+          }
+        }
+        if($subscriptionElement->getArchId()        !== null)
+        {
+          if(isset($subscriptionElementCriterion))
+          {
             $subscriptionElementCriterion->addAnd($rpmCriteria->getNewCriterion(RpmPeer::ARCH_ID,$subscriptionElement->getArchId()));
-         }
-         else
-          $subscriptionElementCriterion = $rpmCriteria->getNewCriterion(RpmPeer::ARCH_ID,$subscriptionElement->getArchId());
-        
-        if($subscriptionElement->getDistreleaseId() != NULL)
+          }
+          else
+          {
+            $subscriptionElementCriterion = $rpmCriteria->getNewCriterion(RpmPeer::ARCH_ID,$subscriptionElement->getArchId());
+          }
+        }
+        if($subscriptionElement->getDistreleaseId() !== null)
         {
           if(isset($subscriptionElementCriterion))
+          {
             $subscriptionElementCriterion->addAnd($rpmCriteria->getNewCriterion(RpmPeer::DISTRELEASE_ID,$subscriptionElement->getDistreleaseId()));
+          }
+          else
+          {
+            $subscriptionElementCriterion = $rpmCriteria->getNewCriterion(RpmPeer::DISTRELEASE_ID,$subscriptionElement->getDistreleaseId());
+          }
         }
-        else
-          $subscriptionElementCriterion = $rpmCriteria->getNewCriterion(RpmPeer::DISTRELEASE_ID,$subscriptionElement->getDistreleaseId());
           
-        if($subscriptionElement->getPackageId()     != NULL)
+        if($subscriptionElement->getPackageId()     !== null)
         {
           if(isset($subscriptionElementCriterion))
+          {
             $subscriptionElementCriterion->addAnd($rpmCriteria->getNewCriterion(RpmPeer::PACKAGE_ID,$subscriptionElement->getPackageId()));
+          }
+          else
+          {
+            $subscriptionElementCriterion = $rpmCriteria->getNewCriterion(RpmPeer::PACKAGE_ID,$subscriptionElement->getPackageId());
+          }
         }
-        else
-          $subscriptionElementCriterion = $rpmCriteria->getNewCriterion(RpmPeer::PACKAGE_ID,$subscriptionElement->getPackageId());
           
         //and Or this to rpm criteria
         if(isset($subscriptionElementCriterion))
@@ -72,7 +91,6 @@ class rssAction extends sfActions
         }
       }
       //eof foreach
-      
 
       //setup criteria for media based on subscription's settings
       if($subscription->getUpdate())
