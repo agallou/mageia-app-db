@@ -54,6 +54,25 @@ class NotificationEvent
 
     $c->add($crPackageID);
     $c->addJoin(SubscriptionPeer::ID, SubscriptionElementPeer::SUBSCRIPTION_ID);
+    
+    // Select only notification elements watching a given event type
+    switch ($eventType)
+    {
+      case self::UPDATE:
+        $c->add(SubscriptionPeer::UPDATE, 1);
+        break;
+      case self::UPDATE_CANDIDATE:
+        $c->add(SubscriptionPeer::UPDATE_CANDIDATE, 1);
+        break;
+      case self::NEW_VERSION:
+        $c->add(SubscriptionPeer::NEW_VERSION, 1);
+        break;
+      case self::NEW_VERSION_CANDIDATE:
+        $c->add(SubscriptionPeer::NEW_VERSION_CANDIDATE, 1);
+        break;
+      default:
+        throw new madbException ("Unknown event type : '$eventType'");
+    }
 
     $subscriptions = SubscriptionPeer::doSelect($c);
     foreach($subscriptions as $subscription)
