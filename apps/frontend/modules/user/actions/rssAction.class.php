@@ -161,10 +161,7 @@ class rssAction extends sfActions
       $this->rss[] = $rpm;
     }
 
-
     //set RSS layout
-    if( $this->getContext()->getConfiguration()->isDebug()) return "Debug";
-
     $this->setLayout("rss");
     return "View";
     
