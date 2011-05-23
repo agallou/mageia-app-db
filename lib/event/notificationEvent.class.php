@@ -10,13 +10,21 @@ class NotificationEvent
   const COMMENTS = 5;
   // add here more later
 
+
+  protected $logger = null;
+
+  public function setLogger(sfLoggerInterface $logger)
+  {
+    $this->logger = $logger;
+  }
+
   /**
     *
     * This is slot connected package.import signal
     * it is executed each time there are some new rpm imported in a package $package
     * @param sfEvent $event symfony event object
     */
-  public static function rpmImportSlot(sfEvent $event)
+  public function rpmImportSlot(sfEvent $event)
   {
     $eventType = $event['event'];
     $rpm = $event->getSubject();
@@ -78,7 +86,7 @@ class NotificationEvent
     foreach($subscriptions as $subscription)
     {
       //do something with each matched subscription element
-      self::createNotification($rpm, $subscription, $eventType);
+      $this->createNotification($rpm, $subscription, $eventType);
     }
   }
 
@@ -86,7 +94,8 @@ class NotificationEvent
    * This slot is called each time package.comment signal is emmited
    * @param sfEvent $event symfony event object
    */
-  public static function packageCommentsSlot(sfEvent $event)
+   //TODO check for calls
+  public  function packageCommentsSlot(sfEvent $event)
   {
     //TODO: implement comments subscriptions here
   }
@@ -95,7 +104,8 @@ class NotificationEvent
    * This function returns what to say about event.
    * @param Package $package Package that triggered this event
    */
-  private static function getEventTextByEnum($enum)
+   //TODO check for calls
+  private function getEventTextByEnum($enum)
   {
     switch($enum)
     {
@@ -120,7 +130,8 @@ class NotificationEvent
    * @param Subscription $subscription element of user subscription, matched package criteria
    * @param enum $eventType type of event, that happened with the package
    */
-  private static function createNotification($rpm, $subscription, $eventType)
+   //TODO check for calls
+  private function createNotification($rpm, $subscription, $eventType)
   {
     //put a notification in a notification spool
     $notification = new Notification();
@@ -129,20 +140,21 @@ class NotificationEvent
     $notification->setEventType($eventType);
     $notification->save();
 
-    //by default if not setted up to see notifications trigering it will not be displayed
-    if(sfConfig::get('app_notifications_display_notice', "false")) echo "\n\033[". "1;34" ."m". "Notification triggered." . "\033[0m\n";
+    $this->log("\n\033[". "1;34" ."m". "Notification triggered." . "\033[0m\n");
   }
 
 
   /**
    * @brief Sends mail
    * Used by notifications sending task to send email, based on params
-   * @param rpm
-   * @param subscription
-   * @param eventType
+   * @param Rpm          $rpm
+   * @param Subscription $subscription
+   * @param              $eventType
+   *
    * @return bool
    **/
-  public static function sendMail($rpm, $subscription, $eventType)
+   //TODO check for calls
+  public function sendMail(Rpm $rpm, Subscription $subscription, $eventType)
   {
     //get text explanation about that happened with RPM
     $eventText = self::getEventTextByEnum($eventType);
@@ -185,5 +197,21 @@ class NotificationEvent
     return true;
     }
   }
+
+  /**
+   * log 
+   * 
+   * @param string $message 
+   * @param int    $priority 
+   *
+   * @return void
+   */
+  public function log($message, $priority = sfLogger::INFO)
+  {
+    if (null !== $this->logger)
+    {
+      $this->logger->log($message, $priority);
+    }
+  }
+
 }
-?>
