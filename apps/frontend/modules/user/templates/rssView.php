@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
 <rss version="2.0">
-<chanell>
+<channel>
   <title><?php echo $feed->getName() ?></title>
   <link><?php echo url_for("@homepage") ?></link>
   <description>MADB Notification Feed</description>
