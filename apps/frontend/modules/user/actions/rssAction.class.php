@@ -5,7 +5,6 @@ class rssAction extends sfActions
   {
     // get feed id
     $feedId = $request->getParameter("feed",0);
-    $this->logMessage("Feed id is $feedId");
 
     //TODO: what to do if user wasn't authenticated? How to show him feed to use agregator if he isn't authenticated by agregator?
     // get user id
@@ -160,7 +159,6 @@ class rssAction extends sfActions
     foreach($rpms as $rpm)
     {
       $this->rss[] = $rpm;
-      $this->logMessage("RPM added: ".$rpm->getName());
     }
 
 
