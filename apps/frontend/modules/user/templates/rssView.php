@@ -11,5 +11,5 @@
     <description>Update in Package <?php echo $item->getPackage()->getName() ?> on media <?php echo $item->getMedia()->getName() ?></description>
   </item>
 <?php endforeach; ?>
-</chanell>
+</channel>
 </rss>
