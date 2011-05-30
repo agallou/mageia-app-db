@@ -158,8 +158,22 @@ class rssAction extends sfActions
     }
 
     if(!empty($rpmCriterions))
+      {
+      $first = true;
       foreach($rpmCriterions as $rpmCriterion)
-        $rpmCriteria->addOr($rpmCriterion);
+        {
+          if($first === true)
+          {
+            $criterions = $rpmCriterion;
+            $first = false;
+          }
+          else
+          {
+            $criterions->addOr($rpmCriterion);
+          }
+        }
+        $rpmCriteria->addAnd($criterions);
+      }
     
     $rpmCriteria->addJoin(RpmPeer::MEDIA_ID, MediaPeer::ID);
     $rpmCriteria->addJoin(RpmPeer::ARCH_ID, ArchPeer::ID);
