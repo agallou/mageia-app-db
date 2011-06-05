@@ -4,7 +4,6 @@
 default:
   http_metas:
     content-type: text/html
-  toto: titi
 
   metas:
     title:         mageia-app-db
@@ -19,8 +18,8 @@ default:
     - filtering.css
 
   javascripts:
-    - jquery-1.4.4.js
-    - jquery.base64.min.js
+    - vendor/jquery/jquery-1.5.1.min.js
+    - vendor/jquery/jquery.base64.min.js
     - jquery.selectToCheckboxes.js
     - filtering.js
 

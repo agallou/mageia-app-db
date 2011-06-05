@@ -5,8 +5,8 @@ class criteriaFactory
   public function createFromContext(madbContext $context, $targetPerimeter)
   {
     $criteria              = new Criteria();
-    $filterIteratorFactory = new filterIteratorFactory();
-    $filterIterator        = $filterIteratorFactory->create();
+    $filtersIteratorFactory = new filtersIteratorFactory();
+    $filterIterator        = $filtersIteratorFactory->create();
 
     $perimeters            = new filterPerimeters();
     $perimeter             = $perimeters->get($targetPerimeter);

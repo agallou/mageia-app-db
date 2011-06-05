@@ -22,3 +22,12 @@
 <br/>
 <br/>
 <!--  <h2>Backport requests</h2> -->
+<?php if ($sf_user->isAuthenticated()): ?>
+  <a href="#" id="packageSubscribe">Subscribe to this package's news</a>
+
+  <div id="subscribeForm" title="Subscribe to changes for this package">
+  <form>
+  <?php echo $subscribe_form?>
+  </form>
+  </div>
+<?php endif; ?>
