@@ -69,14 +69,14 @@ class showAction extends madbActions
 
       // subscription type
       // TODO : adapt the list to the distro's situations
-      $types = array(
+      $this->types = array(
         1 => 'new update',
         2 => 'new update candidate',
         3 => 'new backport',
         4 => 'new backport candidate'
       ); 
-      $this->subscribe_form->setWidget('type', new sfWidgetFormChoice(array('choices' => $types, 'multiple' => true, 'label' => "Watched events")));
-      $this->subscribe_form->setValidator('type', new myValidatorChoice(array('choices' => array_keys($types), 'required' => true)));
+      $this->subscribe_form->setWidget('type', new sfWidgetFormChoice(array('choices' => $this->types, 'multiple' => true, 'label' => "Watched events")));
+      $this->subscribe_form->setValidator('type', new myValidatorChoice(array('choices' => array_keys($this->types), 'required' => true)));
       $extra_bind_parameters = array();
       if ($this->subscription)
       {

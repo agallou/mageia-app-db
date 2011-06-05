@@ -29,3 +29,69 @@ $(document).ready(function(){
     event.preventDefault();
   });
 });
+
+$(document).ready(function(){
+
+  $('#subscribe_distrelease').selectToCheckboxes({
+    apply: function(d){afterCheckboxChange_subscribeForm(d);},
+    defaults: getAllVals_subscribeForm($('#subscribe_distrelease option[selected=selected]')),
+    searchfield: false,
+    multi: true
+  });
+  $('#subscribe_arch').selectToCheckboxes({
+    apply: function(d){afterCheckboxChange_subscribeForm(d);},
+    defaults: getAllVals_subscribeForm($('#subscribe_arch option[selected=selected]')),
+    searchfield: false,
+    multi: true
+  });
+  $('#subscribe_media').selectToCheckboxes({
+    apply: function(d){afterCheckboxChange_subscribeForm(d);},
+    defaults: getAllVals_subscribeForm($('#subscribe_media option[selected=selected]')),
+    searchfield: true,
+    multi: true
+  });
+  $('#subscribe_type').selectToCheckboxes({
+    apply: function(d){afterCheckboxChange_subscribeForm(d);},
+    defaults: getAllVals_subscribeForm($('#subscribe_type option[selected=selected]')),
+    searchfield: false,
+    multi: true
+  });
+  $('div#subscribeForm form:first input[type=submit]').remove();
+
+  $('.filters').removeAttr('style');
+});
+
+
+function getAllVals_subscribeForm(options)
+{
+  var vals = [];
+  $.each(options, function(key, value) {
+    vals[key] = $(value).val();
+  });
+  return vals;
+}
+
+function afterCheckboxChange_subscribeForm(changed)
+{
+  filtering = getFiltering_subscribeForm();
+//  updateResults_subscribeForm(filtering);
+}
+
+function getFiltering_subscribeForm()
+{
+  var filtering = new Object;
+  filtering['distrelease'] = getValuesFromCheckboxes_subscribeForm($('input[type=checkbox][name=subscribe_distrelease]:checked'));
+  filtering['arch'] = getValuesFromCheckboxes_subscribeForm($('input[type=checkbox][name=subscribe_arch]:checked'));
+  filtering['media'] = getValuesFromCheckboxes_subscribeForm($('input[type=checkbox][name=subscribe_media]:checked'));
+  return filtering;
+}
+
+function getValuesFromCheckboxes_subscribeForm(checkboxes)
+{
+ var vals = [];
+ $.each(checkboxes, function(key, value) {
+    vals[key] = $(value).attr('value');
+  });
+  return vals;
+}
+
