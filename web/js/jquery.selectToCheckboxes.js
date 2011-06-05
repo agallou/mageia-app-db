@@ -1,25 +1,25 @@
 (function($){
-  $.fn.selectToCheckboxes = function(options) {
+  $.fn.selectToCheckboxes = function(params) {
     var settings = {
       apply: function(){},
       defaults: [],
       searchfield: true,
       multi: true,
       namespace: 'selectToCheckboxes_'
-    }
-    if (options)
+    };
+    if (params)
     {
-      $.extend(settings, options);
+      $.extend(settings, params);
     }
     this.each(function() {
       var select = $(this);
       var prefix = settings.namespace + select.attr('id');
-      var foo = [];
+      var options = [];
       $('option', select).each(function(i, selected){
-        var toto = [];
-        toto[0]  = $(selected).val();
-        toto[1]  = $(selected).text(); 
-        foo[i]   = toto;
+        var option = [];
+        option[0]  = $(selected).val();
+        option[1]  = $(selected).text(); 
+        options[i]   = option;
       });
       var selectId = select.attr('id');
       var label = $('label[for=' + selectId + ']');
@@ -61,7 +61,7 @@
       recherche.keyup(function(e){
         var letext = $(e.target).val();
         var regepx = new RegExp('/.*' + letext + '.*/'); // regepx is unused
-        $.each(foo, function(key, row)
+        $.each(options, function(key, row)
         {
           if (row[1].toLowerCase().lastIndexOf(letext.toLowerCase()) != -1) {
             $('#' + prefix + 'span_' + row[0]).show();
@@ -85,7 +85,7 @@
         });
       }
 
-      $.each(foo, function(key, value)
+      $.each(options, function(key, value)
       {
         var jSpan = $('<div>', { id: prefix + 'span_' + value[0] });
         var input = $("<input>", {
@@ -115,7 +115,7 @@
           //TODO same as jApply, factorize that ???
           ng1.hide();
 
-          $('input[name=' + selectId + ']:checked').removeAttr('checked')
+          $('input[name=' + selectId + ']:checked').removeAttr('checked');
           $('input[id=' + $(label).attr('for') + ']').attr("checked", "checked");
           settings.apply.apply(label, [$('input[name=' + selectId + ']:checked')]);
         });
