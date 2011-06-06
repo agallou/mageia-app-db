@@ -71,27 +71,13 @@ function getAllVals_subscribeForm(options)
   return vals;
 }
 
-function afterCheckboxChange_subscribeForm(changed)
+function afterCheckboxChange_subscribeForm(checked_list)
 {
-  filtering = getFiltering_subscribeForm();
-//  updateResults_subscribeForm(filtering);
-}
-
-function getFiltering_subscribeForm()
-{
-  var filtering = new Object;
-  filtering['distrelease'] = getValuesFromCheckboxes_subscribeForm($('input[type=checkbox][name=subscribe_distrelease]:checked'));
-  filtering['arch'] = getValuesFromCheckboxes_subscribeForm($('input[type=checkbox][name=subscribe_arch]:checked'));
-  filtering['media'] = getValuesFromCheckboxes_subscribeForm($('input[type=checkbox][name=subscribe_media]:checked'));
-  return filtering;
-}
-
-function getValuesFromCheckboxes_subscribeForm(checkboxes)
-{
- var vals = [];
- $.each(checkboxes, function(key, value) {
-    vals[key] = $(value).attr('value');
+  values = new Array();
+  $.each(checked_list, function(key, value) {
+    values.push($('label[for=' + $(value).attr('id') + ']').text()); 
   });
-  return vals;
+  text = values.join(', ');
+  $(checked_list).first().parent().parent().parent().parent().next('.filtervalues').text(text);
 }
 
