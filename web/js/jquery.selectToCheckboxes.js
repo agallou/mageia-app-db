@@ -110,14 +110,16 @@
         } else {
           clickable = jSpan; //clickable all ready declared no need to redeclare
         }
-        $(clickable).click(function(){
-          //TODO only to that if option auto_something to true (default)
-          //TODO same as jApply, factorize that ???
-          ng1.hide();
-
-          $('input[name=' + selectId + ']:checked').removeAttr('checked');
-          $('input[id=' + $(label).attr('for') + ']').attr("checked", "checked");
-          settings.apply.apply(label, [$('input[name=' + selectId + ']:checked')]);
+        $(clickable).click(function(event){
+          if (!settings.multi) {
+            $('input[name=' + selectId + ']:checked').parent().removeClass('selected');
+            $('input[name=' + selectId + ']:checked').removeAttr('checked');
+            $('input[id=' + $(label).attr('for') + ']').attr("checked", "checked");
+            $('.filterwidget div.widgetcontent input:checked').parent().addClass('selected');
+            ng1.hide();
+            settings.apply.apply(label, [$('input[name=' + selectId + ']:checked')]);
+            event.preventDefault();
+          }
         });
         $('<br>').appendTo(jSpan);
 
@@ -143,5 +145,13 @@
       ng1.hide();
     });
     $('.filterwidget div.widgetcontent input:checked').parent().addClass('selected');
+    $('.filterwidget div.widgetcontent input').click(function(event) {
+      if ($(event.target).attr('checked')) {
+        $(event.target).parent().addClass('selected');
+      }
+      else {
+        $(event.target).parent().removeClass('selected');
+      }
+    });
   };
 })(jQuery);
