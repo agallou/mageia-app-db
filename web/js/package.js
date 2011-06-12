@@ -11,7 +11,7 @@ $(document).ready(function(){
   $('#subscribeForm').dialog({
     autoOpen: false,
     width: 500,
-    height: 400,
+    height: 600,
     modal: true,
     buttons: {
       "Subscribe": function() {

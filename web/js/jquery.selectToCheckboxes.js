@@ -40,7 +40,7 @@
       $('<span>', { id : 'buttonarrow' + selectId,'class' : 'arrow', html: '&darr;' }).appendTo(button);
 
       button.click(function(){
-        document.getElementById('widgetcontent_' + selectId + '1').style.left = buttontext.position().left + 'px';
+        document.getElementById('widgetcontent_' + selectId + '1').style.left = button.position().left+ 'px';
         $('#widgetcontent_' + selectId + '1').toggle();
       });
 
