@@ -186,12 +186,15 @@ class NotificationEvent
     if(key($to) !== NULL)
     {
     //sends mail
-    sfContext::getInstance()->getMailer()->composeAndSend(
+      $message = sfContext::getInstance()->getMailer()->compose(
       $from,
       $to,
       $header,
       $text
     );
+    $headers = $message->getHeaders();
+    $headers->addTextHeader('Auto-Submitted', 'auto-generated');
+    $message->send();
 
     //TODO: return real result here
     return true;
