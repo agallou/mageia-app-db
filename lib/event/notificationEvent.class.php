@@ -194,6 +194,7 @@ class NotificationEvent
     );
     $headers = $message->getHeaders();
     $headers->addTextHeader('Auto-Submitted', 'auto-generated');
+    $headers->addTextHeader('Precedence', 'bulk');
     $message->send();
 
     //TODO: return real result here
