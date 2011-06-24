@@ -136,6 +136,7 @@ EOF;
     $sql = <<<EOF
 SELECT * 
 FROM $tablename
+ORDER BY NAME
 EOF;
     $stmt = $con->query($sql);
     $this->rows = $stmt->fetchAll();
