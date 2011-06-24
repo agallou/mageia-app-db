@@ -109,9 +109,7 @@ EOF;
     foreach ($stmt as $row)
     {
       if (RpmPeer::evrCompare($row['dev_version'], $row['update_version']) <= 0
-          || (!is_null($row['update_testing_version']) && RpmPeer::evrCompare($row['dev_version'], $row['update_testing_version']) <= 0)
           || (!is_null($row['backport_version']) && RpmPeer::evrCompare($row['dev_version'], $row['backport_version']) <= 0)
-          || (!is_null($row['backport_testing_version']) && RpmPeer::evrCompare($row['dev_version'], $row['backport_testing_version']) <= 0)
           )
       {
         $sql = "DELETE FROM $tablename WHERE ID=$row[ID]"; 
