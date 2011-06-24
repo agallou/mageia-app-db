@@ -1,5 +1,5 @@
 <h1>Version comparison with development version</h1>
-<p>TODO : add packages in dev release absent from stable release, improve appearance, add link to package view, print error message if someone selects a development distribution in this page</p>
+<p>TODO : improve appearance, add link to package view, print error message if someone selects a development distribution in this page</p>
 <?php /*include_partial('default/pager', array(
   'pager'       => $pager, 
   'module'      => 'package', 

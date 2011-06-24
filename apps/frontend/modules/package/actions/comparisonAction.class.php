@@ -98,8 +98,39 @@ WHERE ID = $row[PACKAGE_ID];
 EOF;
         $con->exec($sql);
       }
-      $stmt->fetchAll();
     } 
+    
+    // Add new packages from the development release to the list
+    $dev_context = $this->getMadbContext();
+    $dev_context->getParameterHolder()->set('distrelease', $dev_release->getId());
+    $criteria = $this->getCriteria(filterPerimeters::RPM);
+    $criteria->addJoin(RpmPeer::MEDIA_ID, MediaPeer::ID);
+    $criteria->add(MediaPeer::IS_TESTING, false);
+    $criteria->add(MediaPeer::IS_THIRD_PARTY, false);
+    $criteria->add(MediaPeer::IS_BACKPORTS, false);
+    $criteria->addJoin(RpmPeer::PACKAGE_ID, PackagePeer::ID);
+    
+    // group by just in case the dev release has several versions
+    $criteria->addGroupByColumn(PackagePeer::ID);
+    $criteria->clearSelectColumns();
+    $criteria->addSelectColumn(PackagePeer::ID);
+    $criteria->addSelectColumn(PackagePeer::NAME);
+    $criteria->addSelectColumn(PackagePeer::SUMMARY);
+    $criteria->addAsColumn('dev_version', RpmPeer::VERSION);
+    
+    $stmt = BasePeer::doSelect($criteria);
+    foreach ($stmt as $row)
+    {
+      $row['NAME'] = addslashes($row['NAME']);
+      $row['SUMMARY'] = addslashes($row['SUMMARY']);
+      $sql = <<<EOF
+INSERT IGNORE INTO $tablename
+  (ID, NAME, SUMMARY, dev_version)
+  VALUES ($row[ID], '$row[NAME]', '$row[SUMMARY]', '$row[dev_version]');
+EOF;
+      $con->exec($sql);
+    }
+  
     
     $sql = <<<EOF
 SELECT * 
@@ -108,7 +139,7 @@ EOF;
     $stmt = $con->query($sql);
     foreach ($stmt as $row)
     {
-      if (RpmPeer::evrCompare($row['dev_version'], $row['update_version']) <= 0
+      if ((!is_null($row['update_version']) && RpmPeer::evrCompare($row['dev_version'], $row['update_version']) <= 0)
           || (!is_null($row['backport_version']) && RpmPeer::evrCompare($row['dev_version'], $row['backport_version']) <= 0)
           )
       {
