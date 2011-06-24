@@ -102,8 +102,10 @@ EOF;
     
     // Add new packages from the development release to the list
     $dev_context = $this->getMadbContext();
+    // FIXME : cleaner modification of the distrelease filter
     $dev_context->getParameterHolder()->set('distrelease', $dev_release->getId());
-    $criteria = $this->getCriteria(filterPerimeters::RPM);
+    $criteriaFactory = new criteriaFactory();
+    $criteria = $criteriaFactory->createFromContext($dev_context, filterPerimeters::RPM);
     $criteria->addJoin(RpmPeer::MEDIA_ID, MediaPeer::ID);
     $criteria->add(MediaPeer::IS_TESTING, false);
     $criteria->add(MediaPeer::IS_THIRD_PARTY, false);
