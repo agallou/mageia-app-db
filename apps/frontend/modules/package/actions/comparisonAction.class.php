@@ -18,6 +18,7 @@ class comparisonAction extends madbActions
     if (!empty($dev_releases))
     {
       $dev_release = $dev_releases[0]; // we take the first one, don't know what to do if there are several
+      $this->dev_release = $dev_release->getName();
     }
     else
     {

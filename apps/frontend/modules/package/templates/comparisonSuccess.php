@@ -1,5 +1,5 @@
 <h1>Version comparison with development version</h1>
-<p>TODO : improve appearance, add link to package view, print error message if someone selects a development distribution in this page</p>
+<p>TODO : add links to RPMs, show only columns that have values, print error message if someone selects a development distribution in this page</p>
 <?php /*include_partial('default/pager', array(
   'pager'       => $pager, 
   'module'      => 'package', 
@@ -9,7 +9,7 @@
   'showtotal'   => true,
 )); */?>
 
-<table class="packlist">
+<table class="comparisontable">
   <thead>
     <tr>
       <th>Name</th>
@@ -18,19 +18,27 @@
       <th>Update candidate</th>
       <th>Feature update</th>
       <th>Feature update candidate</th>
-      <th>Development version</th>
+      <th><?php echo $dev_release; ?></th>
     </tr>
   </thead>
   <tbody>
   <?php foreach ($rows as $row): ?>
-    <tr>
-      <td><?php echo $row['NAME'] ?></td>
+    <tr <?php echo $row['update_version'] ? '' : 'class="newpackage"' ?>>
+      <td><?php echo link_to(
+                   $row['NAME'],
+                   $madburl->urlFor(
+                     'package/show', 
+                     $madbcontext, 
+                     array('extra_parameters' => array('id' => $row['ID']))
+                   )
+                 );
+  ?></td>
       <td><?php echo $row['SUMMARY'] ?></td>
-      <td><?php echo $row['update_version'] ?></td>
+      <td><strong><?php echo $row['update_version'] ?></strong></td>
       <td><?php echo $row['update_testing_version'] ?></td>
-      <td><?php echo $row['backport_version'] ?></td>
+      <td><strong><?php echo $row['backport_version'] ?></strong></td>
       <td><?php echo $row['backport_testing_version'] ?></td>
-      <td><?php echo $row['dev_version'] ?></td>
+      <td><strong><?php echo $row['dev_version'] ?></strong></td>
     </tr> 
   <?php endforeach; ?>
 </tbody>
