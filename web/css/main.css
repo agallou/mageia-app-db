@@ -342,12 +342,17 @@ table.comparisontable
   border-bottom: 2px solid #000;
 }
 
-.comparisontable tr.newpackage
+.newpackage
 {
   background-color:#5CFF5C;
 }
 
-.comparisontable tr.testing
+.testing
 {
   background-color:#FFCC33; 
+}
+
+.bordered
+{
+  border: 1px solid #000;
 }

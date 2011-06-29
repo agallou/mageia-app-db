@@ -9,3 +9,7 @@ listSuccess:
 listSuccess:
   components:
     searching: [ default, searching ]
+comparisonSuccess:
+  components:
+    searching: [ default, searching ]
+    
