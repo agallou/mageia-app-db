@@ -12,6 +12,12 @@ class comparisonAction extends madbActions
       $page = 1;
     }
     
+    $distrelease = DistreleasePeer::retrieveByPK($this->getMadbContext()->getParameterHolder()->get('distrelease'));
+    if ($distrelease->getIsDevVersion())
+    {
+      return 'Error';
+    }
+    
     $con = Propel::getConnection();
     
     $dev_releases = DistreleasePeer::getDevels();
@@ -172,7 +178,25 @@ ORDER BY NAME
 EOF;
     $stmt = $con->query($sql);
     $this->rows = $stmt->fetchAll();
-        
+    
+    $this->has_updates_testing = false;
+    $this->has_backports = false;
+    $this->has_backports_testing = false;
+    foreach ($this->rows as $row)
+    {
+      if (!$this->has_updates_testing and $row['update_testing_version'])
+      {
+        $this->has_updates_testing = true;
+      }
+      if (!$this->has_backports and $row['backport_version'])
+      {
+        $this->has_backports = true;
+      }
+      if (!$this->has_backports_testing and $row['backport_testing_version'])
+      {
+        $this->has_backports_testing = true;
+      }
+    }
     
 //    $this->pager = new PropelPager($criteria, 'BasePeer', 'doSelect', $page, 50);
   }
