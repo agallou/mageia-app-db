@@ -23,7 +23,16 @@
   </thead>
   <tbody>
   <?php foreach ($rows as $row): ?>
-    <tr <?php echo $row['update_version'] ? '' : 'class="newpackage"' ?>>
+    <tr <?php 
+if (!$row['update_version'] and !$row['update_testing_version'] and !$row['backport_version'] and !$row['backport_testing_version']) 
+{
+  echo 'class="newpackage"';
+}
+elseif (RpmPeer::evrCompare($row['update_testing_version'], $row['dev_version'])>=0 or RpmPeer::evrCompare($row['backport_testing_version'], $row['dev_version'])>=0)
+{
+  echo 'class="testing"';
+}
+        ?>>
       <td><?php echo link_to(
                    $row['NAME'],
                    $madburl->urlFor(
