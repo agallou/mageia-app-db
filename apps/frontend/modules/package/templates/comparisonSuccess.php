@@ -1,6 +1,6 @@
 <h1>Comparison with development branch</h1>
-<p>This page shows packages which have a newer version available in the development release (<?php echo $dev_release; ?>) than in the stable release. Of course this doesn't mean that there *must* be an update, but it can help to spot needs. Like the other lists, it is filtered using the filters available at the top of the page.</p>
-<p>Legend : <span class="newpackage bordered">absent from the stable release</span>, <span class="testing bordered">candidate being tested, same version as the dev release</span>, <span class="bordered">other cases with a newer version in the developement release</span>.</p>
+<p>This page shows packages which have a newer version available in the development branch (<?php echo $dev_release; ?>) than in the stable release. Of course this doesn't mean that there *must* be an update, but it can help to spot needs. Like the other lists, it is filtered using the filters available at the top of the page.</p>
+<p>Legend : <span class="newpackage bordered">absent from stable release</span>, <span class="testing bordered">being tested: same version as in <?php echo $dev_release; ?></span>, <span class="bordered">other cases: newer version in <?php echo $dev_release; ?></span>.</p>
 <p>TODO : add links to RPM views</p>
 <?php /*include_partial('default/pager', array(
   'pager'       => $pager, 
