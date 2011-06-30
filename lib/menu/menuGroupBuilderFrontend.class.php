@@ -32,6 +32,9 @@ class menuGroupBuilderFrontend extends menuGroupBuilder
       $this->createItem('Backports requests'),
       $this->createItem('New soft request'),
     ));
+    $this->addGroup('Tools', array(
+      $this->createItem('Comparison with dev branch', 'package/comparison', array('filters_parameters' => true)),
+    ));
     if ($this->isUserAuthenticated())
     {
       $this->addItem($this->createItem('My account'));
