@@ -33,7 +33,7 @@
                     array('extra_parameters' => array('id' => $rpm->getPackage()->getId()))
                   )
                 ); ?></td>
-      <td><?php echo $rpm->getSummary() ?></td>
+      <td><?php echo htmlspecialchars($rpm->getSummary()) ?></td>
       <td><?php echo link_to(
                   $rpm->getVersion(), 
                   $madburl->urlFor(

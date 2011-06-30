@@ -44,7 +44,7 @@ elseif (RpmPeer::evrCompare($row['update_testing_version'], $row['dev_version'])
                    )
                  );
   ?></td>
-      <td><?php echo $row['SUMMARY'] ?></td>
+      <td><?php echo htmlspecialchars($row['SUMMARY']) ?></td>
       <td><strong><?php echo $row['update_version'] ?></strong></td>
       <?php if ($has_updates_testing) : ?><td><?php echo $row['update_testing_version'] ?></td><?php endif; ?>
       <?php if ($has_backports) : ?><td><strong><?php echo $row['backport_version'] ?></strong></td><?php endif; ?>
