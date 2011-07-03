@@ -1,9 +1,9 @@
 <h1>Package : <?php echo $package->getName() ?></h1>
 <div>
 <h2>Package details</h2>
-<p> <strong>Summary</strong> : <?php echo $package->getSummary() ?></p>
+<p> <strong>Summary</strong> : <?php echo htmlspecialchars($package->getSummary()) ?></p>
 <p> <strong>Description</strong> :<br/>
-<?php echo nl2br($package->getDescription()) ?></p>
+<?php echo nl2br(htmlspecialchars($package->getDescription())) ?></p>
 <br/>
 <h2>List of RPMs</h2>
 <ul>

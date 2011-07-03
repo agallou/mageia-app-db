@@ -316,7 +316,46 @@ img
   margin-top: 15px;
 }
 
-td /* All table cells have 1px padding, they looked to me a bit close to each other */
+th 
+{
+  text-align: left;
+  padding: 1px;
+}
+
+td
 {
     padding: 1px;
+}
+
+table.comparisontable
+{
+  border-collapse: collapse;
+  border: 2px solid #000;
+}
+
+.comparisontable td, .comparisontable th
+{
+  border:1px solid gray;
+  padding: 2px;
+}
+
+.comparisontable th
+{
+  border-bottom: 2px solid #000;
+}
+
+.newpackage
+{
+  background-color:#5CFF5C;
+}
+
+.testing
+{
+  background-color:#FFCC33; 
+}
+
+.bordered
+{
+  border: 1px solid #000;
+  white-space:nowrap;
 }
