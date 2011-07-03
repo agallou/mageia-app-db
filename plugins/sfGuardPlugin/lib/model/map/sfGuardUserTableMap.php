@@ -35,6 +35,7 @@ class sfGuardUserTableMap extends TableMap {
 		$this->setClassname('sfGuardUser');
 		$this->setPackage('plugins.sfGuardPlugin.lib.model');
 		$this->setUseIdGenerator(true);
+		$this->setPrimaryKeyMethodInfo('sf_guard_user_id_seq');
 		// columns
 		$this->addPrimaryKey('ID', 'Id', 'INTEGER', true, null, null);
 		$this->addColumn('USERNAME', 'Username', 'VARCHAR', true, 128, null);

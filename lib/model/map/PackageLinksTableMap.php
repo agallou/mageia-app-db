@@ -35,6 +35,7 @@ class PackageLinksTableMap extends TableMap {
 		$this->setClassname('PackageLinks');
 		$this->setPackage('lib.model');
 		$this->setUseIdGenerator(true);
+		$this->setPrimaryKeyMethodInfo('package_links_id_seq');
 		// columns
 		$this->addPrimaryKey('ID', 'Id', 'INTEGER', true, null, null);
 		$this->addColumn('URL', 'Url', 'LONGVARCHAR', true, null, null);

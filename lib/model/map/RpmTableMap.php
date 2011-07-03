@@ -35,6 +35,7 @@ class RpmTableMap extends TableMap {
 		$this->setClassname('Rpm');
 		$this->setPackage('lib.model');
 		$this->setUseIdGenerator(true);
+		$this->setPrimaryKeyMethodInfo('rpm_id_seq');
 		// columns
 		$this->addPrimaryKey('ID', 'Id', 'INTEGER', true, null, null);
 		$this->addForeignKey('PACKAGE_ID', 'PackageId', 'INTEGER', 'package', 'ID', true, null, null);

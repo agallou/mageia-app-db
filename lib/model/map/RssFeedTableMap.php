@@ -35,6 +35,7 @@ class RssFeedTableMap extends TableMap {
 		$this->setClassname('RssFeed');
 		$this->setPackage('lib.model');
 		$this->setUseIdGenerator(true);
+		$this->setPrimaryKeyMethodInfo('rss_feed_id_seq');
 		// columns
 		$this->addPrimaryKey('ID', 'Id', 'INTEGER', true, null, null);
 		$this->addColumn('NAME', 'Name', 'VARCHAR', false, 45, null);

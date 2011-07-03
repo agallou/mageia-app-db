@@ -35,6 +35,7 @@ class VersionTableMap extends TableMap {
 		$this->setClassname('Version');
 		$this->setPackage('lib.model');
 		$this->setUseIdGenerator(true);
+		$this->setPrimaryKeyMethodInfo('version_id_seq');
 		// columns
 		$this->addPrimaryKey('ID', 'Id', 'INTEGER', true, null, null);
 		$this->addColumn('VERSION', 'Version', 'VARCHAR', false, 10, null);

@@ -35,6 +35,7 @@ class UserCommentsSoftwareRequestTableMap extends TableMap {
 		$this->setClassname('UserCommentsSoftwareRequest');
 		$this->setPackage('lib.model');
 		$this->setUseIdGenerator(true);
+		$this->setPrimaryKeyMethodInfo('user_comments_software_request_id_seq');
 		// columns
 		$this->addPrimaryKey('ID', 'Id', 'INTEGER', true, null, null);
 		$this->addForeignKey('USER_ID', 'UserId', 'INTEGER', 'user', 'ID', true, null, null);

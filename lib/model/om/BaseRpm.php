@@ -406,7 +406,7 @@ abstract class BaseRpm extends BaseObject  implements Persistent {
 	 *
 	 * @param      string $format The date/time format string (either date()-style or strftime()-style).
 	 *							If format is NULL, then the raw DateTime object will be returned.
-	 * @return     mixed Formatted date/time value as string or DateTime object (if format is NULL), NULL if column is NULL, and 0 if column value is 0000-00-00 00:00:00
+	 * @return     mixed Formatted date/time value as string or DateTime object (if format is NULL), NULL if column is NULL
 	 * @throws     PropelException - if unable to parse/validate the date/time value.
 	 */
 	public function getBuildTime($format = 'Y-m-d H:i:s')
@@ -416,16 +416,11 @@ abstract class BaseRpm extends BaseObject  implements Persistent {
 		}
 
 
-		if ($this->build_time === '0000-00-00 00:00:00') {
-			// while technically this is not a default value of NULL,
-			// this seems to be closest in meaning.
-			return null;
-		} else {
-			try {
-				$dt = new DateTime($this->build_time);
-			} catch (Exception $x) {
-				throw new PropelException("Internally stored date/time/timestamp value could not be converted to DateTime: " . var_export($this->build_time, true), $x);
-			}
+
+		try {
+			$dt = new DateTime($this->build_time);
+		} catch (Exception $x) {
+			throw new PropelException("Internally stored date/time/timestamp value could not be converted to DateTime: " . var_export($this->build_time, true), $x);
 		}
 
 		if ($format === null) {
@@ -889,13 +884,13 @@ abstract class BaseRpm extends BaseObject  implements Persistent {
 		if ( $this->build_time !== null || $dt !== null ) {
 			// (nested ifs are a little easier to read in this case)
 
-			$currNorm = ($this->build_time !== null && $tmpDt = new DateTime($this->build_time)) ? $tmpDt->format('Y-m-d H:i:s') : null;
-			$newNorm = ($dt !== null) ? $dt->format('Y-m-d H:i:s') : null;
+			$currNorm = ($this->build_time !== null && $tmpDt = new DateTime($this->build_time)) ? $tmpDt->format('Y-m-d\\TH:i:sO') : null;
+			$newNorm = ($dt !== null) ? $dt->format('Y-m-d\\TH:i:sO') : null;
 
 			if ( ($currNorm !== $newNorm) // normalized values don't match 
 					)
 			{
-				$this->build_time = ($dt ? $dt->format('Y-m-d H:i:s') : null);
+				$this->build_time = ($dt ? $dt->format('Y-m-d\\TH:i:sO') : null);
 				$this->modifiedColumns[] = RpmPeer::BUILD_TIME;
 			}
 		} // if either are not null

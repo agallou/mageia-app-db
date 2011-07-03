@@ -35,6 +35,7 @@ class PackageScreenshotsTableMap extends TableMap {
 		$this->setClassname('PackageScreenshots');
 		$this->setPackage('lib.model');
 		$this->setUseIdGenerator(true);
+		$this->setPrimaryKeyMethodInfo('package_screenshots_id_seq');
 		// columns
 		$this->addPrimaryKey('ID', 'Id', 'INTEGER', true, null, null);
 		$this->addColumn('PATH_TO_SCREENSHOT', 'PathToScreenshot', 'VARCHAR', true, 1024, null);
