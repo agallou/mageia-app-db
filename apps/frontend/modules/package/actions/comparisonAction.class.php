@@ -252,7 +252,7 @@ EOF;
       $fields = $row->getElementsByTagName('td');
       if ($fields->length)
       {
-        $src_package = $fields->item(0)->firstChild->nodeValue;
+        $src_package = strtolower($fields->item(0)->firstChild->nodeValue);
         $available = $fields->item(4)->nodeValue;
         $source = $fields->item(5)->nodeValue;
         
