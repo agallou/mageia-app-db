@@ -180,8 +180,9 @@ EOF;
     $stmt = $con->query($sql);
     foreach ($stmt as $row)
     {
-      if ((!is_null($row['update_version']) && RpmPeer::evrCompare($row['dev_version'], $row['update_version']) <= 0)
-          || (!is_null($row['backport_version']) && RpmPeer::evrCompare($row['dev_version'], $row['backport_version']) <= 0)
+      if (((!is_null($row['update_version']) && RpmPeer::evrCompare($row['dev_version'], $row['update_version']) <= 0)
+          || (!is_null($row['backport_version']) && RpmPeer::evrCompare($row['dev_version'], $row['backport_version']) <= 0))
+          && (is_null($row['available']) || RpmPeer::evrCompare($row['available'], $row['dev_version']) <= 0)
           )
       {
         $sql = "DELETE FROM $tablename WHERE ID=$row[ID]"; 

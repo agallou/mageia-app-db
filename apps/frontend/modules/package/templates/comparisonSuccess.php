@@ -21,7 +21,7 @@
       <?php if ($has_backports) : ?><th>Feature update</th><?php endif; ?>
       <?php if ($has_backports_testing) : ?><th>Feature update candidate</th><?php endif; ?>
       <th>Dev (<?php echo $dev_release; ?>)</th>
-      <?php if ($has_available_versions) : ?><th>Newer available version (origin)</th><?php endif; ?>
+      <?php if ($has_available_versions) : ?><th>Newer available version (experimental)</th><?php endif; ?>
     </tr>
   </thead>
   <tbody>
