@@ -6,7 +6,7 @@
 <span class="bordered">newer version in <?php echo $dev_release; ?></span>.
 <span class="newer_avail bordered">newer available outside <?php echo $dev_release; ?></span>.
 </p>
-<p>TODO : add links to RPM views</p>
+<p>TODO : add links to RPM views, treat non-SRPM filters</p>
 <?php /*include_partial('default/pager', array(
   'pager'       => $pager, 
   'module'      => 'package', 
@@ -44,9 +44,7 @@ elseif ( !(RpmPeer::evrCompare($row['update_version'], $row['dev_version'])<0
       and RpmPeer::evrCompare($row['update_testing_version'], $row['dev_version'])<0
       and RpmPeer::evrCompare($row['backport_version'], $row['dev_version'])<0
       and RpmPeer::evrCompare($row['backport_testing_version'], $row['dev_version'])<0)
-      and $row['available'] 
-      //FIXME : ignore epoch in version comparison ?
-      and RpmPeer::evrCompare($row['dev_version'], $row['available'])<0)
+      and $row['available'] )
 {
   echo ' class="newer_avail"';
   // nothing to do, remains white
