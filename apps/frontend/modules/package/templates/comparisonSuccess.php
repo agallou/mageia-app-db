@@ -21,6 +21,7 @@
       <?php if ($has_backports) : ?><th>Feature update</th><?php endif; ?>
       <?php if ($has_backports_testing) : ?><th>Feature update candidate</th><?php endif; ?>
       <th>Dev (<?php echo $dev_release; ?>)</th>
+      <?php if ($has_available_versions) : ?><th>Newer available version (origin)</th><?php endif; ?>
     </tr>
   </thead>
   <tbody>
@@ -50,6 +51,7 @@ elseif (RpmPeer::evrCompare($row['update_testing_version'], $row['dev_version'])
       <?php if ($has_backports) : ?><td><strong><?php echo $row['backport_version'] ?></strong></td><?php endif; ?>
       <?php if ($has_backports_testing) : ?><td><?php echo $row['backport_testing_version'] ?></td><?php endif; ?>
       <td><strong><?php echo $row['dev_version'] ?></strong></td>
+      <?php if ($has_available_versions) : ?><td><?php echo $row['available'] ?><?php echo $row['available'] ? "&nbsp;(".$row['source'].")" : "" ?></td><?php endif; ?>
     </tr> 
   <?php endforeach; ?>
 </tbody>

@@ -12,13 +12,38 @@ class comparisonAction extends madbActions
       $page = 1;
     }
     
+    $con = Propel::getConnection();
+    
+    $tablename_available = 'tmp_available';
+    $sql = <<<EOF
+CREATE TEMPORARY TABLE $tablename_available (
+  src_package VARCHAR(255) PRIMARY KEY,
+  available VARCHAR(255),
+  source VARCHAR(255)
+);
+EOF;
+    $con->exec($sql);
+    
+    // fixme : only for Mageia
+    if (true)
+    {
+      $available_versions = $this->getYouriVersions();
+      
+      foreach ($available_versions as $row)
+      {
+        $sql = <<<EOF
+INSERT INTO $tablename_available (src_package, available, source)
+VALUES ('$row[0]', '$row[1]', '$row[2]');
+EOF;
+        $con->exec($sql);
+      }
+    }
+     
     $distrelease = DistreleasePeer::retrieveByPK($this->getMadbContext()->getParameterHolder()->get('distrelease'));
     if ($distrelease->getIsDevVersion())
     {
       return 'Error';
     }
-    
-    $con = Propel::getConnection();
     
     $dev_releases = DistreleasePeer::getDevels();
     if (!empty($dev_releases))
@@ -32,6 +57,7 @@ class comparisonAction extends madbActions
     }
     $criteria = $this->getCriteria(filterPerimeters::PACKAGE);
     $criteria->addJoin(PackagePeer::ID, RpmPeer::PACKAGE_ID);
+    $criteria->addJoin(PackagePeer::NAME, "$tablename_available.src_package", Criteria::LEFT_JOIN);
     $criteria->addJoin(RpmPeer::DISTRELEASE_ID, DistreleasePeer::ID);
     $criteria->add(DistreleasePeer::ID, $dev_release->getId());
     $criteria->addJoin(RpmPeer::MEDIA_ID, MediaPeer::ID);
@@ -46,6 +72,8 @@ class comparisonAction extends madbActions
     $criteria->addSelectColumn(PackagePeer::NAME);
     $criteria->addSelectColumn(PackagePeer::SUMMARY);
     $criteria->addAsColumn('dev_version', RpmPeer::VERSION);
+    $criteria->addAsColumn('available', "$tablename_available.available");
+    $criteria->addAsColumn('source', "$tablename_available.source");
     
     $tablename = 'tmp_package';
     $toTmp = new criteriaToTemporaryTable($criteria, $tablename);
@@ -114,6 +142,8 @@ EOF;
     $criteriaFactory = new criteriaFactory();
     $criteria = $criteriaFactory->createFromContext($dev_context, filterPerimeters::RPM);
     $criteria->addJoin(RpmPeer::MEDIA_ID, MediaPeer::ID);
+    $criteria->addJoin(RpmPeer::PACKAGE_ID, PackagePeer::ID);
+    $criteria->addJoin(PackagePeer::NAME, "$tablename_available.src_package", Criteria::LEFT_JOIN);
     $criteria->add(MediaPeer::IS_TESTING, false);
     $criteria->add(MediaPeer::IS_THIRD_PARTY, false);
     $criteria->add(MediaPeer::IS_BACKPORTS, false);
@@ -126,6 +156,8 @@ EOF;
     $criteria->addSelectColumn(PackagePeer::NAME);
     $criteria->addSelectColumn(PackagePeer::SUMMARY);
     $criteria->addAsColumn('dev_version', RpmPeer::VERSION);
+    $criteria->addAsColumn('available', "$tablename_available.available");
+    $criteria->addAsColumn('source', "$tablename_available.source");
     
     $stmt = BasePeer::doSelect($criteria);
     foreach ($stmt as $row)
@@ -134,8 +166,8 @@ EOF;
       $row['SUMMARY'] = addslashes($row['SUMMARY']);
       $sql = <<<EOF
 INSERT IGNORE INTO $tablename
-  (ID, NAME, SUMMARY, dev_version)
-  VALUES ($row[ID], '$row[NAME]', '$row[SUMMARY]', '$row[dev_version]');
+  (ID, NAME, SUMMARY, dev_version, available, source)
+  VALUES ($row[ID], '$row[NAME]', '$row[SUMMARY]', '$row[dev_version]', '$row[available]', '$row[source]');
 EOF;
       $con->exec($sql);
     }
@@ -182,6 +214,7 @@ EOF;
     $this->has_updates_testing = false;
     $this->has_backports = false;
     $this->has_backports_testing = false;
+    $this->has_available_versions = false;
     foreach ($this->rows as $row)
     {
       if (!$this->has_updates_testing and $row['update_testing_version'])
@@ -196,8 +229,35 @@ EOF;
       {
         $this->has_backports_testing = true;
       }
+      if (!$this->has_available_versions and $row['available'])
+      {
+        $this->has_available_versions = true;
+      }
     }
     
 //    $this->pager = new PropelPager($criteria, 'BasePeer', 'doSelect', $page, 50);
+  }
+  
+  // fixme : too specific ?
+  function getYouriVersions()
+  {
+    $dom = new DOMDocument();
+    $html = $dom->loadHTMLFile("http://check.mageia.org/updates.html");
+    $dom->preserveWhiteSpace = false; 
+    $table = $dom->getElementsByTagName('table')->item(0);
+    $list = array();
+    foreach ($table->getElementsByTagName('tr') as $row)
+    {
+      $fields = $row->getElementsByTagName('td');
+      if ($fields->length)
+      {
+        $src_package = $fields->item(0)->firstChild->nodeValue;
+        $available = $fields->item(4)->nodeValue;
+        $source = $fields->item(5)->nodeValue;
+        
+        $list[] = array($src_package, $available, $source);
+      }
+    }
+    return $list;
   }
 }
