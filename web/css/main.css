@@ -352,6 +352,11 @@ table.comparisontable
   background-color:#FFCC33; 
 }
 
+.newer_avail
+{
+  background-color:#CCC; 
+}
+
 .bordered
 {
   border: 1px solid #000;

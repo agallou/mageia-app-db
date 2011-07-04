@@ -1,6 +1,11 @@
 <h1>Comparison with development branch</h1>
 <p>This page shows packages which have a newer version available in the development branch (<?php echo $dev_release; ?>) than in the stable release. Of course this doesn't mean that there *must* be an update, but it can help to spot needs. Like the other lists, it is filtered using the filters available at the top of the page.</p>
-<p>Legend : <span class="newpackage bordered">absent from stable release</span>, <span class="testing bordered">being tested: same version as in <?php echo $dev_release; ?></span>, <span class="bordered">other cases: newer version in <?php echo $dev_release; ?></span>.</p>
+<p>Legend : 
+<span class="newpackage bordered">absent from stable release</span>, 
+<span class="testing bordered">being tested: same version as in <?php echo $dev_release; ?></span>, 
+<span class="bordered">newer version in <?php echo $dev_release; ?></span>.
+<span class="newer_avail bordered">newer available outside <?php echo $dev_release; ?></span>.
+</p>
 <p>TODO : add links to RPM views</p>
 <?php /*include_partial('default/pager', array(
   'pager'       => $pager, 
@@ -35,7 +40,18 @@ elseif (RpmPeer::evrCompare($row['update_testing_version'], $row['dev_version'])
 {
   echo ' class="testing"';
 }
-        ?>>
+elseif ( RpmPeer::evrCompare($row['update_version'], $row['dev_version'])<=0 
+      and RpmPeer::evrCompare($row['update_testing_version'], $row['dev_version'])<=0
+      and RpmPeer::evrCompare($row['backport_version'], $row['dev_version'])<=0
+      and RpmPeer::evrCompare($row['backport_testing_version'], $row['dev_version'])<=0
+      and $row['available'] 
+      //FIXME : ignore epoch in version comparison ?
+      and RpmPeer::evrCompare($row['dev_version'], $row['available'])<0)
+{
+  echo ' class="newer_avail"';
+  // nothing to do, remains white
+}
+?>>
       <td><?php echo link_to(
                    $row['NAME'],
                    $madburl->urlFor(

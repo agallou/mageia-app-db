@@ -182,6 +182,7 @@ EOF;
     {
       if (((!is_null($row['update_version']) && RpmPeer::evrCompare($row['dev_version'], $row['update_version']) <= 0)
           || (!is_null($row['backport_version']) && RpmPeer::evrCompare($row['dev_version'], $row['backport_version']) <= 0))
+          // FIXME : ignore epoch in version comparison ?
           && (is_null($row['available']) || RpmPeer::evrCompare($row['available'], $row['dev_version']) <= 0)
           )
       {
