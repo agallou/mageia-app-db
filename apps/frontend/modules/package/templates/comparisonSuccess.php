@@ -40,10 +40,10 @@ elseif (RpmPeer::evrCompare($row['update_testing_version'], $row['dev_version'])
 {
   echo ' class="testing"';
 }
-elseif ( RpmPeer::evrCompare($row['update_version'], $row['dev_version'])<=0 
-      and RpmPeer::evrCompare($row['update_testing_version'], $row['dev_version'])<=0
-      and RpmPeer::evrCompare($row['backport_version'], $row['dev_version'])<=0
-      and RpmPeer::evrCompare($row['backport_testing_version'], $row['dev_version'])<=0
+elseif ( RpmPeer::evrCompare($row['update_version'], $row['dev_version'])<0 
+      and RpmPeer::evrCompare($row['update_testing_version'], $row['dev_version'])<0
+      and RpmPeer::evrCompare($row['backport_version'], $row['dev_version'])<0
+      and RpmPeer::evrCompare($row['backport_testing_version'], $row['dev_version'])<0
       and $row['available'] 
       //FIXME : ignore epoch in version comparison ?
       and RpmPeer::evrCompare($row['dev_version'], $row['available'])<0)
