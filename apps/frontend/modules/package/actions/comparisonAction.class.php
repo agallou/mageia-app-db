@@ -69,7 +69,7 @@ EOF;
     $con->exec($sql);
     
     $sql = <<<EOF
-INSERT INTO $tablename_available (package_id, available, source)
+INSERT IGNORE INTO $tablename_available (package_id, available, source)
 SELECT DISTINCT bp.id, t.available, t.source
 FROM $tablename_available_raw t
      JOIN package sp ON (sp.name=t.src_package AND sp.is_source=1)
