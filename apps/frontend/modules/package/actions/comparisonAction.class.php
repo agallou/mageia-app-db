@@ -12,12 +12,20 @@ class comparisonAction extends madbActions
       $page = 1;
     }
     
+    $distrelease = DistreleasePeer::retrieveByPK($this->getMadbContext()->getParameterHolder()->get('distrelease'));
+    if ($distrelease->getIsDevVersion())
+    {
+      return 'Error';
+    }
+    
     $con = Propel::getConnection();
     
+    
+    // Available versions outside from Mageia
     $tablename_available = 'tmp_available';
     $sql = <<<EOF
 CREATE TEMPORARY TABLE $tablename_available (
-  src_package VARCHAR(255) PRIMARY KEY,
+  package_id INT PRIMARY KEY,
   available VARCHAR(255),
   source VARCHAR(255)
 );
@@ -27,24 +35,52 @@ EOF;
     // fixme : only for Mageia
     if (true)
     {
-      $available_versions = $this->getYouriVersions();
+      $tablename_available_raw = 'tmp_available_raw';
+      $sql = <<<EOF
+CREATE TEMPORARY TABLE $tablename_available_raw (
+  src_package VARCHAR(255) PRIMARY KEY,
+  available VARCHAR(255),
+  source VARCHAR(255)
+);
+EOF;
+      $con->exec($sql);
       
+      $available_versions = $this->getYouriVersions();
       foreach ($available_versions as $row)
       {
         $sql = <<<EOF
-INSERT INTO $tablename_available (src_package, available, source)
+INSERT INTO $tablename_available_raw (src_package, available, source)
 VALUES ('$row[0]', '$row[1]', '$row[2]');
 EOF;
         $con->exec($sql);
       }
-    }
-     
-    $distrelease = DistreleasePeer::retrieveByPK($this->getMadbContext()->getParameterHolder()->get('distrelease'));
-    if ($distrelease->getIsDevVersion())
-    {
-      return 'Error';
+      
     }
     
+    
+    // Find source packages and binary packages corresponding to the source_packages having a newer available version
+    // Add them to $tablename_available
+    $sql = <<<EOF
+INSERT INTO $tablename_available (package_id, available, source)
+SELECT sp.id, t.available, t.source
+FROM $tablename_available_raw t 
+     JOIN package sp ON (sp.name=t.src_package AND sp.is_source=1);
+EOF;
+    $con->exec($sql);
+    
+    $sql = <<<EOF
+INSERT INTO $tablename_available (package_id, available, source)
+SELECT DISTINCT bp.id, t.available, t.source
+FROM $tablename_available_raw t
+     JOIN package sp ON (sp.name=t.src_package AND sp.is_source=1)
+     JOIN rpm sr ON sr.package_id=sp.id
+     JOIN rpm br ON br.source_rpm_id=sr.id
+     JOIN package bp ON br.package_id=bp.id
+EOF;
+    $con->exec($sql);
+    
+    
+    // Get packages corresponding to current filters + cauldron versions
     $dev_releases = DistreleasePeer::getDevels();
     if (!empty($dev_releases))
     {
@@ -56,8 +92,8 @@ EOF;
       $this->forward404('no dev release in this database, impossible to use this page.');
     }
     $criteria = $this->getCriteria(filterPerimeters::PACKAGE);
+    $criteria->addJoin(PackagePeer::ID, "$tablename_available.package_id", Criteria::LEFT_JOIN);
     $criteria->addJoin(PackagePeer::ID, RpmPeer::PACKAGE_ID);
-    $criteria->addJoin(PackagePeer::NAME, "$tablename_available.src_package", Criteria::LEFT_JOIN);
     $criteria->addJoin(RpmPeer::DISTRELEASE_ID, DistreleasePeer::ID);
     $criteria->add(DistreleasePeer::ID, $dev_release->getId());
     $criteria->addJoin(RpmPeer::MEDIA_ID, MediaPeer::ID);
@@ -143,7 +179,7 @@ EOF;
     $criteria = $criteriaFactory->createFromContext($dev_context, filterPerimeters::RPM);
     $criteria->addJoin(RpmPeer::MEDIA_ID, MediaPeer::ID);
     $criteria->addJoin(RpmPeer::PACKAGE_ID, PackagePeer::ID);
-    $criteria->addJoin(PackagePeer::NAME, "$tablename_available.src_package", Criteria::LEFT_JOIN);
+    $criteria->addJoin(PackagePeer::ID, "$tablename_available.package_id", Criteria::LEFT_JOIN);
     $criteria->add(MediaPeer::IS_TESTING, false);
     $criteria->add(MediaPeer::IS_THIRD_PARTY, false);
     $criteria->add(MediaPeer::IS_BACKPORTS, false);
