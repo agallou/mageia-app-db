@@ -20,13 +20,12 @@
   <thead>
     <tr>
       <th>Name</th>
-      <th>Summary</th>
       <th>Base version</th>
-      <?php if ($has_updates_testing) : ?><th>Update candidate</th><?php endif; ?>
+      <?php if ($has_updates_testing) : ?><th>Update<br/>candidate</th><?php endif; ?>
       <?php if ($has_backports) : ?><th>Feature update</th><?php endif; ?>
-      <?php if ($has_backports_testing) : ?><th>Feature update candidate</th><?php endif; ?>
+      <?php if ($has_backports_testing) : ?><th>Feature update<br/> candidate</th><?php endif; ?>
       <th>Dev (<?php echo $dev_release; ?>)</th>
-      <?php if ($has_available_versions) : ?><th>Newer available version (experimental)</th><?php endif; ?>
+      <?php if ($has_available_versions) : ?><th>Newer available<br/>version</th><?php endif; ?>
     </tr>
   </thead>
   <tbody>
@@ -58,8 +57,8 @@ elseif ( !(RpmPeer::evrCompare($row['update_version'], $row['dev_version'])<0
                      array('extra_parameters' => array('id' => $row['ID']))
                    )
                  );
-  ?></td>
-      <td><?php echo htmlspecialchars($row['SUMMARY']) ?></td>
+  ?>
+        <span class="description"><?php echo htmlspecialchars($row['SUMMARY']) ?></span></td>
       <td><strong><?php echo $row['update_version'] ?></strong></td>
       <?php if ($has_updates_testing) : ?><td><?php echo $row['update_testing_version'] ?></td><?php endif; ?>
       <?php if ($has_backports) : ?><td><strong><?php echo $row['backport_version'] ?></strong></td><?php endif; ?>

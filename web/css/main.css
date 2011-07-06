@@ -335,6 +335,12 @@ table.comparisontable
 {
   border:1px solid gray;
   padding: 2px;
+  vertical-align: top;
+}
+
+.comparisontable tr:hover 
+{ 
+  outline: 1px solid #000; 
 }
 
 .comparisontable th
@@ -361,4 +367,11 @@ table.comparisontable
 {
   border: 1px solid #000;
   white-space:nowrap;
+}
+
+.description
+{
+  font-size:80%; 
+  color:#777; 
+  margin-left:5px;
 }
