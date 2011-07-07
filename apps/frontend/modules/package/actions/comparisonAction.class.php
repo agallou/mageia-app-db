@@ -126,15 +126,20 @@ ADD backport_testing_version VARCHAR(255) NULL;
 EOF;
     $con->exec($sql);
 
-    foreach (array('update', 'update_testing', 'backport', 'backport_testing') as $media_type)
+    foreach (array('release', 'update', 'update_testing', 'backport', 'backport_testing') as $media_type)
     {
       $criteria = $this->getCriteria(filterPerimeters::RPM);
       $criteria->addJoin(RpmPeer::MEDIA_ID, MediaPeer::ID);
       
       switch ($media_type)
       {
-        case 'update':
+        case 'release':
+          $criteria->add(MediaPeer::IS_UPDATE, false);
           $criteria->add(MediaPeer::IS_BACKPORTS, false);
+          $media_type = 'update';
+          break;
+        case 'update':
+          $criteria->add(MediaPeer::IS_UPDATE, true);
           $criteria->add(MediaPeer::IS_TESTING, false);
           break;
         case 'update_testing':
