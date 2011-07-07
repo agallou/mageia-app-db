@@ -134,12 +134,12 @@ EOF;
       switch ($media_type)
       {
         case 'release':
-          $criteria->add(MediaPeer::IS_UPDATE, false);
+          $criteria->add(MediaPeer::IS_UPDATES, false);
           $criteria->add(MediaPeer::IS_BACKPORTS, false);
           $media_type = 'update';
           break;
         case 'update':
-          $criteria->add(MediaPeer::IS_UPDATE, true);
+          $criteria->add(MediaPeer::IS_UPDATES, true);
           $criteria->add(MediaPeer::IS_TESTING, false);
           break;
         case 'update_testing':
