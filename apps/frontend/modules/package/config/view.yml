@@ -3,15 +3,9 @@ showSuccess:
     - package.css
     - vendor/jquery/ui-lightness/jquery-ui-1.8.13.custom.css
   javascripts:
-#    - vendor/jquery/jquery.flyout-1.2.min.js
-    - vendor/jquery/jquery.ui.core.min.js
-    - vendor/jquery/jquery.ui.position.min.js
-    - vendor/jquery/jquery.ui.widget.min.js
-    - vendor/jquery/jquery.ui.mouse.min.js
-    - vendor/jquery/jquery.ui.draggable.min.js
-    - vendor/jquery/jquery.ui.resizable.min.js
-    - vendor/jquery/jquery.ui.dialog.min.js
     - package.js
+    - screenshots.js
+
 listSuccess:
   javascripts:
 listSuccess:

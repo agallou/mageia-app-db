@@ -16,12 +16,28 @@ default:
     - main.css
     - selectToCheckboxes.css
     - filtering.css
+    - ../fancybox/jquery.fancybox-1.3.4.css
 
   javascripts:
     - vendor/jquery/jquery-1.5.1.min.js
     - vendor/jquery/jquery.base64.min.js
-    - jquery.selectToCheckboxes.js
+
+    - vendor/jquery/jquery.ui.core.min.js
+    - vendor/jquery/jquery.ui.core.min.js
+    - vendor/jquery/jquery.ui.position.min.js
+    - vendor/jquery/jquery.ui.widget.min.js
+    - vendor/jquery/jquery.ui.mouse.min.js
+    - vendor/jquery/jquery.ui.draggable.min.js
+    - vendor/jquery/jquery.ui.resizable.min.js
+    - vendor/jquery/jquery.ui.dialog.min.js
+
+    - ../fancybox/jquery.easing-1.3.pack.js
+    - ../fancybox/jquery.fancybox-1.3.4.js
+    - ../fancybox/jquery.fancybox-1.3.4.pack.js
+    - ../fancybox/jquery.mousewheel-3.0.4.pack.js
+
     - filtering.js
+    - jquery.selectToCheckboxes.js
 
   has_layout:     true
   
