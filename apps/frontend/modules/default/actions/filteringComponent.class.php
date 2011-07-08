@@ -3,7 +3,8 @@ class filteringComponent extends madbComponent
 {
   public function execute($request)
   {
-    $this->form    = formFactory::create($this->getMadbContext());
+    $filtersIteratorFactory = new filtersIteratorFactory();
+    $this->form    = formFactory::create($filtersIteratorFactory->create(), 'filtering_', $this->getMadbContext());
     $filters       = array();
     $filterFactory = new filterFactory();
     $this->unremoveableFilters = array();

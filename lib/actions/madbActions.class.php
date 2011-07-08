@@ -47,8 +47,8 @@ class madbActions extends sfActions
 
   protected function getDefaultParameters()
   {
-    $filterIteratorFactory = new filterIteratorFactory();
-    $filterIterator        = $filterIteratorFactory->create();
+    $filtersIteratorFactory = new filtersIteratorFactory();
+    $filterIterator        = $filtersIteratorFactory->create();
     $defaultParameters     = array();
     foreach ($filterIterator as $filter)
     {

@@ -37,15 +37,9 @@ class NotificationTableMap extends TableMap {
 		$this->setUseIdGenerator(true);
 		// columns
 		$this->addPrimaryKey('ID', 'Id', 'INTEGER', true, null, null);
-		$this->addForeignKey('USER_ID', 'UserId', 'INTEGER', 'user', 'ID', true, null, null);
-		$this->addColumn('UPDATE', 'Update', 'BOOLEAN', true, null, false);
-		$this->addColumn('NEW_VERSION', 'NewVersion', 'BOOLEAN', true, null, false);
-		$this->addColumn('UPDATE_CANDIDATE', 'UpdateCandidate', 'BOOLEAN', true, null, false);
-		$this->addColumn('NEW_VERSION_CANDIDATE', 'NewVersionCandidate', 'BOOLEAN', true, null, false);
-		$this->addColumn('COMMENTS', 'Comments', 'BOOLEAN', true, null, false);
-		$this->addColumn('MAIL_NOTIFICATION', 'MailNotification', 'BOOLEAN', true, null, false);
-		$this->addColumn('MAIL_PREFIX', 'MailPrefix', 'VARCHAR', false, 45, null);
-		$this->addForeignKey('RSS_FEED_ID', 'RssFeedId', 'INTEGER', 'rss_feed', 'ID', false, null, null);
+		$this->addForeignKey('SUBSCRIPTION_ID', 'SubscriptionId', 'INTEGER', 'subscription', 'ID', true, null, null);
+		$this->addForeignKey('RPM_ID', 'RpmId', 'INTEGER', 'rpm', 'ID', true, null, null);
+		$this->addColumn('EVENT_TYPE', 'EventType', 'INTEGER', true, null, null);
 		// validators
 	} // initialize()
 
@@ -54,9 +48,8 @@ class NotificationTableMap extends TableMap {
 	 */
 	public function buildRelations()
 	{
-    $this->addRelation('User', 'User', RelationMap::MANY_TO_ONE, array('user_id' => 'id', ), null, null);
-    $this->addRelation('RssFeed', 'RssFeed', RelationMap::MANY_TO_ONE, array('rss_feed_id' => 'id', ), null, null);
-    $this->addRelation('NotificationElement', 'NotificationElement', RelationMap::ONE_TO_MANY, array('id' => 'notification_id', ), null, null);
+    $this->addRelation('Subscription', 'Subscription', RelationMap::MANY_TO_ONE, array('subscription_id' => 'id', ), null, null);
+    $this->addRelation('Rpm', 'Rpm', RelationMap::MANY_TO_ONE, array('rpm_id' => 'id', ), null, null);
 	} // buildRelations()
 
 	/**

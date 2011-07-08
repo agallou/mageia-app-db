@@ -25,84 +25,32 @@ abstract class BaseNotification extends BaseObject  implements Persistent {
 	protected $id;
 
 	/**
-	 * The value for the user_id field.
+	 * The value for the subscription_id field.
 	 * @var        int
 	 */
-	protected $user_id;
+	protected $subscription_id;
 
 	/**
-	 * The value for the update field.
-	 * Note: this column has a database default value of: false
-	 * @var        boolean
-	 */
-	protected $update;
-
-	/**
-	 * The value for the new_version field.
-	 * Note: this column has a database default value of: false
-	 * @var        boolean
-	 */
-	protected $new_version;
-
-	/**
-	 * The value for the update_candidate field.
-	 * Note: this column has a database default value of: false
-	 * @var        boolean
-	 */
-	protected $update_candidate;
-
-	/**
-	 * The value for the new_version_candidate field.
-	 * Note: this column has a database default value of: false
-	 * @var        boolean
-	 */
-	protected $new_version_candidate;
-
-	/**
-	 * The value for the comments field.
-	 * Note: this column has a database default value of: false
-	 * @var        boolean
-	 */
-	protected $comments;
-
-	/**
-	 * The value for the mail_notification field.
-	 * Note: this column has a database default value of: false
-	 * @var        boolean
-	 */
-	protected $mail_notification;
-
-	/**
-	 * The value for the mail_prefix field.
-	 * @var        string
-	 */
-	protected $mail_prefix;
-
-	/**
-	 * The value for the rss_feed_id field.
+	 * The value for the rpm_id field.
 	 * @var        int
 	 */
-	protected $rss_feed_id;
+	protected $rpm_id;
 
 	/**
-	 * @var        User
+	 * The value for the event_type field.
+	 * @var        int
 	 */
-	protected $aUser;
+	protected $event_type;
 
 	/**
-	 * @var        RssFeed
+	 * @var        Subscription
 	 */
-	protected $aRssFeed;
+	protected $aSubscription;
 
 	/**
-	 * @var        array NotificationElement[] Collection to store aggregation of NotificationElement objects.
+	 * @var        Rpm
 	 */
-	protected $collNotificationElements;
-
-	/**
-	 * @var        Criteria The criteria used to select the current contents of collNotificationElements.
-	 */
-	private $lastNotificationElementCriteria = null;
+	protected $aRpm;
 
 	/**
 	 * Flag to prevent endless save loop, if this object is referenced
@@ -123,32 +71,6 @@ abstract class BaseNotification extends BaseObject  implements Persistent {
 	const PEER = 'NotificationPeer';
 
 	/**
-	 * Applies default values to this object.
-	 * This method should be called from the object's constructor (or
-	 * equivalent initialization method).
-	 * @see        __construct()
-	 */
-	public function applyDefaultValues()
-	{
-		$this->update = false;
-		$this->new_version = false;
-		$this->update_candidate = false;
-		$this->new_version_candidate = false;
-		$this->comments = false;
-		$this->mail_notification = false;
-	}
-
-	/**
-	 * Initializes internal state of BaseNotification object.
-	 * @see        applyDefaults()
-	 */
-	public function __construct()
-	{
-		parent::__construct();
-		$this->applyDefaultValues();
-	}
-
-	/**
 	 * Get the [id] column value.
 	 * 
 	 * @return     int
@@ -159,93 +81,33 @@ abstract class BaseNotification extends BaseObject  implements Persistent {
 	}
 
 	/**
-	 * Get the [user_id] column value.
+	 * Get the [subscription_id] column value.
 	 * 
 	 * @return     int
 	 */
-	public function getUserId()
+	public function getSubscriptionId()
 	{
-		return $this->user_id;
+		return $this->subscription_id;
 	}
 
 	/**
-	 * Get the [update] column value.
-	 * 
-	 * @return     boolean
-	 */
-	public function getUpdate()
-	{
-		return $this->update;
-	}
-
-	/**
-	 * Get the [new_version] column value.
-	 * 
-	 * @return     boolean
-	 */
-	public function getNewVersion()
-	{
-		return $this->new_version;
-	}
-
-	/**
-	 * Get the [update_candidate] column value.
-	 * 
-	 * @return     boolean
-	 */
-	public function getUpdateCandidate()
-	{
-		return $this->update_candidate;
-	}
-
-	/**
-	 * Get the [new_version_candidate] column value.
-	 * 
-	 * @return     boolean
-	 */
-	public function getNewVersionCandidate()
-	{
-		return $this->new_version_candidate;
-	}
-
-	/**
-	 * Get the [comments] column value.
-	 * 
-	 * @return     boolean
-	 */
-	public function getComments()
-	{
-		return $this->comments;
-	}
-
-	/**
-	 * Get the [mail_notification] column value.
-	 * 
-	 * @return     boolean
-	 */
-	public function getMailNotification()
-	{
-		return $this->mail_notification;
-	}
-
-	/**
-	 * Get the [mail_prefix] column value.
-	 * 
-	 * @return     string
-	 */
-	public function getMailPrefix()
-	{
-		return $this->mail_prefix;
-	}
-
-	/**
-	 * Get the [rss_feed_id] column value.
+	 * Get the [rpm_id] column value.
 	 * 
 	 * @return     int
 	 */
-	public function getRssFeedId()
+	public function getRpmId()
 	{
-		return $this->rss_feed_id;
+		return $this->rpm_id;
+	}
+
+	/**
+	 * Get the [event_type] column value.
+	 * 
+	 * @return     int
+	 */
+	public function getEventType()
+	{
+		return $this->event_type;
 	}
 
 	/**
@@ -269,192 +131,72 @@ abstract class BaseNotification extends BaseObject  implements Persistent {
 	} // setId()
 
 	/**
-	 * Set the value of [user_id] column.
+	 * Set the value of [subscription_id] column.
 	 * 
 	 * @param      int $v new value
 	 * @return     Notification The current object (for fluent API support)
 	 */
-	public function setUserId($v)
+	public function setSubscriptionId($v)
 	{
 		if ($v !== null) {
 			$v = (int) $v;
 		}
 
-		if ($this->user_id !== $v) {
-			$this->user_id = $v;
-			$this->modifiedColumns[] = NotificationPeer::USER_ID;
+		if ($this->subscription_id !== $v) {
+			$this->subscription_id = $v;
+			$this->modifiedColumns[] = NotificationPeer::SUBSCRIPTION_ID;
 		}
 
-		if ($this->aUser !== null && $this->aUser->getId() !== $v) {
-			$this->aUser = null;
-		}
-
-		return $this;
-	} // setUserId()
-
-	/**
-	 * Set the value of [update] column.
-	 * 
-	 * @param      boolean $v new value
-	 * @return     Notification The current object (for fluent API support)
-	 */
-	public function setUpdate($v)
-	{
-		if ($v !== null) {
-			$v = (boolean) $v;
-		}
-
-		if ($this->update !== $v || $this->isNew()) {
-			$this->update = $v;
-			$this->modifiedColumns[] = NotificationPeer::UPDATE;
+		if ($this->aSubscription !== null && $this->aSubscription->getId() !== $v) {
+			$this->aSubscription = null;
 		}
 
 		return $this;
-	} // setUpdate()
+	} // setSubscriptionId()
 
 	/**
-	 * Set the value of [new_version] column.
-	 * 
-	 * @param      boolean $v new value
-	 * @return     Notification The current object (for fluent API support)
-	 */
-	public function setNewVersion($v)
-	{
-		if ($v !== null) {
-			$v = (boolean) $v;
-		}
-
-		if ($this->new_version !== $v || $this->isNew()) {
-			$this->new_version = $v;
-			$this->modifiedColumns[] = NotificationPeer::NEW_VERSION;
-		}
-
-		return $this;
-	} // setNewVersion()
-
-	/**
-	 * Set the value of [update_candidate] column.
-	 * 
-	 * @param      boolean $v new value
-	 * @return     Notification The current object (for fluent API support)
-	 */
-	public function setUpdateCandidate($v)
-	{
-		if ($v !== null) {
-			$v = (boolean) $v;
-		}
-
-		if ($this->update_candidate !== $v || $this->isNew()) {
-			$this->update_candidate = $v;
-			$this->modifiedColumns[] = NotificationPeer::UPDATE_CANDIDATE;
-		}
-
-		return $this;
-	} // setUpdateCandidate()
-
-	/**
-	 * Set the value of [new_version_candidate] column.
-	 * 
-	 * @param      boolean $v new value
-	 * @return     Notification The current object (for fluent API support)
-	 */
-	public function setNewVersionCandidate($v)
-	{
-		if ($v !== null) {
-			$v = (boolean) $v;
-		}
-
-		if ($this->new_version_candidate !== $v || $this->isNew()) {
-			$this->new_version_candidate = $v;
-			$this->modifiedColumns[] = NotificationPeer::NEW_VERSION_CANDIDATE;
-		}
-
-		return $this;
-	} // setNewVersionCandidate()
-
-	/**
-	 * Set the value of [comments] column.
-	 * 
-	 * @param      boolean $v new value
-	 * @return     Notification The current object (for fluent API support)
-	 */
-	public function setComments($v)
-	{
-		if ($v !== null) {
-			$v = (boolean) $v;
-		}
-
-		if ($this->comments !== $v || $this->isNew()) {
-			$this->comments = $v;
-			$this->modifiedColumns[] = NotificationPeer::COMMENTS;
-		}
-
-		return $this;
-	} // setComments()
-
-	/**
-	 * Set the value of [mail_notification] column.
-	 * 
-	 * @param      boolean $v new value
-	 * @return     Notification The current object (for fluent API support)
-	 */
-	public function setMailNotification($v)
-	{
-		if ($v !== null) {
-			$v = (boolean) $v;
-		}
-
-		if ($this->mail_notification !== $v || $this->isNew()) {
-			$this->mail_notification = $v;
-			$this->modifiedColumns[] = NotificationPeer::MAIL_NOTIFICATION;
-		}
-
-		return $this;
-	} // setMailNotification()
-
-	/**
-	 * Set the value of [mail_prefix] column.
-	 * 
-	 * @param      string $v new value
-	 * @return     Notification The current object (for fluent API support)
-	 */
-	public function setMailPrefix($v)
-	{
-		if ($v !== null) {
-			$v = (string) $v;
-		}
-
-		if ($this->mail_prefix !== $v) {
-			$this->mail_prefix = $v;
-			$this->modifiedColumns[] = NotificationPeer::MAIL_PREFIX;
-		}
-
-		return $this;
-	} // setMailPrefix()
-
-	/**
-	 * Set the value of [rss_feed_id] column.
+	 * Set the value of [rpm_id] column.
 	 * 
 	 * @param      int $v new value
 	 * @return     Notification The current object (for fluent API support)
 	 */
-	public function setRssFeedId($v)
+	public function setRpmId($v)
 	{
 		if ($v !== null) {
 			$v = (int) $v;
 		}
 
-		if ($this->rss_feed_id !== $v) {
-			$this->rss_feed_id = $v;
-			$this->modifiedColumns[] = NotificationPeer::RSS_FEED_ID;
+		if ($this->rpm_id !== $v) {
+			$this->rpm_id = $v;
+			$this->modifiedColumns[] = NotificationPeer::RPM_ID;
 		}
 
-		if ($this->aRssFeed !== null && $this->aRssFeed->getId() !== $v) {
-			$this->aRssFeed = null;
+		if ($this->aRpm !== null && $this->aRpm->getId() !== $v) {
+			$this->aRpm = null;
 		}
 
 		return $this;
-	} // setRssFeedId()
+	} // setRpmId()
+
+	/**
+	 * Set the value of [event_type] column.
+	 * 
+	 * @param      int $v new value
+	 * @return     Notification The current object (for fluent API support)
+	 */
+	public function setEventType($v)
+	{
+		if ($v !== null) {
+			$v = (int) $v;
+		}
+
+		if ($this->event_type !== $v) {
+			$this->event_type = $v;
+			$this->modifiedColumns[] = NotificationPeer::EVENT_TYPE;
+		}
+
+		return $this;
+	} // setEventType()
 
 	/**
 	 * Indicates whether the columns in this object are only set to default values.
@@ -466,30 +208,6 @@ abstract class BaseNotification extends BaseObject  implements Persistent {
 	 */
 	public function hasOnlyDefaultValues()
 	{
-			if ($this->update !== false) {
-				return false;
-			}
-
-			if ($this->new_version !== false) {
-				return false;
-			}
-
-			if ($this->update_candidate !== false) {
-				return false;
-			}
-
-			if ($this->new_version_candidate !== false) {
-				return false;
-			}
-
-			if ($this->comments !== false) {
-				return false;
-			}
-
-			if ($this->mail_notification !== false) {
-				return false;
-			}
-
 		// otherwise, everything was equal, so return TRUE
 		return true;
 	} // hasOnlyDefaultValues()
@@ -513,15 +231,9 @@ abstract class BaseNotification extends BaseObject  implements Persistent {
 		try {
 
 			$this->id = ($row[$startcol + 0] !== null) ? (int) $row[$startcol + 0] : null;
-			$this->user_id = ($row[$startcol + 1] !== null) ? (int) $row[$startcol + 1] : null;
-			$this->update = ($row[$startcol + 2] !== null) ? (boolean) $row[$startcol + 2] : null;
-			$this->new_version = ($row[$startcol + 3] !== null) ? (boolean) $row[$startcol + 3] : null;
-			$this->update_candidate = ($row[$startcol + 4] !== null) ? (boolean) $row[$startcol + 4] : null;
-			$this->new_version_candidate = ($row[$startcol + 5] !== null) ? (boolean) $row[$startcol + 5] : null;
-			$this->comments = ($row[$startcol + 6] !== null) ? (boolean) $row[$startcol + 6] : null;
-			$this->mail_notification = ($row[$startcol + 7] !== null) ? (boolean) $row[$startcol + 7] : null;
-			$this->mail_prefix = ($row[$startcol + 8] !== null) ? (string) $row[$startcol + 8] : null;
-			$this->rss_feed_id = ($row[$startcol + 9] !== null) ? (int) $row[$startcol + 9] : null;
+			$this->subscription_id = ($row[$startcol + 1] !== null) ? (int) $row[$startcol + 1] : null;
+			$this->rpm_id = ($row[$startcol + 2] !== null) ? (int) $row[$startcol + 2] : null;
+			$this->event_type = ($row[$startcol + 3] !== null) ? (int) $row[$startcol + 3] : null;
 			$this->resetModified();
 
 			$this->setNew(false);
@@ -531,7 +243,7 @@ abstract class BaseNotification extends BaseObject  implements Persistent {
 			}
 
 			// FIXME - using NUM_COLUMNS may be clearer.
-			return $startcol + 10; // 10 = NotificationPeer::NUM_COLUMNS - NotificationPeer::NUM_LAZY_LOAD_COLUMNS).
+			return $startcol + 4; // 4 = NotificationPeer::NUM_COLUMNS - NotificationPeer::NUM_LAZY_LOAD_COLUMNS).
 
 		} catch (Exception $e) {
 			throw new PropelException("Error populating Notification object", $e);
@@ -554,11 +266,11 @@ abstract class BaseNotification extends BaseObject  implements Persistent {
 	public function ensureConsistency()
 	{
 
-		if ($this->aUser !== null && $this->user_id !== $this->aUser->getId()) {
-			$this->aUser = null;
+		if ($this->aSubscription !== null && $this->subscription_id !== $this->aSubscription->getId()) {
+			$this->aSubscription = null;
 		}
-		if ($this->aRssFeed !== null && $this->rss_feed_id !== $this->aRssFeed->getId()) {
-			$this->aRssFeed = null;
+		if ($this->aRpm !== null && $this->rpm_id !== $this->aRpm->getId()) {
+			$this->aRpm = null;
 		}
 	} // ensureConsistency
 
@@ -599,11 +311,8 @@ abstract class BaseNotification extends BaseObject  implements Persistent {
 
 		if ($deep) {  // also de-associate any related objects?
 
-			$this->aUser = null;
-			$this->aRssFeed = null;
-			$this->collNotificationElements = null;
-			$this->lastNotificationElementCriteria = null;
-
+			$this->aSubscription = null;
+			$this->aRpm = null;
 		} // if (deep)
 	}
 
@@ -751,18 +460,18 @@ abstract class BaseNotification extends BaseObject  implements Persistent {
 			// method.  This object relates to these object(s) by a
 			// foreign key reference.
 
-			if ($this->aUser !== null) {
-				if ($this->aUser->isModified() || $this->aUser->isNew()) {
-					$affectedRows += $this->aUser->save($con);
+			if ($this->aSubscription !== null) {
+				if ($this->aSubscription->isModified() || $this->aSubscription->isNew()) {
+					$affectedRows += $this->aSubscription->save($con);
 				}
-				$this->setUser($this->aUser);
+				$this->setSubscription($this->aSubscription);
 			}
 
-			if ($this->aRssFeed !== null) {
-				if ($this->aRssFeed->isModified() || $this->aRssFeed->isNew()) {
-					$affectedRows += $this->aRssFeed->save($con);
+			if ($this->aRpm !== null) {
+				if ($this->aRpm->isModified() || $this->aRpm->isNew()) {
+					$affectedRows += $this->aRpm->save($con);
 				}
-				$this->setRssFeed($this->aRssFeed);
+				$this->setRpm($this->aRpm);
 			}
 
 			if ($this->isNew() ) {
@@ -785,14 +494,6 @@ abstract class BaseNotification extends BaseObject  implements Persistent {
 				}
 
 				$this->resetModified(); // [HL] After being saved an object is no longer 'modified'
-			}
-
-			if ($this->collNotificationElements !== null) {
-				foreach ($this->collNotificationElements as $referrerFK) {
-					if (!$referrerFK->isDeleted()) {
-						$affectedRows += $referrerFK->save($con);
-					}
-				}
 			}
 
 			$this->alreadyInSave = false;
@@ -866,15 +567,15 @@ abstract class BaseNotification extends BaseObject  implements Persistent {
 			// method.  This object relates to these object(s) by a
 			// foreign key reference.
 
-			if ($this->aUser !== null) {
-				if (!$this->aUser->validate($columns)) {
-					$failureMap = array_merge($failureMap, $this->aUser->getValidationFailures());
+			if ($this->aSubscription !== null) {
+				if (!$this->aSubscription->validate($columns)) {
+					$failureMap = array_merge($failureMap, $this->aSubscription->getValidationFailures());
 				}
 			}
 
-			if ($this->aRssFeed !== null) {
-				if (!$this->aRssFeed->validate($columns)) {
-					$failureMap = array_merge($failureMap, $this->aRssFeed->getValidationFailures());
+			if ($this->aRpm !== null) {
+				if (!$this->aRpm->validate($columns)) {
+					$failureMap = array_merge($failureMap, $this->aRpm->getValidationFailures());
 				}
 			}
 
@@ -883,14 +584,6 @@ abstract class BaseNotification extends BaseObject  implements Persistent {
 				$failureMap = array_merge($failureMap, $retval);
 			}
 
-
-				if ($this->collNotificationElements !== null) {
-					foreach ($this->collNotificationElements as $referrerFK) {
-						if (!$referrerFK->validate($columns)) {
-							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
-						}
-					}
-				}
 
 
 			$this->alreadyInValidation = false;
@@ -929,31 +622,13 @@ abstract class BaseNotification extends BaseObject  implements Persistent {
 				return $this->getId();
 				break;
 			case 1:
-				return $this->getUserId();
+				return $this->getSubscriptionId();
 				break;
 			case 2:
-				return $this->getUpdate();
+				return $this->getRpmId();
 				break;
 			case 3:
-				return $this->getNewVersion();
-				break;
-			case 4:
-				return $this->getUpdateCandidate();
-				break;
-			case 5:
-				return $this->getNewVersionCandidate();
-				break;
-			case 6:
-				return $this->getComments();
-				break;
-			case 7:
-				return $this->getMailNotification();
-				break;
-			case 8:
-				return $this->getMailPrefix();
-				break;
-			case 9:
-				return $this->getRssFeedId();
+				return $this->getEventType();
 				break;
 			default:
 				return null;
@@ -977,15 +652,9 @@ abstract class BaseNotification extends BaseObject  implements Persistent {
 		$keys = NotificationPeer::getFieldNames($keyType);
 		$result = array(
 			$keys[0] => $this->getId(),
-			$keys[1] => $this->getUserId(),
-			$keys[2] => $this->getUpdate(),
-			$keys[3] => $this->getNewVersion(),
-			$keys[4] => $this->getUpdateCandidate(),
-			$keys[5] => $this->getNewVersionCandidate(),
-			$keys[6] => $this->getComments(),
-			$keys[7] => $this->getMailNotification(),
-			$keys[8] => $this->getMailPrefix(),
-			$keys[9] => $this->getRssFeedId(),
+			$keys[1] => $this->getSubscriptionId(),
+			$keys[2] => $this->getRpmId(),
+			$keys[3] => $this->getEventType(),
 		);
 		return $result;
 	}
@@ -1021,31 +690,13 @@ abstract class BaseNotification extends BaseObject  implements Persistent {
 				$this->setId($value);
 				break;
 			case 1:
-				$this->setUserId($value);
+				$this->setSubscriptionId($value);
 				break;
 			case 2:
-				$this->setUpdate($value);
+				$this->setRpmId($value);
 				break;
 			case 3:
-				$this->setNewVersion($value);
-				break;
-			case 4:
-				$this->setUpdateCandidate($value);
-				break;
-			case 5:
-				$this->setNewVersionCandidate($value);
-				break;
-			case 6:
-				$this->setComments($value);
-				break;
-			case 7:
-				$this->setMailNotification($value);
-				break;
-			case 8:
-				$this->setMailPrefix($value);
-				break;
-			case 9:
-				$this->setRssFeedId($value);
+				$this->setEventType($value);
 				break;
 		} // switch()
 	}
@@ -1072,15 +723,9 @@ abstract class BaseNotification extends BaseObject  implements Persistent {
 		$keys = NotificationPeer::getFieldNames($keyType);
 
 		if (array_key_exists($keys[0], $arr)) $this->setId($arr[$keys[0]]);
-		if (array_key_exists($keys[1], $arr)) $this->setUserId($arr[$keys[1]]);
-		if (array_key_exists($keys[2], $arr)) $this->setUpdate($arr[$keys[2]]);
-		if (array_key_exists($keys[3], $arr)) $this->setNewVersion($arr[$keys[3]]);
-		if (array_key_exists($keys[4], $arr)) $this->setUpdateCandidate($arr[$keys[4]]);
-		if (array_key_exists($keys[5], $arr)) $this->setNewVersionCandidate($arr[$keys[5]]);
-		if (array_key_exists($keys[6], $arr)) $this->setComments($arr[$keys[6]]);
-		if (array_key_exists($keys[7], $arr)) $this->setMailNotification($arr[$keys[7]]);
-		if (array_key_exists($keys[8], $arr)) $this->setMailPrefix($arr[$keys[8]]);
-		if (array_key_exists($keys[9], $arr)) $this->setRssFeedId($arr[$keys[9]]);
+		if (array_key_exists($keys[1], $arr)) $this->setSubscriptionId($arr[$keys[1]]);
+		if (array_key_exists($keys[2], $arr)) $this->setRpmId($arr[$keys[2]]);
+		if (array_key_exists($keys[3], $arr)) $this->setEventType($arr[$keys[3]]);
 	}
 
 	/**
@@ -1093,15 +738,9 @@ abstract class BaseNotification extends BaseObject  implements Persistent {
 		$criteria = new Criteria(NotificationPeer::DATABASE_NAME);
 
 		if ($this->isColumnModified(NotificationPeer::ID)) $criteria->add(NotificationPeer::ID, $this->id);
-		if ($this->isColumnModified(NotificationPeer::USER_ID)) $criteria->add(NotificationPeer::USER_ID, $this->user_id);
-		if ($this->isColumnModified(NotificationPeer::UPDATE)) $criteria->add(NotificationPeer::UPDATE, $this->update);
-		if ($this->isColumnModified(NotificationPeer::NEW_VERSION)) $criteria->add(NotificationPeer::NEW_VERSION, $this->new_version);
-		if ($this->isColumnModified(NotificationPeer::UPDATE_CANDIDATE)) $criteria->add(NotificationPeer::UPDATE_CANDIDATE, $this->update_candidate);
-		if ($this->isColumnModified(NotificationPeer::NEW_VERSION_CANDIDATE)) $criteria->add(NotificationPeer::NEW_VERSION_CANDIDATE, $this->new_version_candidate);
-		if ($this->isColumnModified(NotificationPeer::COMMENTS)) $criteria->add(NotificationPeer::COMMENTS, $this->comments);
-		if ($this->isColumnModified(NotificationPeer::MAIL_NOTIFICATION)) $criteria->add(NotificationPeer::MAIL_NOTIFICATION, $this->mail_notification);
-		if ($this->isColumnModified(NotificationPeer::MAIL_PREFIX)) $criteria->add(NotificationPeer::MAIL_PREFIX, $this->mail_prefix);
-		if ($this->isColumnModified(NotificationPeer::RSS_FEED_ID)) $criteria->add(NotificationPeer::RSS_FEED_ID, $this->rss_feed_id);
+		if ($this->isColumnModified(NotificationPeer::SUBSCRIPTION_ID)) $criteria->add(NotificationPeer::SUBSCRIPTION_ID, $this->subscription_id);
+		if ($this->isColumnModified(NotificationPeer::RPM_ID)) $criteria->add(NotificationPeer::RPM_ID, $this->rpm_id);
+		if ($this->isColumnModified(NotificationPeer::EVENT_TYPE)) $criteria->add(NotificationPeer::EVENT_TYPE, $this->event_type);
 
 		return $criteria;
 	}
@@ -1156,37 +795,11 @@ abstract class BaseNotification extends BaseObject  implements Persistent {
 	public function copyInto($copyObj, $deepCopy = false)
 	{
 
-		$copyObj->setUserId($this->user_id);
+		$copyObj->setSubscriptionId($this->subscription_id);
 
-		$copyObj->setUpdate($this->update);
+		$copyObj->setRpmId($this->rpm_id);
 
-		$copyObj->setNewVersion($this->new_version);
-
-		$copyObj->setUpdateCandidate($this->update_candidate);
-
-		$copyObj->setNewVersionCandidate($this->new_version_candidate);
-
-		$copyObj->setComments($this->comments);
-
-		$copyObj->setMailNotification($this->mail_notification);
-
-		$copyObj->setMailPrefix($this->mail_prefix);
-
-		$copyObj->setRssFeedId($this->rss_feed_id);
-
-
-		if ($deepCopy) {
-			// important: temporarily setNew(false) because this affects the behavior of
-			// the getter/setter methods for fkey referrer objects.
-			$copyObj->setNew(false);
-
-			foreach ($this->getNotificationElements() as $relObj) {
-				if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
-					$copyObj->addNotificationElement($relObj->copy($deepCopy));
-				}
-			}
-
-		} // if ($deepCopy)
+		$copyObj->setEventType($this->event_type);
 
 
 		$copyObj->setNew(true);
@@ -1234,24 +847,24 @@ abstract class BaseNotification extends BaseObject  implements Persistent {
 	}
 
 	/**
-	 * Declares an association between this object and a User object.
+	 * Declares an association between this object and a Subscription object.
 	 *
-	 * @param      User $v
+	 * @param      Subscription $v
 	 * @return     Notification The current object (for fluent API support)
 	 * @throws     PropelException
 	 */
-	public function setUser(User $v = null)
+	public function setSubscription(Subscription $v = null)
 	{
 		if ($v === null) {
-			$this->setUserId(NULL);
+			$this->setSubscriptionId(NULL);
 		} else {
-			$this->setUserId($v->getId());
+			$this->setSubscriptionId($v->getId());
 		}
 
-		$this->aUser = $v;
+		$this->aSubscription = $v;
 
 		// Add binding for other direction of this n:n relationship.
-		// If this object has already been added to the User object, it will not be re-added.
+		// If this object has already been added to the Subscription object, it will not be re-added.
 		if ($v !== null) {
 			$v->addNotification($this);
 		}
@@ -1261,46 +874,46 @@ abstract class BaseNotification extends BaseObject  implements Persistent {
 
 
 	/**
-	 * Get the associated User object
+	 * Get the associated Subscription object
 	 *
 	 * @param      PropelPDO Optional Connection object.
-	 * @return     User The associated User object.
+	 * @return     Subscription The associated Subscription object.
 	 * @throws     PropelException
 	 */
-	public function getUser(PropelPDO $con = null)
+	public function getSubscription(PropelPDO $con = null)
 	{
-		if ($this->aUser === null && ($this->user_id !== null)) {
-			$this->aUser = UserPeer::retrieveByPk($this->user_id);
+		if ($this->aSubscription === null && ($this->subscription_id !== null)) {
+			$this->aSubscription = SubscriptionPeer::retrieveByPk($this->subscription_id);
 			/* The following can be used additionally to
 			   guarantee the related object contains a reference
 			   to this object.  This level of coupling may, however, be
 			   undesirable since it could result in an only partially populated collection
 			   in the referenced object.
-			   $this->aUser->addNotifications($this);
+			   $this->aSubscription->addNotifications($this);
 			 */
 		}
-		return $this->aUser;
+		return $this->aSubscription;
 	}
 
 	/**
-	 * Declares an association between this object and a RssFeed object.
+	 * Declares an association between this object and a Rpm object.
 	 *
-	 * @param      RssFeed $v
+	 * @param      Rpm $v
 	 * @return     Notification The current object (for fluent API support)
 	 * @throws     PropelException
 	 */
-	public function setRssFeed(RssFeed $v = null)
+	public function setRpm(Rpm $v = null)
 	{
 		if ($v === null) {
-			$this->setRssFeedId(NULL);
+			$this->setRpmId(NULL);
 		} else {
-			$this->setRssFeedId($v->getId());
+			$this->setRpmId($v->getId());
 		}
 
-		$this->aRssFeed = $v;
+		$this->aRpm = $v;
 
 		// Add binding for other direction of this n:n relationship.
-		// If this object has already been added to the RssFeed object, it will not be re-added.
+		// If this object has already been added to the Rpm object, it will not be re-added.
 		if ($v !== null) {
 			$v->addNotification($this);
 		}
@@ -1310,414 +923,25 @@ abstract class BaseNotification extends BaseObject  implements Persistent {
 
 
 	/**
-	 * Get the associated RssFeed object
+	 * Get the associated Rpm object
 	 *
 	 * @param      PropelPDO Optional Connection object.
-	 * @return     RssFeed The associated RssFeed object.
+	 * @return     Rpm The associated Rpm object.
 	 * @throws     PropelException
 	 */
-	public function getRssFeed(PropelPDO $con = null)
+	public function getRpm(PropelPDO $con = null)
 	{
-		if ($this->aRssFeed === null && ($this->rss_feed_id !== null)) {
-			$this->aRssFeed = RssFeedPeer::retrieveByPk($this->rss_feed_id);
+		if ($this->aRpm === null && ($this->rpm_id !== null)) {
+			$this->aRpm = RpmPeer::retrieveByPk($this->rpm_id);
 			/* The following can be used additionally to
 			   guarantee the related object contains a reference
 			   to this object.  This level of coupling may, however, be
 			   undesirable since it could result in an only partially populated collection
 			   in the referenced object.
-			   $this->aRssFeed->addNotifications($this);
+			   $this->aRpm->addNotifications($this);
 			 */
 		}
-		return $this->aRssFeed;
-	}
-
-	/**
-	 * Clears out the collNotificationElements collection (array).
-	 *
-	 * This does not modify the database; however, it will remove any associated objects, causing
-	 * them to be refetched by subsequent calls to accessor method.
-	 *
-	 * @return     void
-	 * @see        addNotificationElements()
-	 */
-	public function clearNotificationElements()
-	{
-		$this->collNotificationElements = null; // important to set this to NULL since that means it is uninitialized
-	}
-
-	/**
-	 * Initializes the collNotificationElements collection (array).
-	 *
-	 * By default this just sets the collNotificationElements collection to an empty array (like clearcollNotificationElements());
-	 * however, you may wish to override this method in your stub class to provide setting appropriate
-	 * to your application -- for example, setting the initial array to the values stored in database.
-	 *
-	 * @return     void
-	 */
-	public function initNotificationElements()
-	{
-		$this->collNotificationElements = array();
-	}
-
-	/**
-	 * Gets an array of NotificationElement objects which contain a foreign key that references this object.
-	 *
-	 * If this collection has already been initialized with an identical Criteria, it returns the collection.
-	 * Otherwise if this Notification has previously been saved, it will retrieve
-	 * related NotificationElements from storage. If this Notification is new, it will return
-	 * an empty collection or the current collection, the criteria is ignored on a new object.
-	 *
-	 * @param      PropelPDO $con
-	 * @param      Criteria $criteria
-	 * @return     array NotificationElement[]
-	 * @throws     PropelException
-	 */
-	public function getNotificationElements($criteria = null, PropelPDO $con = null)
-	{
-		if ($criteria === null) {
-			$criteria = new Criteria(NotificationPeer::DATABASE_NAME);
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		if ($this->collNotificationElements === null) {
-			if ($this->isNew()) {
-			   $this->collNotificationElements = array();
-			} else {
-
-				$criteria->add(NotificationElementPeer::NOTIFICATION_ID, $this->id);
-
-				NotificationElementPeer::addSelectColumns($criteria);
-				$this->collNotificationElements = NotificationElementPeer::doSelect($criteria, $con);
-			}
-		} else {
-			// criteria has no effect for a new object
-			if (!$this->isNew()) {
-				// the following code is to determine if a new query is
-				// called for.  If the criteria is the same as the last
-				// one, just return the collection.
-
-
-				$criteria->add(NotificationElementPeer::NOTIFICATION_ID, $this->id);
-
-				NotificationElementPeer::addSelectColumns($criteria);
-				if (!isset($this->lastNotificationElementCriteria) || !$this->lastNotificationElementCriteria->equals($criteria)) {
-					$this->collNotificationElements = NotificationElementPeer::doSelect($criteria, $con);
-				}
-			}
-		}
-		$this->lastNotificationElementCriteria = $criteria;
-		return $this->collNotificationElements;
-	}
-
-	/**
-	 * Returns the number of related NotificationElement objects.
-	 *
-	 * @param      Criteria $criteria
-	 * @param      boolean $distinct
-	 * @param      PropelPDO $con
-	 * @return     int Count of related NotificationElement objects.
-	 * @throws     PropelException
-	 */
-	public function countNotificationElements(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
-	{
-		if ($criteria === null) {
-			$criteria = new Criteria(NotificationPeer::DATABASE_NAME);
-		} else {
-			$criteria = clone $criteria;
-		}
-
-		if ($distinct) {
-			$criteria->setDistinct();
-		}
-
-		$count = null;
-
-		if ($this->collNotificationElements === null) {
-			if ($this->isNew()) {
-				$count = 0;
-			} else {
-
-				$criteria->add(NotificationElementPeer::NOTIFICATION_ID, $this->id);
-
-				$count = NotificationElementPeer::doCount($criteria, false, $con);
-			}
-		} else {
-			// criteria has no effect for a new object
-			if (!$this->isNew()) {
-				// the following code is to determine if a new query is
-				// called for.  If the criteria is the same as the last
-				// one, just return count of the collection.
-
-
-				$criteria->add(NotificationElementPeer::NOTIFICATION_ID, $this->id);
-
-				if (!isset($this->lastNotificationElementCriteria) || !$this->lastNotificationElementCriteria->equals($criteria)) {
-					$count = NotificationElementPeer::doCount($criteria, false, $con);
-				} else {
-					$count = count($this->collNotificationElements);
-				}
-			} else {
-				$count = count($this->collNotificationElements);
-			}
-		}
-		return $count;
-	}
-
-	/**
-	 * Method called to associate a NotificationElement object to this object
-	 * through the NotificationElement foreign key attribute.
-	 *
-	 * @param      NotificationElement $l NotificationElement
-	 * @return     void
-	 * @throws     PropelException
-	 */
-	public function addNotificationElement(NotificationElement $l)
-	{
-		if ($this->collNotificationElements === null) {
-			$this->initNotificationElements();
-		}
-		if (!in_array($l, $this->collNotificationElements, true)) { // only add it if the **same** object is not already associated
-			array_push($this->collNotificationElements, $l);
-			$l->setNotification($this);
-		}
-	}
-
-
-	/**
-	 * If this collection has already been initialized with
-	 * an identical criteria, it returns the collection.
-	 * Otherwise if this Notification is new, it will return
-	 * an empty collection; or if this Notification has previously
-	 * been saved, it will retrieve related NotificationElements from storage.
-	 *
-	 * This method is protected by default in order to keep the public
-	 * api reasonable.  You can provide public methods for those you
-	 * actually need in Notification.
-	 */
-	public function getNotificationElementsJoinPackage($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
-	{
-		if ($criteria === null) {
-			$criteria = new Criteria(NotificationPeer::DATABASE_NAME);
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		if ($this->collNotificationElements === null) {
-			if ($this->isNew()) {
-				$this->collNotificationElements = array();
-			} else {
-
-				$criteria->add(NotificationElementPeer::NOTIFICATION_ID, $this->id);
-
-				$this->collNotificationElements = NotificationElementPeer::doSelectJoinPackage($criteria, $con, $join_behavior);
-			}
-		} else {
-			// the following code is to determine if a new query is
-			// called for.  If the criteria is the same as the last
-			// one, just return the collection.
-
-			$criteria->add(NotificationElementPeer::NOTIFICATION_ID, $this->id);
-
-			if (!isset($this->lastNotificationElementCriteria) || !$this->lastNotificationElementCriteria->equals($criteria)) {
-				$this->collNotificationElements = NotificationElementPeer::doSelectJoinPackage($criteria, $con, $join_behavior);
-			}
-		}
-		$this->lastNotificationElementCriteria = $criteria;
-
-		return $this->collNotificationElements;
-	}
-
-
-	/**
-	 * If this collection has already been initialized with
-	 * an identical criteria, it returns the collection.
-	 * Otherwise if this Notification is new, it will return
-	 * an empty collection; or if this Notification has previously
-	 * been saved, it will retrieve related NotificationElements from storage.
-	 *
-	 * This method is protected by default in order to keep the public
-	 * api reasonable.  You can provide public methods for those you
-	 * actually need in Notification.
-	 */
-	public function getNotificationElementsJoinRpmGroup($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
-	{
-		if ($criteria === null) {
-			$criteria = new Criteria(NotificationPeer::DATABASE_NAME);
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		if ($this->collNotificationElements === null) {
-			if ($this->isNew()) {
-				$this->collNotificationElements = array();
-			} else {
-
-				$criteria->add(NotificationElementPeer::NOTIFICATION_ID, $this->id);
-
-				$this->collNotificationElements = NotificationElementPeer::doSelectJoinRpmGroup($criteria, $con, $join_behavior);
-			}
-		} else {
-			// the following code is to determine if a new query is
-			// called for.  If the criteria is the same as the last
-			// one, just return the collection.
-
-			$criteria->add(NotificationElementPeer::NOTIFICATION_ID, $this->id);
-
-			if (!isset($this->lastNotificationElementCriteria) || !$this->lastNotificationElementCriteria->equals($criteria)) {
-				$this->collNotificationElements = NotificationElementPeer::doSelectJoinRpmGroup($criteria, $con, $join_behavior);
-			}
-		}
-		$this->lastNotificationElementCriteria = $criteria;
-
-		return $this->collNotificationElements;
-	}
-
-
-	/**
-	 * If this collection has already been initialized with
-	 * an identical criteria, it returns the collection.
-	 * Otherwise if this Notification is new, it will return
-	 * an empty collection; or if this Notification has previously
-	 * been saved, it will retrieve related NotificationElements from storage.
-	 *
-	 * This method is protected by default in order to keep the public
-	 * api reasonable.  You can provide public methods for those you
-	 * actually need in Notification.
-	 */
-	public function getNotificationElementsJoinDistrelease($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
-	{
-		if ($criteria === null) {
-			$criteria = new Criteria(NotificationPeer::DATABASE_NAME);
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		if ($this->collNotificationElements === null) {
-			if ($this->isNew()) {
-				$this->collNotificationElements = array();
-			} else {
-
-				$criteria->add(NotificationElementPeer::NOTIFICATION_ID, $this->id);
-
-				$this->collNotificationElements = NotificationElementPeer::doSelectJoinDistrelease($criteria, $con, $join_behavior);
-			}
-		} else {
-			// the following code is to determine if a new query is
-			// called for.  If the criteria is the same as the last
-			// one, just return the collection.
-
-			$criteria->add(NotificationElementPeer::NOTIFICATION_ID, $this->id);
-
-			if (!isset($this->lastNotificationElementCriteria) || !$this->lastNotificationElementCriteria->equals($criteria)) {
-				$this->collNotificationElements = NotificationElementPeer::doSelectJoinDistrelease($criteria, $con, $join_behavior);
-			}
-		}
-		$this->lastNotificationElementCriteria = $criteria;
-
-		return $this->collNotificationElements;
-	}
-
-
-	/**
-	 * If this collection has already been initialized with
-	 * an identical criteria, it returns the collection.
-	 * Otherwise if this Notification is new, it will return
-	 * an empty collection; or if this Notification has previously
-	 * been saved, it will retrieve related NotificationElements from storage.
-	 *
-	 * This method is protected by default in order to keep the public
-	 * api reasonable.  You can provide public methods for those you
-	 * actually need in Notification.
-	 */
-	public function getNotificationElementsJoinArch($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
-	{
-		if ($criteria === null) {
-			$criteria = new Criteria(NotificationPeer::DATABASE_NAME);
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		if ($this->collNotificationElements === null) {
-			if ($this->isNew()) {
-				$this->collNotificationElements = array();
-			} else {
-
-				$criteria->add(NotificationElementPeer::NOTIFICATION_ID, $this->id);
-
-				$this->collNotificationElements = NotificationElementPeer::doSelectJoinArch($criteria, $con, $join_behavior);
-			}
-		} else {
-			// the following code is to determine if a new query is
-			// called for.  If the criteria is the same as the last
-			// one, just return the collection.
-
-			$criteria->add(NotificationElementPeer::NOTIFICATION_ID, $this->id);
-
-			if (!isset($this->lastNotificationElementCriteria) || !$this->lastNotificationElementCriteria->equals($criteria)) {
-				$this->collNotificationElements = NotificationElementPeer::doSelectJoinArch($criteria, $con, $join_behavior);
-			}
-		}
-		$this->lastNotificationElementCriteria = $criteria;
-
-		return $this->collNotificationElements;
-	}
-
-
-	/**
-	 * If this collection has already been initialized with
-	 * an identical criteria, it returns the collection.
-	 * Otherwise if this Notification is new, it will return
-	 * an empty collection; or if this Notification has previously
-	 * been saved, it will retrieve related NotificationElements from storage.
-	 *
-	 * This method is protected by default in order to keep the public
-	 * api reasonable.  You can provide public methods for those you
-	 * actually need in Notification.
-	 */
-	public function getNotificationElementsJoinMedia($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
-	{
-		if ($criteria === null) {
-			$criteria = new Criteria(NotificationPeer::DATABASE_NAME);
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		if ($this->collNotificationElements === null) {
-			if ($this->isNew()) {
-				$this->collNotificationElements = array();
-			} else {
-
-				$criteria->add(NotificationElementPeer::NOTIFICATION_ID, $this->id);
-
-				$this->collNotificationElements = NotificationElementPeer::doSelectJoinMedia($criteria, $con, $join_behavior);
-			}
-		} else {
-			// the following code is to determine if a new query is
-			// called for.  If the criteria is the same as the last
-			// one, just return the collection.
-
-			$criteria->add(NotificationElementPeer::NOTIFICATION_ID, $this->id);
-
-			if (!isset($this->lastNotificationElementCriteria) || !$this->lastNotificationElementCriteria->equals($criteria)) {
-				$this->collNotificationElements = NotificationElementPeer::doSelectJoinMedia($criteria, $con, $join_behavior);
-			}
-		}
-		$this->lastNotificationElementCriteria = $criteria;
-
-		return $this->collNotificationElements;
+		return $this->aRpm;
 	}
 
 	/**
@@ -1732,16 +956,10 @@ abstract class BaseNotification extends BaseObject  implements Persistent {
 	public function clearAllReferences($deep = false)
 	{
 		if ($deep) {
-			if ($this->collNotificationElements) {
-				foreach ((array) $this->collNotificationElements as $o) {
-					$o->clearAllReferences($deep);
-				}
-			}
 		} // if ($deep)
 
-		$this->collNotificationElements = null;
-			$this->aUser = null;
-			$this->aRssFeed = null;
+			$this->aSubscription = null;
+			$this->aRpm = null;
 	}
 
 	// symfony_behaviors behavior

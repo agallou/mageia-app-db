@@ -9,3 +9,11 @@ all:
     signin_form: madbFormSignin
   user:
     connector: default
+  notifications:
+    # display notice on fetchRpm task
+    display_notice: true
+    mail:
+      name:    madb notification
+      # warning! address option may be ignored by some
+      # smtp servers like smtp.gmail.com for security reasons
+      address: madb@madbserver

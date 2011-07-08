@@ -72,14 +72,14 @@ abstract class BaseDistrelease extends BaseObject  implements Persistent {
 	private $lastNewVersionRequestCriteria = null;
 
 	/**
-	 * @var        array NotificationElement[] Collection to store aggregation of NotificationElement objects.
+	 * @var        array SubscriptionElement[] Collection to store aggregation of SubscriptionElement objects.
 	 */
-	protected $collNotificationElements;
+	protected $collSubscriptionElements;
 
 	/**
-	 * @var        Criteria The criteria used to select the current contents of collNotificationElements.
+	 * @var        Criteria The criteria used to select the current contents of collSubscriptionElements.
 	 */
-	private $lastNotificationElementCriteria = null;
+	private $lastSubscriptionElementCriteria = null;
 
 	/**
 	 * Flag to prevent endless save loop, if this object is referenced
@@ -398,8 +398,8 @@ abstract class BaseDistrelease extends BaseObject  implements Persistent {
 			$this->collNewVersionRequests = null;
 			$this->lastNewVersionRequestCriteria = null;
 
-			$this->collNotificationElements = null;
-			$this->lastNotificationElementCriteria = null;
+			$this->collSubscriptionElements = null;
+			$this->lastSubscriptionElementCriteria = null;
 
 		} // if (deep)
 	}
@@ -581,8 +581,8 @@ abstract class BaseDistrelease extends BaseObject  implements Persistent {
 				}
 			}
 
-			if ($this->collNotificationElements !== null) {
-				foreach ($this->collNotificationElements as $referrerFK) {
+			if ($this->collSubscriptionElements !== null) {
+				foreach ($this->collSubscriptionElements as $referrerFK) {
 					if (!$referrerFK->isDeleted()) {
 						$affectedRows += $referrerFK->save($con);
 					}
@@ -676,8 +676,8 @@ abstract class BaseDistrelease extends BaseObject  implements Persistent {
 					}
 				}
 
-				if ($this->collNotificationElements !== null) {
-					foreach ($this->collNotificationElements as $referrerFK) {
+				if ($this->collSubscriptionElements !== null) {
+					foreach ($this->collSubscriptionElements as $referrerFK) {
 						if (!$referrerFK->validate($columns)) {
 							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
 						}
@@ -929,9 +929,9 @@ abstract class BaseDistrelease extends BaseObject  implements Persistent {
 				}
 			}
 
-			foreach ($this->getNotificationElements() as $relObj) {
+			foreach ($this->getSubscriptionElements() as $relObj) {
 				if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
-					$copyObj->addNotificationElement($relObj->copy($deepCopy));
+					$copyObj->addSubscriptionElement($relObj->copy($deepCopy));
 				}
 			}
 
@@ -1620,47 +1620,47 @@ abstract class BaseDistrelease extends BaseObject  implements Persistent {
 	}
 
 	/**
-	 * Clears out the collNotificationElements collection (array).
+	 * Clears out the collSubscriptionElements collection (array).
 	 *
 	 * This does not modify the database; however, it will remove any associated objects, causing
 	 * them to be refetched by subsequent calls to accessor method.
 	 *
 	 * @return     void
-	 * @see        addNotificationElements()
+	 * @see        addSubscriptionElements()
 	 */
-	public function clearNotificationElements()
+	public function clearSubscriptionElements()
 	{
-		$this->collNotificationElements = null; // important to set this to NULL since that means it is uninitialized
+		$this->collSubscriptionElements = null; // important to set this to NULL since that means it is uninitialized
 	}
 
 	/**
-	 * Initializes the collNotificationElements collection (array).
+	 * Initializes the collSubscriptionElements collection (array).
 	 *
-	 * By default this just sets the collNotificationElements collection to an empty array (like clearcollNotificationElements());
+	 * By default this just sets the collSubscriptionElements collection to an empty array (like clearcollSubscriptionElements());
 	 * however, you may wish to override this method in your stub class to provide setting appropriate
 	 * to your application -- for example, setting the initial array to the values stored in database.
 	 *
 	 * @return     void
 	 */
-	public function initNotificationElements()
+	public function initSubscriptionElements()
 	{
-		$this->collNotificationElements = array();
+		$this->collSubscriptionElements = array();
 	}
 
 	/**
-	 * Gets an array of NotificationElement objects which contain a foreign key that references this object.
+	 * Gets an array of SubscriptionElement objects which contain a foreign key that references this object.
 	 *
 	 * If this collection has already been initialized with an identical Criteria, it returns the collection.
 	 * Otherwise if this Distrelease has previously been saved, it will retrieve
-	 * related NotificationElements from storage. If this Distrelease is new, it will return
+	 * related SubscriptionElements from storage. If this Distrelease is new, it will return
 	 * an empty collection or the current collection, the criteria is ignored on a new object.
 	 *
 	 * @param      PropelPDO $con
 	 * @param      Criteria $criteria
-	 * @return     array NotificationElement[]
+	 * @return     array SubscriptionElement[]
 	 * @throws     PropelException
 	 */
-	public function getNotificationElements($criteria = null, PropelPDO $con = null)
+	public function getSubscriptionElements($criteria = null, PropelPDO $con = null)
 	{
 		if ($criteria === null) {
 			$criteria = new Criteria(DistreleasePeer::DATABASE_NAME);
@@ -1670,15 +1670,15 @@ abstract class BaseDistrelease extends BaseObject  implements Persistent {
 			$criteria = clone $criteria;
 		}
 
-		if ($this->collNotificationElements === null) {
+		if ($this->collSubscriptionElements === null) {
 			if ($this->isNew()) {
-			   $this->collNotificationElements = array();
+			   $this->collSubscriptionElements = array();
 			} else {
 
-				$criteria->add(NotificationElementPeer::DISTRELEASE_ID, $this->id);
+				$criteria->add(SubscriptionElementPeer::DISTRELEASE_ID, $this->id);
 
-				NotificationElementPeer::addSelectColumns($criteria);
-				$this->collNotificationElements = NotificationElementPeer::doSelect($criteria, $con);
+				SubscriptionElementPeer::addSelectColumns($criteria);
+				$this->collSubscriptionElements = SubscriptionElementPeer::doSelect($criteria, $con);
 			}
 		} else {
 			// criteria has no effect for a new object
@@ -1688,28 +1688,28 @@ abstract class BaseDistrelease extends BaseObject  implements Persistent {
 				// one, just return the collection.
 
 
-				$criteria->add(NotificationElementPeer::DISTRELEASE_ID, $this->id);
+				$criteria->add(SubscriptionElementPeer::DISTRELEASE_ID, $this->id);
 
-				NotificationElementPeer::addSelectColumns($criteria);
-				if (!isset($this->lastNotificationElementCriteria) || !$this->lastNotificationElementCriteria->equals($criteria)) {
-					$this->collNotificationElements = NotificationElementPeer::doSelect($criteria, $con);
+				SubscriptionElementPeer::addSelectColumns($criteria);
+				if (!isset($this->lastSubscriptionElementCriteria) || !$this->lastSubscriptionElementCriteria->equals($criteria)) {
+					$this->collSubscriptionElements = SubscriptionElementPeer::doSelect($criteria, $con);
 				}
 			}
 		}
-		$this->lastNotificationElementCriteria = $criteria;
-		return $this->collNotificationElements;
+		$this->lastSubscriptionElementCriteria = $criteria;
+		return $this->collSubscriptionElements;
 	}
 
 	/**
-	 * Returns the number of related NotificationElement objects.
+	 * Returns the number of related SubscriptionElement objects.
 	 *
 	 * @param      Criteria $criteria
 	 * @param      boolean $distinct
 	 * @param      PropelPDO $con
-	 * @return     int Count of related NotificationElement objects.
+	 * @return     int Count of related SubscriptionElement objects.
 	 * @throws     PropelException
 	 */
-	public function countNotificationElements(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
+	public function countSubscriptionElements(Criteria $criteria = null, $distinct = false, PropelPDO $con = null)
 	{
 		if ($criteria === null) {
 			$criteria = new Criteria(DistreleasePeer::DATABASE_NAME);
@@ -1723,14 +1723,14 @@ abstract class BaseDistrelease extends BaseObject  implements Persistent {
 
 		$count = null;
 
-		if ($this->collNotificationElements === null) {
+		if ($this->collSubscriptionElements === null) {
 			if ($this->isNew()) {
 				$count = 0;
 			} else {
 
-				$criteria->add(NotificationElementPeer::DISTRELEASE_ID, $this->id);
+				$criteria->add(SubscriptionElementPeer::DISTRELEASE_ID, $this->id);
 
-				$count = NotificationElementPeer::doCount($criteria, false, $con);
+				$count = SubscriptionElementPeer::doCount($criteria, false, $con);
 			}
 		} else {
 			// criteria has no effect for a new object
@@ -1740,35 +1740,35 @@ abstract class BaseDistrelease extends BaseObject  implements Persistent {
 				// one, just return count of the collection.
 
 
-				$criteria->add(NotificationElementPeer::DISTRELEASE_ID, $this->id);
+				$criteria->add(SubscriptionElementPeer::DISTRELEASE_ID, $this->id);
 
-				if (!isset($this->lastNotificationElementCriteria) || !$this->lastNotificationElementCriteria->equals($criteria)) {
-					$count = NotificationElementPeer::doCount($criteria, false, $con);
+				if (!isset($this->lastSubscriptionElementCriteria) || !$this->lastSubscriptionElementCriteria->equals($criteria)) {
+					$count = SubscriptionElementPeer::doCount($criteria, false, $con);
 				} else {
-					$count = count($this->collNotificationElements);
+					$count = count($this->collSubscriptionElements);
 				}
 			} else {
-				$count = count($this->collNotificationElements);
+				$count = count($this->collSubscriptionElements);
 			}
 		}
 		return $count;
 	}
 
 	/**
-	 * Method called to associate a NotificationElement object to this object
-	 * through the NotificationElement foreign key attribute.
+	 * Method called to associate a SubscriptionElement object to this object
+	 * through the SubscriptionElement foreign key attribute.
 	 *
-	 * @param      NotificationElement $l NotificationElement
+	 * @param      SubscriptionElement $l SubscriptionElement
 	 * @return     void
 	 * @throws     PropelException
 	 */
-	public function addNotificationElement(NotificationElement $l)
+	public function addSubscriptionElement(SubscriptionElement $l)
 	{
-		if ($this->collNotificationElements === null) {
-			$this->initNotificationElements();
+		if ($this->collSubscriptionElements === null) {
+			$this->initSubscriptionElements();
 		}
-		if (!in_array($l, $this->collNotificationElements, true)) { // only add it if the **same** object is not already associated
-			array_push($this->collNotificationElements, $l);
+		if (!in_array($l, $this->collSubscriptionElements, true)) { // only add it if the **same** object is not already associated
+			array_push($this->collSubscriptionElements, $l);
 			$l->setDistrelease($this);
 		}
 	}
@@ -1779,13 +1779,13 @@ abstract class BaseDistrelease extends BaseObject  implements Persistent {
 	 * an identical criteria, it returns the collection.
 	 * Otherwise if this Distrelease is new, it will return
 	 * an empty collection; or if this Distrelease has previously
-	 * been saved, it will retrieve related NotificationElements from storage.
+	 * been saved, it will retrieve related SubscriptionElements from storage.
 	 *
 	 * This method is protected by default in order to keep the public
 	 * api reasonable.  You can provide public methods for those you
 	 * actually need in Distrelease.
 	 */
-	public function getNotificationElementsJoinNotification($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public function getSubscriptionElementsJoinSubscription($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
 		if ($criteria === null) {
 			$criteria = new Criteria(DistreleasePeer::DATABASE_NAME);
@@ -1795,29 +1795,29 @@ abstract class BaseDistrelease extends BaseObject  implements Persistent {
 			$criteria = clone $criteria;
 		}
 
-		if ($this->collNotificationElements === null) {
+		if ($this->collSubscriptionElements === null) {
 			if ($this->isNew()) {
-				$this->collNotificationElements = array();
+				$this->collSubscriptionElements = array();
 			} else {
 
-				$criteria->add(NotificationElementPeer::DISTRELEASE_ID, $this->id);
+				$criteria->add(SubscriptionElementPeer::DISTRELEASE_ID, $this->id);
 
-				$this->collNotificationElements = NotificationElementPeer::doSelectJoinNotification($criteria, $con, $join_behavior);
+				$this->collSubscriptionElements = SubscriptionElementPeer::doSelectJoinSubscription($criteria, $con, $join_behavior);
 			}
 		} else {
 			// the following code is to determine if a new query is
 			// called for.  If the criteria is the same as the last
 			// one, just return the collection.
 
-			$criteria->add(NotificationElementPeer::DISTRELEASE_ID, $this->id);
+			$criteria->add(SubscriptionElementPeer::DISTRELEASE_ID, $this->id);
 
-			if (!isset($this->lastNotificationElementCriteria) || !$this->lastNotificationElementCriteria->equals($criteria)) {
-				$this->collNotificationElements = NotificationElementPeer::doSelectJoinNotification($criteria, $con, $join_behavior);
+			if (!isset($this->lastSubscriptionElementCriteria) || !$this->lastSubscriptionElementCriteria->equals($criteria)) {
+				$this->collSubscriptionElements = SubscriptionElementPeer::doSelectJoinSubscription($criteria, $con, $join_behavior);
 			}
 		}
-		$this->lastNotificationElementCriteria = $criteria;
+		$this->lastSubscriptionElementCriteria = $criteria;
 
-		return $this->collNotificationElements;
+		return $this->collSubscriptionElements;
 	}
 
 
@@ -1826,13 +1826,13 @@ abstract class BaseDistrelease extends BaseObject  implements Persistent {
 	 * an identical criteria, it returns the collection.
 	 * Otherwise if this Distrelease is new, it will return
 	 * an empty collection; or if this Distrelease has previously
-	 * been saved, it will retrieve related NotificationElements from storage.
+	 * been saved, it will retrieve related SubscriptionElements from storage.
 	 *
 	 * This method is protected by default in order to keep the public
 	 * api reasonable.  You can provide public methods for those you
 	 * actually need in Distrelease.
 	 */
-	public function getNotificationElementsJoinPackage($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public function getSubscriptionElementsJoinPackage($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
 		if ($criteria === null) {
 			$criteria = new Criteria(DistreleasePeer::DATABASE_NAME);
@@ -1842,29 +1842,29 @@ abstract class BaseDistrelease extends BaseObject  implements Persistent {
 			$criteria = clone $criteria;
 		}
 
-		if ($this->collNotificationElements === null) {
+		if ($this->collSubscriptionElements === null) {
 			if ($this->isNew()) {
-				$this->collNotificationElements = array();
+				$this->collSubscriptionElements = array();
 			} else {
 
-				$criteria->add(NotificationElementPeer::DISTRELEASE_ID, $this->id);
+				$criteria->add(SubscriptionElementPeer::DISTRELEASE_ID, $this->id);
 
-				$this->collNotificationElements = NotificationElementPeer::doSelectJoinPackage($criteria, $con, $join_behavior);
+				$this->collSubscriptionElements = SubscriptionElementPeer::doSelectJoinPackage($criteria, $con, $join_behavior);
 			}
 		} else {
 			// the following code is to determine if a new query is
 			// called for.  If the criteria is the same as the last
 			// one, just return the collection.
 
-			$criteria->add(NotificationElementPeer::DISTRELEASE_ID, $this->id);
+			$criteria->add(SubscriptionElementPeer::DISTRELEASE_ID, $this->id);
 
-			if (!isset($this->lastNotificationElementCriteria) || !$this->lastNotificationElementCriteria->equals($criteria)) {
-				$this->collNotificationElements = NotificationElementPeer::doSelectJoinPackage($criteria, $con, $join_behavior);
+			if (!isset($this->lastSubscriptionElementCriteria) || !$this->lastSubscriptionElementCriteria->equals($criteria)) {
+				$this->collSubscriptionElements = SubscriptionElementPeer::doSelectJoinPackage($criteria, $con, $join_behavior);
 			}
 		}
-		$this->lastNotificationElementCriteria = $criteria;
+		$this->lastSubscriptionElementCriteria = $criteria;
 
-		return $this->collNotificationElements;
+		return $this->collSubscriptionElements;
 	}
 
 
@@ -1873,13 +1873,13 @@ abstract class BaseDistrelease extends BaseObject  implements Persistent {
 	 * an identical criteria, it returns the collection.
 	 * Otherwise if this Distrelease is new, it will return
 	 * an empty collection; or if this Distrelease has previously
-	 * been saved, it will retrieve related NotificationElements from storage.
+	 * been saved, it will retrieve related SubscriptionElements from storage.
 	 *
 	 * This method is protected by default in order to keep the public
 	 * api reasonable.  You can provide public methods for those you
 	 * actually need in Distrelease.
 	 */
-	public function getNotificationElementsJoinRpmGroup($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public function getSubscriptionElementsJoinRpmGroup($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
 		if ($criteria === null) {
 			$criteria = new Criteria(DistreleasePeer::DATABASE_NAME);
@@ -1889,29 +1889,29 @@ abstract class BaseDistrelease extends BaseObject  implements Persistent {
 			$criteria = clone $criteria;
 		}
 
-		if ($this->collNotificationElements === null) {
+		if ($this->collSubscriptionElements === null) {
 			if ($this->isNew()) {
-				$this->collNotificationElements = array();
+				$this->collSubscriptionElements = array();
 			} else {
 
-				$criteria->add(NotificationElementPeer::DISTRELEASE_ID, $this->id);
+				$criteria->add(SubscriptionElementPeer::DISTRELEASE_ID, $this->id);
 
-				$this->collNotificationElements = NotificationElementPeer::doSelectJoinRpmGroup($criteria, $con, $join_behavior);
+				$this->collSubscriptionElements = SubscriptionElementPeer::doSelectJoinRpmGroup($criteria, $con, $join_behavior);
 			}
 		} else {
 			// the following code is to determine if a new query is
 			// called for.  If the criteria is the same as the last
 			// one, just return the collection.
 
-			$criteria->add(NotificationElementPeer::DISTRELEASE_ID, $this->id);
+			$criteria->add(SubscriptionElementPeer::DISTRELEASE_ID, $this->id);
 
-			if (!isset($this->lastNotificationElementCriteria) || !$this->lastNotificationElementCriteria->equals($criteria)) {
-				$this->collNotificationElements = NotificationElementPeer::doSelectJoinRpmGroup($criteria, $con, $join_behavior);
+			if (!isset($this->lastSubscriptionElementCriteria) || !$this->lastSubscriptionElementCriteria->equals($criteria)) {
+				$this->collSubscriptionElements = SubscriptionElementPeer::doSelectJoinRpmGroup($criteria, $con, $join_behavior);
 			}
 		}
-		$this->lastNotificationElementCriteria = $criteria;
+		$this->lastSubscriptionElementCriteria = $criteria;
 
-		return $this->collNotificationElements;
+		return $this->collSubscriptionElements;
 	}
 
 
@@ -1920,13 +1920,13 @@ abstract class BaseDistrelease extends BaseObject  implements Persistent {
 	 * an identical criteria, it returns the collection.
 	 * Otherwise if this Distrelease is new, it will return
 	 * an empty collection; or if this Distrelease has previously
-	 * been saved, it will retrieve related NotificationElements from storage.
+	 * been saved, it will retrieve related SubscriptionElements from storage.
 	 *
 	 * This method is protected by default in order to keep the public
 	 * api reasonable.  You can provide public methods for those you
 	 * actually need in Distrelease.
 	 */
-	public function getNotificationElementsJoinArch($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public function getSubscriptionElementsJoinArch($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
 		if ($criteria === null) {
 			$criteria = new Criteria(DistreleasePeer::DATABASE_NAME);
@@ -1936,29 +1936,29 @@ abstract class BaseDistrelease extends BaseObject  implements Persistent {
 			$criteria = clone $criteria;
 		}
 
-		if ($this->collNotificationElements === null) {
+		if ($this->collSubscriptionElements === null) {
 			if ($this->isNew()) {
-				$this->collNotificationElements = array();
+				$this->collSubscriptionElements = array();
 			} else {
 
-				$criteria->add(NotificationElementPeer::DISTRELEASE_ID, $this->id);
+				$criteria->add(SubscriptionElementPeer::DISTRELEASE_ID, $this->id);
 
-				$this->collNotificationElements = NotificationElementPeer::doSelectJoinArch($criteria, $con, $join_behavior);
+				$this->collSubscriptionElements = SubscriptionElementPeer::doSelectJoinArch($criteria, $con, $join_behavior);
 			}
 		} else {
 			// the following code is to determine if a new query is
 			// called for.  If the criteria is the same as the last
 			// one, just return the collection.
 
-			$criteria->add(NotificationElementPeer::DISTRELEASE_ID, $this->id);
+			$criteria->add(SubscriptionElementPeer::DISTRELEASE_ID, $this->id);
 
-			if (!isset($this->lastNotificationElementCriteria) || !$this->lastNotificationElementCriteria->equals($criteria)) {
-				$this->collNotificationElements = NotificationElementPeer::doSelectJoinArch($criteria, $con, $join_behavior);
+			if (!isset($this->lastSubscriptionElementCriteria) || !$this->lastSubscriptionElementCriteria->equals($criteria)) {
+				$this->collSubscriptionElements = SubscriptionElementPeer::doSelectJoinArch($criteria, $con, $join_behavior);
 			}
 		}
-		$this->lastNotificationElementCriteria = $criteria;
+		$this->lastSubscriptionElementCriteria = $criteria;
 
-		return $this->collNotificationElements;
+		return $this->collSubscriptionElements;
 	}
 
 
@@ -1967,13 +1967,13 @@ abstract class BaseDistrelease extends BaseObject  implements Persistent {
 	 * an identical criteria, it returns the collection.
 	 * Otherwise if this Distrelease is new, it will return
 	 * an empty collection; or if this Distrelease has previously
-	 * been saved, it will retrieve related NotificationElements from storage.
+	 * been saved, it will retrieve related SubscriptionElements from storage.
 	 *
 	 * This method is protected by default in order to keep the public
 	 * api reasonable.  You can provide public methods for those you
 	 * actually need in Distrelease.
 	 */
-	public function getNotificationElementsJoinMedia($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public function getSubscriptionElementsJoinMedia($criteria = null, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
 		if ($criteria === null) {
 			$criteria = new Criteria(DistreleasePeer::DATABASE_NAME);
@@ -1983,29 +1983,29 @@ abstract class BaseDistrelease extends BaseObject  implements Persistent {
 			$criteria = clone $criteria;
 		}
 
-		if ($this->collNotificationElements === null) {
+		if ($this->collSubscriptionElements === null) {
 			if ($this->isNew()) {
-				$this->collNotificationElements = array();
+				$this->collSubscriptionElements = array();
 			} else {
 
-				$criteria->add(NotificationElementPeer::DISTRELEASE_ID, $this->id);
+				$criteria->add(SubscriptionElementPeer::DISTRELEASE_ID, $this->id);
 
-				$this->collNotificationElements = NotificationElementPeer::doSelectJoinMedia($criteria, $con, $join_behavior);
+				$this->collSubscriptionElements = SubscriptionElementPeer::doSelectJoinMedia($criteria, $con, $join_behavior);
 			}
 		} else {
 			// the following code is to determine if a new query is
 			// called for.  If the criteria is the same as the last
 			// one, just return the collection.
 
-			$criteria->add(NotificationElementPeer::DISTRELEASE_ID, $this->id);
+			$criteria->add(SubscriptionElementPeer::DISTRELEASE_ID, $this->id);
 
-			if (!isset($this->lastNotificationElementCriteria) || !$this->lastNotificationElementCriteria->equals($criteria)) {
-				$this->collNotificationElements = NotificationElementPeer::doSelectJoinMedia($criteria, $con, $join_behavior);
+			if (!isset($this->lastSubscriptionElementCriteria) || !$this->lastSubscriptionElementCriteria->equals($criteria)) {
+				$this->collSubscriptionElements = SubscriptionElementPeer::doSelectJoinMedia($criteria, $con, $join_behavior);
 			}
 		}
-		$this->lastNotificationElementCriteria = $criteria;
+		$this->lastSubscriptionElementCriteria = $criteria;
 
-		return $this->collNotificationElements;
+		return $this->collSubscriptionElements;
 	}
 
 	/**
@@ -2030,8 +2030,8 @@ abstract class BaseDistrelease extends BaseObject  implements Persistent {
 					$o->clearAllReferences($deep);
 				}
 			}
-			if ($this->collNotificationElements) {
-				foreach ((array) $this->collNotificationElements as $o) {
+			if ($this->collSubscriptionElements) {
+				foreach ((array) $this->collSubscriptionElements as $o) {
 					$o->clearAllReferences($deep);
 				}
 			}
@@ -2039,7 +2039,7 @@ abstract class BaseDistrelease extends BaseObject  implements Persistent {
 
 		$this->collRpms = null;
 		$this->collNewVersionRequests = null;
-		$this->collNotificationElements = null;
+		$this->collSubscriptionElements = null;
 	}
 
 	// symfony_behaviors behavior

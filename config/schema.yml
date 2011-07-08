@@ -174,7 +174,7 @@ propel:
     is_third_party:                                                    { type: boolean, required: true, default: false }
     _uniques:
       unique_name:                                                     [ name, vendor ]
-  notification:
+  subscription:
     id:                                                                ~
     user_id:                                                           { type: integer, required: true, foreignTable: user, foreignReference: id }
     update:                                                            { type: boolean, required: true, default: false }
@@ -186,25 +186,25 @@ propel:
     mail_prefix:                                                       { type: varchar(45) }
     rss_feed_id:                                                       { type: integer, foreignTable: rss_feed, foreignReference: id }
     _indexes:
-      fk_notification_user1:                                           [ user_id ]
-      fk_notification_rss_feed1:                                       [ rss_feed_id ]
-  notification_element:
+      fk_subscription_user1:                                           [ user_id ]
+      fk_subscription_rss_feed1:                                       [ rss_feed_id ]
+  subscription_element:
     id:                                                                ~
-    notification_id:                                                   { type: integer, required: true, foreignTable: notification, foreignReference: id }
+    subscription_id:                                                   { type: integer, required: true, foreignTable: subscription, foreignReference: id }
     package_id:                                                        { type: integer, foreignTable: package, foreignReference: id }
     rpm_group_id:                                                      { type: integer, foreignTable: rpm_group, foreignReference: id }
     distrelease_id:                                                    { type: integer, foreignTable: distrelease, foreignReference: id }
     arch_id:                                                           { type: integer, foreignTable: arch, foreignReference: id }
     media_id:                                                          { type: integer, foreignTable: media, foreignReference: id }
     _indexes:
-      fk_notification_element_notification1:                           [ notification_id ]
-      fk_notification_element_package1:                                [ package_id ]
-      fk_notification_element_rpm_group1:                              [ rpm_group_id ]
-      fk_notification_element_distrelease1:                            [ distrelease_id ]
-      fk_notification_element_arch1:                                   [ arch_id ]
-      fk_notification_element_media1:                                  [ media_id ]
+      fk_subscription_element_subscription1:                           [ subscription_id ]
+      fk_subscription_element_package1:                                [ package_id ]
+      fk_subscription_element_rpm_group1:                              [ rpm_group_id ]
+      fk_subscription_element_distrelease1:                            [ distrelease_id ]
+      fk_subscription_element_arch1:                                   [ arch_id ]
+      fk_subscription_element_media1:                                  [ media_id ]
     _uniques:
-      dummy_pk:                                                        [ notification_id, package_id, rpm_group_id, distrelease_id, arch_id, media_id ]
+      dummy_pk:                                                        [ subscription_id, package_id, rpm_group_id, distrelease_id, arch_id, media_id ]
   rss_feed:
     id:                                                                ~
     name:                                                              { type: varchar(45) }
@@ -217,4 +217,11 @@ propel:
   version:
     id:                                                                ~
     version:                                                           { type: varchar(10) }
-
+  notification:
+    id:                                                                ~
+    subscription_id:                                                   { type: integer, required: true, foreignTable: subscription, foreignReference: id }
+    rpm_id:                                                            { type: integer, required: true, foreignTable: rpm, foreignReference: id }
+    event_type:                                                        { type: integer, required: true }
+    _indexes:
+      fk_notification_subscription1:                                   [ subscription_id ]
+      fk_notification_rpm1:                                            [ rpm_id ]

@@ -75,6 +75,7 @@ class RpmTableMap extends TableMap {
     $this->addRelation('Arch', 'Arch', RelationMap::MANY_TO_ONE, array('arch_id' => 'id', ), null, null);
     $this->addRelation('RpmRelatedBySourceRpmId', 'Rpm', RelationMap::MANY_TO_ONE, array('source_rpm_id' => 'id', ), null, null);
     $this->addRelation('RpmRelatedBySourceRpmId', 'Rpm', RelationMap::ONE_TO_MANY, array('id' => 'source_rpm_id', ), null, null);
+    $this->addRelation('Notification', 'Notification', RelationMap::ONE_TO_MANY, array('id' => 'rpm_id', ), null, null);
 	} // buildRelations()
 
 	/**

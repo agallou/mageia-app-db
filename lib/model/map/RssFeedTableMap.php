@@ -49,7 +49,7 @@ class RssFeedTableMap extends TableMap {
 	public function buildRelations()
 	{
     $this->addRelation('User', 'User', RelationMap::MANY_TO_ONE, array('user_id' => 'id', ), null, null);
-    $this->addRelation('Notification', 'Notification', RelationMap::ONE_TO_MANY, array('id' => 'rss_feed_id', ), null, null);
+    $this->addRelation('Subscription', 'Subscription', RelationMap::ONE_TO_MANY, array('id' => 'rss_feed_id', ), null, null);
 	} // buildRelations()
 
 	/**

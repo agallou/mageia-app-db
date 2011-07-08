@@ -2,7 +2,7 @@
 
 
 /**
- * Skeleton subclass for representing a row from the 'notification_element' table.
+ * Skeleton subclass for performing query and update operations on the 'subscription_element' table.
  *
  * 
  *
@@ -12,6 +12,6 @@
  *
  * @package    lib.model
  */
-class NotificationElement extends BaseNotificationElement {
+class SubscriptionElementPeer extends BaseSubscriptionElementPeer {
 
-} // NotificationElement
+} // SubscriptionElementPeer

@@ -27,8 +27,8 @@ class getUrlAction extends madbActions
 
     $baseParams  = $parameters;
 
-    $filterIteratorFactory = new filterIteratorFactory();
-    $filterIterator        = $filterIteratorFactory->create();
+    $filtersIteratorFactory = new filtersIteratorFactory();
+    $filterIterator        = $filtersIteratorFactory->create();
     foreach ($filterIterator as $filter)
     {
       unset($parameters[$filter->getCode()]);

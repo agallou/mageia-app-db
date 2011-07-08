@@ -25,7 +25,7 @@ abstract class BaseNotificationPeer {
 	const TM_CLASS = 'NotificationTableMap';
 	
 	/** The total number of columns. */
-	const NUM_COLUMNS = 10;
+	const NUM_COLUMNS = 4;
 
 	/** The number of lazy-loaded columns. */
 	const NUM_LAZY_LOAD_COLUMNS = 0;
@@ -33,32 +33,14 @@ abstract class BaseNotificationPeer {
 	/** the column name for the ID field */
 	const ID = 'notification.ID';
 
-	/** the column name for the USER_ID field */
-	const USER_ID = 'notification.USER_ID';
+	/** the column name for the SUBSCRIPTION_ID field */
+	const SUBSCRIPTION_ID = 'notification.SUBSCRIPTION_ID';
 
-	/** the column name for the UPDATE field */
-	const UPDATE = 'notification.UPDATE';
+	/** the column name for the RPM_ID field */
+	const RPM_ID = 'notification.RPM_ID';
 
-	/** the column name for the NEW_VERSION field */
-	const NEW_VERSION = 'notification.NEW_VERSION';
-
-	/** the column name for the UPDATE_CANDIDATE field */
-	const UPDATE_CANDIDATE = 'notification.UPDATE_CANDIDATE';
-
-	/** the column name for the NEW_VERSION_CANDIDATE field */
-	const NEW_VERSION_CANDIDATE = 'notification.NEW_VERSION_CANDIDATE';
-
-	/** the column name for the COMMENTS field */
-	const COMMENTS = 'notification.COMMENTS';
-
-	/** the column name for the MAIL_NOTIFICATION field */
-	const MAIL_NOTIFICATION = 'notification.MAIL_NOTIFICATION';
-
-	/** the column name for the MAIL_PREFIX field */
-	const MAIL_PREFIX = 'notification.MAIL_PREFIX';
-
-	/** the column name for the RSS_FEED_ID field */
-	const RSS_FEED_ID = 'notification.RSS_FEED_ID';
+	/** the column name for the EVENT_TYPE field */
+	const EVENT_TYPE = 'notification.EVENT_TYPE';
 
 	/**
 	 * An identiy map to hold any loaded instances of Notification objects.
@@ -83,11 +65,11 @@ abstract class BaseNotificationPeer {
 	 * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
 	 */
 	private static $fieldNames = array (
-		BasePeer::TYPE_PHPNAME => array ('Id', 'UserId', 'Update', 'NewVersion', 'UpdateCandidate', 'NewVersionCandidate', 'Comments', 'MailNotification', 'MailPrefix', 'RssFeedId', ),
-		BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'userId', 'update', 'newVersion', 'updateCandidate', 'newVersionCandidate', 'comments', 'mailNotification', 'mailPrefix', 'rssFeedId', ),
-		BasePeer::TYPE_COLNAME => array (self::ID, self::USER_ID, self::UPDATE, self::NEW_VERSION, self::UPDATE_CANDIDATE, self::NEW_VERSION_CANDIDATE, self::COMMENTS, self::MAIL_NOTIFICATION, self::MAIL_PREFIX, self::RSS_FEED_ID, ),
-		BasePeer::TYPE_FIELDNAME => array ('id', 'user_id', 'update', 'new_version', 'update_candidate', 'new_version_candidate', 'comments', 'mail_notification', 'mail_prefix', 'rss_feed_id', ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, )
+		BasePeer::TYPE_PHPNAME => array ('Id', 'SubscriptionId', 'RpmId', 'EventType', ),
+		BasePeer::TYPE_STUDLYPHPNAME => array ('id', 'subscriptionId', 'rpmId', 'eventType', ),
+		BasePeer::TYPE_COLNAME => array (self::ID, self::SUBSCRIPTION_ID, self::RPM_ID, self::EVENT_TYPE, ),
+		BasePeer::TYPE_FIELDNAME => array ('id', 'subscription_id', 'rpm_id', 'event_type', ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, )
 	);
 
 	/**
@@ -97,11 +79,11 @@ abstract class BaseNotificationPeer {
 	 * e.g. self::$fieldNames[BasePeer::TYPE_PHPNAME]['Id'] = 0
 	 */
 	private static $fieldKeys = array (
-		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'UserId' => 1, 'Update' => 2, 'NewVersion' => 3, 'UpdateCandidate' => 4, 'NewVersionCandidate' => 5, 'Comments' => 6, 'MailNotification' => 7, 'MailPrefix' => 8, 'RssFeedId' => 9, ),
-		BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'userId' => 1, 'update' => 2, 'newVersion' => 3, 'updateCandidate' => 4, 'newVersionCandidate' => 5, 'comments' => 6, 'mailNotification' => 7, 'mailPrefix' => 8, 'rssFeedId' => 9, ),
-		BasePeer::TYPE_COLNAME => array (self::ID => 0, self::USER_ID => 1, self::UPDATE => 2, self::NEW_VERSION => 3, self::UPDATE_CANDIDATE => 4, self::NEW_VERSION_CANDIDATE => 5, self::COMMENTS => 6, self::MAIL_NOTIFICATION => 7, self::MAIL_PREFIX => 8, self::RSS_FEED_ID => 9, ),
-		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'user_id' => 1, 'update' => 2, 'new_version' => 3, 'update_candidate' => 4, 'new_version_candidate' => 5, 'comments' => 6, 'mail_notification' => 7, 'mail_prefix' => 8, 'rss_feed_id' => 9, ),
-		BasePeer::TYPE_NUM => array (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, )
+		BasePeer::TYPE_PHPNAME => array ('Id' => 0, 'SubscriptionId' => 1, 'RpmId' => 2, 'EventType' => 3, ),
+		BasePeer::TYPE_STUDLYPHPNAME => array ('id' => 0, 'subscriptionId' => 1, 'rpmId' => 2, 'eventType' => 3, ),
+		BasePeer::TYPE_COLNAME => array (self::ID => 0, self::SUBSCRIPTION_ID => 1, self::RPM_ID => 2, self::EVENT_TYPE => 3, ),
+		BasePeer::TYPE_FIELDNAME => array ('id' => 0, 'subscription_id' => 1, 'rpm_id' => 2, 'event_type' => 3, ),
+		BasePeer::TYPE_NUM => array (0, 1, 2, 3, )
 	);
 
 	/**
@@ -172,15 +154,9 @@ abstract class BaseNotificationPeer {
 	public static function addSelectColumns(Criteria $criteria)
 	{
 		$criteria->addSelectColumn(NotificationPeer::ID);
-		$criteria->addSelectColumn(NotificationPeer::USER_ID);
-		$criteria->addSelectColumn(NotificationPeer::UPDATE);
-		$criteria->addSelectColumn(NotificationPeer::NEW_VERSION);
-		$criteria->addSelectColumn(NotificationPeer::UPDATE_CANDIDATE);
-		$criteria->addSelectColumn(NotificationPeer::NEW_VERSION_CANDIDATE);
-		$criteria->addSelectColumn(NotificationPeer::COMMENTS);
-		$criteria->addSelectColumn(NotificationPeer::MAIL_NOTIFICATION);
-		$criteria->addSelectColumn(NotificationPeer::MAIL_PREFIX);
-		$criteria->addSelectColumn(NotificationPeer::RSS_FEED_ID);
+		$criteria->addSelectColumn(NotificationPeer::SUBSCRIPTION_ID);
+		$criteria->addSelectColumn(NotificationPeer::RPM_ID);
+		$criteria->addSelectColumn(NotificationPeer::EVENT_TYPE);
 	}
 
 	/**
@@ -439,7 +415,7 @@ abstract class BaseNotificationPeer {
 	}
 
 	/**
-	 * Returns the number of rows matching criteria, joining the related User table
+	 * Returns the number of rows matching criteria, joining the related Subscription table
 	 *
 	 * @param      Criteria $criteria
 	 * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
@@ -447,7 +423,7 @@ abstract class BaseNotificationPeer {
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
 	 * @return     int Number of matching rows.
 	 */
-	public static function doCountJoinUser(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public static function doCountJoinSubscription(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
 		// we're going to modify criteria, so copy it first
 		$criteria = clone $criteria;
@@ -474,7 +450,7 @@ abstract class BaseNotificationPeer {
 			$con = Propel::getConnection(NotificationPeer::DATABASE_NAME, Propel::CONNECTION_READ);
 		}
 
-		$criteria->addJoin(NotificationPeer::USER_ID, UserPeer::ID, $join_behavior);
+		$criteria->addJoin(NotificationPeer::SUBSCRIPTION_ID, SubscriptionPeer::ID, $join_behavior);
 
 		// symfony_behaviors behavior
 		foreach (sfMixer::getCallables(self::getMixerPreSelectHook(__FUNCTION__)) as $sf_hook)
@@ -495,7 +471,7 @@ abstract class BaseNotificationPeer {
 
 
 	/**
-	 * Returns the number of rows matching criteria, joining the related RssFeed table
+	 * Returns the number of rows matching criteria, joining the related Rpm table
 	 *
 	 * @param      Criteria $criteria
 	 * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
@@ -503,7 +479,7 @@ abstract class BaseNotificationPeer {
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
 	 * @return     int Number of matching rows.
 	 */
-	public static function doCountJoinRssFeed(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public static function doCountJoinRpm(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
 		// we're going to modify criteria, so copy it first
 		$criteria = clone $criteria;
@@ -530,7 +506,7 @@ abstract class BaseNotificationPeer {
 			$con = Propel::getConnection(NotificationPeer::DATABASE_NAME, Propel::CONNECTION_READ);
 		}
 
-		$criteria->addJoin(NotificationPeer::RSS_FEED_ID, RssFeedPeer::ID, $join_behavior);
+		$criteria->addJoin(NotificationPeer::RPM_ID, RpmPeer::ID, $join_behavior);
 
 		// symfony_behaviors behavior
 		foreach (sfMixer::getCallables(self::getMixerPreSelectHook(__FUNCTION__)) as $sf_hook)
@@ -551,7 +527,7 @@ abstract class BaseNotificationPeer {
 
 
 	/**
-	 * Selects a collection of Notification objects pre-filled with their User objects.
+	 * Selects a collection of Notification objects pre-filled with their Subscription objects.
 	 * @param      Criteria  $criteria
 	 * @param      PropelPDO $con
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
@@ -559,7 +535,7 @@ abstract class BaseNotificationPeer {
 	 * @throws     PropelException Any exceptions caught during processing will be
 	 *		 rethrown wrapped into a PropelException.
 	 */
-	public static function doSelectJoinUser(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public static function doSelectJoinSubscription(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
 		$criteria = clone $criteria;
 
@@ -570,9 +546,9 @@ abstract class BaseNotificationPeer {
 
 		NotificationPeer::addSelectColumns($criteria);
 		$startcol = (NotificationPeer::NUM_COLUMNS - NotificationPeer::NUM_LAZY_LOAD_COLUMNS);
-		UserPeer::addSelectColumns($criteria);
+		SubscriptionPeer::addSelectColumns($criteria);
 
-		$criteria->addJoin(NotificationPeer::USER_ID, UserPeer::ID, $join_behavior);
+		$criteria->addJoin(NotificationPeer::SUBSCRIPTION_ID, SubscriptionPeer::ID, $join_behavior);
 
 		// symfony_behaviors behavior
 		foreach (sfMixer::getCallables(self::getMixerPreSelectHook(__FUNCTION__)) as $sf_hook)
@@ -598,19 +574,19 @@ abstract class BaseNotificationPeer {
 				NotificationPeer::addInstanceToPool($obj1, $key1);
 			} // if $obj1 already loaded
 
-			$key2 = UserPeer::getPrimaryKeyHashFromRow($row, $startcol);
+			$key2 = SubscriptionPeer::getPrimaryKeyHashFromRow($row, $startcol);
 			if ($key2 !== null) {
-				$obj2 = UserPeer::getInstanceFromPool($key2);
+				$obj2 = SubscriptionPeer::getInstanceFromPool($key2);
 				if (!$obj2) {
 
-					$cls = UserPeer::getOMClass(false);
+					$cls = SubscriptionPeer::getOMClass(false);
 
 					$obj2 = new $cls();
 					$obj2->hydrate($row, $startcol);
-					UserPeer::addInstanceToPool($obj2, $key2);
+					SubscriptionPeer::addInstanceToPool($obj2, $key2);
 				} // if obj2 already loaded
 				
-				// Add the $obj1 (Notification) to $obj2 (User)
+				// Add the $obj1 (Notification) to $obj2 (Subscription)
 				$obj2->addNotification($obj1);
 
 			} // if joined row was not null
@@ -623,7 +599,7 @@ abstract class BaseNotificationPeer {
 
 
 	/**
-	 * Selects a collection of Notification objects pre-filled with their RssFeed objects.
+	 * Selects a collection of Notification objects pre-filled with their Rpm objects.
 	 * @param      Criteria  $criteria
 	 * @param      PropelPDO $con
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
@@ -631,7 +607,7 @@ abstract class BaseNotificationPeer {
 	 * @throws     PropelException Any exceptions caught during processing will be
 	 *		 rethrown wrapped into a PropelException.
 	 */
-	public static function doSelectJoinRssFeed(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public static function doSelectJoinRpm(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
 		$criteria = clone $criteria;
 
@@ -642,9 +618,9 @@ abstract class BaseNotificationPeer {
 
 		NotificationPeer::addSelectColumns($criteria);
 		$startcol = (NotificationPeer::NUM_COLUMNS - NotificationPeer::NUM_LAZY_LOAD_COLUMNS);
-		RssFeedPeer::addSelectColumns($criteria);
+		RpmPeer::addSelectColumns($criteria);
 
-		$criteria->addJoin(NotificationPeer::RSS_FEED_ID, RssFeedPeer::ID, $join_behavior);
+		$criteria->addJoin(NotificationPeer::RPM_ID, RpmPeer::ID, $join_behavior);
 
 		// symfony_behaviors behavior
 		foreach (sfMixer::getCallables(self::getMixerPreSelectHook(__FUNCTION__)) as $sf_hook)
@@ -670,19 +646,19 @@ abstract class BaseNotificationPeer {
 				NotificationPeer::addInstanceToPool($obj1, $key1);
 			} // if $obj1 already loaded
 
-			$key2 = RssFeedPeer::getPrimaryKeyHashFromRow($row, $startcol);
+			$key2 = RpmPeer::getPrimaryKeyHashFromRow($row, $startcol);
 			if ($key2 !== null) {
-				$obj2 = RssFeedPeer::getInstanceFromPool($key2);
+				$obj2 = RpmPeer::getInstanceFromPool($key2);
 				if (!$obj2) {
 
-					$cls = RssFeedPeer::getOMClass(false);
+					$cls = RpmPeer::getOMClass(false);
 
 					$obj2 = new $cls();
 					$obj2->hydrate($row, $startcol);
-					RssFeedPeer::addInstanceToPool($obj2, $key2);
+					RpmPeer::addInstanceToPool($obj2, $key2);
 				} // if obj2 already loaded
 				
-				// Add the $obj1 (Notification) to $obj2 (RssFeed)
+				// Add the $obj1 (Notification) to $obj2 (Rpm)
 				$obj2->addNotification($obj1);
 
 			} // if joined row was not null
@@ -730,9 +706,9 @@ abstract class BaseNotificationPeer {
 			$con = Propel::getConnection(NotificationPeer::DATABASE_NAME, Propel::CONNECTION_READ);
 		}
 
-		$criteria->addJoin(NotificationPeer::USER_ID, UserPeer::ID, $join_behavior);
+		$criteria->addJoin(NotificationPeer::SUBSCRIPTION_ID, SubscriptionPeer::ID, $join_behavior);
 
-		$criteria->addJoin(NotificationPeer::RSS_FEED_ID, RssFeedPeer::ID, $join_behavior);
+		$criteria->addJoin(NotificationPeer::RPM_ID, RpmPeer::ID, $join_behavior);
 
 		// symfony_behaviors behavior
 		foreach (sfMixer::getCallables(self::getMixerPreSelectHook(__FUNCTION__)) as $sf_hook)
@@ -773,15 +749,15 @@ abstract class BaseNotificationPeer {
 		NotificationPeer::addSelectColumns($criteria);
 		$startcol2 = (NotificationPeer::NUM_COLUMNS - NotificationPeer::NUM_LAZY_LOAD_COLUMNS);
 
-		UserPeer::addSelectColumns($criteria);
-		$startcol3 = $startcol2 + (UserPeer::NUM_COLUMNS - UserPeer::NUM_LAZY_LOAD_COLUMNS);
+		SubscriptionPeer::addSelectColumns($criteria);
+		$startcol3 = $startcol2 + (SubscriptionPeer::NUM_COLUMNS - SubscriptionPeer::NUM_LAZY_LOAD_COLUMNS);
 
-		RssFeedPeer::addSelectColumns($criteria);
-		$startcol4 = $startcol3 + (RssFeedPeer::NUM_COLUMNS - RssFeedPeer::NUM_LAZY_LOAD_COLUMNS);
+		RpmPeer::addSelectColumns($criteria);
+		$startcol4 = $startcol3 + (RpmPeer::NUM_COLUMNS - RpmPeer::NUM_LAZY_LOAD_COLUMNS);
 
-		$criteria->addJoin(NotificationPeer::USER_ID, UserPeer::ID, $join_behavior);
+		$criteria->addJoin(NotificationPeer::SUBSCRIPTION_ID, SubscriptionPeer::ID, $join_behavior);
 
-		$criteria->addJoin(NotificationPeer::RSS_FEED_ID, RssFeedPeer::ID, $join_behavior);
+		$criteria->addJoin(NotificationPeer::RPM_ID, RpmPeer::ID, $join_behavior);
 
 		// symfony_behaviors behavior
 		foreach (sfMixer::getCallables(self::getMixerPreSelectHook(__FUNCTION__)) as $sf_hook)
@@ -806,39 +782,39 @@ abstract class BaseNotificationPeer {
 				NotificationPeer::addInstanceToPool($obj1, $key1);
 			} // if obj1 already loaded
 
-			// Add objects for joined User rows
+			// Add objects for joined Subscription rows
 
-			$key2 = UserPeer::getPrimaryKeyHashFromRow($row, $startcol2);
+			$key2 = SubscriptionPeer::getPrimaryKeyHashFromRow($row, $startcol2);
 			if ($key2 !== null) {
-				$obj2 = UserPeer::getInstanceFromPool($key2);
+				$obj2 = SubscriptionPeer::getInstanceFromPool($key2);
 				if (!$obj2) {
 
-					$cls = UserPeer::getOMClass(false);
+					$cls = SubscriptionPeer::getOMClass(false);
 
 					$obj2 = new $cls();
 					$obj2->hydrate($row, $startcol2);
-					UserPeer::addInstanceToPool($obj2, $key2);
+					SubscriptionPeer::addInstanceToPool($obj2, $key2);
 				} // if obj2 loaded
 
-				// Add the $obj1 (Notification) to the collection in $obj2 (User)
+				// Add the $obj1 (Notification) to the collection in $obj2 (Subscription)
 				$obj2->addNotification($obj1);
 			} // if joined row not null
 
-			// Add objects for joined RssFeed rows
+			// Add objects for joined Rpm rows
 
-			$key3 = RssFeedPeer::getPrimaryKeyHashFromRow($row, $startcol3);
+			$key3 = RpmPeer::getPrimaryKeyHashFromRow($row, $startcol3);
 			if ($key3 !== null) {
-				$obj3 = RssFeedPeer::getInstanceFromPool($key3);
+				$obj3 = RpmPeer::getInstanceFromPool($key3);
 				if (!$obj3) {
 
-					$cls = RssFeedPeer::getOMClass(false);
+					$cls = RpmPeer::getOMClass(false);
 
 					$obj3 = new $cls();
 					$obj3->hydrate($row, $startcol3);
-					RssFeedPeer::addInstanceToPool($obj3, $key3);
+					RpmPeer::addInstanceToPool($obj3, $key3);
 				} // if obj3 loaded
 
-				// Add the $obj1 (Notification) to the collection in $obj3 (RssFeed)
+				// Add the $obj1 (Notification) to the collection in $obj3 (Rpm)
 				$obj3->addNotification($obj1);
 			} // if joined row not null
 
@@ -850,7 +826,7 @@ abstract class BaseNotificationPeer {
 
 
 	/**
-	 * Returns the number of rows matching criteria, joining the related User table
+	 * Returns the number of rows matching criteria, joining the related Subscription table
 	 *
 	 * @param      Criteria $criteria
 	 * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
@@ -858,7 +834,7 @@ abstract class BaseNotificationPeer {
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
 	 * @return     int Number of matching rows.
 	 */
-	public static function doCountJoinAllExceptUser(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public static function doCountJoinAllExceptSubscription(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
 		// we're going to modify criteria, so copy it first
 		$criteria = clone $criteria;
@@ -885,7 +861,7 @@ abstract class BaseNotificationPeer {
 			$con = Propel::getConnection(NotificationPeer::DATABASE_NAME, Propel::CONNECTION_READ);
 		}
 	
-		$criteria->addJoin(NotificationPeer::RSS_FEED_ID, RssFeedPeer::ID, $join_behavior);
+		$criteria->addJoin(NotificationPeer::RPM_ID, RpmPeer::ID, $join_behavior);
 
 		// symfony_behaviors behavior
 		foreach (sfMixer::getCallables(self::getMixerPreSelectHook(__FUNCTION__)) as $sf_hook)
@@ -906,7 +882,7 @@ abstract class BaseNotificationPeer {
 
 
 	/**
-	 * Returns the number of rows matching criteria, joining the related RssFeed table
+	 * Returns the number of rows matching criteria, joining the related Rpm table
 	 *
 	 * @param      Criteria $criteria
 	 * @param      boolean $distinct Whether to select only distinct columns; deprecated: use Criteria->setDistinct() instead.
@@ -914,7 +890,7 @@ abstract class BaseNotificationPeer {
 	 * @param      String    $join_behavior the type of joins to use, defaults to Criteria::LEFT_JOIN
 	 * @return     int Number of matching rows.
 	 */
-	public static function doCountJoinAllExceptRssFeed(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public static function doCountJoinAllExceptRpm(Criteria $criteria, $distinct = false, PropelPDO $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
 		// we're going to modify criteria, so copy it first
 		$criteria = clone $criteria;
@@ -941,7 +917,7 @@ abstract class BaseNotificationPeer {
 			$con = Propel::getConnection(NotificationPeer::DATABASE_NAME, Propel::CONNECTION_READ);
 		}
 	
-		$criteria->addJoin(NotificationPeer::USER_ID, UserPeer::ID, $join_behavior);
+		$criteria->addJoin(NotificationPeer::SUBSCRIPTION_ID, SubscriptionPeer::ID, $join_behavior);
 
 		// symfony_behaviors behavior
 		foreach (sfMixer::getCallables(self::getMixerPreSelectHook(__FUNCTION__)) as $sf_hook)
@@ -962,7 +938,7 @@ abstract class BaseNotificationPeer {
 
 
 	/**
-	 * Selects a collection of Notification objects pre-filled with all related objects except User.
+	 * Selects a collection of Notification objects pre-filled with all related objects except Subscription.
 	 *
 	 * @param      Criteria  $criteria
 	 * @param      PropelPDO $con
@@ -971,7 +947,7 @@ abstract class BaseNotificationPeer {
 	 * @throws     PropelException Any exceptions caught during processing will be
 	 *		 rethrown wrapped into a PropelException.
 	 */
-	public static function doSelectJoinAllExceptUser(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public static function doSelectJoinAllExceptSubscription(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
 		$criteria = clone $criteria;
 
@@ -985,10 +961,10 @@ abstract class BaseNotificationPeer {
 		NotificationPeer::addSelectColumns($criteria);
 		$startcol2 = (NotificationPeer::NUM_COLUMNS - NotificationPeer::NUM_LAZY_LOAD_COLUMNS);
 
-		RssFeedPeer::addSelectColumns($criteria);
-		$startcol3 = $startcol2 + (RssFeedPeer::NUM_COLUMNS - RssFeedPeer::NUM_LAZY_LOAD_COLUMNS);
+		RpmPeer::addSelectColumns($criteria);
+		$startcol3 = $startcol2 + (RpmPeer::NUM_COLUMNS - RpmPeer::NUM_LAZY_LOAD_COLUMNS);
 
-		$criteria->addJoin(NotificationPeer::RSS_FEED_ID, RssFeedPeer::ID, $join_behavior);
+		$criteria->addJoin(NotificationPeer::RPM_ID, RpmPeer::ID, $join_behavior);
 
 		// symfony_behaviors behavior
 		foreach (sfMixer::getCallables(self::getMixerPreSelectHook(__FUNCTION__)) as $sf_hook)
@@ -1014,21 +990,21 @@ abstract class BaseNotificationPeer {
 				NotificationPeer::addInstanceToPool($obj1, $key1);
 			} // if obj1 already loaded
 
-				// Add objects for joined RssFeed rows
+				// Add objects for joined Rpm rows
 
-				$key2 = RssFeedPeer::getPrimaryKeyHashFromRow($row, $startcol2);
+				$key2 = RpmPeer::getPrimaryKeyHashFromRow($row, $startcol2);
 				if ($key2 !== null) {
-					$obj2 = RssFeedPeer::getInstanceFromPool($key2);
+					$obj2 = RpmPeer::getInstanceFromPool($key2);
 					if (!$obj2) {
 	
-						$cls = RssFeedPeer::getOMClass(false);
+						$cls = RpmPeer::getOMClass(false);
 
 					$obj2 = new $cls();
 					$obj2->hydrate($row, $startcol2);
-					RssFeedPeer::addInstanceToPool($obj2, $key2);
+					RpmPeer::addInstanceToPool($obj2, $key2);
 				} // if $obj2 already loaded
 
-				// Add the $obj1 (Notification) to the collection in $obj2 (RssFeed)
+				// Add the $obj1 (Notification) to the collection in $obj2 (Rpm)
 				$obj2->addNotification($obj1);
 
 			} // if joined row is not null
@@ -1041,7 +1017,7 @@ abstract class BaseNotificationPeer {
 
 
 	/**
-	 * Selects a collection of Notification objects pre-filled with all related objects except RssFeed.
+	 * Selects a collection of Notification objects pre-filled with all related objects except Rpm.
 	 *
 	 * @param      Criteria  $criteria
 	 * @param      PropelPDO $con
@@ -1050,7 +1026,7 @@ abstract class BaseNotificationPeer {
 	 * @throws     PropelException Any exceptions caught during processing will be
 	 *		 rethrown wrapped into a PropelException.
 	 */
-	public static function doSelectJoinAllExceptRssFeed(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
+	public static function doSelectJoinAllExceptRpm(Criteria $criteria, $con = null, $join_behavior = Criteria::LEFT_JOIN)
 	{
 		$criteria = clone $criteria;
 
@@ -1064,10 +1040,10 @@ abstract class BaseNotificationPeer {
 		NotificationPeer::addSelectColumns($criteria);
 		$startcol2 = (NotificationPeer::NUM_COLUMNS - NotificationPeer::NUM_LAZY_LOAD_COLUMNS);
 
-		UserPeer::addSelectColumns($criteria);
-		$startcol3 = $startcol2 + (UserPeer::NUM_COLUMNS - UserPeer::NUM_LAZY_LOAD_COLUMNS);
+		SubscriptionPeer::addSelectColumns($criteria);
+		$startcol3 = $startcol2 + (SubscriptionPeer::NUM_COLUMNS - SubscriptionPeer::NUM_LAZY_LOAD_COLUMNS);
 
-		$criteria->addJoin(NotificationPeer::USER_ID, UserPeer::ID, $join_behavior);
+		$criteria->addJoin(NotificationPeer::SUBSCRIPTION_ID, SubscriptionPeer::ID, $join_behavior);
 
 		// symfony_behaviors behavior
 		foreach (sfMixer::getCallables(self::getMixerPreSelectHook(__FUNCTION__)) as $sf_hook)
@@ -1093,21 +1069,21 @@ abstract class BaseNotificationPeer {
 				NotificationPeer::addInstanceToPool($obj1, $key1);
 			} // if obj1 already loaded
 
-				// Add objects for joined User rows
+				// Add objects for joined Subscription rows
 
-				$key2 = UserPeer::getPrimaryKeyHashFromRow($row, $startcol2);
+				$key2 = SubscriptionPeer::getPrimaryKeyHashFromRow($row, $startcol2);
 				if ($key2 !== null) {
-					$obj2 = UserPeer::getInstanceFromPool($key2);
+					$obj2 = SubscriptionPeer::getInstanceFromPool($key2);
 					if (!$obj2) {
 	
-						$cls = UserPeer::getOMClass(false);
+						$cls = SubscriptionPeer::getOMClass(false);
 
 					$obj2 = new $cls();
 					$obj2->hydrate($row, $startcol2);
-					UserPeer::addInstanceToPool($obj2, $key2);
+					SubscriptionPeer::addInstanceToPool($obj2, $key2);
 				} // if $obj2 already loaded
 
-				// Add the $obj1 (Notification) to the collection in $obj2 (User)
+				// Add the $obj1 (Notification) to the collection in $obj2 (Subscription)
 				$obj2->addNotification($obj1);
 
 			} // if joined row is not null
