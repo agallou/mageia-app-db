@@ -16,9 +16,10 @@
 <h2>Screenshot</h2>
 (from <a href="http://screenshots.debian.net">http://screenshots.debian.net</a>)
 <br/>
-<a href="http://screenshots.debian.net/screenshot/<?php echo $package->getName() ?>">
-  <img src="http://screenshots.debian.net/thumbnail/<?php echo $package->getName() ?>"/>
+<a rel="screenshots" href="http://screenshots.debian.net/screenshot/<?php echo $package->getName() ?>">
+  <img src="http://screenshots.debian.net/thumbnail/<?php echo $package->getName() ?>" />
 </a>
+
 <br/>
 <br/>
 <!--  <h2>Backport requests</h2> -->
