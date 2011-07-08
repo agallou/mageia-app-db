@@ -18,7 +18,7 @@
   <li>Name : <?php echo $rpm->getShortName() ?></li>
   <li>Version : <?php echo $rpm->getVersion() ?></li>
   <li>Release : <?php echo $rpm->getRelease() ?></li>
-  <li>URL : <?php echo link_to($rpm->getUrl(), $rpm->getUrl()) ?></li>
+  <li>URL : <?php echo $rpm->getUrl() ? link_to($rpm->getUrl(), $rpm->getUrl()) : '' ?></li>
   <li>Group : <?php echo $rpm->getRpmGroup()->getName() ?></li>
   <li>Summary : <?php echo $rpm->getSummary() ?></li>
   <li>Description : <br/><?php echo nl2br($rpm->getDescription()) ?></li>
