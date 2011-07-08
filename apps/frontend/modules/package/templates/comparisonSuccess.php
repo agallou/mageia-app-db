@@ -6,7 +6,7 @@
 <span class="bordered">newer version in <?php echo $dev_release; ?></span>.
 <span class="newer_avail bordered">newer available outside <?php echo $dev_release; ?></span>.
 </p>
-<p>TODO : add links to RPM views, use only when there's a youri update URL available for the distro</p>
+<p>TODO : add links to RPM views, add filters to dev branch when using available versions from youri, use only when there's a youri update URL available for the distro</p>
 <?php /*include_partial('default/pager', array(
   'pager'       => $pager, 
   'module'      => 'package', 
