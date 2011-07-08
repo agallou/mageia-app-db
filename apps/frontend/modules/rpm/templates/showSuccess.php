@@ -20,8 +20,8 @@
   <li>Release : <?php echo $rpm->getRelease() ?></li>
   <li>URL : <?php echo $rpm->getUrl() ? link_to($rpm->getUrl(), $rpm->getUrl()) : '' ?></li>
   <li>Group : <?php echo $rpm->getRpmGroup()->getName() ?></li>
-  <li>Summary : <?php echo $rpm->getSummary() ?></li>
-  <li>Description : <br/><?php echo nl2br($rpm->getDescription()) ?></li>
+  <li>Summary : <?php echo htmlspecialchars($rpm->getSummary()) ?></li>
+  <li>Description : <br/><?php echo nl2br(htmlspecialchars($rpm->getDescription())) ?></li>
   <li>Size : <?php echo $rpm->getSize() ?></li>
   <li>Arch : <?php echo $rpm->getRealarch() ?></li>
 </ul>
