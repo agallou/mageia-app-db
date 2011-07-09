@@ -2,6 +2,23 @@
 class criteriaFactory
 {
 
+  /**
+   * database
+   * 
+   * @var databaseInterface
+   */
+  protected $database;
+
+  public function __construct(databaseInterface $database = null)
+  {
+    if (null === $database)
+    {
+      $databaseFactory = new databaseFactory();
+      $database        = $databaseFactory->createDefault();
+    }
+    $this->database = $database;
+  }
+
   public function createFromContext(madbContext $context, $targetPerimeter)
   {
     $criteria              = new Criteria();
@@ -41,9 +58,14 @@ class criteriaFactory
     return $criteria;
   }
 
-  protected function getConnection()
+  /**
+   * getDatabase 
+   * 
+   * @return databaseInterface
+   */
+  protected function getDatabase()
   {
-    return Propel::getConnection();
+    return $this->database;
   }
 
   private function applyOtherPerimeterFilters(filtersIterator $filters, Criteria $criteria, $context, basePerimeter $perimeter)
@@ -57,11 +79,10 @@ class criteriaFactory
 
     $tablename = 'tmp_filtrage_' . md5(serialize($filters));//TODO better filtertablename
     //TODO do not delete every time this table
-    $this->getConnection()->exec(sprintf('DROP TABLE IF EXISTS %s', $tablename));
+    $this->getDatabase()->getConnection()->exec(sprintf('DROP TABLE IF EXISTS %s', $tablename));
 
 
-    $database    = new postgresqlDatabase($this->getConnection());
-    $tableFields = $database->createTableFromCriteria($criteria, $tablename);
+    $tableFields = $this->getDatabase()->createTableFromCriteria($criteria, $tablename);
 
     $sql = 'ALTER TABLE %s ADD INDEX (id)';
     //TODO
