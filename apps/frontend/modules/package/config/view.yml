@@ -1,11 +1,17 @@
 showSuccess:
   stylesheets:
     - package.css
+    - vendor/jquery/ui-lightness/jquery-ui-1.8.13.custom.css
   javascripts:
-    - jquery.flyout-1.2.min.js
     - package.js
+    - screenshots.js
+
 listSuccess:
   javascripts:
 listSuccess:
   components:
     searching: [ default, searching ]
+comparisonSuccess:
+  components:
+    searching: [ default, searching ]
+    

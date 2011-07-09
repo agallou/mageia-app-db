@@ -23,7 +23,7 @@
                      array('extra_parameters' => array('id' => $package->getid()))
                    )
                  );
-  ?> : <?php echo $package->getSummary(); ?></li> 
+  ?> : <?php echo htmlspecialchars($package->getSummary()); ?></li> 
 <?php endforeach; ?>
 </ul>
 </div>

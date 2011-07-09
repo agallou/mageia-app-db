@@ -1,8 +1,13 @@
 <?php
-class filterIteratorFactory
+class filtersIteratorFactory
 {
 
-  public function create()
+  /**
+   * 
+   * Creates a filtersIterator object containing either all available filters or a given list of filters
+   * @param array $only_those if empty array means "all filters", otherwise is an array of filter codes
+   */
+  public function create($only_those = array())
   {
     $files         = sfFinder::type('file')->name('*.php')->in(sfConfig::get('sf_lib_dir') . DIRECTORY_SEPARATOR . 'filtering/filters');
     $names         = $this->getFiltersNamesFromFiles($files);
@@ -10,7 +15,11 @@ class filterIteratorFactory
     $filterFactory = new filterFactory();
     foreach ($names as $name)
     {
-      $filters[] = $filterFactory->create($name);
+      $filter = $filterFactory->create($name);
+      if (empty($only_those) or in_array($filter->getCode(), $only_those))
+      {
+        $filters[] = $filter;
+      } 
     }
     return new filtersIterator($filters);
   }
@@ -21,8 +30,8 @@ class filterIteratorFactory
     $filtersNames = array();
     foreach ($files as $file)
     {
-      $filersNames[] = substr($file, 0, -24);
+      $filtersNames[] = substr($file, 0, -24);
     }
-    return $filersNames;
+    return $filtersNames;
   }
 }

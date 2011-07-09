@@ -39,15 +39,18 @@
 .filterwidget .widgetcontent
 {
   margin-top:4px;
+  font-size: 14px;
 }
 
 .filterwidget .widgetcontent1
 {
-  max-height:250px;
+  max-height:200px;
   background-color:#eee;
   overflow:auto;
+  overflow-x: hidden;
   border:1px solid #996A75;
   position:absolute;
+  z-index:1200;
 }
 
 .filterwidget .widgetcontent1

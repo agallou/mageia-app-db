@@ -20,7 +20,7 @@ class rssAction extends sfActions
 
     //feed is selected, now lets display it
     $selectedFeed = RssFeedPeer::retrieveByPK($feedId);
-    // but first let's check if used "selected" his own feed :D
+    // but first let's check if user "selected" his own feed :D
     // and if not show him Select
     // TODO: see previous TODO
     // if($selectedFeed->getUserId() != $userId)  return "Select";
@@ -29,10 +29,13 @@ class rssAction extends sfActions
     //dummy array for rss
     $this->rss  = array();
 
+    // dummy array to store rpms we found via subscription details
+    $rpmCriteria = new Criteria();
+    $rpmCriterions = array();
     
     foreach($this->feed->getSubscriptions() as $subscription)
     {
-      $rpmCriteria = new Criteria();
+      $subscriptionElementsCriterions = array();
       foreach($subscription->getSubscriptionElements() as $subscriptionElement)
       {
         //set here additional scope criterions
@@ -82,14 +85,14 @@ class rssAction extends sfActions
           }
         }
           
-        //and Or this to rpm criteria
+        //and addOr this to rpm criteria
         if(isset($subscriptionElementCriterion))
         {
-          $rpmCriteria->addOr($subscriptionElementCriterion);
+          $subscriptionElementsCriterions[] = $subscriptionElementCriterion;
           unset($subscriptionElementCriterion);
         }
       }
-      //eof foreach
+      //eof foreach element
 
       //setup criteria for media based on subscription's settings
       if($subscription->getUpdate())
@@ -123,7 +126,7 @@ class rssAction extends sfActions
         }
         else
         {
-          $subscriptionCriterion = $rpmCriteria->getNewCriterion(MediaPeer::IS_UPDATES, true);
+          $subscriptionCriterion = $rpmCriteria->getNewCriterion(MediaPeer::IS_BACKPORTS, true);
           $subscriptionCriterion->addAnd($rpmCriteria->getNewCriterion(MediaPeer::IS_TESTING, false));
         }
       }
@@ -138,15 +141,40 @@ class rssAction extends sfActions
         }
         else
         {
-          $subscriptionCriterion = $rpmCriteria->getNewCriterion(MediaPeer::IS_UPDATES, true);
+          $subscriptionCriterion = $rpmCriteria->getNewCriterion(MediaPeer::IS_BACKPORTS, true);
           $subscriptionCriterion->addAnd($rpmCriteria->getNewCriterion(MediaPeer::IS_TESTING, true));
         }
       }
+      
       if(isset($subscriptionCriterion))
-        $rpmCriteria->addOr($subscriptionCriterion);
+      {
+        if(!empty($subscriptionElementsCriterions))
+          foreach($subscriptionElementsCriterions as $subscriptionElementsCriterion)
+            $subscriptionCriterion->addAnd($subscriptionElementsCriterion);
 
+        $rpmCriterions[] = $subscriptionCriterion;
+        unset($subscriptionCriterion);
+      }
     }
 
+    if(!empty($rpmCriterions))
+      {
+      $first = true;
+      foreach($rpmCriterions as $rpmCriterion)
+        {
+          if($first === true)
+          {
+            $criterions = $rpmCriterion;
+            $first = false;
+          }
+          else
+          {
+            $criterions->addOr($rpmCriterion);
+          }
+        }
+        $rpmCriteria->addAnd($criterions);
+      }
+    
     $rpmCriteria->addJoin(RpmPeer::MEDIA_ID, MediaPeer::ID);
     $rpmCriteria->addJoin(RpmPeer::ARCH_ID, ArchPeer::ID);
     $rpmCriteria->addJoin(RpmPeer::DISTRELEASE_ID, DistreleasePeer::ID);
@@ -154,12 +182,10 @@ class rssAction extends sfActions
 
     $rpmCriteria->addDescendingOrderByColumn(RpmPeer::BUILD_TIME);
     $rpmCriteria->setLimit(20);
-    $rpms = RpmPeer::doSelect($rpmCriteria);
 
+    $rpms = RpmPeer::doSelect($rpmCriteria);
     foreach($rpms as $rpm)
-    {
       $this->rss[] = $rpm;
-    }
 
     //set RSS layout
     $this->setLayout("rss");

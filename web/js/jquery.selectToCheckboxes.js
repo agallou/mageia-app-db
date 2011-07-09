@@ -1,25 +1,25 @@
 (function($){
-  $.fn.selectToCheckboxes = function(options) {
+  $.fn.selectToCheckboxes = function(params) {
     var settings = {
       apply: function(){},
       defaults: [],
       searchfield: true,
       multi: true,
       namespace: 'selectToCheckboxes_'
-    }
-    if (options)
+    };
+    if (params)
     {
-      $.extend(settings, options);
+      $.extend(settings, params);
     }
     this.each(function() {
       var select = $(this);
       var prefix = settings.namespace + select.attr('id');
-      var foo = [];
+      var options = [];
       $('option', select).each(function(i, selected){
-        var toto = [];
-        toto[0]  = $(selected).val();
-        toto[1]  = $(selected).text(); 
-        foo[i]   = toto;
+        var option = [];
+        option[0]  = $(selected).val();
+        option[1]  = $(selected).text(); 
+        options[i]   = option;
       });
       var selectId = select.attr('id');
       var label = $('label[for=' + selectId + ']');
@@ -40,7 +40,7 @@
       $('<span>', { id : 'buttonarrow' + selectId,'class' : 'arrow', html: '&darr;' }).appendTo(button);
 
       button.click(function(){
-        document.getElementById('widgetcontent_' + selectId + '1').style.left = buttontext.position().left + 'px';
+        document.getElementById('widgetcontent_' + selectId + '1').style.left = button.position().left+ 'px';
         $('#widgetcontent_' + selectId + '1').toggle();
       });
 
@@ -61,7 +61,7 @@
       recherche.keyup(function(e){
         var letext = $(e.target).val();
         var regepx = new RegExp('/.*' + letext + '.*/'); // regepx is unused
-        $.each(foo, function(key, row)
+        $.each(options, function(key, row)
         {
           if (row[1].toLowerCase().lastIndexOf(letext.toLowerCase()) != -1) {
             $('#' + prefix + 'span_' + row[0]).show();
@@ -85,7 +85,7 @@
         });
       }
 
-      $.each(foo, function(key, value)
+      $.each(options, function(key, value)
       {
         var jSpan = $('<div>', { id: prefix + 'span_' + value[0] });
         var input = $("<input>", {
@@ -110,14 +110,16 @@
         } else {
           clickable = jSpan; //clickable all ready declared no need to redeclare
         }
-        $(clickable).click(function(){
-          //TODO only to that if option auto_something to true (default)
-          //TODO same as jApply, factorize that ???
-          ng1.hide();
-
-          $('input[name=' + selectId + ']:checked').removeAttr('checked')
-          $('input[id=' + $(label).attr('for') + ']').attr("checked", "checked");
-          settings.apply.apply(label, [$('input[name=' + selectId + ']:checked')]);
+        $(clickable).click(function(event){
+          if (!settings.multi) {
+            $('input[name=' + selectId + ']:checked').parent().removeClass('selected');
+            $('input[name=' + selectId + ']:checked').removeAttr('checked');
+            $('input[id=' + $(label).attr('for') + ']').attr("checked", "checked");
+            $('.filterwidget div.widgetcontent input:checked').parent().addClass('selected');
+            ng1.hide();
+            settings.apply.apply(label, [$('input[name=' + selectId + ']:checked')]);
+            event.preventDefault();
+          }
         });
         $('<br>').appendTo(jSpan);
 
@@ -143,5 +145,13 @@
       ng1.hide();
     });
     $('.filterwidget div.widgetcontent input:checked').parent().addClass('selected');
+    $('.filterwidget div.widgetcontent input').click(function(event) {
+      if ($(event.target).attr('checked')) {
+        $(event.target).parent().addClass('selected');
+      }
+      else {
+        $(event.target).parent().removeClass('selected');
+      }
+    });
   };
 })(jQuery);

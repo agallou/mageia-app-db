@@ -26,7 +26,7 @@ class madbContext
   
   public function getFiltersParameters()
   {
-    $filtersIteratorFactory = new filterIteratorFactory();
+    $filtersIteratorFactory = new filtersIteratorFactory();
     $filtersIterator = $filtersIteratorFactory->create();
     $allParameters = $this->getParameterHolder()->getAll();
     $filtersNames  = array();

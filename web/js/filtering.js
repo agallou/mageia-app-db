@@ -1,34 +1,34 @@
 $(document).ready(function(){
 
-  $('#application').selectToCheckboxes({
-    apply: function(d){afterCheckboxChange(d)},
-    defaults: getAllVals($('#application option[selected=selected]')),
+  $('#filtering_application').selectToCheckboxes({
+    apply: function(d){afterCheckboxChange(d);},
+    defaults: getAllVals($('#filtering_application option[selected=selected]')),
     searchfield: false,
     multi: false
   });
-  $('#group').selectToCheckboxes({
-    apply: function(d){afterCheckboxChange(d)},
-    defaults: getAllVals($('#group option[selected=selected]'))
+  $('#filtering_group').selectToCheckboxes({
+    apply: function(d){afterCheckboxChange(d);},
+    defaults: getAllVals($('#filtering_group option[selected=selected]'))
   });
-  $('#distrelease').selectToCheckboxes({
-    apply: function(d){afterCheckboxChange(d)},
-    defaults: getAllVals($('#distrelease option[selected=selected]')),
+  $('#filtering_distrelease').selectToCheckboxes({
+    apply: function(d){afterCheckboxChange(d);},
+    defaults: getAllVals($('#filtering_distrelease option[selected=selected]')),
     searchfield: false,
     multi: false
   });
-  $('#arch').selectToCheckboxes({
-    apply: function(d){afterCheckboxChange(d)},
-    defaults: getAllVals($('#arch option[selected=selected]')),
+  $('#filtering_arch').selectToCheckboxes({
+    apply: function(d){afterCheckboxChange(d);},
+    defaults: getAllVals($('#filtering_arch option[selected=selected]')),
     searchfield: false,
     multi: false
   });
-  $('#media').selectToCheckboxes({
-    apply: function(d){afterCheckboxChange(d)},
-    defaults: getAllVals($('#media option[selected=selected]'))
+  $('#filtering_media').selectToCheckboxes({
+    apply: function(d){afterCheckboxChange(d);},
+    defaults: getAllVals($('#filtering_media option[selected=selected]'))
   });
-  $('#source').selectToCheckboxes({
-    apply: function(d){afterCheckboxChange(d)},
-    defaults: getAllVals($('#source option[selected=selected]')),
+  $('#filtering_source').selectToCheckboxes({
+    apply: function(d){afterCheckboxChange(d);},
+    defaults: getAllVals($('#filtering_source option[selected=selected]')),
     searchfield: false,
     multi: false
   });
@@ -64,12 +64,12 @@ function afterCheckboxChange(changed)
 function getFiltering()
 {
   var filtering = new Object;
-  filtering['distrelease'] = getValuesFromCheckboxes($('input[type=checkbox][name=distrelease]:checked'));
-  filtering['application'] = getValuesFromCheckboxes($('input[type=checkbox][name=application]:checked'));
-  filtering['group'] = getValuesFromCheckboxes($('input[type=checkbox][name=group]:checked'));
-  filtering['arch'] = getValuesFromCheckboxes($('input[type=checkbox][name=arch]:checked'));
-  filtering['media'] = getValuesFromCheckboxes($('input[type=checkbox][name=media]:checked'));
-  filtering['source'] = getValuesFromCheckboxes($('input[type=checkbox][name=source]:checked'));
+  filtering['distrelease'] = getValuesFromCheckboxes($('input[type=checkbox][name=filtering_distrelease]:checked'));
+  filtering['application'] = getValuesFromCheckboxes($('input[type=checkbox][name=filtering_application]:checked'));
+  filtering['group'] = getValuesFromCheckboxes($('input[type=checkbox][name=filtering_group]:checked'));
+  filtering['arch'] = getValuesFromCheckboxes($('input[type=checkbox][name=filtering_arch]:checked'));
+  filtering['media'] = getValuesFromCheckboxes($('input[type=checkbox][name=filtering_media]:checked'));
+  filtering['source'] = getValuesFromCheckboxes($('input[type=checkbox][name=filtering_source]:checked'));
   return filtering;
 }
 

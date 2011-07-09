@@ -1,6 +1,7 @@
 #backports
 {
   position: relative;
+  overflow:hidden;
   width:49% ;
   float: right;
 }
