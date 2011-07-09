@@ -25,6 +25,7 @@ class madbInsertTestDataTask extends madbBaseTask
     $content_dir = 'tmp/test-data';
     $this->getFilesystem()->mkdirs($content_dir);
     $this->getFilesystem()->execute("rm -f $content_dir/*");
+
     
     // Download test data if they are absent from the local system, or if the --url option was used
     if (!file_exists($archive_name) or $options['url']!==null)
@@ -36,16 +37,25 @@ class madbInsertTestDataTask extends madbBaseTask
     if (file_exists($archive_name))
     {
       $this->getFilesystem()->execute("unzip -o -d $content_dir/ " . $archive_name);
-      
-      foreach (sfFinder::type("file")->in($content_dir) as $file)
+     $this->getFilesystem()->rename($content_dir . '/rpm_group.txt', $content_dir . '/00_rpm_group.txt');
+    
+     $con->beginTransaction();
+      $con->exec('SET CONSTRAINTS ALL DEFERRED');
+
+      foreach (sfFinder::type("file")->sort_by_name()->in($content_dir) as $file)
       {
         $table = preg_replace('/\.txt$/', '', basename($file));
+        if ($table == '00_rpm_group')
+{
+  $table = 'rpm_group'; 
+}
         echo "Inserting values into table $table\n";
-        $sql = "TRUNCATE TABLE $table";
+        $sql = "TRUNCATE TABLE $table" . " CASCADE";
         $con->exec($sql);
-        $sql = "LOAD DATA LOCAL INFILE '$file' INTO TABLE $table";
+        $sql = "COPY $table FROM '$file'";
         $con->exec($sql);
       }
+      $con->commit();
     }
     else 
     {

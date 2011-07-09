@@ -12,7 +12,7 @@ class newsAction extends madbActions
   public function execute($request)
   {
     $helperFactory = new criteriaHelperFactory();
-    $helpe         = $helperFactory->createDefault();
+    $helper        = $helperFactory->createDefault();
     $criteria      = $this->getCriteria(filterPerimeters::RPM);
     $criteria->addJoin(RpmPeer::RPM_GROUP_ID, RpmGroupPeer::ID, Criteria::JOIN);
     $criteria->clearSelectColumns();
