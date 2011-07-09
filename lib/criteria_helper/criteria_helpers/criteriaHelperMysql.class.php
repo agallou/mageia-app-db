@@ -1,6 +1,6 @@
 <?php
 
-class criteriaHelperPostgresql implements criteriaHelperInterface
+class criteriaHelperMysql implements criteriaHelperInterface
 {
 
   /**
@@ -14,7 +14,7 @@ class criteriaHelperPostgresql implements criteriaHelperInterface
    */
   public function splitPart($text, $delimiter, $count)
   {
-    return sprintf("split_part(%s, '%s', %s)", $text, $delimiter, $count);
+    //TODO implement this !
   }
 
   /**
