@@ -14,24 +14,7 @@ class criteriaHelperMysql implements criteriaHelperInterface
    */
   public function splitPart($text, $delimiter, $count)
   {
-    //TODO implement this !
-  }
-
-  /**
-   * createTableFromCriteria 
-   * 
-   * @param Criteria $criteria 
-   * @param string   $tablename 
-   * @param bool     $temporary 
-   *
-   * @return string
-   */
-  public function createTableFromCriteria(Criteria $criteria, $tablename, $temporary = true)
-  {
-    $params = array();
-    $sql    = BasePeer::createSelectSql($criteria, $params);
-    $sql    = sprintf('CREATE TEMPORARY TABLE %s AS %s', $this->getTablename(), $sql);
-    return $sql;
+    return sprintf('SUBSTRING_INDEX(%s, \'%s\', %s)', $text, $delimiter, $count);
   }
 
 }

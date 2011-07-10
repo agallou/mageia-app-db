@@ -28,4 +28,5 @@ class newsAction extends madbActions
     $this->has_updates   = MediaPeer::countMediaByType(true, false, false) + count(DistreleasePeer::getDevels());
     $this->has_backports = MediaPeer::countMediaByType(false, true, false);
   }
+
 }
