@@ -78,6 +78,10 @@ class databaseFactory
   public function createFromType($type)
   {
     $class = $this->getClassnameFromType($type);
+    if (!class_exists($class))
+    {
+      throw new databaseFactoryException(sprintf('class "%s" does not exists', $class));
+    }
     if (!($class instanceof databaseInterface))
     {
     //  throw new databaseFactoryException(sprintf('class "%s" does not implements databaseInterface', $class));
