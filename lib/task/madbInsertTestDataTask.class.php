@@ -33,29 +33,30 @@ class madbInsertTestDataTask extends madbBaseTask
       $url = ($options['url']!==null) ? $options['url'] : $this->defaultUrl;
       passthru('wget ' . $url . ' -O ' . $archive_name);
     }
+
+    $databaseFactory = new databaseFactory($con);
+    $database = $databaseFactory->createDefault();
     
     if (file_exists($archive_name))
     {
       $this->getFilesystem()->execute("unzip -o -d $content_dir/ " . $archive_name);
-     $this->getFilesystem()->rename($content_dir . '/rpm_group.txt', $content_dir . '/00_rpm_group.txt');
+      $this->getFilesystem()->rename($content_dir . '/rpm_group.txt', $content_dir . '/00_rpm_group.txt');
     
-     $con->beginTransaction();
-      $con->exec('SET CONSTRAINTS ALL DEFERRED');
+      $database->getConnection()->beginTransaction();
+      $database->disableConstraints();
 
       foreach (sfFinder::type("file")->sort_by_name()->in($content_dir) as $file)
       {
         $table = preg_replace('/\.txt$/', '', basename($file));
         if ($table == '00_rpm_group')
-{
-  $table = 'rpm_group'; 
-}
-        echo "Inserting values into table $table\n";
-        $sql = "TRUNCATE TABLE $table" . " CASCADE";
-        $con->exec($sql);
-        $sql = "COPY $table FROM '$file'";
-        $con->exec($sql);
+        {
+          $table = 'rpm_group'; 
+        }
+        $this->log("Inserting values into table $table");
+        $database->truncateTable($table);
+        $database->loadData($table, $file);
       }
-      $con->commit();
+      $database->getConnection()->commit();
     }
     else 
     {
