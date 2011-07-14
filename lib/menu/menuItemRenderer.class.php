@@ -2,6 +2,8 @@
 
 require_once(dirname(__FILE__) . '/../vendor/symfony/lib/helper/UrlHelper.php');
 require_once(dirname(__FILE__) . '/../vendor/symfony/lib/helper/AssetHelper.php');
+require_once(dirname(__FILE__) . '/../vendor/symfony/lib/helper/I18NHelper.php');
+
 require_once(dirname(__FILE__) . '/../vendor/symfony/lib/helper/TagHelper.php');
 
 
@@ -16,12 +18,13 @@ class menuItemRenderer
 
   public function render(menuItem $item, $isCurrent = false)
   {
+    $name = __($item->getName());
     if (null === $item->getInternalUri())
     {
-      return sprintf('<li>%s</li>', $item->getName());
+      return sprintf('<li>%s</li>', $name);
     }
     $current = $isCurrent ? ' class="current"' : '';
-    $render  = sprintf('<li%s><a href="%s">%s</a></li>', $current, $this->madbUrl->urlFor($item->getInternalUri(), $this->context, $item->getOptions()), $item->getName());
+    $render  = sprintf('<li%s><a href="%s">%s</a></li>', $current, $this->madbUrl->urlFor($item->getInternalUri(), $this->context, $item->getOptions()), $name);
     return $render;
   }
 

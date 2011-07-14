@@ -1,0 +1,47 @@
+<?xml version="1.0" ?>
+<xliff version="1.0">
+  <file original="global" source-language="en_US" datatype="plaintext">
+    <body>
+      <trans-unit id="1">
+        <source>Homepage</source>
+        <target>Accueil</target>
+      </trans-unit>
+      <trans-unit id="2">
+        <source>Latest</source>
+        <target>Derniers</target>
+      </trans-unit>
+      <trans-unit id="3">
+        <source>Updates</source>
+        <target>Mises à jour</target>
+      </trans-unit>
+      <trans-unit id="4">
+        <source>Backports</source>
+        <target>Backports</target>
+      </trans-unit>
+      <trans-unit id="5">
+        <source>Backports candidates</source>
+        <target>Backports candidats</target>
+      </trans-unit>
+      <trans-unit id="6">
+        <source>Browse</source>
+        <target>Parcourir</target>
+      </trans-unit>
+      <trans-unit id="7">
+        <source>By group</source>
+        <target>Par groupe</target>
+      </trans-unit>
+      <trans-unit id="8">
+        <source>By name</source>
+        <target>Par nom</target>
+      </trans-unit>
+      <trans-unit id="9">
+        <source>Tools</source>
+        <target>Outils</target>
+      </trans-unit>
+      <trans-unit id="10">
+        <source>Comparison with dev branch</source>
+        <target>Comparaison avec la branche de développement</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
