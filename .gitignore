@@ -16,3 +16,4 @@ nbproject
 *.swo
 web/test.php
 *.kdev4
+apps/frontend/i18n/*.mo

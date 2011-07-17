@@ -1,0 +1,50 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: 1
+msgid "Homepage"
+msgstr "Accueil"
+
+#: 2
+msgid "Latest"
+msgstr "Derniers"
+
+#: 3
+msgid "Updates"
+msgstr "Mises à jour"
+
+#: 4
+msgid "Backports"
+msgstr "Backports"
+
+#: 5
+msgid "Backports candidates"
+msgstr "Backports candidats"
+
+#: 6
+msgid "Browse"
+msgstr "Parcourir"
+
+#: 7
+msgid "By group"
+msgstr "Par groupe"
+
+#: 8
+msgid "By name"
+msgstr "Par nom"
+
+#: 9
+msgid "Tools"
+msgstr "Outils"
+
+#: 10
+msgid "Comparison with dev branch"
+msgstr "Comparaison avec la branche de développement"
+
