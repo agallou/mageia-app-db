@@ -69,7 +69,7 @@ EOF;
     $lines = preg_replace('/\{<table>/', '', $lines);
     $lines = preg_replace('/:cols ->/', '->', $lines);
     $lines = preg_replace('/:table.*;/', ';', $lines);
-
+    return $lines;
   }
 
   protected function getClusterDefinition($name)
