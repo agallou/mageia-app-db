@@ -4,6 +4,8 @@ class graphivzGroupRecordsTask extends sfBaseTask
 {
 
   protected $removeFields = false;
+  protected $groupedTables = null;
+  protected $tables = array();
 
   protected function configure()
   {
@@ -12,6 +14,7 @@ class graphivzGroupRecordsTask extends sfBaseTask
       new sfCommandOption('output', null, sfCommandOption::PARAMETER_REQUIRED, 'File'),
       new sfCommandOption('reverse', null, sfCommandOption::PARAMETER_NONE, 'Reverse'),
       new sfCommandOption('simple', null, sfCommandOption::PARAMETER_NONE, 'simple'),
+      new sfCommandOption('groups-file', null, sfCommandOption::PARAMETER_REQUIRED, 'groups file'),
     ));
 
     $this->namespace        = '';
@@ -26,8 +29,9 @@ EOF;
 
   protected function execute($arguments = array(), $options = array())
   {
-    $file = $options['file'];
-
+    $file                = $options['file'];
+    $this->groupedTables =  $options['groups-file'];
+    $this->initializeTables($file);
     $writedFile = new splFileObject($options['output'], 'w');
     $writedFile->fwrite('digraph G {' . PHP_EOL);
     if ($options['reverse'])
@@ -38,7 +42,7 @@ EOF;
     {
       $this->removeFields = true;
     }
-    foreach ($this->getGroups() as $name => $tables)
+    foreach ($this->getGroups($this->groupedTables) as $name => $tables)
     {
       $writedFile->fwrite(sprintf('subgraph cluster_%s', sfInflector::camelize(str_replace(' ', '', $name))));
       $writedFile->fwrite('{' . PHP_EOL);
@@ -70,6 +74,25 @@ EOF;
     $lines = preg_replace('/:cols ->/', '->', $lines);
     $lines = preg_replace('/:table.*;/', ';', $lines);
     return $lines;
+  }
+
+  protected function initializeTables($file)
+  {
+    $dotFile = new splFileObject($file);
+    $tables   = '';
+    foreach ($dotFile as $line)
+    {
+      if (substr($line, 0, 4) == 'node' && strpos($line, '<table>'))
+      {
+        $tables[] = substr($line, 4, strpos($line, ' ') - 4);
+      }
+    }
+    $this->tables = $tables;
+  }
+
+  protected function getTables()
+  {
+    return $this->tables;
   }
 
   protected function getClusterDefinition($name)
@@ -114,7 +137,7 @@ EOF;
 
   protected function isTableGroupless($table)
   {
-    foreach ($this->getGroups() as $tables)
+    foreach ($this->getGroups($this->groupedTables) as $tables)
     {
       if (in_array($table, $tables))
       {
@@ -139,51 +162,44 @@ EOF;
     //TODO exception
   }
 
-  protected function getGroups()
+  protected function getGroups($file)
   {
-    return array(
-      'rpm' => array(
-        'distrelease',
-        'rpm',
-        'media',
-        'rpm_group',
-        'arch',
-      ),
-      'packages' => array(
-        'package',
-        'package_links',
-      ),
-      'see_later' => array(
-        'user_comments_package',
-        'package_screenshots',
-        'package_description',
-      ),
-      'software request' => array(
-        'user_comments_software_request',
-        'software_request',
-        'user_has_software_request',
-      ),
-      'new version request' => array(
-        'user_comments_new_version_request',
-        'new_version_request',
-        'user_has_new_version_request',
-      ),
-      'following and notifications' => array(
-        'notification',
-        'rss_feed',
-        'subscription_element',
-        'subscription',
-      ),
-      'sf_guard' => array(
-        'sf_guard_remember_key',
-        'sf_guard_user',
-        'sf_guard_user_permission',
-        'sf_guard_permission',
-        'sf_guard_group',
-        'sf_guard_group_permission',
-        'sf_guard_user_group',
-      ),
-    );
+    if (!is_file($file))
+    {
+      throw new sfException('grouped tables files does not exists');
+    }
+    $loader = sfYaml::load($file);
+    $groups = array();
+    $tables = $this->getTables();
+    foreach ($loader['groups'] as $name => $items)
+    {
+      $groupTables = array();
+      foreach ($items['allow'] as $allowedPattern)
+      {
+        foreach ($tables as $table)
+        {
+          if (preg_match($allowedPattern, $table))
+          {
+            $groupTables[] = $table;
+          }
+        }
+      }
+      if (isset($items['deny']))
+      {
+        foreach ($items['deny'] as $denyPattern)
+        {
+          foreach ($groupTables as $key => $table)
+          {
+            if (preg_match($denyPattern, $table))
+            {
+              unset($groupTables[$key]);
+            }
+          }
+        }
+      }
+      $groups[$name] = $groupTables;
+    }
+    return $groups;
   }
 
 }
