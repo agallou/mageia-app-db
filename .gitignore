@@ -28,3 +28,5 @@ lib/form/base/*
 lib/model/map/*
 lib/model/om/*
 
+#published assets
+web/sfPropelORMPlugin
