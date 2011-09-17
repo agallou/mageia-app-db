@@ -1,27 +1,27 @@
-config/generated*.xml
-.vimrc
+#symfony cache and lgo folders
 log/*
 cache/*
+
+#ide files
+*.kdev4
+.vimrc
+*.swp
+*.swo
 *~
 .project
 .settings
 .buildpath
 doc/schema_mageia_packagedb.mwb.bak
-tmp/*
-nbproject
-*.swp
-*.swo
-web/test.php
-*.kdev4
+
+#generated i18 files
 apps/frontend/i18n/*.mo
 
+#propel config files
 config/propel.ini
-
-
-
 config/databases.yml
 
 #propel generated files
+config/generated*.xml
 data/sql
 lib/filter/base/*
 lib/form/base/*
@@ -30,3 +30,8 @@ lib/model/om/*
 
 #published assets
 web/sfPropelORMPlugin
+
+#miscellaneous
+tmp/*
+nbproject
+web/test.php
