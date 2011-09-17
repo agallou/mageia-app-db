@@ -17,7 +17,11 @@ apps/frontend/i18n/*.mo
 
 config/propel.ini
 
+
+
 config/databases.yml
+
+#propel generated files
 data/sql
 lib/filter/base/*
 lib/form/base/*
