@@ -1,0 +1,2 @@
+sh ./init_submodules.sh
+./symfony plugin:publish-assets
