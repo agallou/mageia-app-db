@@ -27,6 +27,10 @@ lib/filter/base/*
 lib/form/base/*
 lib/model/map/*
 lib/model/om/*
+plugins/sfGuardPlugin/lib/filter/base/*
+plugins/sfGuardPlugin/lib/form/base/*
+plugins/sfGuardPlugin/lib/model/map/*
+plugins/sfGuardPlugin/lib/model/om/*
 
 #published assets
 web/sfPropelORMPlugin
