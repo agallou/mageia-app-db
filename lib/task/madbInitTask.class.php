@@ -58,19 +58,14 @@ class madbInitTask extends madbBaseTask
       file_put_contents(sfConfig::get('sf_config_dir') . DIRECTORY_SEPARATOR . 'propel.ini', $propel);
     }
 
-    $task = new sfPropelBuildSqlTask($this->dispatcher, $this->formatter);
-    $task->run();
-
-    $task = new sfPropelBuildModelTask($this->dispatcher, $this->formatter);
-    $task->run();
-
-    $task = new sfPropelInsertSqlTask($this->dispatcher, $this->formatter);
+    $task = new sfPropelBuildAllTask($this->dispatcher, $this->formatter);
     $tOptions = array();
     if ($options['no-confirmation'])
     {
       $tOptions[] = 'no-confirmation';
     }
     $task->run(array(), $tOptions);
+    
 
     $task = new sfPropelDataLoadTask($this->dispatcher, $this->formatter);
     $task->run();
