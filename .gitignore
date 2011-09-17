@@ -2,10 +2,7 @@ config/generated*.xml
 .vimrc
 log/*
 cache/*
-data/sql
 *~
-config/propel.ini
-config/databases.yml
 .project
 .settings
 .buildpath
@@ -17,3 +14,13 @@ nbproject
 web/test.php
 *.kdev4
 apps/frontend/i18n/*.mo
+
+config/propel.ini
+
+config/databases.yml
+data/sql
+lib/filter/base/*
+lib/form/base/*
+lib/model/map/*
+lib/model/om/*
+
