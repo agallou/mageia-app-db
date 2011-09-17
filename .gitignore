@@ -21,6 +21,7 @@ config/propel.ini
 config/databases.yml
 
 #propel generated files
+config/buildtime-conf.xml
 config/generated*.xml
 data/sql
 lib/filter/base/*
