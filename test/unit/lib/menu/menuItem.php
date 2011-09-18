@@ -2,7 +2,7 @@
 
 namespace tests\units;
 
-require_once dirname(__FILE__) . '/../../../../plugins/sfAtoumPlugin/bootstrap/unit.php';
+require_once __DIR__ . '/../../../../plugins/sfAtoumPlugin/bootstrap/unit.php';
 
 use \mageekguy\atoum;
 
