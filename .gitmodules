@@ -7,3 +7,6 @@
 [submodule "plugins/sfAtoumPlugin"]
 	path = plugins/sfAtoumPlugin
 	url = git://github.com/agallou/sfAtoumPlugin.git
+[submodule "lib/vendor/atoum"]
+	path = lib/vendor/atoum
+	url = git://github.com/mageekguy/atoum.git
