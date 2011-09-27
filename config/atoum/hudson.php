@@ -13,13 +13,13 @@ Generate a CLI report.
 $cliReport = new atoum\reports\realtime\cli();
 $cliReport->addWriter($stdOutWriter);
 
-atoum\scripts\runner::getAutorunner()->getRunner()->addReport($cliReport);
+$runner->addReport($cliReport);
 
 /*
  * Xunit report
  */
 $xunit = new atoum\reports\asynchronous\xunit();
-atoum\scripts\runner::getAutorunner()->getRunner()->addReport($xunit);
+$runner->addReport($xunit);
 
 
 /*
