@@ -520,7 +520,7 @@ class madbFetchRpmsTask extends madbBaseTask
     if($options['notify']) $notify = true;
     else
     {
-        echo "\033[1;33m"."Warning: notifications will not be sended"."\033[0m"."\n";
+        echo "\033[1;33m"."Warning: notifications will not be sent"."\033[0m"."\n";
         $notify = false;
     }
     // Now fetch RPM lists and treat them
