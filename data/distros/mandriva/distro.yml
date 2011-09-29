@@ -9,7 +9,7 @@ only_releases:
   - '2010\.0'
   - '2010\.1'
   - '2010\.2'
-  - '2011'
+  - '2011\.0'
   - 'cooker'
 exclude_releases:
 only_medias:
@@ -24,7 +24,7 @@ exclude_rpms:
 
 devel_releases:
   - cooker
-latest_stable_release: '2011'
+latest_stable_release: '2011.0'
 
 updates_medias: 
   - ^.*-updates.*$
