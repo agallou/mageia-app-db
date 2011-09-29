@@ -676,7 +676,7 @@ class madbFetchRpmsTask extends madbBaseTask
             }
             
             // Update related RPMs if needed (binary RPMs for this source RPM)
-            foreach ($rpm->getRpmsRelatedBySourceRpmId() as $relatedRpm)
+            foreach ($rpm->getRpmsRelatedById() as $relatedRpm)
             {
               $relatedRpm->setSourceRpmId(null);
               $relatedRpm->save();
