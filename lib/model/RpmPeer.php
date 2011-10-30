@@ -67,9 +67,13 @@ class RpmPeer extends BaseRpmPeer {
       {
         return 1;
       }
-      if (!is_null($split_evr2[2]))
+      elseif (!is_null($split_evr2[2]))
       {
         return -1;
+      }
+      else // both null
+      {
+        return 0;
       }
     }    
     elseif (version_compare($split_evr1[2], $split_evr2[2], '>'))

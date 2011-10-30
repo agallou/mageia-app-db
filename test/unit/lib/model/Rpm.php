@@ -22,7 +22,7 @@ class Rpm extends atoum\test
   public function testEvrCompare()
   {
      // from perl-RPM4 with the author's consent :
-    $this->assert->variable(\RpmPeer::evrCompare("1", "1"))->isEqualTo(null, "comparing version only, equal"); //TODO should be 0, no ?
+    $this->assert->variable(\RpmPeer::evrCompare("1", "1"))->isEqualTo(0, "comparing version only, equal"); 
     $this->assert->integer(\RpmPeer::evrCompare("2", "1"))->isEqualTo( 1, "comparing version only, higther");
     $this->assert->integer(\RpmPeer::evrCompare("1", "2"))->isEqualTo( -1, "comparing version only, lesser");
     $this->assert->integer(\RpmPeer::evrCompare("1-1mdk", "1-1mdk"))->isEqualTo(0, "comparing version-release only, equal");
