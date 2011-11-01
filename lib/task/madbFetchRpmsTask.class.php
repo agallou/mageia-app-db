@@ -626,16 +626,15 @@ class madbFetchRpmsTask extends madbBaseTask
             }
             
             // Update related RPMs if needed (binary RPMs for this source RPM)
-            foreach ($rpm->getRpmsRelatedById() as $relatedRpm)
+            foreach ($relatedRpms = $rpm->getRpmsRelatedById() as $relatedRpm)
             {
               $relatedRpm->setSourceRpmId(null);
               $relatedRpm->save();
-	      $relatedRpm->clearAllReferences(true);
-              unset($relatedRpm);
+              $relatedRpm->clearAllReferences(true);
             }
-            
-            $package = $rpm->getPackage();
-            
+            unset($relatedRpm);
+            $relatedRpms->clearIterator();
+                
             // Remove the RPM itself
             $rpm->delete();
             
