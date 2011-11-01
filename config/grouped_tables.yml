@@ -1,0 +1,44 @@
+groups:
+  rpm:
+    allow:
+      - "/distrelease/"
+      - "/rpm/"
+      - "/media/"
+      - "/rpm_group/"
+      - "/arch/"
+    deny:
+      - "/rpm/"
+  packages:
+    allow: 
+      - "/package/"
+  software request:
+    allow:
+      - "/user_comments_software_request/"
+      - "/software_request/"
+      - "/user_has_software_request/"
+  "new version request":
+    allow:
+      - "/user_comments_new_version_request/"
+      - "/new_version_request/"
+      - "/user_has_new_version_request/"
+  "following and notifications":
+    allow:
+      - "/notification/"
+      - "/rss_feed/"
+      - "/subscription_element/"
+      - "/subscription/"
+  sf_guard:
+    allow:
+      - "/sf_guard_remember_key/"
+      - "/sf_guard_user/"
+      - "/sf_guard_user_permission/"
+      - "/sf_guard_permission/"
+      - "/sf_guard_group/"
+      - "/sf_guard_group_permission/"
+      - "/sf_guard_user_group/"
+ignored:
+  - "/package_links/"
+  - "/user_comments_package/"
+  - "/package_screenshots/"
+  - "/package_description/"
+

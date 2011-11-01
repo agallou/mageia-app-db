@@ -103,6 +103,7 @@ class Package extends BasePackage {
         $latest_rpm = $rpm;
       }
     }    
+    $rpms->clearIterator();
     return $latest_rpm;
   }
 } // Package

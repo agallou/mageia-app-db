@@ -520,7 +520,7 @@ class madbFetchRpmsTask extends madbBaseTask
     if($options['notify']) $notify = true;
     else
     {
-        echo "\033[1;33m"."Warning: notifications will not be sended"."\033[0m"."\n";
+        echo "\033[1;33m"."Warning: notifications will not be sent"."\033[0m"."\n";
         $notify = false;
     }
     // Now fetch RPM lists and treat them
@@ -601,6 +601,53 @@ class madbFetchRpmsTask extends madbBaseTask
             asort($rpmsBySophieMedia[$sophieMedia]);
           }
           
+          // handle missing packages from sophie as compared to database
+          // and for being able to do it, treat -src media along with their non-src media
+          //(array_diff_assoc($rpms2, $rpms));
+          // For each deleted RPM (absent from the list)
+          $missing_from_sophie = $rpmsInDatabase;
+          foreach ($rpmsBySophieMedia as $sophieMedia => $rpmsInSophie)
+          {
+            $missing_from_sophie = array_diff_assoc($missing_from_sophie, $rpmsInSophie);
+          }
+          
+          if (count($missing_from_sophie))
+          {
+            echo "\n" . count($missing_from_sophie) . " RPMs are no more in Sophie, removing them :\n";
+          }
+          foreach ($missing_from_sophie as $pkgid => $filename)
+          {
+            $startTime = microtime(true);
+            echo " Remove " . $filename . " ( " . $pkgid . " )";
+            
+            if (!$rpm = RpmPeer::retrieveUniqueByName($distreleaseObj, $archObj, $mediaObj, $filename))
+            {
+              throw new madbException("Couldn't retrieve $filename for distrelease $distrelease, arch $arch and media $media");
+            }
+            
+            // Update related RPMs if needed (binary RPMs for this source RPM)
+            foreach ($relatedRpms = $rpm->getRpmsRelatedById() as $relatedRpm)
+            {
+              $relatedRpm->setSourceRpmId(null);
+              $relatedRpm->save();
+              $relatedRpm->clearAllReferences(true);
+            }
+            unset($relatedRpm);
+            $relatedRpms->clearIterator();
+                
+            // Remove the RPM itself
+            $rpm->delete();
+            
+            $nbRemovedRpms++;
+            
+            $time = round(microtime(true) - $startTime, 2);
+            echo " - ${time}s";
+            echo "\n"; 
+          }
+          if (count($missing_from_sophie))
+          {
+            echo "\n";
+          }
           foreach ($rpmsBySophieMedia as $sophieMedia => $rpmsInSophie)
           {
             echo "--- $distrelease : $arch : $sophieMedia";
@@ -651,62 +698,6 @@ class madbFetchRpmsTask extends madbBaseTask
             }
           }
           
-          // TODO : handle missing packages from sophie as compared to database
-          // and for being able to do it, treat -src media along with their non-src media
-          //(array_diff_assoc($rpms2, $rpms));
-          // For each deleted RPM (absent from the list)
-          $missing_from_sophie = $rpmsInDatabase;
-          foreach ($rpmsBySophieMedia as $sophieMedia => $rpmsInSophie)
-          {
-            $missing_from_sophie = array_diff_assoc($missing_from_sophie, $rpmsInSophie);
-          }
-          
-          if (count($missing_from_sophie))
-          {
-            echo "\n" . count($missing_from_sophie) . " RPMs are no more in Sophie, removing them :\n";
-          }
-          foreach ($missing_from_sophie as $pkgid => $filename)
-          {
-            $startTime = microtime(true);
-            echo " Remove " . $filename . " ( " . $pkgid . " )";
-            
-            if (!$rpm = RpmPeer::retrieveUniqueByName($distreleaseObj, $archObj, $mediaObj, $filename))
-            {
-              throw new madbException("Couldn't retrieve $filename for distrelease $distrelease, arch $arch and media $media");
-            }
-            
-            // Update related RPMs if needed (binary RPMs for this source RPM)
-            foreach ($rpm->getRpmsRelatedBySourceRpmId() as $relatedRpm)
-            {
-              $relatedRpm->setSourceRpmId(null);
-              $relatedRpm->save();
-            }
-            
-            $package = $rpm->getPackage();
-            
-            // Remove the RPM itself
-            $rpm->delete();
-            
-            // Update package : description, summary (should be useless, but it's a security)
-            try 
-            {
-              $package->updateSummaryAndDescription();
-            }
-            catch (PackageException $e)
-            {
-              echo " (" . $e->getMessage() . ")";
-            }
-            
-            $nbRemovedRpms++;
-            
-            $time = round(microtime(true) - $startTime, 2);
-            echo " - ${time}s";
-            echo "\n"; 
-          }
-          if (count($missing_from_sophie))
-          {
-            echo "\n";
-          }
         }
       }
     }
