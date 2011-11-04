@@ -10,7 +10,7 @@ propel.database.password   = %%pass%%
 propel.database.encoding   = utf8
 
 ; mysql options
-propel.mysql.tableType     = MYISAM
+propel.mysql.tableType     = InnoDB
 
 propel.addVendorInfo       = true
 propel.addGenericAccessors = true
