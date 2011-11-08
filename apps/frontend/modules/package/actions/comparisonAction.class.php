@@ -13,8 +13,14 @@ class comparisonAction extends madbActions
     }
     
     $distrelease = DistreleasePeer::retrieveByPK($this->getMadbContext()->getParameterHolder()->get('distrelease'));
+    if (!$distrelease)
+    {
+      $this->message = "There is no data in database.";
+      return 'Error';
+    }
     if ($distrelease->getIsDevVersion())
     {
+      $this->message = "Sorry, but this page is not available when consulting a development distribution release. Please choose another distribution release filter or consult another page.";
       return 'Error';
     }
     
