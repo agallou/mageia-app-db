@@ -179,7 +179,8 @@ class NotificationEvent
       $header = "[madb]" . ($prefix ? "[$prefix]" : "") . " " . $rpm->getPackage()->getName() . " $eventText: " . $rpm->getName();
       
       $url = 'http://' . sfConfig::get('app_domain') . '/index.php/package/show/id/' . $rpm->getPackageId() 
-              . '/distrelease/' . $rpm->getDistreleaseId() . '/application/0';
+              . '/distrelease/' . $rpm->getDistreleaseId() . '/application/0' 
+              . '/source/' . ($rpm->getPackage()->getIsSource() ? 1 : 0);
       
       $text = "Package ".$rpm->getPackage()->getName() ." ". $eventText . ": " 
       . $rpm->getName() . "
