@@ -170,35 +170,48 @@ class NotificationEvent
       $subscription->getUser()->getMail() => $subscription->getUser()->getFirstName()." ".$subscription->getUser()->getLastName()
     );
 
-    //get mailing prefix 4 user to sort incoming mails by filter
-    $prefix = $subscription->getMailPrefix();
-    //FIXME: set better mails here, maybe use Settings
-    $header = "[".$prefix."] Package ".$rpm->getPackage()->getName()." ".$eventText;
-
-    $text = "Package ".$rpm->getPackage()->getName() ." ". $eventText . "
-
-    You recieved this message because you are subscribed to get mail notifications from
-    madb. If you don't want to recieve any more of these, you can change subscription
-    options in your account settings.
-
-    ";
-
     if(key($to) !== NULL)
     {
-    //sends mail
-      $message = sfContext::getInstance()->getMailer()->compose(
-      $from,
-      $to,
-      $header,
-      $text
-    );
-    $headers = $message->getHeaders();
-    $headers->addTextHeader('Auto-Submitted', 'auto-generated');
-    $headers->addTextHeader('Precedence', 'bulk');
-    $message->send();
+      //get mailing prefix 4 user to sort incoming mails by filter
+      $prefix = $subscription->getMailPrefix();
+    
+      //FIXME: set better mails here, maybe use Settings
+      $header = "[madb]" . ($prefix ? "[$prefix]" : "") . " " . $rpm->getPackage()->getName() . " $eventText: " . $rpm->getName();
 
-    //TODO: return real result here
-    return true;
+      $madbUrl = new madbUrl(sfContext::getInstance());
+      $madbContext = new madbContext(new madbParameterHolder());
+      $madbContext->getParameterHolder()->set('distrelease', $rpm->getDistreleaseId());
+      $url = $madbUrl->urlFor(
+        'package/show', 
+        $madbContext, 
+        array('extra_parameters' => array('id'=>$rpm->getPackage()->getId()))
+      );
+      
+      $text = "Package ".$rpm->getPackage()->getName() ." ". $eventText . ": " 
+      . $rpm->getName() . "
+        
+      $url
+
+      You received this message because you subscribed to get mail notifications from
+      madb. You can change subscription options in your account settings.
+
+";
+
+      // Send mails
+      $mailer = sfContext::getInstance()->getMailer();
+      $message = $mailer->compose(
+        $from,
+        $to,
+        $header,
+        $text
+      );
+      $headers = $message->getHeaders();
+      $headers->addTextHeader('Auto-Submitted', 'auto-generated');
+      $headers->addTextHeader('Precedence', 'bulk');
+      $mailer->send($message);
+
+      //TODO: return real result here
+      return true;
     }
   }
 
