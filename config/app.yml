@@ -17,3 +17,4 @@ all:
       # warning! address option may be ignored by some
       # smtp servers like smtp.gmail.com for security reasons
       address: madb@madbserver
+  domain: localhost
