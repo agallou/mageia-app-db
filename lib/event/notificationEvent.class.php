@@ -178,7 +178,8 @@ class NotificationEvent
       //FIXME: set better mails here, maybe use Settings
       $header = "[madb]" . ($prefix ? "[$prefix]" : "") . " " . $rpm->getPackage()->getName() . " $eventText: " . $rpm->getName();
       
-      $url = 'http://' . sfConfig::get('app_domain') . '/index.php/package/show/id/' . $rpm->getPackageId() . '/distrelease/' . $rpm->getDistreleaseId();
+      $url = 'http://' . sfConfig::get('app_domain') . '/index.php/package/show/id/' . $rpm->getPackageId() 
+              . '/distrelease/' . $rpm->getDistreleaseId() . '/application/0';
       
       $text = "Package ".$rpm->getPackage()->getName() ." ". $eventText . ": " 
       . $rpm->getName() . "
