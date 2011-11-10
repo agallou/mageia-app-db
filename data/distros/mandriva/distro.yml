@@ -27,3 +27,4 @@ updates_medias:
 testing_medias: ^.*-testing.*$
 backports_medias: ^.*-backports.*$
 third_party_medias: ^plf.*$
+youri_check_url: http://youri.zarb.org/demo/mandriva/updates.html

@@ -286,24 +286,32 @@ EOF;
 //    $this->pager = new PropelPager($criteria, 'BasePeer', 'doSelect', $page, 50);
   }
   
-  // fixme : too specific ?
+  // FIXME: too youri-specific
   function getYouriVersions()
   {
-    $dom = new DOMDocument();
-    $html = $dom->loadHTMLFile("http://check.mageia.org/updates.html");
-    $dom->preserveWhiteSpace = false; 
-    $table = $dom->getElementsByTagName('table')->item(0);
+    $madbConfig = new madbConfig();
+    $madbDistroConfigFactory = new madbDistroConfigFactory;
+    $madbDistroConfig = $madbDistroConfigFactory->getCurrentDistroConfig($madbConfig);
+    $youri_url = $madbDistroConfig->getYouriCheckUrl();
+    
     $list = array();
-    foreach ($table->getElementsByTagName('tr') as $row)
+    if ($youri_url !== null)
     {
-      $fields = $row->getElementsByTagName('td');
-      if ($fields->length)
+      $dom = new DOMDocument();
+      $html = $dom->loadHTMLFile($youri_url);
+      $dom->preserveWhiteSpace = false; 
+      $table = $dom->getElementsByTagName('table')->item(0);
+      foreach ($table->getElementsByTagName('tr') as $row)
       {
-        $src_package = strtolower($fields->item(0)->firstChild->nodeValue);
-        $available = $fields->item(4)->nodeValue;
-        $source = $fields->item(5)->nodeValue;
-        
-        $list[] = array($src_package, $available, $source);
+        $fields = $row->getElementsByTagName('td');
+        if ($fields->length)
+        {
+          $src_package = strtolower($fields->item(0)->firstChild->nodeValue);
+          $available = $fields->item(4)->nodeValue;
+          $source = $fields->item(5)->nodeValue;
+
+          $list[] = array($src_package, $available, $source);
+        }
       }
     }
     return $list;
