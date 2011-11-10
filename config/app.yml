@@ -1,20 +1,8 @@
 all:
   version: 0.2
-  homepage:
-    groups_line: 5
-    rpm_limit: 6
   sf_guard_plugin:
     profile_class: User
     profile_field_name: sf_guard_user_id
     signin_form: madbFormSignin
   user:
     connector: default
-  notifications:
-    # display notice on fetchRpm task
-    display_notice: true
-    mail:
-      name:    madb notification
-      # warning! address option may be ignored by some
-      # smtp servers like smtp.gmail.com for security reasons
-      address: madb@madbserver
-  domain: localhost

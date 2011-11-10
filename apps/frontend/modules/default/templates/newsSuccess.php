@@ -5,6 +5,7 @@
   <p>There are persistent navigation filters, which you can change at any time from the filter banner : distribution release, show only applications or all packages, media, arch, etc.</p>
   <p>Click <a href="http://mageia-app-db.tuxette.fr/projects/mageia-app-db/wiki">here</a> for more information about this project.</p>
 </div>
+<?php $madbConfig = new madbConfig(); ?>
 
 <div id="groups" class="links">
   <div class="content_group">Groups</div>
@@ -31,11 +32,11 @@
               )
             ); ?>
       </td>
-    <?php if ($cpt == sfConfig::get('app_homepage_groups_line')): ?>
+    <?php if ($cpt == $madbConfig->get('homepage_groups_line')): ?>
       </tr>
     <?php endif; ?>
     <?php $cpt++ ?>
-    <?php if ($cpt == sfConfig::get('app_homepage_groups_line')): ?>
+    <?php if ($cpt == $madbConfig->get('homepage_groups_line')): ?>
       <?php $cpt = 0; ?>
     <?php endif; ?>
   <?php endforeach; ?>
@@ -50,7 +51,7 @@
     'page'           => 1,
     'showpager'      => false,
     'display_header' => false,
-    'limit'          => sfConfig::get('app_homepage_rpm_limit'),
+    'limit'          => $madbConfig->get('homepage_rpm_limit'),
     'short'          => true,
   )) ?>
   <br/>
@@ -76,7 +77,7 @@
     'page'           => 1,
     'showpager'      => false,
     'display_header' => false,
-    'limit'          => sfConfig::get('app_homepage_rpm_limit'),
+    'limit'          => $madbConfig->get('homepage_rpm_limit'),
     'short'          => true,
   )) ?>
   <br/>

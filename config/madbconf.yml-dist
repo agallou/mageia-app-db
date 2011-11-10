@@ -1,0 +1,12 @@
+host: localhost
+distribution: mageia
+distro_config_file: data/distros/mageia/distro.yml
+notifications:
+  # display notice on fetchRpm task
+  display_notice: true
+  mail:
+    name:    Madb notifications
+    address: root@localhost
+homepage:
+  groups_line: 5
+  rpm_limit: 6

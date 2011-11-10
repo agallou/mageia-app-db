@@ -158,12 +158,12 @@ class NotificationEvent
   {
     //get text explanation about that happened with RPM
     $eventText = self::getEventTextByEnum($eventType);
-      $mail = sfConfig::get('app_notifications_mail', array (
-        "address" => "madb@localhost",
-        "name"    => "madb notification")
-      );
+    $madbConfig = new madbConfig();
+    $mail_address = $madbConfig->get('notifications_mail_address');
+    $mail_name = $madbConfig->get('notifications_mail_name');
+    
     $from = array(
-      $mail["address"] => $mail["name"]
+      $mail_address => $mail_name
     );
 
     $to = array(
@@ -178,7 +178,7 @@ class NotificationEvent
       //FIXME: set better mails here, maybe use Settings
       $header = "[madb]" . ($prefix ? "[$prefix]" : "") . " " . $rpm->getPackage()->getName() . " $eventText: " . $rpm->getName();
       
-      $url = 'http://' . sfConfig::get('app_domain') . '/index.php/package/show/id/' . $rpm->getPackageId() 
+      $url = 'http://' . $madbConfig->get('domain') . '/index.php/package/show/id/' . $rpm->getPackageId() 
               . '/distrelease/' . $rpm->getDistreleaseId() . '/application/0' 
               . '/source/' . ($rpm->getPackage()->getIsSource() ? 1 : 0);
       

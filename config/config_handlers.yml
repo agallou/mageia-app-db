@@ -1,0 +1,4 @@
+config/madbconf.yml:
+  class:    sfDefineEnvironmentConfigHandler
+  param:
+    prefix: madb_
