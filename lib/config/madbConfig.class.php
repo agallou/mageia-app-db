@@ -1,7 +1,7 @@
 <?php
 class madbConfig
 {
-  public static function get($key, $default=null)
+  public function get($key, $default=null)
   {
     // search for value in config/madbconf.yml
     $value = sfConfig::get('madb_' . $key, null);
