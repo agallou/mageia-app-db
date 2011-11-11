@@ -15,5 +15,6 @@ class frontendConfiguration extends sfApplicationConfiguration
 //      $notificationEvent->setLogger(new sfLoggerToSfLoggerInterface(new sfConsoleLogger($this->getEventDispatcher())));
     }
     $this->dispatcher->connect('rpm.import', array($notificationEvent,'rpmImportSlot'));
+    include($this->getConfigCache()->checkConfig('config/madbconf.yml'));
   }
 }
