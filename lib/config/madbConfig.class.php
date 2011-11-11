@@ -19,6 +19,8 @@ class madbConfig
         return "mageia";
       case 'distro_config_file': 
         return "data/distros/" . $this->get('distribution') . "/distro.yml";
+      case 'applications_list_file': 
+        return "data/distros/" . $this->get('distribution') . "/applications.txt";
       case 'notifications_display_notice': 
         return true;
       case 'notifications_mail_name': 

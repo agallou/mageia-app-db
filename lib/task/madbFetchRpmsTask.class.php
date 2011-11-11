@@ -9,8 +9,6 @@ class madbFetchRpmsTask extends madbBaseTask
     $this->namespace = 'madb';
     $this->name      = 'fetch-rpms';
     $this->addOption('limit', null, sfCommandOption::PARAMETER_REQUIRED, 'number of rpms to fetch', null);
-    $this->addOption('distro', null, sfCommandOption::PARAMETER_REQUIRED, 'distribution to fetch', 'mageia');
-    $this->addOption('config', null, sfCommandOption::PARAMETER_REQUIRED, 'configuration file to use', null);
     $this->addOption('notify', null, sfCommandOption::PARAMETER_NONE, 'add this option if you want changes to trigger notifications', null);
     $this->addOption('add', null, sfCommandOption::PARAMETER_NONE, 'add missing distreleases, archs and media, instead of failing', null);
     $this->addOption('ignore-missing-from-sophie', null, sfCommandOption::PARAMETER_NONE, 'ignore missing distreleases, archs or media from sophie\'s response', null);
@@ -27,33 +25,24 @@ class madbFetchRpmsTask extends madbBaseTask
     $con = Propel::getConnection();
     Propel::disableInstancePooling();
 
-    $distribution = $options['distro'];
-    $config_file = $options['config'] ? $options['config'] : dirname(__FILE__) . '/../../data/distros/' . $distribution . '/distro.yml';
-    
-    $factory = new madbDistroConfigFactory();
-    $config = $factory->createFromFile($config_file);
-    
-    
+    $madbConfig = new madbConfig();
+    $madbDistroConfigFactory = new madbDistroConfigFactory();
+    $madbDistroConfig = $madbDistroConfigFactory->getCurrentDistroConfig($madbConfig);
     
     // check config file validity (TODO : make it an actual check !)
-    if (!$config->check())
+    if (!$madbDistroConfig->check())
     {
-      echo "Invalid configuration file '$config_file'";
-      return false;
+      throw new madbException("Invalid distro configuration file'");
     }
     
-    // override $distribution with the case-sensitive name from the config file
-    $distribution = $config->getName();
-    
-    
-    
+    $distribution = $madbDistroConfig->getName();
     
     $sophie = new SophieClient();
     $sophie->setDefaultType('json');
     
     // Get release, arch and media information from sophie
     // $distreleases[$release][$arch][$media] = true
-    if (!$distreleases = $this->getDistreleasesArchsMedias($config, $sophie))
+    if (!$distreleases = $this->getDistreleasesArchsMedias($madbDistroConfig, $sophie))
     {
       echo "Failed to get distrelease, arch and media information, aborting.\n";
       return false;
@@ -110,7 +99,7 @@ class madbFetchRpmsTask extends madbBaseTask
     
     // - devel distreleases
     // TODO :  It could be tricky (can a devel version lose it's devel version status ? Can it become obsolete ?)
-    $new_list_devel = $config->getDevelReleases();
+    $new_list_devel = $madbDistroConfig->getDevelReleases();
     $old_list_devel = array();
     $develDistreleaseObjs = DistreleasePeer::getDevels();
     foreach($develDistreleaseObjs as $develDistreleaseObj)
@@ -165,9 +154,9 @@ class madbFetchRpmsTask extends madbBaseTask
         throw new madbException($message);
       }
     }
-    
+
     // - latest stable release
-    $latest = $config->getLatestStableRelease();
+    $latest = $madbDistroConfig->getLatestStableRelease();
     if (!$new_latest_stable = DistreleasePeer::retrieveByName($latest))
     {
       $message = "Latest stable release '$latest' not found in database";
@@ -311,7 +300,7 @@ class madbFetchRpmsTask extends madbBaseTask
     
     // updates media
     $currentUpdatesMedias = MediaPeer::MediasToNames(MediaPeer::getUpdatesMedias());
-    $newUpdatesMedias = madbToolkit::filterArrayKeepOnly($allMedias, $config->getUpdatesMedias());
+    $newUpdatesMedias = madbToolkit::filterArrayKeepOnly($allMedias, $madbDistroConfig->getUpdatesMedias());
     
     // - update media according to config but not according to database. 
     //   abort or add them, following $options['add']
@@ -363,7 +352,7 @@ class madbFetchRpmsTask extends madbBaseTask
         
     // - testing media
     $currentTestingMedias = MediaPeer::MediasToNames(MediaPeer::getTestingMedias());
-    $newTestingMedias = madbToolkit::filterArrayKeepOnly($allMedias, $config->getTestingMedias());
+    $newTestingMedias = madbToolkit::filterArrayKeepOnly($allMedias, $madbDistroConfig->getTestingMedias());
     
     // - testing media according to config but not according to database. 
     //   abort or add them, following $options['add']
@@ -415,7 +404,7 @@ class madbFetchRpmsTask extends madbBaseTask
     
     // - backports media
     $currentBackportsMedias = MediaPeer::MediasToNames(MediaPeer::getBackportsMedias());
-    $newBackportsMedias = madbToolkit::filterArrayKeepOnly($allMedias, $config->getBackportsMedias());    
+    $newBackportsMedias = madbToolkit::filterArrayKeepOnly($allMedias, $madbDistroConfig->getBackportsMedias());    
     
     // - backports media according to config but not according to database. 
     //   abort or add them, following $options['add']
@@ -467,7 +456,7 @@ class madbFetchRpmsTask extends madbBaseTask
     
     // - third party media
     $currentThirdPartyMedias = MediaPeer::MediasToNames(MediaPeer::getThirdPartyMedias());
-    $newThirdPartyMedias = madbToolkit::filterArrayKeepOnly($allMedias, $config->getThirdPartyMedias());
+    $newThirdPartyMedias = madbToolkit::filterArrayKeepOnly($allMedias, $madbDistroConfig->getThirdPartyMedias());
     
     // - third party media according to config but not according to database. 
     //   abort or add them, following $options['add']
@@ -594,8 +583,8 @@ class madbFetchRpmsTask extends madbBaseTask
                       $arch,
                       $sophieMedia,
                       array(
-                        'only' => $config->getOnlyRpms(), 
-                        'exclude' => $config->getExcludeRpms()
+                        'only' => $madbDistroConfig->getOnlyRpms(), 
+                        'exclude' => $madbDistroConfig->getExcludeRpms()
                       )
                     );
             asort($rpmsBySophieMedia[$sophieMedia]);
@@ -707,21 +696,21 @@ class madbFetchRpmsTask extends madbBaseTask
     echo "Total number of removed RPMs : $nbRemovedRpms\n";
     
     // Update package.is_application
-    $pathToAppList = sfConfig::get('sf_root_dir') . '/data/distros/' . $options['distro'] . '/applications.txt';
+    $pathToAppList = sfConfig::get('sf_root_dir') . '/' . $madbConfig->get('applications_list_file');
     $this->updateIsApplicationFromFile($pathToAppList); 
   }  
   
-  protected function getDistreleasesArchsMedias (madbDistroConfig $config, SophieClient $sophie)
+  protected function getDistreleasesArchsMedias (madbDistroConfig $madbDistroConfig, SophieClient $sophie)
   {
     // TODO : better error handling (no echo inside the method...)
-    $distribution = $config->getName();
+    $distribution = $madbDistroConfig->getName();
     $distreleases = array();
     
     $releases = $sophie->getReleases( 
                   $distribution, 
                   array(
-                    'only' => $config->getOnlyReleases(), 
-                    'exclude' => $config->getExcludeReleases()
+                    'only' => $madbDistroConfig->getOnlyReleases(), 
+                    'exclude' => $madbDistroConfig->getExcludeReleases()
                   )
               );
     if (!$releases)
@@ -739,8 +728,8 @@ class madbFetchRpmsTask extends madbBaseTask
                     $distribution,
                     $release,
                     array(
-                      'only' => $config->getOnlyArchs(), 
-                      'exclude' => $config->getExcludeArchs()
+                      'only' => $madbDistroConfig->getOnlyArchs(), 
+                      'exclude' => $madbDistroConfig->getExcludeArchs()
                     )
                   );
       if (!$archs)
@@ -759,8 +748,8 @@ class madbFetchRpmsTask extends madbBaseTask
                       $release,
                       $arch, 
                       array(
-                        'only' => $config->getOnlyMedias(), 
-                        'exclude' => $config->getExcludeMedias()
+                        'only' => $madbDistroConfig->getOnlyMedias(), 
+                        'exclude' => $madbDistroConfig->getExcludeMedias()
                       )
                     );
         if (!$medias)
