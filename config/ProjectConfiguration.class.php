@@ -16,5 +16,6 @@ class ProjectConfiguration extends sfProjectConfiguration
     {
       $this->enablePlugins('sfAtoumPlugin');
     }
+    require_once($this->getConfigCache()->checkConfig('config/madbconf.yml'));
   }
 }
