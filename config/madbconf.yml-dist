@@ -1,6 +1,7 @@
 # commented lines seldom need modifying
 # uncommented entries need your attention!
 all:  
+  force-ssl: false
   host: localhost
   distribution: mageia
 #  distro_config_file: data/distros/mageia/distro.yml
