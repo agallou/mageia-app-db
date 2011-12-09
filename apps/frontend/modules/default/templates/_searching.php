@@ -1,4 +1,4 @@
-<form method="get" action="<?php echo $url ?>" style="display:inline">
+<form class="searchform" method="get" action="<?php echo $url ?>" style="display:inline">
 <?php if($showTitle): ?>
 Search in this page:
 <?php endif; ?>

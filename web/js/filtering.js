@@ -70,6 +70,12 @@ function getFiltering()
   filtering['arch'] = getValuesFromCheckboxes($('input[type=checkbox][name=filtering_arch]:checked'));
   filtering['media'] = getValuesFromCheckboxes($('input[type=checkbox][name=filtering_media]:checked'));
   filtering['source'] = getValuesFromCheckboxes($('input[type=checkbox][name=filtering_source]:checked'));
+  
+  var t_search = window.location.href.match(new RegExp('t_search[/=]([^/=]*)'));
+  if (t_search) {
+    var t_search_value = t_search[1];
+    filtering['t_search'] = [ t_search_value ];
+  }
   return filtering;
 }
 
@@ -86,12 +92,12 @@ function getValuesFromCheckboxes(checkboxes)
 function updateResults(filtering)
 {
   var baseUri = window.location.href.substr(0, (window.location.href.lastIndexOf('.php') + 4));   
-   $.post(baseUri + '/default/getUrl', { baseurl: $.base64.encode(window.location.href), extraParams: filtering},
-   function(data){
-     if (data.changed) {
-       window.location = data.url;
-     }
-   });
+  $.post(baseUri + '/default/getUrl', {baseurl: $.base64.encode(window.location.href), extraParams: filtering},
+  function(data){
+    if (data.changed) {
+      window.location = data.url;
+    }
+  });
 }
 
 
