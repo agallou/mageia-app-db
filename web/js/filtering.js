@@ -87,7 +87,7 @@ function updateResults(filtering)
 {
   var urlToGetUrlAction = $('div#filtering form').attr('uglyhack');
   $.post(urlToGetUrlAction, {
-    baseurl: $.base64.encode($('div#filtering form').attr('action')),
+    baseurl: $.base64.encode($('div#filtering form').attr('uglyhack2')),
     extraParams: filtering
   },
   function(data){

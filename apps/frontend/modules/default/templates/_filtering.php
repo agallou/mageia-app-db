@@ -1,6 +1,7 @@
 <div class="filters" style="display:none">
 <form action="<?php echo $madburl->urlFor($moduleaction, $madbcontext, array('ignored_parameters' => array_merge(array_keys($filters), array('page')))) ?>" 
-      uglyhack="<?php echo $madburl->urlFor('default/getUrl') ?>">
+      uglyhack="<?php echo $madburl->urlFor('default/getUrl') ?>"
+      uglyhack2="<?php echo $madburl->urlFor($moduleaction, $madbcontext, array('page')) ?>">
 
 <?php $partialParameters = array(
   'filters'            => $filters,
