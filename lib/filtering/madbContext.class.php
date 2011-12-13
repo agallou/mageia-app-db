@@ -23,7 +23,11 @@ class madbContext
   {
     return $this->getParameterHolder()->has($name);
   }
-  
+
+  /**
+   *
+   * @return array associative array of filter parameters found in request (URL)
+   */
   public function getFiltersParameters()
   {
     $filtersIteratorFactory = new filtersIteratorFactory();
@@ -45,4 +49,16 @@ class madbContext
     return $filtersParameters;
   }
 
+  /**
+   *
+   * @param string $filtername name of a filter
+   * @return string value
+   */
+  public function getRealFilterValue($filtername)
+  {
+    $filterFactory = new filterFactory();
+    $filter = $filterFactory->create($filtername);
+    $filter->setMadbContext($this);
+    return $filter->getValue();
+  }
 }

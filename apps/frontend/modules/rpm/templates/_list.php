@@ -30,7 +30,7 @@
                   $madburl->urlFor(
                     'package/show', 
                     $madbcontext, 
-                    array('extra_parameters' => array('id' => $rpm->getPackage()->getId()))
+                    array('extra_parameters' => array('name' => $rpm->getPackage()->getName()))
                   )
                 ); ?></td>
       <td><?php echo htmlspecialchars($rpm->getSummary()) ?></td>

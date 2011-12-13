@@ -3,10 +3,12 @@ class showAction extends madbActions
 {
   public function execute($request)
   {
-    $this->forward404Unless($request->hasParameter('id'), 'Package id is required');
-    $id = $request->getParameter('id');
-    $this->package = PackagePeer::retrieveByPk($id);
-    $this->forward404Unless($this->package, 'Erroneous package id');
+    $this->forward404Unless($request->hasParameter('name'), 'Package name is required');
+    $name = $request->getParameter('name');
+    $is_source = $this->madbcontext->getRealFilterValue('source');
+    $is_source = $is_source[0];
+    $this->package = PackagePeer::retrieveByNameAndIsSource($name, $is_source);
+    $this->forward404Unless($this->package, $is_source ? "There's no source package called: $name." : "There's no package called: $name.");
     
     $criteria = $this->getCriteria(filterPerimeters::RPM);
     $this->rpms = array();
