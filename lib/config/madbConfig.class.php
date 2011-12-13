@@ -13,6 +13,8 @@ class madbConfig
     // if none found, give madbConfig default value
     switch ($key)
     {
+      case 'force-ssl':
+        return false;
       case 'host': 
         return "localhost";
       case 'distribution': 
