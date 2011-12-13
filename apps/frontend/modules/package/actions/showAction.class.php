@@ -63,8 +63,8 @@ class showAction extends madbActions
       else
       {
         $parameters = array(
-          'distrelease' => $this->madbcontext->getParameter('distrelease'),
-          'arch' => $this->madbcontext->getParameter('arch')
+          'distrelease' => array_shift($this->madbcontext->getRealFilterValue('distrelease')),
+          'arch' => array_shift($this->madbcontext->getRealFilterValue('arch'))
         );
       }
       $parameterHolder = new madbParameterHolder();
