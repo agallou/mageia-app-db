@@ -12,7 +12,7 @@ class comparisonAction extends madbActions
       $page = 1;
     }
     
-    $distrelease = DistreleasePeer::retrieveByPK($this->getMadbContext()->getParameterHolder()->get('distrelease'));
+    $distrelease = DistreleasePeer::retrieveByPK($madbcontext->getRealFilterValue('distrelease'));
     if (!$distrelease)
     {
       $this->message = "There is no data in database.";
