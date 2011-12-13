@@ -91,8 +91,11 @@ function getValuesFromCheckboxes(checkboxes)
 
 function updateResults(filtering)
 {
-  var baseUri = window.location.href.substr(0, (window.location.href.lastIndexOf('.php') + 4));   
-  $.post(baseUri + '/default/getUrl', {baseurl: $.base64.encode(window.location.href), extraParams: filtering},
+  var urlToGetUrlAction = $('div#filtering form').attr('uglyhack');
+  $.post(urlToGetUrlAction, {
+    baseurl: $.base64.encode($('div#filtering form').attr('action')),
+    extraParams: filtering
+  },
   function(data){
     if (data.changed) {
       window.location = data.url;
