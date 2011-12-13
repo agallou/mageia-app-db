@@ -4,6 +4,9 @@ class getUrlAction extends madbActions
 
   public function execute($request)
   {
+    $madbConfig = new madbConfig();
+    $clean_urls = $madbConfig->get('clean-urls');
+    
     $url         = $request->getParameter('baseurl');
     if ($request->hasParameter('extraParams'))
     {
@@ -32,6 +35,13 @@ class getUrlAction extends madbActions
     foreach ($filterIterator as $filter)
     {
       unset($parameters[$filter->getCode()]);
+      if ($clean_urls && isset($extraParams[$filter->getCode()]))
+      { 
+        if (array($filter->getDefault()) == $extraParams[$filter->getCode()])
+        {
+          unset($extraParams[$filter->getCode()]);
+        }
+      }
     }
 
     foreach ($extraParams as $name => $parameter)

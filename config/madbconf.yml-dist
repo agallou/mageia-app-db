@@ -15,3 +15,4 @@ all:
 #  homepage:
 #    groups_line: 5
 #    rpm_limit: 6
+  clean-urls: true

@@ -31,6 +31,8 @@ class madbConfig
         return 5;
       case 'homepage_rpm_limit': 
         return 6;
+      case 'clean-urls': 
+        return true;
     }
     
     return $default;

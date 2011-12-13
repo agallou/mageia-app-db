@@ -6,7 +6,12 @@ class madbActions extends sfActions
   {
     $this->madbcontext = $this->getMadbContext();
     $this->madburl     = $this->getMadbUrl();
-    $this->redirectToDefaultParameters();
+    $madbConfig = new madbConfig();
+    $clean_urls = $madbConfig->get('clean-urls');
+    if (!$clean_urls)
+    {
+      $this->redirectToDefaultParameters();
+    }
   }
 
   protected function getMadbContext()
