@@ -19,7 +19,7 @@ class searchingComponent extends madbComponent
     $request           = $this->getRequest();
     $internalUri       = sprintf('%s/%s', $request['module'], $request['action']);
     $this->urldelete   = $this->getMadbUrl()->urlFor($internalUri, $this->getMadbContext(), array(
-      'ignored_parameters' => array('t_search', 'search'),
+      'ignored_parameters' => array('t_search', 'search', 'page'),
     ));
     $this->showinfos = $this->showTitle;
   }

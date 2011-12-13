@@ -69,13 +69,7 @@ function getFiltering()
   filtering['group'] = getValuesFromCheckboxes($('input[type=checkbox][name=filtering_group]:checked'));
   filtering['arch'] = getValuesFromCheckboxes($('input[type=checkbox][name=filtering_arch]:checked'));
   filtering['media'] = getValuesFromCheckboxes($('input[type=checkbox][name=filtering_media]:checked'));
-  filtering['source'] = getValuesFromCheckboxes($('input[type=checkbox][name=filtering_source]:checked'));
-  
-  var t_search = window.location.href.match(new RegExp('t_search[/=]([^/=]*)'));
-  if (t_search) {
-    var t_search_value = t_search[1];
-    filtering['t_search'] = [ t_search_value ];
-  }
+  filtering['source'] = getValuesFromCheckboxes($('input[type=checkbox][name=filtering_source]:checked')); 
   return filtering;
 }
 

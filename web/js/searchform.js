@@ -12,7 +12,7 @@ $(document).ready(function() {
       }
     });
     if(safe) {
-      window.location = 'http://' + window.location.host + url;
+      window.location = url;
     }
   });
 });
