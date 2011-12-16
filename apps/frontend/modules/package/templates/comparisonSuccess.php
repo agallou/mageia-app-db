@@ -54,7 +54,7 @@ elseif ( !(RpmPeer::evrCompare($row['update_version'], $row['dev_version'])<0
                    $madburl->urlFor(
                      'package/show', 
                      $madbcontext, 
-                     array('extra_parameters' => array('id' => $row['ID']))
+                     array('extra_parameters' => array('name' => $row['NAME']))
                    )
                  );
   ?>
