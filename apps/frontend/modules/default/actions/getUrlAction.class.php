@@ -19,9 +19,14 @@ class getUrlAction extends madbActions
 
     $url   = base64_decode($url);
     // If httpd configuration uses an alias, get it's name
-    $alias = substr($_SERVER['PHP_SELF'], 0, strpos($_SERVER['PHP_SELF'], '/index.php'));
-    $url   = substr($url, strpos($url, $alias) + strlen($alias)); 
-    
+    $matches = array();
+    preg_match('#^(.*)/.+\.php#', $_SERVER['PHP_SELF'], $matches);
+    $alias = $matches[1];
+
+    $matches = array();
+    preg_match('#^.*/.+\.php(/.*)#', $url, $matches);
+    $url = $matches[1];
+
     $parsedUrl   = $this->getContext()->getRouting()->parse($url);
     $routing     = $parsedUrl['_sf_route'];
     $parameters  = $routing->getParameters();
