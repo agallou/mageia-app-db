@@ -45,11 +45,14 @@ abstract class baseCriteriaFilter
   /**
    * getCriteria 
    * 
+   * @param $use_temp_filters if set to true, temporary versions of the filters (t_xxx params) are used too
+   * @param $use_default_values if set to true, when there's no value for the filter the default value is returned
+   *
    * @return Criteria
    */
-  public function getFilteredCriteria()
+  public function getFilteredCriteria($use_temp_filters = true, $use_default_values = true)
   {
-   return $this->filter($this->getCriteria(), $this->getValue(true));
+   return $this->filter($this->getCriteria(), $this->getValue($use_temp_filters, $use_default_values));
   }
 
 
@@ -71,7 +74,7 @@ abstract class baseCriteriaFilter
 
   public function getDefault()
   {
-    //null is no default value.
+    //null means no default value.
     return null;
   }
 
@@ -83,18 +86,19 @@ abstract class baseCriteriaFilter
   /**
    * returns either the value found in context, or the default
    * 
-   * TODO: add $use_temp_filters parameter like in getValueFromContext?
-   * 
+   * @param $use_temp_filters if set to true, temporary versions of the filters (t_xxx params) are used too
+   * @param $use_default_values if set to true, when there's no value for the filter the default value is returned
+   *
    * @return array of values (if only one value, array of one element)
    */
-  public function getValue($use_temp_filters = false)
+  public function getValue($use_temp_filters = false, $use_default_values = true)
   {
     $value = $this->getValueFromContext($this->getMadbContext(), $use_temp_filters);
     if ($value !== null)
     {
       return $value;
     }
-    elseif ($this->hasDefault())
+    elseif ($use_default_values && $this->hasDefault())
     {
       return array($this->getDefault());
     }

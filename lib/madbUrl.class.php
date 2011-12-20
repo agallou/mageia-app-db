@@ -24,7 +24,8 @@ class madbUrl
    */
   public function urlFor($internalUri, madbContext $madbContext = null, $options = array())
   {
-    $absolute   = isset($options['absolute']) && $options['absolute'];
+    $absolute       = isset($options['absolute']) && $options['absolute'];
+    $clear_defaults = !isset($options['clear_defaults']) || $options['clear_defaults'];
     $parameters = array();
     if (isset($options['extra_parameters']) && is_array($options['extra_parameters']))
     {
@@ -32,13 +33,24 @@ class madbUrl
     }
     if (null !== $madbContext)
     {
+      $myMadbContext = clone $madbContext;
+      if ($clear_defaults)
+      {
+        $myMadbContext->removeDefaultFilters();
+      }
       if (isset($options['filters_parameters']) && $options['filters_parameters'])
       {
-        $parameters = array_merge($madbContext->getFiltersParameters(), $parameters);
+        $parameters = array_merge(
+          $myMadbContext->getFiltersParameters(), 
+          $parameters
+        );
       }
       else
       {
-        $parameters = array_merge($madbContext->getParameterHolder()->getAll(), $parameters);
+        $parameters = array_merge(
+          $myMadbContext->getParameterHolder()->getAll(), 
+          $parameters
+        );
       }
     }
     if (isset($options['ignored_parameters']) && is_array($options['ignored_parameters']))
@@ -52,4 +64,25 @@ class madbUrl
     return $this->controller->genUrl($uri, $absolute);
   }
 
+  
+  public function urlForRpm(Rpm $rpm, madbContext $madbContext = null, $options = array())
+  {
+    return $this->urlFor(
+      'rpm/show', 
+      $madbContext, 
+      sfToolkit::arrayDeepMerge(
+        $options,
+        array(
+          'extra_parameters' => array(
+            'name'        => $rpm->getName(),
+            'source'      => $rpm->getIsSource(),
+            'distrelease' => $rpm->getDistreleaseId(),
+            'arch'        => $rpm->getArchId(),
+            't_media' => $rpm->getMediaId()
+          ),
+          'clear_defaults' => false  
+        )
+      )
+    );
+  }
 }
