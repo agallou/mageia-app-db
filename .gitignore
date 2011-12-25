@@ -19,6 +19,7 @@ apps/frontend/i18n/*.mo
 #propel config files
 config/propel.ini
 config/databases.yml
+config/madbconf.yml
 
 #propel generated files
 config/buildtime-conf.xml

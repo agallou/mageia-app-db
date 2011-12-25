@@ -38,6 +38,7 @@ default:
 
     - filtering.js
     - jquery.selectToCheckboxes.js
+    - searchform.js
 
   has_layout:     true
   

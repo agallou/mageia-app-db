@@ -4,7 +4,7 @@
                            $madbcontext, 
                            array( 
                              'extra_parameters' => array(
-                               'id' => $rpm->getPackage()->getId() 
+                               'name' => $rpm->getPackage()->getName() 
                              )
                            )
                          )
@@ -40,14 +40,10 @@
   {
     echo link_to(
            $src_rpm->getName(),
-           $madburl->urlFor( 'rpm/show', 
-                             $madbcontext, 
-                             array( 
-                               'extra_parameters' => array(
-                                 'id' => $src_rpm->getId() 
-                               )
-                             )
-                           )
+           $madburl->urlForRpm(
+             $src_rpm, 
+             $madbcontext
+           )
          ); 
   }
   else

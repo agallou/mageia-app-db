@@ -9,7 +9,6 @@ class madbDistroConfig
     $this->values = $values;
   }
 
-
   /**
    * 
    * If the value is a scalar, make an array of it
@@ -132,5 +131,11 @@ class madbDistroConfig
   {
     $value = $this->values['third_party_medias'];
     return $this->valueToArray($value);
+  }
+
+  public function getYouriCheckUrl()
+  {
+    $value = isset($this->values['youri_check_url']) ? $this->values['youri_check_url'] : null;
+    return $value;
   }
 }

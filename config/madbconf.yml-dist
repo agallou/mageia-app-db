@@ -1,0 +1,18 @@
+# commented lines seldom need modifying
+# uncommented entries need your attention!
+all:  
+  force-ssl: false
+  host: localhost
+  distribution: mageia
+#  distro_config_file: data/distros/mageia/distro.yml
+#  applications_list_file: data/distros/mageia/applications.txt
+  notifications:
+    # display notice on fetchRpm task
+#    display_notice: false
+    mail:
+#      name:    Madb notifications
+      address: root@localhost
+#  homepage:
+#    groups_line: 5
+#    rpm_limit: 6
+  clean-urls: true

@@ -20,7 +20,7 @@
                    $madburl->urlFor(
                      'package/show', 
                      $madbcontext, 
-                     array('extra_parameters' => array('id' => $package->getid()))
+                     array('extra_parameters' => array('name' => $package->getName()))
                    )
                  );
   ?> : <?php echo htmlspecialchars($package->getSummary()); ?></li> 

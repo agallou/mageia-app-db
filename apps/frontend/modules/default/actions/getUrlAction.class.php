@@ -4,6 +4,9 @@ class getUrlAction extends madbActions
 
   public function execute($request)
   {
+    $madbConfig = new madbConfig();
+    $clean_urls = $madbConfig->get('clean-urls');
+    
     $url         = $request->getParameter('baseurl');
     if ($request->hasParameter('extraParams'))
     {
@@ -14,8 +17,15 @@ class getUrlAction extends madbActions
       $extraParams = array();
     }
 
-    $url         = base64_decode($url);
-    $url         = substr($url , strpos($url, '.php') + 4);
+    $url   = base64_decode($url);
+    // If httpd configuration uses an alias, get it's name
+    $matches = array();
+    preg_match('#^(.*)/.+\.php#', $_SERVER['PHP_SELF'], $matches);
+    $alias = $matches[1];
+
+    $matches = array();
+    preg_match('#^.*/.+\.php(/.*)#', $url, $matches);
+    $url = $matches[1];
 
     $parsedUrl   = $this->getContext()->getRouting()->parse($url);
     $routing     = $parsedUrl['_sf_route'];
@@ -32,6 +42,13 @@ class getUrlAction extends madbActions
     foreach ($filterIterator as $filter)
     {
       unset($parameters[$filter->getCode()]);
+      if ($clean_urls && isset($extraParams[$filter->getCode()]))
+      { 
+        if (array($filter->getDefault()) == $extraParams[$filter->getCode()])
+        {
+          unset($extraParams[$filter->getCode()]);
+        }
+      }
     }
 
     foreach ($extraParams as $name => $parameter)

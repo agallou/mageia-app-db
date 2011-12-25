@@ -32,8 +32,9 @@ class formFactory
     $bindParams = array();
     foreach ($filtersIterator as $filter)
     {
+      $filter->setMadbContext($context);
       $key              = $filter->getCode();
-      $bindParams[$key] = $filter->getValueFromContext($context);
+      $bindParams[$key] = $filter->getValue();
     }
     
     if (!empty($extra_bind_values))

@@ -38,7 +38,9 @@ $(document).ready(function(){
   $('span#linkmore').click(function(){
     $('div#otherFilters').toggle();
   });
-  if (window.location.href.lastIndexOf('/media/') != -1 || window.location.href.match('\/group\/[0-9%2C]*\/'))
+  if (window.location.href.lastIndexOf('/media/') != -1 
+      || window.location.href.match('\/group\/[0-9%2C]*') 
+      || window.location.href.match('\/source\/[1-9]'))
   {
     $('div#otherFilters').show();
   }
@@ -69,7 +71,7 @@ function getFiltering()
   filtering['group'] = getValuesFromCheckboxes($('input[type=checkbox][name=filtering_group]:checked'));
   filtering['arch'] = getValuesFromCheckboxes($('input[type=checkbox][name=filtering_arch]:checked'));
   filtering['media'] = getValuesFromCheckboxes($('input[type=checkbox][name=filtering_media]:checked'));
-  filtering['source'] = getValuesFromCheckboxes($('input[type=checkbox][name=filtering_source]:checked'));
+  filtering['source'] = getValuesFromCheckboxes($('input[type=checkbox][name=filtering_source]:checked')); 
   return filtering;
 }
 
@@ -85,13 +87,16 @@ function getValuesFromCheckboxes(checkboxes)
 
 function updateResults(filtering)
 {
-  var baseUri = window.location.href.substr(0, (window.location.href.lastIndexOf('.php') + 4));   
-   $.post(baseUri + '/default/getUrl', { baseurl: $.base64.encode(window.location.href), extraParams: filtering},
-   function(data){
-     if (data.changed) {
-       window.location = data.url;
-     }
-   });
+  var urlToGetUrlAction = $('div#filtering form').attr('uglyhack');
+  $.post(urlToGetUrlAction, {
+    baseurl: $.base64.encode($('div#filtering form').attr('uglyhack2')),
+    extraParams: filtering
+  },
+  function(data){
+    if (data.changed) {
+      window.location = data.url;
+    }
+  });
 }
 
 

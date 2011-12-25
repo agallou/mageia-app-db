@@ -190,7 +190,7 @@ class SophieClient
     $type = isset($options['type']) ? $options['type'] : $this->getDefaultType();
     // TODO : better error management
     $rpm = $this->executeForType('getRawRpmByPkgid', array($pkgid), $type);
-    $rpm['description'] = str_replace("\t", '\t', str_replace("\n", '\n', $rpm['description']));
+    $rpm['description'] = str_replace("\n", '\n', $rpm['description']);
     return $rpm;
   }
   

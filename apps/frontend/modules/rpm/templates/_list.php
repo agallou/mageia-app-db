@@ -30,18 +30,15 @@
                   $madburl->urlFor(
                     'package/show', 
                     $madbcontext, 
-                    array('extra_parameters' => array('id' => $rpm->getPackage()->getId()))
+                    array('extra_parameters' => array('name' => $rpm->getPackage()->getName()))
                   )
                 ); ?></td>
       <td><?php echo htmlspecialchars($rpm->getSummary()) ?></td>
       <td><?php echo link_to(
                   $rpm->getVersion(), 
-                  $madburl->urlFor(
-                    'rpm/show', 
-                    $madbcontext, 
-                    array('extra_parameters' => array('id' => $rpm->getid()))
-                  )
-                ); ?></td>
+                  $madburl->urlForRpm($rpm, $madbcontext)
+                ); ?>
+      </td>
       <?php if (!isset($short)): ?>
       <td><?php echo $rpm->getBuildtime('Y-m-d') ?></td>
       <td><?php echo $rpm->getDistrelease()->getName() ?></td>
