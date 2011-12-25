@@ -23,8 +23,11 @@
     <?php endif; ?>
   </thead>
   <tbody>
+  <?php $dates = array(); ?>
   <?php foreach ($pager as $rpm): ?>
-    <tr>
+    <?php $buildDate         = $rpm->getBuildtime('Y-m-d'); ?>
+    <?php $dates[$buildDate] = $buildDate; ?>
+    <tr class="rpm-<?php echo count($dates) % 2 ? 'odd' : 'even'?>">
       <td><?php echo link_to(
                   $rpm->getPackage()->getName(), 
                   $madburl->urlFor(
@@ -40,7 +43,7 @@
                 ); ?>
       </td>
       <?php if (!isset($short)): ?>
-      <td><?php echo $rpm->getBuildtime('Y-m-d') ?></td>
+      <td><?php echo $buildDate ?></td>
       <td><?php echo $rpm->getDistrelease()->getName() ?></td>
       <?php endif; ?>
     </tr> 
