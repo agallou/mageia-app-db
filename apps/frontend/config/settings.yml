@@ -22,7 +22,13 @@ test:
     no_script_name:         false
     etag:                   false
 
+
+
 all:
+  .actions:
+    error_404_module: default   # To be called when a 404 error is raised
+    error_404_action: error404   # Or when the requested URL doesn't match any route
+
   .settings:
     # Form security secret (CSRF protection)
 #    csrf_secret:            07554013cb3c1fc05f76f5f78972b54b4cb06e1b
