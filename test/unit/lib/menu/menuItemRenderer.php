@@ -1,6 +1,19 @@
 <?php
 
-namespace tests\units;
+namespace {
+  if (!class_exists('distreleaseDefault'))
+  {
+    class distreleaseDefault
+    {
+      public function getDefault()
+      {
+        return null;
+      }
+    }
+  }
+}
+
+namespace tests\units {
 
 require_once __DIR__ . '/../../../../plugins/sfAtoumPlugin/bootstrap/unit.php';
 
@@ -39,5 +52,7 @@ EOF;
     $this->assert->string($renderer->render($item, false))->isEqualTo($expected, 'render if not current works');
     $this->assert->string($renderer->render($item, true))->isEqualTo($expectedCurrent, 'render if current works');
   }
+
+}
 
 }

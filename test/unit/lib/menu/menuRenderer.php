@@ -1,6 +1,20 @@
 <?php
 
-namespace tests\units;
+
+namespace {
+  if (!class_exists('distreleaseDefault'))
+  {
+    class distreleaseDefault
+    {
+      public function getDefault()
+      {
+        return null;
+      }
+    }
+  }
+}
+
+namespace tests\units {
 
 require_once __DIR__ . '/../../../../plugins/sfAtoumPlugin/bootstrap/unit.php';
 
@@ -93,4 +107,5 @@ EOF;
 
   }
 
+}
 }

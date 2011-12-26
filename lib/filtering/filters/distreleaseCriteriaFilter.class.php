@@ -7,17 +7,14 @@ class distreleaseCriteriaFilter extends baseCriteriaFilterChoice
     return filterPerimeters::RPM;
   }
 
+
+  /**
+   * @return int|null
+   */
   public function getDefault()
   {
-    if ($latest = DistreleasePeer::getLatest())
-    {
-      return $latest->getId();
-    } 
-    elseif ($devels = DistreleasePeer::getDevels())
-    {
-      return $devels[0]->getId();
-    }
-    return null;
+    $default = new distreleaseDefault();
+    return $default->getDefault();
   }
 
   public function getValues()
