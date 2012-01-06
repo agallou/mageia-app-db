@@ -12,7 +12,7 @@ class listAction extends madbActions
     $this->forward404Unless($request->hasParameter('listtype'), 'listtype parameter is required.');
     $this->listtype = $request->getParameter('listtype');
     $this->forward404Unless(in_array($this->listtype, array('updates', 'updates_testing', 'backports', 'backports_testing')), 'listtype value \'' . $this->listtype . '\' is not valid.');
-    $this->page = $request->getParameter('page');
+    $this->page = $request->getParameter('page', 1);
     switch ($this->listtype)
     {
       case 'updates':
