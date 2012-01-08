@@ -83,6 +83,11 @@ all:
 
   request:
     param:
+      #force symfony to not find $_SERVER['PATH_INFO'] and thus rebuild the pathinfo using $_SERVER['REQUEST_URI']
+      #see sfWebRequest.class.php, method getPathInfo()
+      #benefit : apache urldecodes some encoded characters in PATH_INFO, such as %2B, whereas REQUEST_URI is unaltered,
+      #without this change, param value 'TiMidity%2B%2B' is translated into 'TiMidity++' by apache, then urldecoded by 
+      #symfony, which gives finally 'TiMidity  ' :/
       path_info_array:        SERVER
       path_info_key:          xxSymfonyPleaseIDontWantYouToUsePathInfoxx   
 
