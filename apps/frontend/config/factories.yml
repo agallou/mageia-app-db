@@ -81,4 +81,8 @@ all:
           lifetime:                  31556926
           prefix:                    %SF_APP_DIR%/i18n
 
+  request:
+    param:
+      path_info_array:        SERVER
+      path_info_key:          xxSymfonyPleaseIDontWantYouToUsePathInfoxx   
 
