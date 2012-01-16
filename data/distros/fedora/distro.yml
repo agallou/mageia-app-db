@@ -2,6 +2,8 @@ name: Fedora
 only_releases:
   - 13
   - 14
+  - 15
+  - 16
   - development
 exclude_releases:
 only_medias:
@@ -13,7 +15,7 @@ exclude_rpms:
 
 devel_releases:
   - development
-latest_stable_release: 14
+latest_stable_release: 16
 
 updates_medias: ^.*updates.*$
 testing_medias: ^.*testing.*$
