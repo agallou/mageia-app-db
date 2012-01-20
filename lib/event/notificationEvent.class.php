@@ -34,27 +34,36 @@ class NotificationEvent
 
     $c = new Criteria();
 
-    // package match or is null
+    // package matches or is null
     $crPackageID = $c->getNewCriterion(SubscriptionElementPeer::PACKAGE_ID, $rpm->getPackageId());
     $crPackageID->addOr($c->getNewCriterion(SubscriptionElementPeer::PACKAGE_ID, NULL, Criteria::ISNULL));
 
-    // rpm group match or is null
+    // rpm group matches or is null
     $crRpmGroupID = $c->getNewCriterion(SubscriptionElementPeer::RPM_GROUP_ID, $rpm->getRpmGroupId());
     $crRpmGroupID->addOr($c->getNewCriterion(SubscriptionElementPeer::RPM_GROUP_ID, NULL, Criteria::ISNULL));
 
-    // arch match or is null
+    // arch matches or is null
     $crArchID = $c->getNewCriterion(SubscriptionElementPeer::ARCH_ID, $rpm->getArchId());
     $crArchID->addOr($c->getNewCriterion(SubscriptionElementPeer::ARCH_ID, NULL, Criteria::ISNULL));
 
-    // distrelease match or is null
+    // distrelease matches or is null
     $crDistreleaseID = $c->getNewCriterion(SubscriptionElementPeer::DISTRELEASE_ID, $rpm->getDistreleaseId());
     $crDistreleaseID->addOr($c->getNewCriterion(SubscriptionElementPeer::DISTRELEASE_ID, NULL, Criteria::ISNULL));
 
-    // media match or is null
+    // media matches or is null
     $crMediaID = $c->getNewCriterion(SubscriptionElementPeer::MEDIA_ID, $rpm->getMediaId());
     $crMediaID->addOr($c->getNewCriterion(SubscriptionElementPeer::MEDIA_ID, NULL, Criteria::ISNULL));
 
+    // is_source matches or is null
+    $crSource = $c->getNewCriterion(SubscriptionElementPeer::IS_SOURCE, $rpm->getPackage()->getIsSource());
+    $crSource->addOr($c->getNewCriterion(SubscriptionElementPeer::IS_SOURCE, NULL, Criteria::ISNULL));
 
+    // is_application matches or is null
+    $crApplication = $c->getNewCriterion(SubscriptionElementPeer::IS_APPLICATION, $rpm->getPackage()->getIsApplication());
+    $crApplication->addOr($c->getNewCriterion(SubscriptionElementPeer::IS_APPLICATION, NULL, Criteria::ISNULL));
+
+    $crSource->addAnd($crApplication);
+    $crMediaID->addAnd($crSource);    
     $crDistreleaseID->addAnd($crMediaID);
     $crArchID->addAnd($crDistreleaseID);
     $crRpmGroupID->addAnd($crArchID);
