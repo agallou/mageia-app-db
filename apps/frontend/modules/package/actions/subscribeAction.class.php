@@ -103,7 +103,7 @@ class subscribeAction extends madbActions
       }
       $subscription->save();
       
-      $elements = array();
+      $elements = array(array()); // empty array means "all archs, all distreleases, all media"
       foreach (array('distrelease', 'arch', 'media') as $param)
       {
         $elements = $this->updateElementsWithParamValues($elements, $param, $params[$param]);
@@ -142,22 +142,12 @@ class subscribeAction extends madbActions
   {
     if (is_array($values))
     {
-      if (empty($elements))
+      foreach ($elements as $key => $element)
       {
         foreach ($values as $value)
         {
-          $elements[] = array($name => $value);
-        }
-      }
-      else
-      {
-        foreach ($elements as $key => $element)
-        {
-          foreach ($values as $value)
-          {
-            unset($elements[$key]);
-            $elements[] = array_merge($element, array($name => $value));
-          }
+          unset($elements[$key]);
+          $elements[] = array_merge($element, array($name => $value));
         }
       }
     }
