@@ -69,9 +69,11 @@ class showAction extends madbActions
       }
       else
       {
+        $keyvalue_distrelease = $this->madbcontext->getRealFilterValue('distrelease');
+        $keyvalue_arch = $this->madbcontext->getRealFilterValue('arch');
         $parameters = array(
-          'distrelease' => array_shift($this->madbcontext->getRealFilterValue('distrelease')),
-          'arch' => array_shift($this->madbcontext->getRealFilterValue('arch'))
+          'distrelease' => array_shift($keyvalue_distrelease),
+          'arch' => array_shift($keyvalue_arch)
         );
       }
       $parameterHolder = new madbParameterHolder();
