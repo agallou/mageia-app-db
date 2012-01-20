@@ -20,7 +20,7 @@ class showAction extends madbActions
     
     if ($this->getUser()->isAuthenticated())
     {
-      $user_id=$this->getUser()->getProfile()->getId(); // TODO : get real user ID
+      $user_id=$this->getUser()->getProfile()->getId();
       
       // Distrelease : . Default : current subscription if there's one. Otherwise, current distrelease filter.
       // Arch : Default : current subscription if there's one. Otherwise current arch filter.
@@ -30,7 +30,7 @@ class showAction extends madbActions
       // Check whether the user has subscribed to this package's changes
       $criteria = new Criteria();
       $criteria->addJoin(SubscriptionPeer::ID, SubscriptionElementPeer::SUBSCRIPTION_ID);
-      $criteria->add(SubscriptionElementPeer::PACKAGE_ID, $id);
+      $criteria->add(SubscriptionElementPeer::PACKAGE_ID, $this->package->getId());
       $criteria->add(SubscriptionPeer::USER_ID, $user_id);
       $this->subscription = SubscriptionPeer::doSelectOne($criteria);
       if ($this->subscription)
@@ -57,7 +57,14 @@ class showAction extends madbActions
         }
         foreach ($parameters as $key => $value)
         {
-          $parameters[$key] = implode(',', $value);
+          if (empty($value))
+          {
+            unset($parameters[$key]);
+          }
+          else
+          {
+            $parameters[$key] = implode(',', $value);
+          }
         }
       }
       else
@@ -76,12 +83,14 @@ class showAction extends madbActions
 
       // subscription type
       // TODO : adapt the list to the distro's situations
+      // TODO : use constants instead of plain numbers
       $this->types = array(
         1 => 'new update',
         2 => 'new update candidate',
         3 => 'new backport',
         4 => 'new backport candidate'
       ); 
+      $this->subscribe_form->setWidget('package_id', new sfWidgetFormInputHidden(array(), array('value' => $this->package->getId())));
       $this->subscribe_form->setWidget('type', new sfWidgetFormChoice(array('choices' => $this->types, 'multiple' => true, 'label' => "Watched events")));
       $this->subscribe_form->setValidator('type', new myValidatorChoice(array('choices' => array_keys($this->types), 'required' => true)));
       $extra_bind_parameters = array();
