@@ -119,8 +119,8 @@ class showAction extends madbActions
       else
       {
         $extra_bind_parameters['type'] = array(2,3,4);
-      }
-      formFactory::bind($this->subscribe_form, $filtersIterator, $subscribe_form_madbcontext, $extra_bind_parameters);
+      }      
+      formFactory::bind($this->subscribe_form, $filtersIterator, $subscribe_form_madbcontext, $extra_bind_parameters, false);
     }
   }
 
