@@ -16,6 +16,7 @@ $(document).ready(function(){
           
         });
         $( this ).dialog( "close" );
+        window.location.reload();
       },
       "Remove subscription": function() {
         $.post($('#subscribeForm form:first').attr('action'), {
@@ -26,12 +27,15 @@ $(document).ready(function(){
           
         });
         $( this ).dialog( "close" );
+        window.location.reload();
       },
       Cancel: function() {
         $( this ).dialog( "close" );
+        window.location.reload();
       }
     },
     close: function() {
+      window.location.reload();
     }
   });
   $('a#packageSubscribe').click(function(event){
