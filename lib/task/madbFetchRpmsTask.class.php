@@ -780,10 +780,10 @@ class madbFetchRpmsTask extends madbBaseTask
     
     $database->loadData('tmpapplications', $filename, false);
     
-    $sql = "UPDATE package SET is_application = 0";
+    $sql = "UPDATE package SET is_application = FALSE";
     $con->exec($sql);
     
-    $sql = "UPDATE package JOIN tmpapplications ON package.name = tmpapplications.name SET package.is_application=1 WHERE package.is_source=0";
+    $sql = "UPDATE package JOIN tmpapplications ON package.name = tmpapplications.name SET package.is_application=TRUE WHERE package.is_source=FALSE";
     $con->exec($sql);
     
     // source packages of applications are flagged as applications too
@@ -792,8 +792,8 @@ UPDATE package AS source_package
 JOIN rpm AS source_rpm ON source_package.ID = source_rpm.PACKAGE_ID
 JOIN rpm ON source_rpm.ID = rpm.SOURCE_RPM_ID AND rpm.is_source = FALSE
 JOIN package ON rpm.PACKAGE_ID = package.ID
-SET source_package.is_application = 1
-WHERE package.is_application = 1;"
+SET source_package.is_application = TRUE
+WHERE package.is_application = TRUE;"
 EOF;
     $con->exec($sql);
   }
