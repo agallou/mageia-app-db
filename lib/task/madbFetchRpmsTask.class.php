@@ -541,13 +541,13 @@ class madbFetchRpmsTask extends madbBaseTask
           $criteria->add(DistreleasePeer::NAME, $distrelease);
           $criteria->add(ArchPeer::NAME, $arch);
           $criteria->add(MediaPeer::NAME, $media);
-          $criteria->addSelectColumn(RpmPeer::RPM_PKGID);
-          $criteria->addSelectColumn(RpmPeer::NAME);
+          $criteria->addAsColumn('column1', RpmPeer::RPM_PKGID);
+          $criteria->addAsColumn('column2', RpmPeer::NAME);
           $stmt = RpmPeer::doSelectStmt($criteria);
           $rpmsInDatabase = array();
           foreach ($stmt as $row)
           {
-            $rpmsInDatabase[$row['RPM_PKGID']] = $row['NAME'];
+            $rpmsInDatabase[$row['column1']] = $row['column2'];
           }
           asort($rpmsInDatabase);
           unset($stmt);
