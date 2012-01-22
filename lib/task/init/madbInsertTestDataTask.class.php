@@ -40,7 +40,6 @@ class madbInsertTestDataTask extends madbBaseTask
     if (file_exists($archive_name))
     {
       $this->getFilesystem()->execute("unzip -o -d $content_dir/ " . $archive_name);
-      $this->getFilesystem()->rename($content_dir . '/rpm_group.txt', $content_dir . '/00_rpm_group.txt');
     
       $database->getConnection()->beginTransaction();
       $database->disableConstraints();
@@ -48,10 +47,6 @@ class madbInsertTestDataTask extends madbBaseTask
       foreach (sfFinder::type("file")->sort_by_name()->in($content_dir) as $file)
       {
         $table = preg_replace('/\.txt$/', '', basename($file));
-        if ($table == '00_rpm_group')
-        {
-          $table = 'rpm_group'; 
-        }
         $this->log("Inserting values into table $table");
         $database->truncateTable($table);
         $database->loadData($table, $file);

@@ -116,7 +116,7 @@ abstract class baseDatabase implements databaseInterface
     }
     catch (PDOException $e)
     {
-      throw new databaseException(sprintf('Error executing query : "%s" (%s)', $sql, $e->getMessage()));
+      throw new databaseException(sprintf('Error executing query : "%s" (%s)', $query, $e->getMessage()));
     }
     return $ret;
   }

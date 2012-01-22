@@ -22,6 +22,7 @@ class mysqlDatabase extends baseDatabase
    */
   public function disableConstraints()
   {
+    $this->getConnection()->exec('SET FOREIGN_KEY_CHECKS=0;');
     return $this;
   }
 
