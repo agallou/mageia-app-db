@@ -25,7 +25,10 @@ class madbUrl
   public function urlFor($internalUri, madbContext $madbContext = null, $options = array())
   {
     $absolute       = isset($options['absolute']) && $options['absolute'];
-    $clear_defaults = !isset($options['clear_defaults']) || $options['clear_defaults'];
+    $madbConfig = new madbConfig();
+    $clean_urls = $madbConfig->get('clean-urls');
+    // remove default filters from URL ?
+    $clear_defaults = $clean_urls && (!isset($options['clear_defaults']) || $options['clear_defaults']);
     $parameters = array();
     if (isset($options['extra_parameters']) && is_array($options['extra_parameters']))
     {

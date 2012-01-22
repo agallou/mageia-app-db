@@ -11,7 +11,7 @@ class formFactory
    * @param madbContext $context
    * @param array $only_those if not empty, only the filters whose code is in this array are added to the form
    */
-  public static function create(filtersIterator $filtersIterator, $name_prefix, madbContext $context= null, $bind=true)
+  public static function create(filtersIterator $filtersIterator, $name_prefix, madbContext $context= null, $bind=true, $filters_use_default_values=true)
   {
     $form = new sfForm();
     $form->getWidgetSchema()->setNameFormat($name_prefix . "%s");
@@ -22,27 +22,24 @@ class formFactory
     }
     if ($bind and null !== $context)
     {
-      self::bind($form, $filtersIterator, $context);
+      self::bind($form, $filtersIterator, $context, array(), $filters_use_default_values);
     }
     return $form;
   }
 
-  public static function bind(sfForm $form, filtersIterator $filtersIterator, madbContext $context, $extra_bind_values = array())
+  public static function bind(sfForm $form, filtersIterator $filtersIterator, madbContext $context, $extra_bind_values = array(), $filters_use_default_values=true)
   {
     $bindParams = array();
     foreach ($filtersIterator as $filter)
     {
       $filter->setMadbContext($context);
       $key              = $filter->getCode();
-      $bindParams[$key] = $filter->getValue();
+      $bindParams[$key] = $filter->getValue(false, $filters_use_default_values);
     }
     
-    if (!empty($extra_bind_values))
+    foreach ($extra_bind_values as $key => $value)
     {
-      foreach ($extra_bind_values as $key => $value)
-      {
-        $bindParams[$key] = $value;
-      }
+      $bindParams[$key] = $value;
     }
     $form->bind($bindParams);
     return $form;

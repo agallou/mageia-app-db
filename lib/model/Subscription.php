@@ -24,5 +24,24 @@ class Subscription extends BaseSubscription {
 		// is where any default values for this object are set.
 		parent::__construct();
 	}
+    
+    /**
+     * Deletes all SubscriptionElement objects related to the Subscription object
+     * Nullifies references to the subscription in related notifications
+     * Then deletes itself
+     */
+    public function deleteFully()
+    {
+      foreach ($this->getSubscriptionElements() as $subscriptionElement)
+      {
+        $subscriptionElement->delete();
+      }
+      foreach ($this->getNotifications() as $notification)
+      {
+        $notification->setSubscription(null);
+        $notification->save();
+      }
+      $this->delete();
+    }
 
 } // Subscription
