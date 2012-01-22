@@ -1,5 +1,6 @@
 $(document).ready(function(){
-  $('#subscribeForm').dialog({
+  var subscribe_dialog = $('#subscribeForm');
+  subscribe_dialog.dialog({
     autoOpen: false,
     width: 600,
     height: 600,
@@ -13,10 +14,8 @@ $(document).ready(function(){
           'params': params
         },
         function(data){
-          
+          subscribe_dialog.dialog( "close" );
         });
-        $( this ).dialog( "close" );
-        window.location.reload();
       },
       "Remove subscription": function() {
         $.post($('#subscribeForm form:first').attr('action'), {
@@ -24,18 +23,15 @@ $(document).ready(function(){
           'package_id': $('#subscribe_package_id').attr('value')
         },
         function(data){
-          
+          subscribe_dialog.dialog( "close" );
         });
-        $( this ).dialog( "close" );
-        window.location.reload();
       },
       Cancel: function() {
-        $( this ).dialog( "close" );
-        window.location.reload();
+        subscribe_dialog.dialog( "close" );
       }
     },
     close: function() {
-      window.location.reload();
+     window.location.reload();
     }
   });
   $('a#packageSubscribe').click(function(event){

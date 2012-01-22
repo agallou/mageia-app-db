@@ -2,6 +2,23 @@
 class criteriaFactory
 {
 
+  /**
+   * database
+   * 
+   * @var databaseInterface
+   */
+  protected $database;
+
+  public function __construct(databaseInterface $database = null)
+  {
+    if (null === $database)
+    {
+      $databaseFactory = new databaseFactory();
+      $database        = $databaseFactory->createDefault();
+    }
+    $this->database = $database;
+  }
+
   public function createFromContext(madbContext $context, $targetPerimeter, $use_default_filtering_values = true)
   {
     $criteria              = new Criteria();
@@ -41,9 +58,14 @@ class criteriaFactory
     return $criteria;
   }
 
-  protected function getConnection()
+  /**
+   * getDatabase 
+   * 
+   * @return databaseInterface
+   */
+  protected function getDatabase()
   {
-    return Propel::getConnection();
+    return $this->database;
   }
 
   private function applyOtherPerimeterFilters(filtersIterator $filters, Criteria $criteria, $context, basePerimeter $perimeter, $use_default_filtering_values)
@@ -63,13 +85,14 @@ class criteriaFactory
     
     $tablename = 'tmp_filtrage_' . md5(serialize($filters));//TODO better filtertablename
     //TODO do not delete every time this table
-    $this->getConnection()->exec(sprintf('DROP TABLE IF EXISTS `%s`', $tablename));
+    $this->getDatabase()->getConnection()->exec(sprintf('DROP TABLE IF EXISTS %s', $tablename));
 
-    $toTmp     = new criteriaToTemporaryTable($criteria, $tablename);
-    $toTmp->setConnection($this->getConnection());
-    $toTmp->execute();
+
+    $tableFields = $this->getDatabase()->createTableFromCriteria($criteria, $tablename);
+
     $sql = 'ALTER TABLE %s ADD INDEX (id)';
-    $this->getConnection()->exec(sprintf($sql, $tablename));
+    //TODO
+ //   $this->getConnection()->exec(sprintf($sql, $tablename));
 
     $criteria = $criteriaOrig;
 
@@ -78,11 +101,11 @@ class criteriaFactory
     //2 getTargetId methods?
     if (get_class($perimeter) != 'rpmPerimeter')
     {
-      $criteria->addJoin(RpmPeer::PACKAGE_ID, $toTmp->getField('id'), Criteria::JOIN);
+      $criteria->addJoin(RpmPeer::PACKAGE_ID, $tableFields->getField('id'), Criteria::JOIN);
     }
     else
     {
-      $criteria->addJoin(PackagePeer::ID, $toTmp->getField('id'), Criteria::JOIN);
+      $criteria->addJoin(PackagePeer::ID, $tableFields->getField('id'), Criteria::JOIN);
     }
 
      return $criteria;

@@ -25,6 +25,7 @@ class madbInsertTestDataTask extends madbBaseTask
     $content_dir = 'tmp/test-data';
     $this->getFilesystem()->mkdirs($content_dir);
     $this->getFilesystem()->execute("rm -f $content_dir/*");
+
     
     // Download test data if they are absent from the local system, or if the --url option was used
     if (!file_exists($archive_name) or $options['url']!==null)
@@ -32,20 +33,25 @@ class madbInsertTestDataTask extends madbBaseTask
       $url = ($options['url']!==null) ? $options['url'] : $this->defaultUrl;
       passthru('wget ' . $url . ' -O ' . $archive_name);
     }
+
+    $databaseFactory = new databaseFactory($con);
+    $database = $databaseFactory->createDefault();
     
     if (file_exists($archive_name))
     {
       $this->getFilesystem()->execute("unzip -o -d $content_dir/ " . $archive_name);
-      
-      foreach (sfFinder::type("file")->in($content_dir) as $file)
+    
+      $database->getConnection()->beginTransaction();
+      $database->disableConstraints();
+
+      foreach (sfFinder::type("file")->sort_by_name()->in($content_dir) as $file)
       {
         $table = preg_replace('/\.txt$/', '', basename($file));
-        echo "Inserting values into table $table\n";
-        $sql = "TRUNCATE TABLE $table";
-        $con->exec($sql);
-        $sql = "LOAD DATA LOCAL INFILE '$file' INTO TABLE $table";
-        $con->exec($sql);
+        $this->log("Inserting values into table $table");
+        $database->truncateTable($table);
+        $database->loadData($table, $file);
       }
+      $database->getConnection()->commit();
     }
     else 
     {
