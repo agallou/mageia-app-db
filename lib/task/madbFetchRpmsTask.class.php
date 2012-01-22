@@ -772,12 +772,13 @@ class madbFetchRpmsTask extends madbBaseTask
   protected function updateIsApplicationFromFile($filename)
   {
     $con = Propel::getConnection();
-    
+    $databaseFactory = new databaseFactory($con);
+    $database = $databaseFactory->createDefault();
+
     $sql = "CREATE TEMPORARY TABLE tmpapplications (name VARCHAR(255), PRIMARY KEY (name))";
     $con->exec($sql);
     
-    $sql = "LOAD DATA LOCAL INFILE '$filename' INTO TABLE tmpapplications";
-    $con->exec($sql);
+    $database->loadData('tmpapplications', $filename, false);
     
     $sql = "UPDATE package SET is_application = 0";
     $con->exec($sql);

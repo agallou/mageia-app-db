@@ -46,16 +46,19 @@ class postgresqlDatabase extends baseDatabase
    * @param mixed $filename 
    * @return void
    */
-  public function loadData($tablename, $filename)
+  public function loadData($tablename, $filename, $update_sequence=true)
   {
     $query = "COPY $tablename FROM '$filename'";
     $this->prepareAndExecuteQuery($query);
     
     // Update the sequence
     // FIXME : should be cleaner, using propel methods and all
-    $query = "SELECT setval('${tablename}_id_seq', max(id)) FROM $tablename";
-    $this->prepareAndExecuteQuery($query);
-
+    if ($update_sequence)
+    {
+      $query = "SELECT setval('${tablename}_id_seq', max(id)) FROM $tablename";
+      $this->prepareAndExecuteQuery($query);
+    }
+    
     return $this;
   }
 
