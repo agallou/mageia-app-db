@@ -7,27 +7,45 @@ class distreleaseCriteriaFilter extends baseCriteriaFilterChoice
     return filterPerimeters::RPM;
   }
 
+
+  /**
+   * @return int|null
+   */
   public function getDefault()
   {
-    if ($latest = DistreleasePeer::getLatest())
-    {
-      return $latest->getId();
-    } 
-    elseif ($devels = DistreleasePeer::getDevels())
-    {
-      return $devels[0]->getId();
-    }
-    return null;
+    $default = new distreleaseDefault();
+    return $default->getDefault();
   }
 
   public function getValues()
   {
     $criteria = new Criteria();
+    $criteria->addDescendingOrderByColumn(DistreleasePeer::NAME);
     $distreleases = DistreleasePeer::doSelect($criteria);
     $values = array();
+    // Devel release(s) first
     foreach ($distreleases as $distrelease)
     {
-      $values[$distrelease->getId()] = $distrelease->getName();
+      if ($distrelease->getIsDevVersion())
+      {
+        $values[$distrelease->getId()] = $distrelease->getName();
+      }
+    }
+    // Then the latest stable
+    foreach ($distreleases as $distrelease)
+    {
+      if ($distrelease->getIsLatest())
+      {
+        $values[$distrelease->getId()] = $distrelease->getName();
+      }
+    }
+    // Then descending order by
+    foreach ($distreleases as $distrelease)
+    {
+      if (!array_key_exists($distrelease->getId(), $values))
+      {
+        $values[$distrelease->getId()] = $distrelease->getName();
+      }
     }
     return $values;
   }

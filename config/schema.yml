@@ -196,6 +196,8 @@ propel:
     distrelease_id:                                                    { type: integer, foreignTable: distrelease, foreignReference: id }
     arch_id:                                                           { type: integer, foreignTable: arch, foreignReference: id }
     media_id:                                                          { type: integer, foreignTable: media, foreignReference: id }
+    is_source:                                                         { type: boolean, required: false }
+    is_application:                                                    { type: boolean, required: false }
     _indexes:
       fk_subscription_element_subscription1:                           [ subscription_id ]
       fk_subscription_element_package1:                                [ package_id ]
@@ -204,7 +206,7 @@ propel:
       fk_subscription_element_arch1:                                   [ arch_id ]
       fk_subscription_element_media1:                                  [ media_id ]
     _uniques:
-      dummy_pk:                                                        [ subscription_id, package_id, rpm_group_id, distrelease_id, arch_id, media_id ]
+      dummy_pk:                                                        [ subscription_id, package_id, rpm_group_id, distrelease_id, arch_id, media_id, is_source, is_application ]
   rss_feed:
     id:                                                                ~
     name:                                                              { type: varchar(45) }
@@ -219,7 +221,7 @@ propel:
     version:                                                           { type: varchar(10) }
   notification:
     id:                                                                ~
-    subscription_id:                                                   { type: integer, required: true, foreignTable: subscription, foreignReference: id }
+    subscription_id:                                                   { type: integer, required: false, foreignTable: subscription, foreignReference: id }
     rpm_id:                                                            { type: integer, required: true, foreignTable: rpm, foreignReference: id }
     event_type:                                                        { type: integer, required: true }
     _indexes:

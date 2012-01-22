@@ -5,7 +5,9 @@
                            array( 
                              'extra_parameters' => array(
                                'name' => $rpm->getPackage()->getName() 
-                             )
+                             ),
+                             //FIXME : should not be an explicit blacklist
+                             'ignored_parameters' => array('t_media')
                            )
                          )
        ); ?>

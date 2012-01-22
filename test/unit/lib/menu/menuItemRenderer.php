@@ -1,6 +1,19 @@
 <?php
 
-namespace tests\units;
+namespace {
+  if (!class_exists('distreleaseDefault'))
+  {
+    class distreleaseDefault
+    {
+      public function getDefault()
+      {
+        return null;
+      }
+    }
+  }
+}
+
+namespace tests\units {
 
 require_once __DIR__ . '/../../../../plugins/sfAtoumPlugin/bootstrap/unit.php';
 
@@ -28,16 +41,18 @@ class menuItemRenderer extends atoum\test
 
     $renderer = new \menuItemRenderer($madbcontext, $madbUrl);
     $expected = <<<EOF
-<li><a href="/index.php/default/news/distrelease/2010/application/1">Homepage</a></li>
+<li><a href="/default/news/distrelease/2010">Homepage</a></li>
 EOF;
 
     $expectedCurrent = <<<EOF
-<li class="current"><a href="/index.php/default/news/distrelease/2010/application/1">Homepage</a></li>
+<li class="current"><a href="/default/news/distrelease/2010">Homepage</a></li>
 EOF;
 
     $this->assert->string($renderer->render($item))->isEqualTo($expected, 'render if not current (is default value) works');
     $this->assert->string($renderer->render($item, false))->isEqualTo($expected, 'render if not current works');
     $this->assert->string($renderer->render($item, true))->isEqualTo($expectedCurrent, 'render if current works');
   }
+
+}
 
 }
