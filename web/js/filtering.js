@@ -59,7 +59,7 @@ function getAllVals(options)
 
 function afterCheckboxChange(changed)
 {
-  filtering = getFiltering();
+  var filtering = getFiltering();
   updateResults(filtering);
 }
 
