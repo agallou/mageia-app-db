@@ -49,7 +49,7 @@ propel:
       index_rpm_pkgid:                                                 [ rpm_pkgid ]
       index_source_rpm_name:                                           [ source_rpm_name ]
     _uniques:
-      rpm__unique_name_multi:                                               [ md5_name, distrelease_id, media_id, arch_id ]
+      rpm__unique_name_multi:                                          [ md5_name, distrelease_id, media_id, arch_id ]
   distrelease:
     id:                                                                ~
     name:                                                              { type: varchar(45), required: true }
@@ -57,7 +57,7 @@ propel:
     is_latest:                                                         { type: boolean, required: true, default: false }
     is_dev_version:                                                    { type: boolean, required: true, default: false }
     _uniques:
-      distrelease__unique_name:                                                     [ name ]
+      distrelease__unique_name:                                        [ name ]
   user:
     id:                                                                ~
     sf_guard_user_id: { type:integer, foreignTable: sf_guard_user, foreignReference: id, required: true, onDelete: cascade }
@@ -81,7 +81,7 @@ propel:
     id:                                                                ~
     name:                                                              { type: varchar(255), required: true }
     _uniques:
-      rpm_group__unique_name:                                                     [ name ]
+      rpm_group__unique_name:                                          [ name ]
   language:
     id:                                                                ~
     name:                                                              { type: varchar(255), required: true }
@@ -112,7 +112,7 @@ propel:
     id:                                                                ~
     user_id:                                                           { type: integer, required: true, foreignTable: user, foreignReference: id }
     package_id:                                                        { type: integer, required: true, foreignTable: package, foreignReference: id }
-    distrelease_id:                                                    { type: integer, required: true, primaryKey: true, foreignTable: distrelease, foreignReference: id }
+    distrelease_id:                                                    { type: integer, required: true, foreignTable: distrelease, foreignReference: id }
     version_needed:                                                    { type: varchar(45), required: true }
     status:                                                            { type: varchar(45), required: true }
     _indexes:
@@ -142,8 +142,8 @@ propel:
     comment:                                                           { type: longvarchar, required: true }
     created_at:                                                        ~
     _indexes:
-      fk_ucsr_request_user1:                         [ user_id ]
-      fk_ucsr_request1:             [ software_request_id ]
+      fk_ucsr_request_user1:                                           [ user_id ]
+      fk_ucsr_request1:                                                [ software_request_id ]
   user_comments_new_version_request:
     id:                                                                ~
     user_id:                                                           { type: integer, required: true, foreignTable: user, foreignReference: id }
@@ -151,19 +151,17 @@ propel:
     comment:                                                           { type: longvarchar, required: true }
     created_at:                                                        ~
     _indexes:
-      fk_ucnvr_request_user1:                      [ user_id ]
-      fk_ucnvr_request1:       [ new_version_request_id ]
+      fk_ucnvr_request_user1:                                          [ user_id ]
   user_has_new_version_request:
     user_id:                                                           { type: integer, required: true, primaryKey: true, foreignTable: user, foreignReference: id }
     new_version_request_id:                                            { type: integer, required: true, primaryKey: true, foreignTable: new_version_request, foreignReference: id }
     _indexes:
-      fk_uhnvr_user1:                           [ user_id ]
-      fk_uhnvr_request1:            [ new_version_request_id ]
+      fk_uhnvr_user1:                                                  [ user_id ]
   arch:
     id:                                                                ~
     name:                                                              { type: varchar(45), required: true }
     _uniques:
-      arch__unique_name:                                                     [ name ]
+      arch__unique_name:                                               [ name ]
   media:
     id:                                                                ~
     name:                                                              { type: varchar(45), required: true }
@@ -173,7 +171,7 @@ propel:
     is_testing:                                                        { type: boolean, required: true }
     is_third_party:                                                    { type: boolean, required: true, default: false }
     _uniques:
-      media__unique_name:                                                     [ name, vendor ]
+      media__unique_name:                                              [ name, vendor ]
   subscription:
     id:                                                                ~
     user_id:                                                           { type: integer, required: true, foreignTable: user, foreignReference: id }
