@@ -83,11 +83,11 @@ function getAllVals_subscribeForm(options)
 
 function afterCheckboxChange_subscribeForm(checked_list, id)
 {
-  values = new Array();
+  var values = new Array();
   $.each(checked_list, function(key, value) {
     values.push($('label[for=' + $(value).attr('id') + ']').text()); 
   });
-  text = values.join(', ');
+  var text = values.join(', ');
   if (text == '')
   {
     text = 'All';
