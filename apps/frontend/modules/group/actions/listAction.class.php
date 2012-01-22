@@ -19,17 +19,15 @@ class listAction extends madbActions
                                             )
                       );
     }
+    $helperFactory = new criteriaHelperFactory();
+    $helper        = $helperFactory->createDefault();
     
     $criteria = $this->getCriteria(filterPerimeters::RPM);
     $criteria->addJoin(RpmPeer::RPM_GROUP_ID, RpmGroupPeer::ID, Criteria::JOIN);
     
     $criteria->clearSelectColumns();
     
-    $criteria->addAsColumn( 'the_name',
-                            sprintf("SUBSTRING_INDEX(%s, '/',". $this->level . ")", 
-                                    RpmGroupPeer::NAME
-                            )
-    );
+    $criteria->addAsColumn('the_name', $helper->splitPart(RpmGroupPeer::NAME, '/', $this->level));
     $criteria->addGroupByColumn('the_name');
     $criteria->addAsColumn( 'nb_of_packages', 'COUNT(DISTINCT(' . RpmPeer::PACKAGE_ID . '))');
     $criteria->addAscendingOrderByColumn('the_name');
