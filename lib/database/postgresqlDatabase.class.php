@@ -50,6 +50,11 @@ class postgresqlDatabase extends baseDatabase
   {
     $query = "COPY $tablename FROM '$filename'";
     $this->prepareAndExecuteQuery($query);
+    
+    // Update the sequence
+    // FIXME : should be cleaner, using propel methods and all
+    $query = "SELECT setval('${tablename}_id_seq', max(id)) FROM $tablename";
+    $this->prepareAndExecuteQuery($query);
 
     return $this;
   }
