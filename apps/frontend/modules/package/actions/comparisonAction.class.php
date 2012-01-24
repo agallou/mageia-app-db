@@ -26,6 +26,8 @@ class comparisonAction extends madbActions
     }
     
     $con = Propel::getConnection();
+    $databaseFactory = new databaseFactory();
+    $database = $databaseFactory->createDefault();
     
     
     // Available versions outside from Mageia
@@ -119,9 +121,7 @@ EOF;
     $criteria->addAsColumn('source', "$tablename_available.source");
     
     $tablename = 'tmp_package';
-    $toTmp = new criteriaToTemporaryTable($criteria, $tablename);
-    $toTmp->setConnection($con);
-    $toTmp->execute();
+    $database->createTableFromCriteria($criteria, $tablename);
     
     // FIXME : check that it works with postgresql
     $sql = <<<EOF
