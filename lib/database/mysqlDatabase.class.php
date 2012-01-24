@@ -57,16 +57,19 @@ class mysqlDatabase extends baseDatabase
    * update request with join to other tables.
    * 
    * @param string $table table name
+   * @param string $alias table alias
    * @param string $update the part that comes after "SET" in a query
    * @param string $from other table(s), comma-separated
    * @param string $where the where part
    * @return bool
    */
-  public function updateWithJoin($table, $update, $from, $where)
+  public function updateWithJoin($table, $alias, $update, $from, $where)
   {
+    $alias = $alias ? $alias : $table;
+    
     $query = <<<EOF
-UPDATE $table, $from
-SET $table.$update
+UPDATE $table AS $alias, $from
+SET $alias.$update
 WHERE $where
 EOF;
     return $this->prepareAndExecuteQuery($query);

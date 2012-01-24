@@ -787,6 +787,7 @@ class madbFetchRpmsTask extends madbBaseTask
     
     $database->updateWithJoin(
       'package', 
+      '',
       'is_application=TRUE', 
       'tmpapplications',
       'package.name = tmpapplications.name AND package.is_source=FALSE'
@@ -794,7 +795,8 @@ class madbFetchRpmsTask extends madbBaseTask
 
     // source packages of applications are flagged as applications too
     $database->updateWithJoin(
-      'package AS source_package',
+      'package',
+      'source_package',
       'is_application = TRUE',
       'rpm AS source_rpm, rpm, package',
       'source_package.ID = source_rpm.PACKAGE_ID 

@@ -71,10 +71,12 @@ class postgresqlDatabase extends baseDatabase
    * @param string $where the where part
    * @return bool
    */
-  public function updateWithJoin($table, $update, $from, $where)
+  public function updateWithJoin($table, $alias, $update, $from, $where)
   {
+    $alias = $alias ? $alias : $table;
+    
     $query = <<<EOF
-UPDATE $table
+UPDATE $table AS $alias
 SET $update
 FROM $from
 WHERE $where
