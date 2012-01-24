@@ -73,20 +73,27 @@ EOF;
 INSERT INTO $tablename_available (package_id, available, source)
 SELECT sp.id, t.available, t.source
 FROM $tablename_available_raw t 
-     JOIN package sp ON (sp.name=t.src_package AND sp.is_source=1);
+     JOIN package sp ON (sp.name=t.src_package AND sp.is_source=TRUE);
 EOF;
     $con->exec($sql);
     
-    $sql = <<<EOF
-INSERT IGNORE INTO $tablename_available (package_id, available, source)
+    try
+    {
+      $sql = <<<EOF
+INSERT INTO $tablename_available (package_id, available, source)
 SELECT DISTINCT bp.id, t.available, t.source
 FROM $tablename_available_raw t
-     JOIN package sp ON (sp.name=t.src_package AND sp.is_source=1)
+     JOIN package sp ON (sp.name=t.src_package AND sp.is_source=TRUE)
      JOIN rpm sr ON sr.package_id=sp.id
      JOIN rpm br ON br.source_rpm_id=sr.id
      JOIN package bp ON br.package_id=bp.id
 EOF;
-    $con->exec($sql);
+      $con->exec($sql);
+    }
+    catch (PDOException $e)
+    {
+      // do nothing, this is a way to emulate INSERT IGNORE
+    }
     
     
     // Get packages corresponding to current filters + cauldron versions
@@ -212,12 +219,19 @@ EOF;
     {
       $row['NAME'] = addslashes($row['NAME']);
       $row['SUMMARY'] = addslashes($row['SUMMARY']);
-      $sql = <<<EOF
-INSERT IGNORE INTO $tablename
+      try
+      {
+        $sql = <<<EOF
+INSERT INTO $tablename
   (ID, NAME, SUMMARY, dev_version, available, source)
   VALUES ($row[ID], '$row[NAME]', '$row[SUMMARY]', '$row[dev_version]', '$row[available]', '$row[source]');
 EOF;
-      $con->exec($sql);
+        $con->exec($sql);
+      }
+      catch (PDOException $e)
+      {
+        // do nothing, this is a way to emulate INSERT IGNORE
+      }
     }
   
     
