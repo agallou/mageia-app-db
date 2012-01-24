@@ -61,5 +61,26 @@ class postgresqlDatabase extends baseDatabase
     
     return $this;
   }
+  
+  /**
+   * update request with join to other tables.
+   * 
+   * @param string $table table name
+   * @param string $update the part that comes after "SET" in a query
+   * @param string $from other table(s), comma-separated
+   * @param string $where the where part
+   * @return bool
+   */
+  public function updateWithJoin($table, $update, $from, $where)
+  {
+    $query = <<<EOF
+UPDATE $table
+SET $update
+FROM $from
+WHERE $where
+EOF;
+    return $this->prepareAndExecuteQuery($query);
+  }  
+
 
 }

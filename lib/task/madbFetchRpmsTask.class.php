@@ -186,7 +186,7 @@ class madbFetchRpmsTask extends madbBaseTask
       }      
     }
     
-    
+
     // Archs :
     $archsSophie = array();
     foreach ($distreleases as $distrelease => $archs)
@@ -780,21 +780,28 @@ class madbFetchRpmsTask extends madbBaseTask
     
     $database->loadData('tmpapplications', $filename, false);
     
+    
     $sql = "UPDATE package SET is_application = FALSE";
     $con->exec($sql);
+   
     
-    $sql = "UPDATE package JOIN tmpapplications ON package.name = tmpapplications.name SET package.is_application=TRUE WHERE package.is_source=FALSE";
-    $con->exec($sql);
-    
+    $database->updateWithJoin(
+      'package', 
+      'is_application=TRUE', 
+      'tmpapplications',
+      'package.name = tmpapplications.name AND package.is_source=FALSE'
+    );
+
     // source packages of applications are flagged as applications too
-    $sql = <<<EOF
-UPDATE package AS source_package
-JOIN rpm AS source_rpm ON source_package.ID = source_rpm.PACKAGE_ID
-JOIN rpm ON source_rpm.ID = rpm.SOURCE_RPM_ID AND rpm.is_source = FALSE
-JOIN package ON rpm.PACKAGE_ID = package.ID
-SET source_package.is_application = TRUE
-WHERE package.is_application = TRUE;"
-EOF;
-    $con->exec($sql);
+    $database->updateWithJoin(
+      'package AS source_package',
+      'is_application = TRUE',
+      'rpm AS source_rpm, rpm, package',
+      'source_package.ID = source_rpm.PACKAGE_ID 
+        AND source_rpm.ID = rpm.SOURCE_RPM_ID 
+        AND rpm.is_source = FALSE 
+        AND rpm.PACKAGE_ID = package.ID 
+        AND package.is_application = TRUE'
+    );
   }
 }
