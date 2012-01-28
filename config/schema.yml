@@ -60,7 +60,7 @@ propel:
       distrelease__unique_name:                                        [ name ]
   user:
     id:                                                                ~
-    sf_guard_user_id: { type:integer, foreignTable: sf_guard_user, foreignReference: id, required: true, onDelete: cascade }
+    sf_guard_user_id:                                                  { type:integer, foreignTable: sf_guard_user, foreignReference: id, required: true, onDelete: cascade }
     first_name:                                                        { type: varchar(20), required: true }
     last_name:                                                         { type: varchar(20), required: true }
     mail:                                                              { type: varchar(45) }
@@ -133,8 +133,8 @@ propel:
     user_id:                                                           { type: integer, required: true, primaryKey: true, foreignTable: user, foreignReference: id }
     software_request_id:                                               { type: integer, required: true, primaryKey: true, foreignTable: software_request, foreignReference: id }
     _indexes:
-      fk_user_has_software_request_user1:                              [ user_id ]
-      fk_user_has_software_request_software_request1:                  [ software_request_id ]
+      fk_uhsr_user1:                                                   [ user_id ]
+      fk_uhsr_request1:                                                [ software_request_id ]
   user_comments_software_request:
     id:                                                                ~
     user_id:                                                           { type: integer, required: true, foreignTable: user, foreignReference: id }
@@ -142,7 +142,7 @@ propel:
     comment:                                                           { type: longvarchar, required: true }
     created_at:                                                        ~
     _indexes:
-      fk_ucsr_request_user1:                                           [ user_id ]
+      fk_ucsr_user1:                                                   [ user_id ]
       fk_ucsr_request1:                                                [ software_request_id ]
   user_comments_new_version_request:
     id:                                                                ~
@@ -151,12 +151,14 @@ propel:
     comment:                                                           { type: longvarchar, required: true }
     created_at:                                                        ~
     _indexes:
-      fk_ucnvr_request_user1:                                          [ user_id ]
+      fk_ucnvr_user1:                                                  [ user_id ]
+      fk_ucnvr_request1:                                               [ new_version_request_id ] 
   user_has_new_version_request:
     user_id:                                                           { type: integer, required: true, primaryKey: true, foreignTable: user, foreignReference: id }
     new_version_request_id:                                            { type: integer, required: true, primaryKey: true, foreignTable: new_version_request, foreignReference: id }
     _indexes:
       fk_uhnvr_user1:                                                  [ user_id ]
+      fk_uhnvr_request1:                                               [ new_version_request_id ]
   arch:
     id:                                                                ~
     name:                                                              { type: varchar(45), required: true }
