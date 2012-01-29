@@ -50,15 +50,15 @@ elseif ( !(RpmPeer::evrCompare($row['update_version'], $row['dev_version'])<0
 }
 ?>>
       <td><?php echo link_to(
-                   $row['NAME'],
+                   $row['name'],
                    $madburl->urlFor(
                      'package/show', 
                      $madbcontext, 
-                     array('extra_parameters' => array('name' => $row['NAME']))
+                     array('extra_parameters' => array('name' => $row['name']))
                    )
                  );
   ?>
-        <span class="description"><?php echo htmlspecialchars($row['SUMMARY']) ?></span></td>
+        <span class="description"><?php echo htmlspecialchars($row['summary']) ?></span></td>
       <td><strong><?php echo $row['update_version'] ?></strong></td>
       <?php if ($has_updates_testing) : ?><td><?php echo $row['update_testing_version'] ?></td><?php endif; ?>
       <?php if ($has_backports) : ?><td><strong><?php echo $row['backport_version'] ?></strong></td><?php endif; ?>

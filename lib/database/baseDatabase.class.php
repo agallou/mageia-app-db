@@ -108,7 +108,17 @@ abstract class baseDatabase implements databaseInterface
     $stmt = $this->getConnection()->prepare($query);
     foreach ($params as $name => $p)
     {
-       $stmt->bindValue($name, $p);
+      // For booleans we must specify the type otherwise PDO can infer it wrongly
+      // Which will make queries fail in postgresql (bool wanted, empty string given, for example)
+      if (is_bool($p))
+      {
+        $data_type = PDO::PARAM_BOOL;
+        $stmt->bindValue($name, $p, $data_type);
+      }
+      else
+      {
+        $stmt->bindValue($name, $p);
+      }
     }
     try
     {

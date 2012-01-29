@@ -41,7 +41,7 @@ CREATE TEMPORARY TABLE $tablename_available (
 EOF;
     $con->exec($sql);
     
-    // fixme : only for Mageia
+    // fixme : only for Mageia / Mandriva
     if (true)
     {
       $tablename_available_raw = 'tmp_available_raw';
@@ -55,6 +55,7 @@ EOF;
       $con->exec($sql);
       
       $available_versions = $this->getYouriVersions();
+      // TODO : load all data in one query
       foreach ($available_versions as $row)
       {
         $sql = <<<EOF
@@ -110,27 +111,29 @@ EOF;
     $criteria = $this->getCriteria(filterPerimeters::PACKAGE);
     $criteria->addJoin(PackagePeer::ID, "$tablename_available.package_id", Criteria::LEFT_JOIN);
     $criteria->addJoin(PackagePeer::ID, RpmPeer::PACKAGE_ID);
-    $criteria->addJoin(RpmPeer::DISTRELEASE_ID, DistreleasePeer::ID);
-    $criteria->add(DistreleasePeer::ID, $dev_release->getId());
+    $criteria->add(RpmPeer::DISTRELEASE_ID, $dev_release->getId());
     $criteria->addJoin(RpmPeer::MEDIA_ID, MediaPeer::ID);
     $criteria->add(MediaPeer::IS_TESTING, false);
     $criteria->add(MediaPeer::IS_THIRD_PARTY, false);
     $criteria->add(MediaPeer::IS_BACKPORTS, false);
     
-    // group by just in case the dev release has several versions
-    $criteria->addGroupByColumn(PackagePeer::ID);
     $criteria->clearSelectColumns();
     $criteria->addSelectColumn(PackagePeer::ID);
     $criteria->addSelectColumn(PackagePeer::NAME);
     $criteria->addSelectColumn(PackagePeer::SUMMARY);
-    $criteria->addAsColumn('dev_version', RpmPeer::VERSION);
+    $criteria->addAsColumn('dev_version', 'MAX('.RpmPeer::VERSION.')');
     $criteria->addAsColumn('available', "$tablename_available.available");
     $criteria->addAsColumn('source', "$tablename_available.source");
+    // group by just in case the dev release has several versions
+    $criteria->addGroupByColumn(PackagePeer::ID);
+    $criteria->addGroupByColumn(PackagePeer::NAME);
+    $criteria->addGroupByColumn(PackagePeer::SUMMARY);
+    $criteria->addGroupByColumn("$tablename_available.available");
+    $criteria->addGroupByColumn("$tablename_available.source");
     
     $tablename = 'tmp_package';
     $database->createTableFromCriteria($criteria, $tablename);
     
-    // FIXME : check that it works with postgresql
     $sql = <<<EOF
 ALTER TABLE $tablename ADD PRIMARY KEY (ID),
 ADD update_version VARCHAR(255) NULL,
@@ -138,7 +141,7 @@ ADD update_testing_version VARCHAR(255) NULL,
 ADD backport_version VARCHAR(255) NULL,
 ADD backport_testing_version VARCHAR(255) NULL;
 EOF;
-    $con->exec($sql);
+    $con->exec($sql);   
 
     foreach (array('release', 'update', 'update_testing', 'backport', 'backport_testing') as $media_type)
     {
@@ -173,8 +176,8 @@ EOF;
       }
       
       $criteria->clearSelectColumns();
-      $criteria->addSelectColumn(RpmPeer::PACKAGE_ID);
-      $criteria->addSelectColumn(RpmPeer::VERSION);
+      $criteria->addAsColumn('package_id', RpmPeer::PACKAGE_ID);
+      $criteria->addAsColumn('version', RpmPeer::VERSION);
       $stmt = BasePeer::doSelect($criteria);
       
       $fieldname = $media_type . "_version";
@@ -183,8 +186,8 @@ EOF;
       {
         $sql = <<<EOF
 UPDATE $tablename
-SET $fieldname = '$row[VERSION]'
-WHERE ID = $row[PACKAGE_ID];
+SET $fieldname = '$row[version]'
+WHERE ID = $row[package_id];
 EOF;
         $con->exec($sql);
       }
@@ -202,29 +205,34 @@ EOF;
     $criteria->add(MediaPeer::IS_TESTING, false);
     $criteria->add(MediaPeer::IS_THIRD_PARTY, false);
     $criteria->add(MediaPeer::IS_BACKPORTS, false);
-    $criteria->addJoin(RpmPeer::PACKAGE_ID, PackagePeer::ID);
     
     // group by just in case the dev release has several versions
-    $criteria->addGroupByColumn(PackagePeer::ID);
     $criteria->clearSelectColumns();
-    $criteria->addSelectColumn(PackagePeer::ID);
-    $criteria->addSelectColumn(PackagePeer::NAME);
-    $criteria->addSelectColumn(PackagePeer::SUMMARY);
-    $criteria->addAsColumn('dev_version', RpmPeer::VERSION);
+    $criteria->addAsColumn('id', PackagePeer::ID);
+    $criteria->addAsColumn('name', PackagePeer::NAME);
+    $criteria->addAsColumn('summary', PackagePeer::SUMMARY);
+    $criteria->addAsColumn('dev_version', 'MAX('.RpmPeer::VERSION.')');
     $criteria->addAsColumn('available', "$tablename_available.available");
     $criteria->addAsColumn('source', "$tablename_available.source");
+    // group by just in case the dev release has several versions
+    $criteria->addGroupByColumn('package.id');
+    $criteria->addGroupByColumn('package.name');
+    $criteria->addGroupByColumn('package.summary');
+    $criteria->addGroupByColumn("$tablename_available.available");
+    $criteria->addGroupByColumn("$tablename_available.source");
+    
     
     $stmt = BasePeer::doSelect($criteria);
     foreach ($stmt as $row)
     {
-      $row['NAME'] = addslashes($row['NAME']);
-      $row['SUMMARY'] = addslashes($row['SUMMARY']);
+      $row['name'] = addslashes($row['name']);
+      $row['summary'] = addslashes($row['summary']);
       try
       {
         $sql = <<<EOF
 INSERT INTO $tablename
   (ID, NAME, SUMMARY, dev_version, available, source)
-  VALUES ($row[ID], '$row[NAME]', '$row[SUMMARY]', '$row[dev_version]', '$row[available]', '$row[source]');
+  VALUES ($row[id], '$row[name]', '$row[summary]', '$row[dev_version]', '$row[available]', '$row[source]');
 EOF;
         $con->exec($sql);
       }
@@ -236,7 +244,7 @@ EOF;
   
     
     $sql = <<<EOF
-SELECT * 
+SELECT ID as id, $tablename.* 
 FROM $tablename
 EOF;
     $stmt = $con->query($sql);
@@ -247,24 +255,11 @@ EOF;
           && (is_null($row['available']))
           )
       {
-        $sql = "DELETE FROM $tablename WHERE ID=$row[ID]"; 
+        $sql = "DELETE FROM $tablename WHERE ID=$row[id]"; 
         $con->exec($sql);
       }
     }
     
-/*    
-    $criteria = new Criteria();
-    $criteria->addSelectColumn("$tablename.ID");
-    $criteria->addSelectColumn("$tablename.NAME");
-    $criteria->addSelectColumn("$tablename.SUMMARY");
-    $criteria->addSelectColumn("$tablename.dev_version");
-    $criteria->addSelectColumn("$tablename.update_version");
-    $criteria->addSelectColumn("$tablename.update_testing_version");
-    $criteria->addSelectColumn("$tablename.backport_version");
-    $criteria->addSelectColumn("$tablename.backport_testing_version");
-    $criteria->addAscendingOrderByColumn("$tablename.NAME");
-    $this->stmt = BasePeer::doSelect($criteria);
-*/
 
     $sql = <<<EOF
 SELECT * 
