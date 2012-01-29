@@ -55,16 +55,22 @@ EOF;
       $con->exec($sql);
       
       $available_versions = $this->getYouriVersions();
-      // TODO : load all data in one query
+      $i=0;
       foreach ($available_versions as $row)
       {
-        $sql = <<<EOF
-INSERT INTO $tablename_available_raw (src_package, available, source)
-VALUES ('$row[0]', '$row[1]', '$row[2]');
-EOF;
-        $con->exec($sql);
+        if ($i == 1000)
+        {
+          $con->exec(rtrim($sql, ','));
+          $i=0;
+        }
+        if ($i == 0)
+        {
+          $sql = "INSERT INTO $tablename_available_raw (src_package, available, source) VALUES ";
+        }
+        $sql .= "('$row[0]', '$row[1]', '$row[2]'),";
+        $i++;
       }
-      
+      $con->exec(rtrim($sql, ',')); 
     }
     
     
