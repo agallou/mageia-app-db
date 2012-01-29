@@ -7,12 +7,14 @@ class postgresqlDatabase extends baseDatabase
    * 
    * @param string $tablename 
    * @param string $query 
+   * @param bool   $temporary
    *
    * @return string
    */
-  protected function createTableFromQuerySyntax($tablename, $query)
+  protected function createTableFromQuerySyntax($tablename, $query, $temporary=true)
   {
-    return sprintf('CREATE TEMPORARY TABLE %s AS %s', $tablename, $query);
+    $temporary_sql = $temporary ? 'TEMPORARY' : '';
+    return sprintf('CREATE %s TABLE %s AS %s', $temporary_sql, $tablename, $query);
   }
 
   /**

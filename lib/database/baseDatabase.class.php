@@ -63,7 +63,7 @@ abstract class baseDatabase implements databaseInterface
     $params = array();
     $sql    = BasePeer::createSelectSql($criteria, $params);
     $params = $this->prepareCreateSelectSqlParamsForBind($params);
-    $query  = $this->createTableFromQuerySyntax($name, $sql);
+    $query  = $this->createTableFromQuerySyntax($name, $sql, $temporary);
     $this->prepareAndExecuteQuery($query, $params);
     return new tableFieldsHelper($name);
   }
