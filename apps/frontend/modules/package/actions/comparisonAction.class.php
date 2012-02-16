@@ -124,16 +124,16 @@ EOF;
     $criteria->add(MediaPeer::IS_BACKPORTS, false);
     
     $criteria->clearSelectColumns();
-    $criteria->addSelectColumn(PackagePeer::ID);
-    $criteria->addSelectColumn(PackagePeer::NAME);
-    $criteria->addSelectColumn(PackagePeer::SUMMARY);
+    $criteria->addAsColumn('id', PackagePeer::ID);
+    $criteria->addAsColumn('name', PackagePeer::NAME);
+    $criteria->addAsColumn('summary', PackagePeer::SUMMARY);
     $criteria->addAsColumn('dev_version', 'MAX('.RpmPeer::VERSION.')');
     $criteria->addAsColumn('available', "$tablename_available.available");
     $criteria->addAsColumn('source', "$tablename_available.source");
     // group by just in case the dev release has several versions
-    $criteria->addGroupByColumn(PackagePeer::ID);
-    $criteria->addGroupByColumn(PackagePeer::NAME);
-    $criteria->addGroupByColumn(PackagePeer::SUMMARY);
+    $criteria->addGroupByColumn('id');
+    $criteria->addGroupByColumn('name');
+    $criteria->addGroupByColumn('summary');
     $criteria->addGroupByColumn("$tablename_available.available");
     $criteria->addGroupByColumn("$tablename_available.source");
     
@@ -193,7 +193,7 @@ EOF;
         $sql = <<<EOF
 UPDATE $tablename
 SET $fieldname = '$row[version]'
-WHERE ID = $row[package_id];
+WHERE id = $row[package_id];
 EOF;
         $con->exec($sql);
       }
@@ -237,7 +237,7 @@ EOF;
       {
         $sql = <<<EOF
 INSERT INTO $tablename
-  (ID, NAME, SUMMARY, dev_version, available, source)
+  (id, name, summary, dev_version, available, source)
   VALUES ($row[id], '$row[name]', '$row[summary]', '$row[dev_version]', '$row[available]', '$row[source]');
 EOF;
         $con->exec($sql);
@@ -250,7 +250,7 @@ EOF;
   
     
     $sql = <<<EOF
-SELECT ID as id, $tablename.* 
+SELECT id, $tablename.* 
 FROM $tablename
 EOF;
     $stmt = $con->query($sql);
@@ -261,7 +261,7 @@ EOF;
           && (is_null($row['available']))
           )
       {
-        $sql = "DELETE FROM $tablename WHERE ID=$row[id]"; 
+        $sql = "DELETE FROM $tablename WHERE id=$row[id]"; 
         $con->exec($sql);
       }
     }
