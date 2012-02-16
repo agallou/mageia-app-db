@@ -131,9 +131,9 @@ EOF;
     $criteria->addAsColumn('available', "$tablename_available.available");
     $criteria->addAsColumn('source', "$tablename_available.source");
     // group by just in case the dev release has several versions
-    $criteria->addGroupByColumn('id');
-    $criteria->addGroupByColumn('name');
-    $criteria->addGroupByColumn('summary');
+    $criteria->addGroupByColumn(PackagePeer::ID);
+    $criteria->addGroupByColumn(PackagePeer::NAME);
+    $criteria->addGroupByColumn(PackagePeer::SUMMARY);
     $criteria->addGroupByColumn("$tablename_available.available");
     $criteria->addGroupByColumn("$tablename_available.source");
     
@@ -221,9 +221,9 @@ EOF;
     $criteria->addAsColumn('available', "$tablename_available.available");
     $criteria->addAsColumn('source', "$tablename_available.source");
     // group by just in case the dev release has several versions
-    $criteria->addGroupByColumn('package.id');
-    $criteria->addGroupByColumn('package.name');
-    $criteria->addGroupByColumn('package.summary');
+    $criteria->addGroupByColumn(PackagePeer::ID);
+    $criteria->addGroupByColumn(PackagePeer::NAME);
+    $criteria->addGroupByColumn(PackagePeer::SUMMARY);
     $criteria->addGroupByColumn("$tablename_available.available");
     $criteria->addGroupByColumn("$tablename_available.source");
     
