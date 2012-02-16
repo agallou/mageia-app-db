@@ -189,7 +189,8 @@ class NotificationEvent
       
       $url = 'http://' . $madbConfig->get('host') . '/package/show/name/' . $rpm->getPackage()->getName() 
               . '/distrelease/' . $rpm->getDistreleaseId() . '/application/0' 
-              . '/source/' . ($rpm->getPackage()->getIsSource() ? 1 : 0);
+              . '/source/' . ($rpm->getPackage()->getIsSource() ? 1 : 0)
+              . '/arch/' . ($rpm->getArchId());
       
       $text = "Package ".$rpm->getPackage()->getName() ." ". $eventText . ": " 
       . $rpm->getName() . "
