@@ -13,6 +13,8 @@ class madbConfig
     // if none found, give madbConfig default value
     switch ($key)
     {
+      case 'name':
+        return "Mageia App Db";
       case 'force-ssl':
         return false;
       case 'host': 
@@ -25,10 +27,6 @@ class madbConfig
         return "data/distros/" . $this->get('distribution') . "/applications.txt";
       case 'notifications_display_notice': 
         return true;
-      case 'notifications_mail_name': 
-        return "madb notifications"; 
-      case 'notifications_mail_address': 
-        return "root@localhost";
       case 'homepage_groups_line': 
         return 5;
       case 'homepage_rpm_limit': 

@@ -1,17 +1,24 @@
 # commented lines seldom need modifying
 # uncommented entries need your attention!
+# TODO : document all the options
 all:  
+#  name: Mageia App Db
   force-ssl: false
   host: localhost
   distribution: mageia
 #  distro_config_file: data/distros/mageia/distro.yml
 #  applications_list_file: data/distros/mageia/applications.txt
   notifications:
-    # display notice on fetchRpm task
 #    display_notice: false
     mail:
-#      name:    Madb notifications
+      name:    Madb notifications
       address: root@localhost
+      prefix: [madb]
+#      messages:
+#        update: "your message here, with \n in it if you need a newline"
+#        update_candidate: "your message here, with \n in it if you need a newline"
+#        new_version: "your message here, with \n in it if you need a newline"
+#        new_version_candidate: "your message here, with \n in it if you need a newline"
 #  homepage:
 #    groups_line: 5
 #    rpm_limit: 6

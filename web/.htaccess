@@ -18,5 +18,5 @@ Options +FollowSymLinks +ExecCGI
   RewriteCond %{REQUEST_FILENAME} !-f
 
   # no, so we redirect to our front web controller
-  RewriteRule ^(.*)$ index.php [QSA,L]
+  RewriteRule ^(.*)$ /madb/index.php [QSA,L]
 </IfModule>
