@@ -212,7 +212,6 @@ EOF;
     $criteria->add(MediaPeer::IS_THIRD_PARTY, false);
     $criteria->add(MediaPeer::IS_BACKPORTS, false);
     
-    // group by just in case the dev release has several versions
     $criteria->clearSelectColumns();
     $criteria->addAsColumn('id', PackagePeer::ID);
     $criteria->addAsColumn('name', PackagePeer::NAME);
