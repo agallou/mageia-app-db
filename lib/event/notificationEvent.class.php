@@ -11,12 +11,11 @@ class NotificationEvent
   // add here more later
 
 
-  protected $logger = null;
+  static protected $logger = null;
 
-  // FIXME? non static function for non instanciable class?
-  public function setLogger(sfLoggerInterface $logger)
+  static public function setLogger(sfLoggerInterface $logger)
   {
-    $this->logger = $logger;
+    self::$logger = $logger;
   }
 
   /**
@@ -96,7 +95,7 @@ class NotificationEvent
     foreach($subscriptions as $subscription)
     {
       //do something with each matched subscription element
-      $this->createNotification($rpm, $subscription, $eventType);
+      self::createNotification($rpm, $subscription, $eventType);
     }
   }
 
@@ -150,7 +149,7 @@ class NotificationEvent
     $notification->setEventType($eventType);
     $notification->save();
 
-    $this->log("\n\033[". "1;34" ."m". "Notification triggered." . "\033[0m\n");
+    self::log("\n\033[". "1;34" ."m". "Notification triggered." . "\033[0m\n");
   }
 
 
@@ -306,11 +305,11 @@ EOF;
    *
    * @return void
    */
-  public function log($message, $priority = sfLogger::INFO)
+  static public function log($message, $priority = sfLogger::INFO)
   {
-    if (null !== $this->logger)
+    if (null !== self::$logger)
     {
-      $this->logger->log($message, $priority);
+      self::$logger->log($message, $priority);
     }
   }
 
