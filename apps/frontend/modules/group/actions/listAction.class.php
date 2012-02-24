@@ -27,7 +27,7 @@ class listAction extends madbActions
     
     $criteria->clearSelectColumns();
     
-    $criteria->addAsColumn('the_name', $helper->splitPart(RpmGroupPeer::NAME, '/', $this->level));
+    $criteria->addAsColumn('the_name', $helper->substringIndex(RpmGroupPeer::NAME, '/', $this->level));
     $criteria->addGroupByColumn('the_name');
     $criteria->addAsColumn( 'nb_of_packages', 'COUNT(DISTINCT(' . RpmPeer::PACKAGE_ID . '))');
     $criteria->addAscendingOrderByColumn('the_name');
