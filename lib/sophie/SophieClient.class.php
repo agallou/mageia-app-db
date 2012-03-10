@@ -28,7 +28,7 @@ class SophieClient
     }
     else 
     { 
-      throw new SophieClientException("Type '$type' is not a valid type."); // TOOD : improve this 
+      throw new SophieClientException("Type '$type' is not a valid type."); // TODO : improve this 
     }
   }
   
@@ -37,7 +37,7 @@ class SophieClient
     return $this->defaultType;
   }
   
-  public function jsonQuery($query)
+  public function jsonQuery($query, $timeout)
   {
     $json = file_get_contents($this->urlSophie . '/' . $query . "?json=1");
     if (!$json)
@@ -71,12 +71,12 @@ class SophieClient
       }
       else 
       {
-        throw new SophieClientException("Method $method$type doesn't exist."); // TOOD : improve this
+        throw new SophieClientException("Method $method$type doesn't exist."); // TODO : improve this
       }
     }
     else
     {
-      throw new SophieClientException("Type '$type' is not a valid type."); // TOOD : improve this 
+      throw new SophieClientException("Type '$type' is not a valid type."); // TODO : improve this 
     }
   }
   
