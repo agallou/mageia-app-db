@@ -37,9 +37,16 @@ class SophieClient
     return $this->defaultType;
   }
   
-  public function jsonQuery($query, $timeout)
+  public function jsonQuery($query, $timeout=180)
   {
-    $json = file_get_contents($this->urlSophie . '/' . $query . "?json=1");
+    $ctx = stream_context_create(
+      array(
+        'http' => array(
+          'timeout' => $timeout
+        )
+      )
+    );
+    $json = file_get_contents($this->urlSophie . '/' . $query . "?json=1", false, $ctx);
     if (!$json)
     {
       throw new SophieClientException("Error getting JSON response from Sophie for request $query.");
