@@ -45,23 +45,23 @@ class menuRenderer extends atoum\test
 
     $menuGroup = new \menuGroup();
 
-    $item = new \menuItem('Homepage', '@homepage', array('filters_parameters' => true));
+    $item = new \menuItem('Homepage', '@homepage');
     $menuGroup->addMenuItem($item);
 
     $latestGroup = new \menuGroup('Latest');
 
     $extraparams = array('arch'=> '1','media'=>'1','source'=>'0');
 
-    $updatesItem = new \menuItem ('Updates', 'rpm/list', array('extra_parameters' => array_merge($extraparams,array('listtype' => 'updates')), 'filters_parameters' => true));
+    $updatesItem = new \menuItem ('Updates', 'rpm/list', array('extra_parameters' => array_merge($extraparams,array('listtype' => 'updates'))));
     $latestGroup->addMenuItem($updatesItem);
 
-    $updatesCanItem = new \menuItem ('Update candidates', 'rpm/list', array('extra_parameters' => array_merge($extraparams, array('listtype' => 'updates_testing')), 'filters_parameters' => true));
+    $updatesCanItem = new \menuItem ('Update candidates', 'rpm/list', array('extra_parameters' => array_merge($extraparams, array('listtype' => 'updates_testing'))));
     $latestGroup->addMenuItem($updatesCanItem);
 
-    $backports = new \menuItem('Backports', 'rpm/list', array('extra_parameters' => array_merge($extraparams,array('listtype' => 'backports')), 'filters_parameters' => true));
+    $backports = new \menuItem('Backports', 'rpm/list', array('extra_parameters' => array_merge($extraparams,array('listtype' => 'backports'))));
     $latestGroup->addMenuItem($backports);
 
-    $backportsCan = new \menuItem('Backport candidates', 'rpm/list', array('extra_parameters' => array_merge($extraparams,array('listtype' => 'backports_testing')), 'filters_parameters' => true));
+    $backportsCan = new \menuItem('Backport candidates', 'rpm/list', array('extra_parameters' => array_merge($extraparams,array('listtype' => 'backports_testing'))));
     $latestGroup->addMenuItem($backportsCan);
 
     $menuGroup->addMenuGroup($latestGroup);
@@ -69,11 +69,11 @@ class menuRenderer extends atoum\test
 
     $browseGroup = new \menuGroup('Browse');
 
-    $groupItem = new \menuItem('By group', 'group/list', array('extra_parameters' => $extraparams, 'filters_parameters' => true));
+    $groupItem = new \menuItem('By group', 'group/list', array('extra_parameters' => $extraparams));
     $browseGroup->addMenuItem($groupItem);
 
 
-    $nameItem = new \menuItem('By name', 'package/list', array('extra_parameters' => $extraparams, 'filters_parameters' => true));
+    $nameItem = new \menuItem('By name', 'package/list', array('extra_parameters' => $extraparams));
     $browseGroup->addMenuItem($nameItem);
 
     $menuGroup->addMenuGroup($browseGroup);

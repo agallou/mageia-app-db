@@ -28,7 +28,7 @@ class menuItemRenderer extends atoum\test
     $configuration = \ProjectConfiguration::getApplicationConfiguration('frontend', 'prod', true);
     $context       = \sfContext::createInstance($configuration);
 
-    $item = new \MenuItem('Homepage', '@homepage', array('filters_parameters' => true));
+    $item = new \MenuItem('Homepage', '@homepage');
 
     $parameters = array(
       'distrelease' => 2010,

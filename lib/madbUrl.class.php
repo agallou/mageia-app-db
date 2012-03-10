@@ -24,10 +24,10 @@ class madbUrl
    */
   public function urlFor($internalUri, madbContext $madbContext = null, $options = array())
   {
-    $absolute       = isset($options['absolute']) && $options['absolute'];
+    $absolute   = isset($options['absolute']) && $options['absolute'];
     $madbConfig = new madbConfig();
     $clean_urls = $madbConfig->get('clean-urls');
-    // remove default filters from URL ?
+    // remove default filters from URL if needed
     $clear_defaults = $clean_urls && (!isset($options['clear_defaults']) || $options['clear_defaults']);
     $parameters = array();
     if (isset($options['extra_parameters']) && is_array($options['extra_parameters']))
@@ -41,17 +41,20 @@ class madbUrl
       {
         $myMadbContext->removeDefaultFilters();
       }
-      if (isset($options['filters_parameters']) && $options['filters_parameters'])
+      // Keep only filters vs all parameters from context
+      if (isset($options['keep_all_parameters']) && $options['keep_all_parameters'])
       {
+        // merge order is important : $parameters last in order to make extra_parameters win in case of conflict
         $parameters = array_merge(
-          $myMadbContext->getFiltersParameters(), 
+          $myMadbContext->getParameterHolder()->getAll(),
           $parameters
         );
       }
       else
       {
+        // merge order is important : $parameters last in order to make extra_parameters win in case of conflict
         $parameters = array_merge(
-          $myMadbContext->getParameterHolder()->getAll(), 
+          $myMadbContext->getFiltersParameters(),
           $parameters
         );
       }
