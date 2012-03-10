@@ -11,6 +11,7 @@
                   $madburl->urlFor( 'package/list', 
                                     $madbcontext, 
                                     array( 
+                                      'keep_all_parameters' => true,
                                       'extra_parameters' => array(
                                         't_group' => implode(',', RpmGroupPeer::getChildGroupsFor($values['the_name'], true, false)),
                                       )
@@ -24,6 +25,7 @@
                   $madburl->urlFor( 'group/list', 
                                     $madbcontext, 
                                     array( 
+                                      'keep_all_parameters' => true,
                                       'extra_parameters' => array(
                                         't_group' => implode(',', RpmGroupPeer::getChildGroupsFor($values['the_name'], true)),
                                         'level' => $level + 1,

@@ -11,9 +11,14 @@ class listAction extends madbActions
     {
       $this->redirect($this->madburl->urlFor( 'package/list', 
                                               $this->madbcontext, 
-                                              array( 
-                                                  'extra_parameters' => array(
+                                              array(
+                                                'keep_all_parameters' => true, // keep t_search
+                                                'extra_parameters' => array(
                                                   't_group' => $this->t_group
+                                                ),
+                                                'ignored_parameters' => array(
+                                                  'level',
+                                                  'group_name'
                                                 )
                                               )
                                             )
