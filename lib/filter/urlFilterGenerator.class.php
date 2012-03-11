@@ -59,9 +59,10 @@ class urlFilterGenerator
     }
 
     $newUrl  = $this->getMadbUrl()->urlFor(sprintf('%s/%s', $parsedUrl['module'], $parsedUrl['action']), null, array(
-      'extra_parameters'   => $parameters,
-      'absolute'           => true,
-      'ignored_parameters' => array('page'),
+      'extra_parameters'    => $parameters,
+      'absolute'            => true,
+      'keep_all_parameters' => true,
+      'ignored_parameters'  => array('page')
     ));
     $changed = (int)(bool)(count(array_diff_assoc($baseParams, $parameters)) + count(array_diff_assoc($parameters, $baseParams)));
 

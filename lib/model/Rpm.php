@@ -26,7 +26,9 @@ class Rpm extends BaseRpm {
     $criteria->add(RpmPeer::DISTRELEASE_ID, $this->getDistrelease()->getId());
     $criteria->add(RpmPeer::ARCH_ID, $this->getArch()->getId());
     $criteria->add(RpmPeer::MEDIA_ID, $this->getMedia()->getId());
-    $criteria->add(RpmPeer::SOURCE_RPM_NAME, $this->getName());
+    // we match the SOURCE_RPM_NAME with the FILENAME tag (rpm.filename) rather than the real filename (rpm.name)
+    // because sometimes the real filename can be wrong
+    $criteria->add(RpmPeer::SOURCE_RPM_NAME, $this->getFilename());
     $rpms = RpmPeer::doSelect($criteria);
     return $rpms;
   }    

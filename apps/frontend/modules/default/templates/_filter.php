@@ -6,7 +6,7 @@
   <?php $values = $filters[$name] ?>
   <span class='filtervalues'><?php echo implode(',', $values); ?></span>
   <?php if (!in_array($name, $unremoveableFilters) && $show_delete): ?>
-    <?php echo link_to(image_tag('icons/cross', array('class' => 'delete')), $madburl->urlFor($moduleaction, $madbcontext, array('ignored_parameters' => array($name)))); ?>
+    <?php echo link_to(image_tag('icons/cross', array('class' => 'delete')), $madburl->urlFor($moduleaction, $madbcontext, array('keep_all_parameters' => true, 'ignored_parameters' => array($name)))); ?>
   <?php endif; ?>
 <?php else : ?>
   <span class='filtervalues'>All</span>

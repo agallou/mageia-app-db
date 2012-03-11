@@ -11,11 +11,11 @@ class NotificationEvent
   // add here more later
 
 
-  protected $logger = null;
+  static protected $logger = null;
 
-  public function setLogger(sfLoggerInterface $logger)
+  static public function setLogger(sfLoggerInterface $logger)
   {
-    $this->logger = $logger;
+    self::$logger = $logger;
   }
 
   /**
@@ -24,7 +24,7 @@ class NotificationEvent
     * it is executed each time there are some new rpm imported in a package $package
     * @param sfEvent $event symfony event object
     */
-  public function rpmImportSlot(sfEvent $event)
+  static public function rpmImportSlot(sfEvent $event)
   {
     $eventType = $event['event'];
     $rpm = $event->getSubject();
@@ -95,7 +95,7 @@ class NotificationEvent
     foreach($subscriptions as $subscription)
     {
       //do something with each matched subscription element
-      $this->createNotification($rpm, $subscription, $eventType);
+      self::createNotification($rpm, $subscription, $eventType);
     }
   }
 
@@ -104,7 +104,7 @@ class NotificationEvent
    * @param sfEvent $event symfony event object
    */
    //TODO check for calls
-  public  function packageCommentsSlot(sfEvent $event)
+  static public function packageCommentsSlot(sfEvent $event)
   {
     //TODO: implement comments subscriptions here
   }
@@ -114,20 +114,20 @@ class NotificationEvent
    * @param Package $package Package that triggered this event
    */
    //TODO check for calls
-  private function getEventTextByEnum($enum)
+  static private function getEventTextByEnum($enum)
   {
     switch($enum)
     {
       case NotificationEvent::UPDATE:
-        return "has been updated";
+        return "Update";
       case NotificationEvent::NEW_VERSION:
-        return "has a new version";
+        return "Backport";
       case NotificationEvent::UPDATE_CANDIDATE:
-        return "has an update candidate";
+        return "Update candidate";
       case NotificationEvent::NEW_VERSION_CANDIDATE:
-        return "has a new version candidate";
+        return "Backport candidate";
       case NotificationEvent::COMMENTS:
-        return "has new comments on its page";
+        return "New comment";
       default:
         throw new madbException("Argument is not a valid NotificationEvent enum");
     }
@@ -140,7 +140,7 @@ class NotificationEvent
    * @param enum $eventType type of event, that happened with the package
    */
    //TODO check for calls
-  private function createNotification($rpm, $subscription, $eventType)
+  static private function createNotification($rpm, $subscription, $eventType)
   {
     //put a notification in a notification spool
     $notification = new Notification();
@@ -149,7 +149,7 @@ class NotificationEvent
     $notification->setEventType($eventType);
     $notification->save();
 
-    $this->log("\n\033[". "1;34" ."m". "Notification triggered." . "\033[0m\n");
+    self::log("\n\033[". "1;34" ."m". "Notification triggered." . "\033[0m\n");
   }
 
 
@@ -163,16 +163,20 @@ class NotificationEvent
    * @return bool
    **/
    //TODO check for calls
-  public function sendMail(Rpm $rpm, Subscription $subscription, $eventType)
+  static public function sendMail(Rpm $rpm, Subscription $subscription, $eventType)
   {
     //get text explanation about that happened with RPM
     $eventText = self::getEventTextByEnum($eventType);
     $madbConfig = new madbConfig();
-    $mail_address = $madbConfig->get('notifications_mail_address');
-    $mail_name = $madbConfig->get('notifications_mail_name');
+    $mailparams = $madbConfig->get('notifications_mail');
+    
+    if (!isset($mailparams['address']) or !isset($mailparams['name']))
+    {
+      throw new madbException("Missing notifications/mail/address and/or notifications/mail/name from madbconf.yml config file.");
+    }
     
     $from = array(
-      $mail_address => $mail_name
+      $mailparams['address'] => $mailparams['name']
     );
 
     $to = array(
@@ -181,25 +185,99 @@ class NotificationEvent
 
     if(key($to) !== NULL)
     {
-      //get mailing prefix 4 user to sort incoming mails by filter
-      $prefix = $subscription->getMailPrefix();
+      $package = $rpm->getPackage();
+      
+      //get mailing prefix for users to sort incoming mails by filter
+      $prefix = isset($mailparams['prefix']) ? $mailparams['prefix'] : "";
+      $prefix .= $subscription->getMailPrefix();
     
-      //FIXME: set better mails here, maybe use Settings
-      $header = "[madb]" . ($prefix ? "[$prefix]" : "") . " " . $rpm->getPackage()->getName() . " $eventText: " . $rpm->getName();
+      // mail subject
+      $header = "$prefix $eventText: %%%RPM%%% (%%%DISTRIBUTION%%% %%%DISTRELEASE%%% %%%ARCH%%% %%%MEDIA%%%)";
       
-      $url = 'http://' . $madbConfig->get('host') . '/package/show/name/' . $rpm->getPackage()->getName() 
-              . '/distrelease/' . $rpm->getDistreleaseId() . '/application/0' 
-              . '/source/' . ($rpm->getPackage()->getIsSource() ? 1 : 0);
+      // URL to package view
+      $url = 'http://' . $madbConfig->get('host') . '/package/show/name/' . $package->getName() 
+              . '/distrelease/' . $rpm->getDistreleaseId() 
+              . '/source/' . ($rpm->getIsSource() ? 1 : 0)
+              . '/arch/' . ($rpm->getArchId()) 
+              . '/application/0';
+
+      // contextual message
+      switch ($eventType)
+      {
+        case NotificationEvent::UPDATE:
+          $context_msg = (isset($mailparams['messages']) and isset($mailparams['messages']['update']))
+                         ? $mailparams['messages']['update']
+                         : "";
+          break;
+        case NotificationEvent::NEW_VERSION:
+          $context_msg = (isset($mailparams['messages']) and isset($mailparams['messages']['new_version']))
+                         ? $mailparams['messages']['new_version']
+                         : "";
+          break;
+        case NotificationEvent::UPDATE_CANDIDATE:
+          $context_msg = (isset($mailparams['messages']) and isset($mailparams['messages']['update_candidate']))
+                         ? $mailparams['messages']['update_candidate']
+                         : "This package is an update candidate. You can help your distribution by testing it and reporting any bugs to the bug tracker before it becomes an official update.";
+          break;
+        case NotificationEvent::NEW_VERSION_CANDIDATE:
+          $context_msg = (isset($mailparams['messages']) and isset($mailparams['messages']['new_version_candidate']))
+                         ? $mailparams['messages']['new_version_candidate']
+                         : "This package is a backport candidate. You can help your distribution by testing it and reporting any bugs to the bug tracker before it becomes an official backport.";
+          break;
+        case NotificationEvent::COMMENTS:
+         //TODO
+        default:
+          throw new madbException("Argument is not a valid NotificationEvent enum");
+      }
+      $context_msg = ($context_msg) ? "$context_msg\n\n" : $context_msg;
       
-      $text = "Package ".$rpm->getPackage()->getName() ." ". $eventText . ": " 
-      . $rpm->getName() . "
-        
-      $url
+      $source_rpm_msg = ($rpm->getIsSource()) ? "This package is a source RPM.\n\n" : "";
+      
+      // mail contents
+      $text = <<<EOF
+Distribution: %%%DISTRIBUTION%%% %%%DISTRELEASE%%% (%%%ARCH%%%), Media: %%%MEDIA%%%
 
-      You received this message because you subscribed to get mail notifications from
-      madb. You can change subscription options in your account settings.
+$url
 
-";
+${context_msg}${source_rpm_msg}Name         : %%%NAME%%%
+Version      : %%%VERSION%%%
+Release      : %%%RELEASE%%%
+Group        : %%%GROUP%%%
+Size         : %%%SIZE%%%
+License      : %%%LICENSE%%%
+URL          : %%%URL%%%
+Summary      : %%%SUMMARY%%%
+Description  :
+%%%DESCRIPTION%%%
+
+______
+You subscribed to receive mail notifications from %%%MADB%%%. You can change subscription options in your account settings.
+
+EOF;
+      
+      $matching = array(
+        'ARCH'          => $rpm->getArch()->getName(),
+        'DESCRIPTION'   => $rpm->getDescription(),
+        'DISTRELEASE'   => $rpm->getDistrelease()->getName(),  
+        'DISTRIBUTION'  => $madbConfig->get('distribution'),  
+        'GROUP'         => $rpm->getRpmGroup()->getName(),
+        'LICENSE'       => $rpm->getLicence(),
+        'MADB'          => $madbConfig->get('name'),  
+        'MEDIA'         => $rpm->getMedia()->getName(),  
+        'NAME'          => $package->getName(),
+        'RELEASE'       => $rpm->getRelease(),
+        'RPM'           => $rpm->getFilename(),  
+        'SIZE'          => $rpm->getSize(),
+        'SUMMARY'       => $rpm->getSummary(),
+        'URL'           => $rpm->getUrl(),  
+        'VERSION'       => $rpm->getVersion(),
+      );
+      
+      foreach ($matching as $match => $replace)
+      {
+        $header = str_replace("%%%$match%%%", $replace, $header);
+        $text = str_replace("%%%$match%%%", $replace, $text);
+      }
 
       // Send mails
       $mailer = sfContext::getInstance()->getMailer();
@@ -227,11 +305,11 @@ class NotificationEvent
    *
    * @return void
    */
-  public function log($message, $priority = sfLogger::INFO)
+  static public function log($message, $priority = sfLogger::INFO)
   {
-    if (null !== $this->logger)
+    if (null !== self::$logger)
     {
-      $this->logger->log($message, $priority);
+      self::$logger->log($message, $priority);
     }
   }
 

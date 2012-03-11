@@ -14,4 +14,5 @@ interface databaseInterface
   public function truncateTable($name);
   public function loadData($tablename, $filename);
 
+  public function updateWithJoin($table, $alias, $update, $from, $where);
 }

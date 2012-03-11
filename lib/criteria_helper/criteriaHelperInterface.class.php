@@ -3,6 +3,5 @@
 interface criteriaHelperInterface
 {
 
-  public function splitPart($text, $delimiter, $count);
-
+  public function substringIndex($text, $delimiter, $count);
 }

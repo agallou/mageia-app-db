@@ -18,4 +18,4 @@ updates_medias: ^.*-updates.*$
 testing_medias: ^.*[-_]testing.*$
 backports_medias: ^.*-backports.*$
 third_party_medias: 
-youri_check_url: http://check.mageia.org/updates.html
+youri_check_url: http://check.mageia.org/cauldron/updates.html

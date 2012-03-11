@@ -4,7 +4,7 @@ class criteriaHelperMysql implements criteriaHelperInterface
 {
 
   /**
-   * splitPart
+   * substringIndex
    * 
    * @param string $text
    * @param string $delimiter
@@ -12,7 +12,7 @@ class criteriaHelperMysql implements criteriaHelperInterface
    *
    * @return void
    */
-  public function splitPart($text, $delimiter, $count)
+  public function substringIndex($text, $delimiter, $count)
   {
     return sprintf('SUBSTRING_INDEX(%s, \'%s\', %s)', $text, $delimiter, $count);
   }

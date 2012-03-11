@@ -4,7 +4,7 @@ class criteriaHelperPostgresql implements criteriaHelperInterface
 {
 
   /**
-   * splitPart
+   * substringIndex
    * 
    * @param string $text
    * @param string $delimiter
@@ -12,26 +12,17 @@ class criteriaHelperPostgresql implements criteriaHelperInterface
    *
    * @return void
    */
-  public function splitPart($text, $delimiter, $count)
+  public function substringIndex($text, $delimiter, $count)
   {
-    return sprintf("split_part(%s, '%s', %s)", $text, $delimiter, $count);
+    if ($count<1)
+    {
+      throw new madbException("\$count must me strictly positive in " . __METHOD__);
+    }
+    $result = sprintf("split_part(%s, '%s', %s)", $text, $delimiter, 1);
+    for ($i=2 ; $i<=$count; $i++)
+    {
+      $result .= " || '/' || " . sprintf("split_part(%s, '%s', %s)", $text, $delimiter, $i);
+    }
+    return $result;
   }
-
-  /**
-   * createTableFromCriteria 
-   * 
-   * @param Criteria $criteria 
-   * @param string   $tablename 
-   * @param bool     $temporary 
-   *
-   * @return string
-   */
-  public function createTableFromCriteria(Criteria $criteria, $tablename, $temporary = true)
-  {
-    $params = array();
-    $sql    = BasePeer::createSelectSql($criteria, $params);
-    $sql    = sprintf('CREATE TEMPORARY TABLE %s AS %s', $this->getTablename(), $sql);
-    return $sql;
-  }
-
 }

@@ -186,7 +186,7 @@ class madbFetchRpmsTask extends madbBaseTask
       }      
     }
     
-    
+
     // Archs :
     $archsSophie = array();
     foreach ($distreleases as $distrelease => $archs)
@@ -541,13 +541,13 @@ class madbFetchRpmsTask extends madbBaseTask
           $criteria->add(DistreleasePeer::NAME, $distrelease);
           $criteria->add(ArchPeer::NAME, $arch);
           $criteria->add(MediaPeer::NAME, $media);
-          $criteria->addSelectColumn(RpmPeer::RPM_PKGID);
-          $criteria->addSelectColumn(RpmPeer::NAME);
+          $criteria->addAsColumn('column1', RpmPeer::RPM_PKGID);
+          $criteria->addAsColumn('column2', RpmPeer::NAME);
           $stmt = RpmPeer::doSelectStmt($criteria);
           $rpmsInDatabase = array();
           foreach ($stmt as $row)
           {
-            $rpmsInDatabase[$row['RPM_PKGID']] = $row['NAME'];
+            $rpmsInDatabase[$row['column1']] = $row['column2'];
           }
           asort($rpmsInDatabase);
           unset($stmt);
@@ -772,28 +772,38 @@ class madbFetchRpmsTask extends madbBaseTask
   protected function updateIsApplicationFromFile($filename)
   {
     $con = Propel::getConnection();
-    
+    $databaseFactory = new databaseFactory($con);
+    $database = $databaseFactory->createDefault();
+
     $sql = "CREATE TEMPORARY TABLE tmpapplications (name VARCHAR(255), PRIMARY KEY (name))";
     $con->exec($sql);
     
-    $sql = "LOAD DATA LOCAL INFILE '$filename' INTO TABLE tmpapplications";
-    $con->exec($sql);
+    $database->loadData('tmpapplications', $filename, false);
     
-    $sql = "UPDATE package SET is_application = 0";
-    $con->exec($sql);
     
-    $sql = "UPDATE package JOIN tmpapplications ON package.name = tmpapplications.name SET package.is_application=1 WHERE package.is_source=0";
+    $sql = "UPDATE package SET is_application = FALSE";
     $con->exec($sql);
+   
     
+    $database->updateWithJoin(
+      'package', 
+      '',
+      'is_application=TRUE', 
+      'tmpapplications',
+      'package.name = tmpapplications.name AND package.is_source=FALSE'
+    );
+
     // source packages of applications are flagged as applications too
-    $sql = <<<EOF
-UPDATE package AS source_package
-JOIN rpm AS source_rpm ON source_package.ID = source_rpm.PACKAGE_ID
-JOIN rpm ON source_rpm.ID = rpm.SOURCE_RPM_ID AND rpm.is_source = FALSE
-JOIN package ON rpm.PACKAGE_ID = package.ID
-SET source_package.is_application = 1
-WHERE package.is_application = 1;"
-EOF;
-    $con->exec($sql);
+    $database->updateWithJoin(
+      'package',
+      'source_package',
+      'is_application = TRUE',
+      'rpm AS source_rpm, rpm, package',
+      'source_package.ID = source_rpm.PACKAGE_ID 
+        AND source_rpm.ID = rpm.SOURCE_RPM_ID 
+        AND rpm.is_source = FALSE 
+        AND rpm.PACKAGE_ID = package.ID 
+        AND package.is_application = TRUE'
+    );
   }
 }

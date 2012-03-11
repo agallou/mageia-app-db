@@ -11,10 +11,10 @@ class menuItem extends atoum\test
 
   public function testConstructParameters()
   {
-    $item = new \menuItem('Homepage', '@homepage', array('filters_parameters' => true));
+    $item = new \menuItem('Homepage', '@homepage');
     $this->assert->string($item->getName())->isEqualTo('Homepage', 'getName works');
     $this->assert->string($item->getInternalUri())->isEqualTo('@homepage', 'getInternalUri works');
-    $this->assert->phpArray($item->getOptions())->isEqualTo( array('filters_parameters' => true), 'getOptions works');
+    $this->assert->phpArray($item->getOptions())->isEqualTo( array(), 'getOptions works');
 
     $item = new \MenuItem('Homepage');
     $this->assert->string($item->getName())->isEqualTo('Homepage', 'getName works');

@@ -34,7 +34,9 @@ class RpmImporter
       $package->setIsSource($is_source);
       $package->setSummary($values['summary']);
       $package->setDescription($values['description']);
-      // TODO : $package->setIsApplication(); => no, treated outside
+      // We set a value for is_application so that the not null constraint is kept
+      // But the real value will be set later
+      $package->setIsApplication(false);
       $package->setMd5Name(md5($package_name));
     }
     

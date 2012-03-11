@@ -24,9 +24,9 @@ class menuGroup extends atoum\test
   public function testGroup()
   {
     $group = new \menuGroup();
-    $item  = new \menuItem('Homepage', '@homepage', array('filters_parameters' => true));
+    $item  = new \menuItem('Homepage', '@homepage');
     $group2 = new \menuGroup('groupname');
-    $group2->addMenuItem(new \menuItem('toto', 'rpm/list', array('filters_parameters' => true)));
+    $group2->addMenuItem(new \menuItem('toto', 'rpm/list'));
 
     $group->addMenuItem($item);
     $group->addMenuGroup($group2);
