@@ -1,5 +1,5 @@
 <?php
 
-class myUser extends madbUser
+class myUser extends madbSecurityUser
 {
 }

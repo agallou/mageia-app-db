@@ -1,7 +1,7 @@
 all:
   version: 0.3alpha
   sf_guard_plugin:
-    profile_class: User
+    profile_class: MadbUser
     profile_field_name: sf_guard_user_id
     signin_form: madbFormSignin
   user:

@@ -58,11 +58,11 @@ propel:
     is_dev_version:                                                    { type: boolean, required: true, default: false }
     _uniques:
       distrelease__unique_name:                                        [ name ]
-  user:
+  madb_user:
     id:                                                                ~
     sf_guard_user_id:                                                  { type:integer, foreignTable: sf_guard_user, foreignReference: id, required: true, onDelete: cascade }
-    first_name:                                                        { type: varchar(20), required: true }
-    last_name:                                                         { type: varchar(20), required: true }
+    first_name:                                                        { type: varchar(20), required: false }
+    last_name:                                                         { type: varchar(20), required: false }
     mail:                                                              { type: varchar(45) }
     _indexes:
       unique_login:                                                    [ last_name ]
@@ -71,12 +71,12 @@ propel:
   user_comments_package:
     id:                                                                ~
     package_id:                                                        { type: integer, required: true, foreignTable: package, foreignReference: id }
-    user_id:                                                           { type: integer, required: true, foreignTable: user, foreignReference: id }
+    madb_user_id:                                                      { type: integer, required: true, foreignTable: madb_user, foreignReference: id }
     comment:                                                           { type: longvarchar, required: true }
     created_at:                                                        ~
     _indexes:
-      fk_user_comment_application_application1:                        [ package_id ]
-      fk_user_comment_application_user1:                               [ user_id ]
+      fk_user_comments_package_package1:                               [ package_id ]
+      fk_user_comments_package_madb_user1:                             [ madb_user_id ]
   rpm_group:
     id:                                                                ~
     name:                                                              { type: varchar(255), required: true }
@@ -110,13 +110,13 @@ propel:
       fk_package_links_package1:                                       [ package_id ]
   new_version_request:
     id:                                                                ~
-    user_id:                                                           { type: integer, required: true, foreignTable: user, foreignReference: id }
+    madb_user_id:                                                      { type: integer, required: true, foreignTable: madb_user, foreignReference: id }
     package_id:                                                        { type: integer, required: true, foreignTable: package, foreignReference: id }
     distrelease_id:                                                    { type: integer, required: true, foreignTable: distrelease, foreignReference: id }
     version_needed:                                                    { type: varchar(45), required: true }
     status:                                                            { type: varchar(45), required: true }
     _indexes:
-      fk_new_version_request_user1:                                    [ user_id ]
+      fk_new_version_request_madb_user1:                               [ madb_user_id ]
       fk_new_version_request_package1:                                 [ package_id ]
       fk_new_version_request_mga_release1:                             [ distrelease_id ]
   software_request:
@@ -124,40 +124,40 @@ propel:
     name:                                                              { type: varchar(255), required: true }
     url:                                                               { type: varchar(2048), required: true }
     text:                                                              { type: longvarchar, required: true }
-    user_id:                                                           { type: integer, required: true, foreignTable: user, foreignReference: id }
+    madb_user_id:                                                      { type: integer, required: true, foreignTable: madb_user, foreignReference: id }
     backport_to:                                                       longvarchar
     status:                                                            { type: varchar(45), required: true }
     _indexes:
-      fk_software_request_user1:                                       [ user_id ]
+      fk_software_request_madb_user1:                                  [ madb_user_id ]
   user_has_software_request:
-    user_id:                                                           { type: integer, required: true, primaryKey: true, foreignTable: user, foreignReference: id }
+    madb_user_id:                                                      { type: integer, required: true, primaryKey: true, foreignTable: madb_user, foreignReference: id }
     software_request_id:                                               { type: integer, required: true, primaryKey: true, foreignTable: software_request, foreignReference: id }
     _indexes:
-      fk_uhsr_user1:                                                   [ user_id ]
+      fk_uhsr_madb_user1:                                              [ madb_user_id ]
       fk_uhsr_request1:                                                [ software_request_id ]
   user_comments_software_request:
     id:                                                                ~
-    user_id:                                                           { type: integer, required: true, foreignTable: user, foreignReference: id }
+    madb_user_id:                                                      { type: integer, required: true, foreignTable: madb_user, foreignReference: id }
     software_request_id:                                               { type: integer, required: true, foreignTable: software_request, foreignReference: id }
     comment:                                                           { type: longvarchar, required: true }
     created_at:                                                        ~
     _indexes:
-      fk_ucsr_user1:                                                   [ user_id ]
+      fk_ucsr_madb_user1:                                              [ madb_user_id ]
       fk_ucsr_request1:                                                [ software_request_id ]
   user_comments_new_version_request:
     id:                                                                ~
-    user_id:                                                           { type: integer, required: true, foreignTable: user, foreignReference: id }
+    madb_user_id:                                                      { type: integer, required: true, foreignTable: madb_user, foreignReference: id }
     new_version_request_id:                                            { type: integer, required: true, foreignTable: new_version_request, foreignReference: id }
     comment:                                                           { type: longvarchar, required: true }
     created_at:                                                        ~
     _indexes:
-      fk_ucnvr_user1:                                                  [ user_id ]
+      fk_ucnvr_madb_user1:                                             [ madb_user_id ]
       fk_ucnvr_request1:                                               [ new_version_request_id ] 
   user_has_new_version_request:
-    user_id:                                                           { type: integer, required: true, primaryKey: true, foreignTable: user, foreignReference: id }
+    madb_user_id:                                                      { type: integer, required: true, primaryKey: true, foreignTable: madb_user, foreignReference: id }
     new_version_request_id:                                            { type: integer, required: true, primaryKey: true, foreignTable: new_version_request, foreignReference: id }
     _indexes:
-      fk_uhnvr_user1:                                                  [ user_id ]
+      fk_uhnvr_madb_user1:                                             [ madb_user_id ]
       fk_uhnvr_request1:                                               [ new_version_request_id ]
   arch:
     id:                                                                ~
@@ -176,7 +176,7 @@ propel:
       media__unique_name:                                              [ name, vendor ]
   subscription:
     id:                                                                ~
-    user_id:                                                           { type: integer, required: true, foreignTable: user, foreignReference: id }
+    madb_user_id:                                                      { type: integer, required: true, foreignTable: madb_user, foreignReference: id }
     update:                                                            { type: boolean, required: true, default: false }
     new_version:                                                       { type: boolean, required: true, default: false }
     update_candidate:                                                  { type: boolean, required: true, default: false }
@@ -186,7 +186,7 @@ propel:
     mail_prefix:                                                       { type: varchar(45) }
     rss_feed_id:                                                       { type: integer, foreignTable: rss_feed, foreignReference: id }
     _indexes:
-      fk_subscription_user1:                                           [ user_id ]
+      fk_subscription_madb_user1:                                      [ madb_user_id ]
       fk_subscription_rss_feed1:                                       [ rss_feed_id ]
   subscription_element:
     id:                                                                ~
@@ -211,9 +211,9 @@ propel:
     id:                                                                ~
     name:                                                              { type: varchar(45) }
     hash:                                                              { type: varchar(45), required: true }
-    user_id:                                                           { type: integer, required: true, foreignTable: user, foreignReference: id }
+    madb_user_id:                                                      { type: integer, required: true, foreignTable: madb_user, foreignReference: id }
     _indexes:
-      fk_rss_feed_user1:                                               [ user_id ]
+      fk_rss_feed_madb_user1:                                          [ madb_user_id ]
     _uniques:
       hash_UNIQUE:                                                     [ hash ]
   version:

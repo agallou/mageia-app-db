@@ -2,7 +2,7 @@
 
 
 /**
- * Skeleton subclass for representing a row from the 'user' table.
+ * Skeleton subclass for representing a row from the 'madb_user' table.
  *
  * 
  *
@@ -10,9 +10,9 @@
  * application requirements.  This class will only be generated as
  * long as it does not already exist in the output directory.
  *
- * @package    lib.model
+ * @package    propel.generator.lib.model
  */
-class User extends BaseUser {
+class MadbUser extends BaseMadbUser {
 
   public function checkPassword($username, $password, PluginsfGuardUser $user)
   {
@@ -20,5 +20,4 @@ class User extends BaseUser {
     $madbConnector        = $madbConnectorFactory->create(sfConfig::get('app_user_connector'));
     return $madbConnector->checkPassword();
   }
-
-} // User
+} // MadbUser

@@ -5,7 +5,7 @@ class madbUserConnectorFactory
   /**
    * user 
    * 
-   * @var User
+   * @var MadbUser
    */
   private $user;
 
@@ -33,14 +33,14 @@ class madbUserConnectorFactory
   /**
    * __construct 
    * 
-   * @param User              $user 
+   * @param MadbUser          $user 
    * @param PluginsfGuardUser $guardUSer 
    * @param mixed             $username 
    * @param mixed             $password 
    *
    * @return void
    */
-  public function __construct(User $user = null, PluginsfGuardUser $guardUser = null, $username = null, $password = null)
+  public function __construct(MadbUser $user = null, PluginsfGuardUser $guardUser = null, $username = null, $password = null)
   {
     $this->user      = $user;
     $this->guardUser = $guardUser;

@@ -12,7 +12,7 @@ class rssAction extends sfActions
 
     // get all the users rss_feeds
     $rssCriteria = new Criteria();
-    $rssCriteria->add(RssFeedPeer::USER_ID,$userId);
+    $rssCriteria->add(RssFeedPeer::MADB_USER_ID,$userId);
     $this->rssFeeds = RssFeedPeer::doSelect($rssCriteria);
 
     //no feed is selected! redirect to selecting of the feed

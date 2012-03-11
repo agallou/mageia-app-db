@@ -26,7 +26,7 @@ class subscribeAction extends madbActions
 
     // Check if the user has a subscription for this package already
     $criteria = new Criteria();
-    $criteria->add(SubscriptionPeer::USER_ID, $user_id);
+    $criteria->add(SubscriptionPeer::MADB_USER_ID, $user_id);
     $criteria->addJoin(SubscriptionPeer::ID, SubscriptionElementPeer::SUBSCRIPTION_ID);
     $criteria->add(SubscriptionElementPeer::PACKAGE_ID, $package_id);
     $existing_subscription = SubscriptionPeer::doSelectOne($criteria);
@@ -66,7 +66,7 @@ class subscribeAction extends madbActions
       // Add the new subscription
       
       $subscription = new Subscription();
-      $subscription->setUserId($user_id);
+      $subscription->setMadbUserId($user_id);
       // TODO : allow to tweak mail prefix 
       // TODO : allow to choose another notification type (RSS feed for example), or both
       $subscription->setMailNotification(true);

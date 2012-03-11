@@ -31,7 +31,7 @@ class showAction extends madbActions
       $criteria = new Criteria();
       $criteria->addJoin(SubscriptionPeer::ID, SubscriptionElementPeer::SUBSCRIPTION_ID);
       $criteria->add(SubscriptionElementPeer::PACKAGE_ID, $this->package->getId());
-      $criteria->add(SubscriptionPeer::USER_ID, $user_id);
+      $criteria->add(SubscriptionPeer::MADB_USER_ID, $user_id);
       $this->subscription = SubscriptionPeer::doSelectOne($criteria);
       if ($this->subscription)
       {
