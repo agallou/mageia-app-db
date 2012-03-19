@@ -17,8 +17,8 @@ class MadbUserPeer extends BaseMadbUserPeer {
   public static function retrieveByLogin($login)
   {
     $criteria = new Criteria();
-    $criteria->add(UserPeer::LOGIN, $login);
-    return UserPeer::doSelectOne($criteria);
+    $criteria->add(MadbUserPeer::LOGIN, $login);
+    return MadbUserPeer::doSelectOne($criteria);
   }
 
 
