@@ -23,7 +23,7 @@ class rssAction extends sfActions
     // but first let's check if user "selected" his own feed :D
     // and if not show him Select
     // TODO: see previous TODO
-    // if($selectedFeed->getUserId() != $userId)  return "Select";
+    // if($selectedFeed->getMadbUserId() != $userId)  return "Select";
 
     $this->feed = $selectedFeed;
     //dummy array for rss
