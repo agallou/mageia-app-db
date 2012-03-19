@@ -180,7 +180,7 @@ class NotificationEvent
     );
 
     $to = array(
-      $subscription->getUser()->getMail() => $subscription->getUser()->getFirstName()." ".$subscription->getUser()->getLastName()
+      $subscription->getMadbUser()->getMail() => $subscription->getMadbUser()->getFirstName()." ".$subscription->getMadbUser()->getLastName()
     );
 
     if(key($to) !== NULL)
