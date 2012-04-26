@@ -230,20 +230,21 @@ EOF;
     $stmt = BasePeer::doSelect($criteria);
     foreach ($stmt as $row)
     {
-      $row['name'] = addslashes($row['name']);
-      $row['summary'] = addslashes($row['summary']);
-      try
+      // first check that it's not already in the table
+      // because postgresql doesn't handle INSERT IGNORE
+      $sql = "SELECT id FROM $tablename WHERE id='$row[id]'";
+      $stmt2 = $con->query($sql);
+      if (!$stmt2->fetch())
       {
+        $row['name'] = addslashes($row['name']);
+        $row['summary'] = addslashes($row['summary']);
+
         $sql = <<<EOF
 INSERT INTO $tablename
   (id, name, summary, dev_version, available, source)
   VALUES ($row[id], '$row[name]', '$row[summary]', '$row[dev_version]', '$row[available]', '$row[source]');
 EOF;
         $con->exec($sql);
-      }
-      catch (PDOException $e)
-      {
-        // do nothing, this is a way to emulate INSERT IGNORE
       }
     }
   
