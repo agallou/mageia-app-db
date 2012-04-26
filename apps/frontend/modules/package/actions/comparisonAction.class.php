@@ -55,22 +55,25 @@ EOF;
       $con->exec($sql);
       
       $available_versions = $this->getYouriVersions();
-      $i=0;
-      foreach ($available_versions as $row)
+      if ($available_versions)
       {
-        if ($i == 1000)
+        $i=0;
+        foreach ($available_versions as $row)
         {
-          $con->exec(rtrim($sql, ','));
-          $i=0;
+          if ($i == 1000)
+          {
+            $con->exec(rtrim($sql, ','));
+            $i=0;
+          }
+          if ($i == 0)
+          {
+            $sql = "INSERT INTO $tablename_available_raw (src_package, available, source) VALUES ";
+          }
+          $sql .= "('$row[0]', '$row[1]', '$row[2]'),";
+          $i++;
         }
-        if ($i == 0)
-        {
-          $sql = "INSERT INTO $tablename_available_raw (src_package, available, source) VALUES ";
-        }
-        $sql .= "('$row[0]', '$row[1]', '$row[2]'),";
-        $i++;
+        $con->exec(rtrim($sql, ',')); 
       }
-      $con->exec(rtrim($sql, ',')); 
     }
     
     
