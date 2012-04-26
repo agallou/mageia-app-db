@@ -317,19 +317,21 @@ EOF;
     if ($youri_url !== null)
     {
       $dom = new DOMDocument();
-      $html = $dom->loadHTMLFile($youri_url);
-      $dom->preserveWhiteSpace = false; 
-      $table = $dom->getElementsByTagName('table')->item(0);
-      foreach ($table->getElementsByTagName('tr') as $row)
+      if (@$dom->loadHTMLFile($youri_url))
       {
-        $fields = $row->getElementsByTagName('td');
-        if ($fields->length)
+        $dom->preserveWhiteSpace = false; 
+        $table = $dom->getElementsByTagName('table')->item(0);
+        foreach ($table->getElementsByTagName('tr') as $row)
         {
-          $src_package = strtolower($fields->item(0)->firstChild->nodeValue);
-          $available = $fields->item(4)->nodeValue;
-          $source = $fields->item(5)->nodeValue;
+          $fields = $row->getElementsByTagName('td');
+          if ($fields->length)
+          {
+            $src_package = strtolower($fields->item(0)->firstChild->nodeValue);
+            $available = $fields->item(4)->nodeValue;
+            $source = $fields->item(5)->nodeValue;
 
-          $list[] = array($src_package, $available, $source);
+            $list[] = array($src_package, $available, $source);
+          }
         }
       }
     }
