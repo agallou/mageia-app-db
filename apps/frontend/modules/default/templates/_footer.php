@@ -5,7 +5,8 @@
   <?php unset($params['module']) ?>
   <?php unset($params['action']) ?>
   <?php $params['sf_culture'] = $culture ?> 
-  <?php echo link_to($culture, url_for(sprintf('%s/%s', $sf_params->get('module'), $sf_params->get('action'))) . '?' .http_build_query($params)); ?>
+  <?php // FIXME: should be nice links, not ugly ones ?>
+  <?php // echo link_to($culture, url_for(sprintf('%s/%s', $sf_params->get('module'), $sf_params->get('action'))) . '?' .http_build_query($params)); ?>
 <?php endforeach; ?>
 -
 Synchronized from <a href="http://sophie.zarb.org">http://sophie.zarb.org</a>
