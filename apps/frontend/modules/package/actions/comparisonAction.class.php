@@ -55,22 +55,25 @@ EOF;
       $con->exec($sql);
       
       $available_versions = $this->getYouriVersions();
-      $i=0;
-      foreach ($available_versions as $row)
+      if ($available_versions)
       {
-        if ($i == 1000)
+        $i=0;
+        foreach ($available_versions as $row)
         {
-          $con->exec(rtrim($sql, ','));
-          $i=0;
+          if ($i == 1000)
+          {
+            $con->exec(rtrim($sql, ','));
+            $i=0;
+          }
+          if ($i == 0)
+          {
+            $sql = "INSERT INTO $tablename_available_raw (src_package, available, source) VALUES ";
+          }
+          $sql .= "('$row[0]', '$row[1]', '$row[2]'),";
+          $i++;
         }
-        if ($i == 0)
-        {
-          $sql = "INSERT INTO $tablename_available_raw (src_package, available, source) VALUES ";
-        }
-        $sql .= "('$row[0]', '$row[1]', '$row[2]'),";
-        $i++;
+        $con->exec(rtrim($sql, ',')); 
       }
-      $con->exec(rtrim($sql, ',')); 
     }
     
     
@@ -230,20 +233,21 @@ EOF;
     $stmt = BasePeer::doSelect($criteria);
     foreach ($stmt as $row)
     {
-      $row['name'] = addslashes($row['name']);
-      $row['summary'] = addslashes($row['summary']);
-      try
+      // first check that it's not already in the table
+      // because postgresql doesn't handle INSERT IGNORE
+      $sql = "SELECT id FROM $tablename WHERE id='$row[id]'";
+      $stmt2 = $con->query($sql);
+      if (!$stmt2->fetch())
       {
+        $row['name'] = addslashes($row['name']);
+        $row['summary'] = addslashes($row['summary']);
+
         $sql = <<<EOF
 INSERT INTO $tablename
   (id, name, summary, dev_version, available, source)
   VALUES ($row[id], '$row[name]', '$row[summary]', '$row[dev_version]', '$row[available]', '$row[source]');
 EOF;
         $con->exec($sql);
-      }
-      catch (PDOException $e)
-      {
-        // do nothing, this is a way to emulate INSERT IGNORE
       }
     }
   
@@ -313,19 +317,21 @@ EOF;
     if ($youri_url !== null)
     {
       $dom = new DOMDocument();
-      $html = $dom->loadHTMLFile($youri_url);
-      $dom->preserveWhiteSpace = false; 
-      $table = $dom->getElementsByTagName('table')->item(0);
-      foreach ($table->getElementsByTagName('tr') as $row)
+      if (@$dom->loadHTMLFile($youri_url))
       {
-        $fields = $row->getElementsByTagName('td');
-        if ($fields->length)
+        $dom->preserveWhiteSpace = false; 
+        $table = $dom->getElementsByTagName('table')->item(0);
+        foreach ($table->getElementsByTagName('tr') as $row)
         {
-          $src_package = strtolower($fields->item(0)->firstChild->nodeValue);
-          $available = $fields->item(4)->nodeValue;
-          $source = $fields->item(5)->nodeValue;
+          $fields = $row->getElementsByTagName('td');
+          if ($fields->length)
+          {
+            $src_package = strtolower($fields->item(0)->firstChild->nodeValue);
+            $available = $fields->item(4)->nodeValue;
+            $source = $fields->item(5)->nodeValue;
 
-          $list[] = array($src_package, $available, $source);
+            $list[] = array($src_package, $available, $source);
+          }
         }
       }
     }
