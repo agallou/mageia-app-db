@@ -57,6 +57,9 @@ class madbInitTask extends madbBaseTask
       file_put_contents(sfConfig::get('sf_config_dir') . DIRECTORY_SEPARATOR . 'databases.yml', $databases);
       file_put_contents(sfConfig::get('sf_config_dir') . DIRECTORY_SEPARATOR . 'propel.ini', $propel);
     }
+    
+    $task = new madbCleanPropelGeneratedFilesTask($this->dispatcher, $this->formatter);
+    $task->run();
 
     $task = new sfPropelBuildAllTask($this->dispatcher, $this->formatter);
     $tOptions = array();
