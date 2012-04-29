@@ -13,6 +13,7 @@ class madbCleanPropelGeneratedFilesTask extends madbBaseTask
   protected function execute($arguments = array(), $options = array())
   {
     $paths = array(
+      'data/sql/',
       'lib/filter/base/',
       'lib/form/base/',
       'lib/model/map/',
