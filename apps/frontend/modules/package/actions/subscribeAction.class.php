@@ -115,7 +115,8 @@ class subscribeAction extends madbActions
         $subscription_element->setPackageId($package_id);
         if (isset($element['release']))
         {
-          $subscription_element->setDistreleaseId(DistreleasePeer::retrieveByName($element['release']));
+          $distrelease = DistreleasePeer::retrieveByName($element['release']);
+          $subscription_element->setDistreleaseId($distrelease->getId());
         }
         if (isset($element['arch']))
         {

@@ -48,7 +48,8 @@ class showAction extends madbActions
           } 
           if (null !== $subscriptionElement->getDistreleaseId())
           {
-            $parameters['release'][$subscriptionElement->getDistreleaseName()] = $subscriptionElement->getDistreleaseName();
+            $distrelease = DistreleasePeer::retrieveByPK($subscriptionElement->getDistreleaseId());
+            $parameters['release'][$distrelease->getName()] = $distrelease->getName();
           } 
           if (null !== $subscriptionElement->getArchId())
           {
