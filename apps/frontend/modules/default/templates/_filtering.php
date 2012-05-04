@@ -12,7 +12,7 @@
 ); ?>
 
 <?php $otherFilters = array('group', 'source', 'media'); ?>
-<?php $order = array('distrelease', 'application', 'arch'); ?>
+<?php $order = array('release', 'application', 'arch'); ?>
 <?php foreach ($order as $name) : ?>
   <?php $formField = $form[$name]; ?>
   <?php if (!in_array($name, $otherFilters)): ?>

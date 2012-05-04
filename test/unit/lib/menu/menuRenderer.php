@@ -31,7 +31,7 @@ class menuRenderer extends atoum\test
     $context       = \sfContext::createInstance($configuration);
 
     $parameters = array(
-      'distrelease' => 2010,
+      'release' => 2010,
       'application' => 1,
     );
     $parameterHolder = new \madbParameterHolder();
@@ -83,21 +83,21 @@ class menuRenderer extends atoum\test
 
     $expected = <<<EOF
 <ul>
-<li><a href="/index.php/default/news/distrelease/2010">Homepage</a></li>
+<li><a href="/index.php/default/news/release/2010">Homepage</a></li>
 <li>
 <h2>Latest</h2>
 <ul>
-<li><a href="/index.php/rpm/list/distrelease/2010/arch/1/media/1/source/0/listtype/updates">Updates</a></li>
-<li><a href="/index.php/rpm/list/distrelease/2010/arch/1/media/1/source/0/listtype/updates_testing">Update candidates</a></li>
-<li><a href="/index.php/rpm/list/distrelease/2010/arch/1/media/1/source/0/listtype/backports">Backports</a></li>
-<li><a href="/index.php/rpm/list/distrelease/2010/arch/1/media/1/source/0/listtype/backports_testing">Backport candidates</a></li>
+<li><a href="/index.php/rpm/list/release/2010/arch/1/media/1/source/0/listtype/updates">Updates</a></li>
+<li><a href="/index.php/rpm/list/release/2010/arch/1/media/1/source/0/listtype/updates_testing">Update candidates</a></li>
+<li><a href="/index.php/rpm/list/release/2010/arch/1/media/1/source/0/listtype/backports">Backports</a></li>
+<li><a href="/index.php/rpm/list/release/2010/arch/1/media/1/source/0/listtype/backports_testing">Backport candidates</a></li>
 </ul>
 </li>
 <li>
 <h2>Browse</h2>
 <ul>
-<li><a href="/index.php/group/list/distrelease/2010/arch/1/media/1/source/0">By group</a></li>
-<li><a href="/index.php/package/list/distrelease/2010/arch/1/media/1/source/0">By name</a></li>
+<li><a href="/index.php/group/list/release/2010/arch/1/media/1/source/0">By group</a></li>
+<li><a href="/index.php/package/list/release/2010/arch/1/media/1/source/0">By name</a></li>
 </ul>
 </li>
 </ul>

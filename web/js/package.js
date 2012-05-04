@@ -42,9 +42,9 @@ $(document).ready(function(){
 
 $(document).ready(function(){
 
-  $('#subscribe_distrelease').selectToCheckboxes({
-    apply: function(d){afterCheckboxChange_subscribeForm(d, 'distrelease');},
-    defaults: getAllVals_subscribeForm($('#subscribe_distrelease option[selected=selected]')),
+  $('#subscribe_release').selectToCheckboxes({
+    apply: function(d){afterCheckboxChange_subscribeForm(d, 'release');},
+    defaults: getAllVals_subscribeForm($('#subscribe_release option[selected=selected]')),
     searchfield: false,
     multi: true
   });
@@ -99,7 +99,7 @@ function getSubscriptionParams()
 {
   var params = new Object;
   params['type'] = getValuesFromCheckboxes($('input[type=checkbox][name=subscribe_type]:checked'));
-  params['distrelease'] = getValuesFromCheckboxes($('input[type=checkbox][name=subscribe_distrelease]:checked'));
+  params['release'] = getValuesFromCheckboxes($('input[type=checkbox][name=subscribe_release]:checked'));
   params['arch'] = getValuesFromCheckboxes($('input[type=checkbox][name=subscribe_arch]:checked'));
   params['media'] = getValuesFromCheckboxes($('input[type=checkbox][name=subscribe_media]:checked'));
   return params;

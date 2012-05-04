@@ -48,7 +48,7 @@ class urlFilterGenerator extends atoum\test
   protected function getExtraParams()
   {
     return array (
-      'distrelease' => 
+      'release' => 
       array (
         0 => '1',
       ),

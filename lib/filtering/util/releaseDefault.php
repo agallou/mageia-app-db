@@ -1,6 +1,6 @@
 <?php
 
-class distreleaseDefault
+class releaseDefault
 {
 
   /**
@@ -10,11 +10,11 @@ class distreleaseDefault
   {
     if ($latest = DistreleasePeer::getLatest())
     {
-      return $latest->getId();
+      return $latest->getName();
     }
     elseif ($devels = DistreleasePeer::getDevels())
     {
-      return $devels[0]->getId();
+      return $devels[0]->getName();
     }
     return null;
   }

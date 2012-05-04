@@ -54,7 +54,7 @@
   <br style="clear:both;"/>
   <br/>
   
-  <?php foreach (array('distrelease', 'arch', 'media') as $fieldName) : ?>
+  <?php foreach (array('release', 'arch', 'media') as $fieldName) : ?>
     <?php $formField = $subscribe_form[$fieldName]?>
     <?php echo $formField->renderLabel() ?>
     <?php echo $formField->render() ?>

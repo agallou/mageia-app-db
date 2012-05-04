@@ -14,7 +14,7 @@ class subscribeAction extends madbActions
         or $this->returnErrorUnless(in_array($real_action, array('add', 'remove')))
         or $this->returnErrorUnless($request->hasParameter('package_id'), 'Package id is required')
         or $this->returnErrorUnless($real_action == 'remove' || isset($params['type']))
-        or $this->returnErrorUnless($real_action == 'remove' || isset($params['distrelease']))
+        or $this->returnErrorUnless($real_action == 'remove' || isset($params['release']))
         or $this->returnErrorUnless($real_action == 'remove' || isset($params['arch']))
         or $this->returnErrorUnless($real_action == 'remove' || isset($params['media']))
         or $this->returnErrorUnless($package=PackagePeer::retrieveByPK($package_id), 'No package found for id ' . $package_id)
@@ -104,7 +104,7 @@ class subscribeAction extends madbActions
       $subscription->save();
       
       $elements = array(array()); // empty array means "all archs, all distreleases, all media"
-      foreach (array('distrelease', 'arch', 'media') as $param)
+      foreach (array('release', 'arch', 'media') as $param)
       {
         $elements = $this->updateElementsWithParamValues($elements, $param, $params[$param]);
       }
@@ -113,9 +113,9 @@ class subscribeAction extends madbActions
         $subscription_element = new SubscriptionElement();
         $subscription_element->setSubscription($subscription);
         $subscription_element->setPackageId($package_id);
-        if (isset($element['distrelease']))
+        if (isset($element['release']))
         {
-          $subscription_element->setDistreleaseId($element['distrelease']);
+          $subscription_element->setDistreleaseId(DistreleasePeer::retrieveByName($element['release']));
         }
         if (isset($element['arch']))
         {

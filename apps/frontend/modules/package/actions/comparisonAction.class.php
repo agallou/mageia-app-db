@@ -12,8 +12,8 @@ class comparisonAction extends madbActions
       $page = 1;
     }
     
-    $keyvalue = $this->madbcontext->getRealFilterValue('distrelease');
-    $distrelease = DistreleasePeer::retrieveByPK(array_shift($keyvalue));
+    $keyvalue = $this->madbcontext->getRealFilterValue('release');
+    $distrelease = DistreleasePeer::retrieveByName(array_shift($keyvalue));
     if (!$distrelease)
     {
       $this->message = "There is no data in database.";
@@ -205,7 +205,7 @@ EOF;
     // Add new packages from the development release to the list
     $dev_context = $this->getMadbContext();
     // FIXME : cleaner modification of the distrelease filter
-    $dev_context->getParameterHolder()->set('distrelease', $dev_release->getId());
+    $dev_context->getParameterHolder()->set('release', $dev_release->getId());
     $criteriaFactory = new criteriaFactory();
     $criteria = $criteriaFactory->createFromContext($dev_context, filterPerimeters::RPM);
     $criteria->addJoin(RpmPeer::MEDIA_ID, MediaPeer::ID);

@@ -1,5 +1,5 @@
 <?php 
-class distreleaseCriteriaFilter extends baseCriteriaFilterChoice
+class releaseCriteriaFilter extends baseCriteriaFilterChoice
 {
 
   public function getPerimeter()
@@ -13,7 +13,7 @@ class distreleaseCriteriaFilter extends baseCriteriaFilterChoice
    */
   public function getDefault()
   {
-    $default = new distreleaseDefault();
+    $default = new releaseDefault();
     return $default->getDefault();
   }
 
@@ -28,7 +28,7 @@ class distreleaseCriteriaFilter extends baseCriteriaFilterChoice
     {
       if ($distrelease->getIsDevVersion())
       {
-        $values[$distrelease->getId()] = $distrelease->getName();
+        $values[$distrelease->getName()] = $distrelease->getName();
       }
     }
     // Then the latest stable
@@ -36,15 +36,15 @@ class distreleaseCriteriaFilter extends baseCriteriaFilterChoice
     {
       if ($distrelease->getIsLatest())
       {
-        $values[$distrelease->getId()] = $distrelease->getName();
+        $values[$distrelease->getName()] = $distrelease->getName();
       }
     }
     // Then descending order by
     foreach ($distreleases as $distrelease)
     {
-      if (!array_key_exists($distrelease->getId(), $values))
+      if (!array_key_exists($distrelease->getName(), $values))
       {
-        $values[$distrelease->getId()] = $distrelease->getName();
+        $values[$distrelease->getName()] = $distrelease->getName();
       }
     }
     return $values;
@@ -62,7 +62,8 @@ class distreleaseCriteriaFilter extends baseCriteriaFilterChoice
     $criterion = null;
     foreach ($value as $val)
     {
-      $unCriterion = $criteria->getNewCriterion(RpmPeer::DISTRELEASE_ID, $val);
+      $distrelease = DistreleasePeer::retrieveByName($val);
+      $unCriterion = $criteria->getNewCriterion(RpmPeer::DISTRELEASE_ID, $distrelease->getId());
       if (is_null($criterion))
       {
         $criterion = $unCriterion;
@@ -78,7 +79,7 @@ class distreleaseCriteriaFilter extends baseCriteriaFilterChoice
 
   public function getCode()
   {
-    return 'distrelease';
+    return 'release';
   }
 
   /**

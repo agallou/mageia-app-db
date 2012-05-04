@@ -10,9 +10,9 @@ $(document).ready(function(){
     apply: function(d){afterCheckboxChange(d);},
     defaults: getAllVals($('#filtering_group option[selected=selected]'))
   });
-  $('#filtering_distrelease').selectToCheckboxes({
+  $('#filtering_release').selectToCheckboxes({
     apply: function(d){afterCheckboxChange(d);},
-    defaults: getAllVals($('#filtering_distrelease option[selected=selected]')),
+    defaults: getAllVals($('#filtering_release option[selected=selected]')),
     searchfield: false,
     multi: false
   });
@@ -66,7 +66,7 @@ function afterCheckboxChange(changed)
 function getFiltering()
 {
   var filtering = new Object;
-  filtering['distrelease'] = getValuesFromCheckboxes($('input[type=checkbox][name=filtering_distrelease]:checked'));
+  filtering['release'] = getValuesFromCheckboxes($('input[type=checkbox][name=filtering_release]:checked'));
   filtering['application'] = getValuesFromCheckboxes($('input[type=checkbox][name=filtering_application]:checked'));
   filtering['group'] = getValuesFromCheckboxes($('input[type=checkbox][name=filtering_group]:checked'));
   filtering['arch'] = getValuesFromCheckboxes($('input[type=checkbox][name=filtering_arch]:checked'));

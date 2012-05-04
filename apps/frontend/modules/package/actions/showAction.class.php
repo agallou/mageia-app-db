@@ -36,7 +36,7 @@ class showAction extends madbActions
       if ($this->subscription)
       {
         $parameters = array(
-          'distrelease' => array(),
+          'release' => array(),
           'arch' => array(),
           'media' => array()
         );
@@ -48,7 +48,7 @@ class showAction extends madbActions
           } 
           if (null !== $subscriptionElement->getDistreleaseId())
           {
-            $parameters['distrelease'][$subscriptionElement->getDistreleaseId()] = $subscriptionElement->getDistreleaseId();
+            $parameters['release'][$subscriptionElement->getDistreleaseName()] = $subscriptionElement->getDistreleaseName();
           } 
           if (null !== $subscriptionElement->getArchId())
           {
@@ -69,10 +69,10 @@ class showAction extends madbActions
       }
       else
       {
-        $keyvalue_distrelease = $this->madbcontext->getRealFilterValue('distrelease');
+        $keyvalue_release = $this->madbcontext->getRealFilterValue('release');
         $keyvalue_arch = $this->madbcontext->getRealFilterValue('arch');
         $parameters = array(
-          'distrelease' => array_shift($keyvalue_distrelease),
+          'release' => array_shift($keyvalue_release),
           'arch' => array_shift($keyvalue_arch)
         );
       }
@@ -80,7 +80,7 @@ class showAction extends madbActions
       $parameterHolder->add($parameters);
       $subscribe_form_madbcontext = new madbContext($parameterHolder);
       $filtersIteratorFactory = new filtersIteratorFactory();
-      $filtersIterator = $filtersIteratorFactory->create(array('distrelease', 'media', 'arch'));
+      $filtersIterator = $filtersIteratorFactory->create(array('release', 'media', 'arch'));
       $this->subscribe_form = formFactory::create($filtersIterator, 'subscribe_', $subscribe_form_madbcontext, false);
 
       // subscription type

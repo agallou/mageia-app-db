@@ -22,7 +22,7 @@ class showAction extends madbActions
     $criteria->addAscendingOrderByColumn(RpmPeer::IS_SOURCE);  
     $criteria->addAscendingOrderByColumn(RpmPeer::MEDIA_ID);  
     $criteria->addAscendingOrderByColumn(RpmPeer::ARCH_ID);  
-    
+
     $this->rpms = RpmPeer::doSelect($criteria);
     $this->forward404Unless($this->rpms, 'No RPM found for this name or pkgid');
     if (count($this->rpms) > 1) 

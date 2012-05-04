@@ -31,7 +31,7 @@ class menuItemRenderer extends atoum\test
     $item = new \MenuItem('Homepage', '@homepage');
 
     $parameters = array(
-      'distrelease' => 2010,
+      'release' => 2010,
       'application' => 1,
     );
     $parameterHolder = new \madbParameterHolder();
@@ -41,11 +41,11 @@ class menuItemRenderer extends atoum\test
 
     $renderer = new \menuItemRenderer($madbcontext, $madbUrl);
     $expected = <<<EOF
-<li><a href="/default/news/distrelease/2010">Homepage</a></li>
+<li><a href="/default/news/release/2010">Homepage</a></li>
 EOF;
 
     $expectedCurrent = <<<EOF
-<li class="current"><a href="/default/news/distrelease/2010">Homepage</a></li>
+<li class="current"><a href="/default/news/release/2010">Homepage</a></li>
 EOF;
 
     $this->assert->string($renderer->render($item))->isEqualTo($expected, 'render if not current (is default value) works');
