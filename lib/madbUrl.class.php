@@ -83,7 +83,7 @@ class madbUrl
             'name'        => $rpm->getName(),
             'source'      => $rpm->getIsSource(),
             'release'     => $rpm->getDistrelease()->getName(),
-            'arch'        => $rpm->getArchId(),
+            'arch'        => $rpm->getArch()->getName(),
             't_media' => $rpm->getMediaId()
           ),
           'clear_defaults' => false  

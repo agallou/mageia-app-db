@@ -120,7 +120,8 @@ class subscribeAction extends madbActions
         }
         if (isset($element['arch']))
         {
-          $subscription_element->setArchId($element['arch']);
+          $arch = ArchPeer::retrieveByName($element['arch']);
+          $subscription_element->setArchId($arch->getId());
         }
         if (isset($element['media']))
         {

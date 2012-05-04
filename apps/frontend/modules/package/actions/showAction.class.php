@@ -53,7 +53,8 @@ class showAction extends madbActions
           } 
           if (null !== $subscriptionElement->getArchId())
           {
-            $parameters['arch'][$subscriptionElement->getArchId()] = $subscriptionElement->getArchId();
+            $arch = ArchPeer::retrieveByPK($subscriptionElement->getArchId());
+            $parameters['arch'][$arch->getName()] = $arch->getName();
           }
         }
         foreach ($parameters as $key => $value)

@@ -12,7 +12,7 @@ class archCriteriaFilter extends baseCriteriaFilterChoice
     $archs = ArchPeer::listByNameLike('i_86');
     if (!empty($archs))
     {
-      return $archs[0]->getId();
+      return $archs[0]->getName();
     }
     else
     {
@@ -28,7 +28,7 @@ class archCriteriaFilter extends baseCriteriaFilterChoice
       //TODO some callback to a statement.
       foreach ($archs as $arch)
       {
-        $values[$arch->getId()] = $arch->getName();
+        $values[$arch->getName()] = $arch->getName();
       }
     }
     return $values;
@@ -43,7 +43,24 @@ class archCriteriaFilter extends baseCriteriaFilterChoice
    */
   protected function doFilterChoice(Criteria $criteria, $value)
   {
-    $criteria->addAnd(RpmPeer::ARCH_ID, $value, Criteria::IN);
+    foreach ($value as $val)
+    {
+      $arch = ArchPeer::retrieveByName($val);
+      if (!$arch)
+      {
+        throw new baseCriteriaFilterException("Unknown value '$val' for filter '".$this->getCode()."'");
+      }
+      $unCriterion = $criteria->getNewCriterion(RpmPeer::ARCH_ID, $arch->getId());
+      if (is_null($criterion))
+      {
+        $criterion = $unCriterion;
+      }
+      else
+      {
+        $criterion->addOr($unCriterion);
+      }
+    }
+    $criteria->addAnd($criterion);
     return $criteria;
   }
 

@@ -63,6 +63,10 @@ class releaseCriteriaFilter extends baseCriteriaFilterChoice
     foreach ($value as $val)
     {
       $distrelease = DistreleasePeer::retrieveByName($val);
+      if (!$distrelease)
+      {
+        throw new baseCriteriaFilterException("Unknown value '$val' for filter '".$this->getCode()."'");
+      }
       $unCriterion = $criteria->getNewCriterion(RpmPeer::DISTRELEASE_ID, $distrelease->getId());
       if (is_null($criterion))
       {
