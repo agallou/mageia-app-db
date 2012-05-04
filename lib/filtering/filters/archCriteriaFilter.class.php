@@ -43,6 +43,7 @@ class archCriteriaFilter extends baseCriteriaFilterChoice
    */
   protected function doFilterChoice(Criteria $criteria, $value)
   {
+    $criterion = null;
     foreach ($value as $val)
     {
       $arch = ArchPeer::retrieveByName($val);
