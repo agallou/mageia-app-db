@@ -23,7 +23,15 @@ class madbActions extends sfActions
   protected function getCriteria($perimeter)
   {
     $criteriaFactory = new criteriaFactory();
-    return $criteriaFactory->createFromContext($this->getMadbContext(), $perimeter);
+    try {
+      $criteria = $criteriaFactory->createFromContext($this->getMadbContext(), $perimeter);
+    }
+    catch (baseCriteriaFilterException $e)
+    {
+      $this->getRequest()->setAttribute('message404', $e->getMessage());
+      $this->forward404();
+    }
+    return $criteria;
   }
 
   protected function getMadbUrl()
