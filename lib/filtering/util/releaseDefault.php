@@ -9,8 +9,8 @@ class releaseDefault
   public function getDefault()
   {
     if ($latest = DistreleasePeer::getLatest())
-    {
-      return $latest->getName();
+    {      
+      return $latest->getMetaDistrelease()->getName();
     }
     elseif ($devels = DistreleasePeer::getDevels())
     {
