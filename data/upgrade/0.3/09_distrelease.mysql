@@ -1,0 +1,1 @@
+ALTER TABLE `distrelease` ADD `is_previous` TINYINT NOT NULL DEFAULT '0' AFTER `is_latest`;

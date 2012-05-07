@@ -13,6 +13,7 @@ exclude_rpms:
 devel_releases: 
   - cauldron
 latest_stable_release: '1'
+previous_stable_release:
 
 updates_medias: ^.*-updates.*$
 testing_medias: ^.*[-_]testing.*$

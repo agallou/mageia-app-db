@@ -20,6 +20,7 @@ exclude_rpms:
 devel_releases:
   - cooker
 latest_stable_release: '2011.0'
+previous_stable_release: '2010.2'
 
 updates_medias: 
   - ^.*-updates.*$

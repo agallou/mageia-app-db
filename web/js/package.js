@@ -3,7 +3,7 @@ $(document).ready(function(){
   subscribe_dialog.dialog({
     autoOpen: false,
     width: 600,
-    height: 600,
+    height: 650,
     modal: true,
     buttons: {
       "Subscribe": function() {

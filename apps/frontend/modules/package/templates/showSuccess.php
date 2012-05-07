@@ -9,7 +9,7 @@
 <ul>
   <?php foreach ($rpms as $rpm) : ?>
   <li><?php echo link_to($rpm->getName(), $madburl->urlForRpm($rpm, $madbcontext)); ?> 
-    (<?php echo $rpm->getDistrelease()->getName() ?>, 
+    (<?php echo $rpm->getDistrelease()->getDisplayedName() ?>, 
      <?php echo $rpm->getArch()->getName()?> media, 
      <?php echo $rpm->getMedia()->getName()?>)
   </li>
@@ -33,7 +33,8 @@
   </a>
 
   <div id="subscribeForm" title="Subscribe to changes for this package">
-  Select the type of changes for which you want to be notified, and if needed restrict the subscription to one or several distribution versions, archs and/or medias.
+  Select the type of changes for which you want to be notified, and if needed restrict the subscription to one or 
+  several distribution releases, archs and/or medias. Unchecking everything means "all".
   <br/>
   <br/>
   <form action="<?php echo $madburl->urlFor('package/subscribe')?>">
@@ -53,7 +54,10 @@
   <?php endif; ?>  
   <br style="clear:both;"/>
   <br/>
-  
+  <p>In the following filter, values "Latest stable" and "Previous stable" are dynamic values: their meaning will 
+    evolve automatically when new releases of the distribution appear. Use them if you want your subscriptions to adapt 
+    to new releases of the distribution.</p>
+  <br/>
   <?php foreach (array('release', 'arch', 'media') as $fieldName) : ?>
     <?php $formField = $subscribe_form[$fieldName]?>
     <?php echo $formField->renderLabel() ?>

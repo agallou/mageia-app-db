@@ -16,6 +16,7 @@ exclude_rpms:
 devel_releases:
   - development
 latest_stable_release: 16
+previous_stable_release: 15
 
 updates_medias: ^.*updates.*$
 testing_medias: ^.*testing.*$

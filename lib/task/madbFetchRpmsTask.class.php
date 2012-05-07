@@ -51,7 +51,9 @@ class madbFetchRpmsTask extends madbBaseTask
     // Now that we have all wanted media for all archs for all distreleases, perform some checking
     // TODO : better checking
     // Distreleases : 
-    $distreleaseObjs = DistreleasePeer::doSelect(new Criteria());
+    $criteria = new Criteria();
+    $criteria->add(DistreleasePeer::IS_META, false);
+    $distreleaseObjs = DistreleasePeer::doSelect($criteria);
     $distreleasesDb = array();
     foreach ($distreleaseObjs as $distreleaseObj)
     {
@@ -186,6 +188,48 @@ class madbFetchRpmsTask extends madbBaseTask
       }      
     }
     
+    // - previous stable release
+    $previous = $madbDistroConfig->getPreviousStableRelease();
+    if (trim($previous) !== '')
+    {
+      if (!$new_previous_stable = DistreleasePeer::retrieveByName($previous))
+      {
+        $message = "Previous stable release '$previous' not found in database";
+        throw new madbException($message);
+      }
+      // If the distrelease doesn't already know it's the previous stable release
+      // Abort, or update, depending on $options['add']
+      elseif (!$new_previous_stable->getIsPrevious())
+      {
+        $message = "Distrelease $previous doesn't know it's the previous stable release";
+        if ($options['add'])
+        {
+          echo $message . "\n";
+          DistreleasePeer::updateIsPreviousFlag($previous);
+          echo "=> status updated for distrelease $previous.\n";
+        }
+        else
+        {
+          throw new madbException($message);
+        }      
+      }
+    }
+    else // There's no previous release in config file
+    {
+      if (DistreleasePeer::getPrevious())
+      {
+        if ($options['add'])
+        {
+          // There's no previous release, update the database accordingly
+          echo "There is no 'previous stable' release according to distro config file, updating database accordingly\n";
+          DistreleasePeer::updateIsPreviousFlag(null);
+        }
+        else
+        {
+          throw new madbException("There is no 'previous stable' release according to distro config file, and there's one in database. Fix config or use --add to apply the change.");
+        }
+      }
+    }
 
     // Archs :
     $archsSophie = array();

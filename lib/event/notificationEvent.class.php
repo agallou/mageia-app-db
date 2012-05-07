@@ -46,9 +46,14 @@ class NotificationEvent
     $crArchID = $c->getNewCriterion(SubscriptionElementPeer::ARCH_ID, $rpm->getArchId());
     $crArchID->addOr($c->getNewCriterion(SubscriptionElementPeer::ARCH_ID, NULL, Criteria::ISNULL));
 
-    // distrelease matches or is null
+    // distrelease matches or is null or is the meta release for this Rpm
     $crDistreleaseID = $c->getNewCriterion(SubscriptionElementPeer::DISTRELEASE_ID, $rpm->getDistreleaseId());
     $crDistreleaseID->addOr($c->getNewCriterion(SubscriptionElementPeer::DISTRELEASE_ID, NULL, Criteria::ISNULL));
+    $meta_distrelease = $rpm->getDistrelease()->getMetaDistrelease();
+    if ($meta_distrelease)
+    {
+      $crDistreleaseID->addOr($c->getNewCriterion(SubscriptionElementPeer::DISTRELEASE_ID, $meta_distrelease->getId()));
+    }
 
     // media matches or is null
     $crMediaID = $c->getNewCriterion(SubscriptionElementPeer::MEDIA_ID, $rpm->getMediaId());

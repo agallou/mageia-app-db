@@ -61,6 +61,11 @@ class madbDistroConfig
     return $this->values['latest_stable_release'];
   }
 
+  public function getPreviousStableRelease()
+  {
+    return $this->values['previous_stable_release'];
+  }
+
   public function getOnlyReleases()
   {
     $value = $this->values['only_releases'];

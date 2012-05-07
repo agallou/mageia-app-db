@@ -14,6 +14,9 @@
  */
 class DistreleasePeer extends BaseDistreleasePeer {
 
+  const META_LATEST = 'latest';
+  const META_PREVIOUS = 'previous';
+    
   public static function getLatest()
   {
     $criteria = new Criteria();
@@ -21,7 +24,25 @@ class DistreleasePeer extends BaseDistreleasePeer {
     $distrelease = DistreleasePeer::doSelectOne($criteria);
     return $distrelease;
   }
-  
+
+  public static function getMetaLatest()
+  {
+    return self::retrieveByName(self::META_LATEST);
+  }
+
+  public static function getPrevious()
+  {
+    $criteria = new Criteria();
+    $criteria->add(DistreleasePeer::IS_PREVIOUS, true);
+    $distrelease = DistreleasePeer::doSelectOne($criteria);
+    return $distrelease;
+  }
+
+  public static function getMetaPrevious()
+  {
+    return self::retrieveByName(self::META_PREVIOUS);
+  }
+
   public static function getDevels()
   {
     $criteria = new Criteria();
@@ -69,7 +90,7 @@ class DistreleasePeer extends BaseDistreleasePeer {
       throw new DistreleasePeerException("Latest stable release '$name' not found in database");
     }
     
-    // If the distrelease doesn't already knows it's the latest stable release
+    // If the distrelease doesn't already know it's the latest stable release
     if (!$new_latest_stable->getIsLatest())
     {
       // unset the flag to the old stable release, if there is one
@@ -84,4 +105,31 @@ class DistreleasePeer extends BaseDistreleasePeer {
       $new_latest_stable->save();
     }
   }
+  
+  public static function updateIsPreviousFlag($name)
+  {
+    if (!is_null($name) and !$new_previous_stable = self::retrieveByName($name))
+    {
+      throw new DistreleasePeerException("Previous stable release '$name' not found in database");
+    }
+    else
+    {
+      // unset the flag to the old previous stable release, if there is one
+      $old_previous_stable = self::getPrevious();
+      if ($old_previous_stable)
+      {
+        $old_previous_stable->setIsPrevious(false);
+        $old_previous_stable->save();
+      }
+      
+      // If the distrelease doesn't already know it's the previous stable release
+      if (!is_null($name) and !$new_previous_stable->getIsPrevious())
+      {
+        // set the flag to the new one
+        $new_previous_stable->setIsPrevious(true);
+        $new_previous_stable->save();
+      }
+    }
+  }
+  
 } // DistreleasePeer

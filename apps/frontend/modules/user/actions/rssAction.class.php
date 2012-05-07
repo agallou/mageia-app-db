@@ -63,13 +63,23 @@ class rssAction extends sfActions
         }
         if($subscriptionElement->getDistreleaseId() !== null)
         {
-          if(isset($subscriptionElementCriterion))
+          $distrelease = $subscriptionElement->getDistrelease()->getRealDistrelease();
+          if ($distrelease)
           {
-            $subscriptionElementCriterion->addAnd($rpmCriteria->getNewCriterion(RpmPeer::DISTRELEASE_ID,$subscriptionElement->getDistreleaseId()));
+            $criterion = $rpmCriteria->getNewCriterion(RpmPeer::DISTRELEASE_ID, $distrelease->getId());
           }
           else
           {
-            $subscriptionElementCriterion = $rpmCriteria->getNewCriterion(RpmPeer::DISTRELEASE_ID,$subscriptionElement->getDistreleaseId());
+            $criterion = $rpmCriteria->getNewCriterion(null, '1=2', Criteria::CUSTOM);
+          }
+          
+          if(isset($subscriptionElementCriterion))
+          {
+            $subscriptionElementCriterion->addAnd($criterion);
+          }
+          else
+          {
+            $subscriptionElementCriterion = $criterion;
           }
         }
           

@@ -15,6 +15,7 @@ exclude_rpms:
 devel_releases:
   - factory
 latest_stable_release: 11.3
+previous_stable_release: 11.2
 
 updates_medias: ^.*updates.*$
 testing_medias: 

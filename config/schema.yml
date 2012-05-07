@@ -55,6 +55,7 @@ propel:
     name:                                                              { type: varchar(45), required: true }
     is_meta:                                                           { type: boolean, required: true, default: false }
     is_latest:                                                         { type: boolean, required: true, default: false }
+    is_previous:                                                       { type: boolean, required: true, default: false }
     is_dev_version:                                                    { type: boolean, required: true, default: false }
     _uniques:
       distrelease__unique_name:                                        [ name ]

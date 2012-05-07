@@ -18,3 +18,17 @@
 version:
   current:
     version: "0.3alpha"
+
+distrelease:
+  latest:
+    name: latest
+    is_meta: true
+    is_latest: false
+    is_previous: false
+    is_dev_version: false
+  previous:
+    name: previous
+    is_meta: true
+    is_latest: false
+    is_previous: false
+    is_dev_version: false

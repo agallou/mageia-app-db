@@ -44,7 +44,7 @@
       </td>
       <?php if (!isset($short)): ?>
       <td><?php echo $buildDate ?></td>
-      <td><?php echo $rpm->getDistrelease()->getName() ?></td>
+      <td><?php echo $rpm->getDistrelease()->getDisplayedName() ?></td>
       <?php endif; ?>
     </tr> 
   <?php endforeach; ?>

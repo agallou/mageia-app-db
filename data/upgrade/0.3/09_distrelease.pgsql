@@ -1,0 +1,1 @@
+ALTER TABLE distrelease ADD is_previous BOOLEAN NOT NULL DEFAULT false;

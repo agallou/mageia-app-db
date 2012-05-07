@@ -28,7 +28,7 @@
 
 <h2>Media information</h2>
 <ul>
-  <li>Distribution release : <?php echo $rpm->getDistrelease()->getName() ?></li>
+  <li>Distribution release : <?php echo $rpm->getDistrelease()->getDisplayedName() ?></li>
   <li>Media name : <?php echo $rpm->getMedia()->getName() ?></li>
   <li>Media arch : <?php echo $rpm->getArch()->getName() ?></li>
 </ul>
