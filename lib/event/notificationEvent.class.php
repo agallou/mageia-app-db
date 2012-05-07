@@ -201,9 +201,9 @@ class NotificationEvent
       
       // URL to package view
       $url = 'http://' . $madbConfig->get('host') . '/package/show/name/' . $package->getName() 
-              . '/distrelease/' . $rpm->getDistreleaseId() 
+              . '/release/' . $rpm->getDistrelease()->getName() 
               . '/source/' . ($rpm->getIsSource() ? 1 : 0)
-              . '/arch/' . ($rpm->getArchId()) 
+              . '/arch/' . ($rpm->getArch()->getName()) 
               . '/application/0';
 
       // contextual message
