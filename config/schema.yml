@@ -17,7 +17,7 @@ propel:
     distrelease_id:                                                    { type: integer, required: true, foreignTable: distrelease, foreignReference: id }
     media_id:                                                          { type: integer, required: true, foreignTable: media, foreignReference: id }
     rpm_group_id:                                                      { type: integer, required: true, foreignTable: rpm_group, foreignReference: id }
-    licence:                                                           { type: varchar(255), required: true }
+    license:                                                           { type: varchar(255), required: true }
     name:                                                              { type: varchar(900), required: true }
     md5_name:                                                          { type: varchar, size:32, required: true }
     filename:                                                          { type: varchar(900), required: true }

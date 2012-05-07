@@ -189,7 +189,7 @@ class RpmPeer extends BaseRpmPeer {
     $rpm->setSummary($summary);
     
     $rpm->setEvr($values['evr']);
-    $rpm->setLicence($values['license']);
+    $rpm->setLicense($values['license']);
     $rpm->setName($values['real_filename']);
     $rpm->setMd5Name(md5($values['real_filename']));
     $rpm->setFilename($values['filename']);

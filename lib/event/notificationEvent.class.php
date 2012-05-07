@@ -266,7 +266,7 @@ EOF;
         'DISTRELEASE'   => $rpm->getDistrelease()->getName(),  
         'DISTRIBUTION'  => $madbConfig->get('distribution'),  
         'GROUP'         => $rpm->getRpmGroup()->getName(),
-        'LICENSE'       => $rpm->getLicence(),
+        'LICENSE'       => $rpm->getLicense(),
         'MADB'          => $madbConfig->get('name'),  
         'MEDIA'         => $rpm->getMedia()->getName(),  
         'NAME'          => $package->getName(),

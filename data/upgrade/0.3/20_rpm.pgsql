@@ -1,0 +1,1 @@
+ALTER TABLE rpm RENAME licence TO license;
