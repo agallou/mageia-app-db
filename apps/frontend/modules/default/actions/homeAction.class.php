@@ -1,6 +1,6 @@
 <?php
 
-class newsAction extends madbActions
+class homeAction extends madbActions
 {
 
   /**

@@ -14,7 +14,7 @@ logout:
 homepage:
   url:   /
   class: madbHomepageRoute
-  param: { module: default, action: news }
+  param: { module: default, action: home }
 
 # generic rules
 # please, remove them by adding more specific rules
