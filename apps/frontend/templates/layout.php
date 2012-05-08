@@ -11,7 +11,8 @@
     <body>
         <div id="container">
             <div id="header">
-                <h1><?php echo link_to('Mageia App DB', '@homepage') ?></h1>
+                <?php $madbConfig = new madbConfig(); ?>
+                <h1><?php echo link_to($madbConfig->get('name'), '@homepage') ?></h1>
                 <div id="search">
                     <?php include_component('default', 'searching', array(
                       'module_to' => 'package',
