@@ -38,7 +38,6 @@ a, a:visited
     padding: 5px;
     width: auto;
     min-height: 8%;
-    height: 8%;
     vertical-align: middle;
     border-bottom: 1px solid #DDDDDD;
     position: relative;
@@ -47,7 +46,7 @@ a, a:visited
 #header h1
 {
     color: white;
-    font-size: 24pt;
+    font-size: 20pt;
 }
 
 #header h1 a, #header h1 a:visited
@@ -73,7 +72,7 @@ div#header div#search
 {
     width:420px;
     margin:0px auto;
-    margin-top:-30px;
+    margin-top:0px;
     position: relative;
 }
 
