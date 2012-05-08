@@ -18,7 +18,7 @@ class madbConfig
       case 'force-ssl':
         return false;
       case 'host': 
-        return "localhost";
+        return isset($_SERVER["HTTP_HOST"]) ? $_SERVER["HTTP_HOST"] : "localhost";
       case 'distribution': 
         return "mageia";
       case 'distro_config_file': 

@@ -12,7 +12,7 @@
     <body>
         <div id="container">
             <div id="header">
-                <h1><?php echo link_to($madbConfig->get('name'), '@homepage') ?></h1>
+                <h1><?php echo link_to($madbConfig->get('name'), 'http://' . $madbConfig->get('host')) ?></h1>
                 <div id="search">
                     <?php include_component('default', 'searching', array(
                       'module_to' => 'package',
