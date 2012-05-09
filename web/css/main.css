@@ -160,7 +160,6 @@ div#header div#search form input[type=submit]
 #content
 {
     position: relative;
-    margin-left: 18em;
     background-color: white;
     width: auto;
     padding: 0.5em;
