@@ -13,7 +13,7 @@ class getUrlAction extends madbActions
     $generator   = new urlFilterGenerator($this->getContext()->getRouting(), $this->getMadbUrl());
     $urlInfos    = $generator->generate($cleanUrls, $_SERVER['PHP_SELF'], $url, $extraParams);
     $this->getResponse()->sethttpHeader('Content-type','application/json');
-    $this->renderText(json_encode(array('url' => $urlInfos['new_url'], 'changed' => $urlInfos['changed'])));
+    return $this->renderText(json_encode(array('url' => $urlInfos['new_url'], 'changed' => $urlInfos['changed'])));
   }
 
   protected function getMadbConfig()
