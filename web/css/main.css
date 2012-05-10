@@ -35,6 +35,8 @@ a, a:visited
 #header
 {
     background-color: #507AAA;
+    background-image: -moz-linear-gradient(#004D9F, #049CD9);
+    background-repeat: no-repeat;
     padding: 5px;
     width: auto;
     min-height: 8%;
