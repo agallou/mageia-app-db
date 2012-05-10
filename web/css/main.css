@@ -35,7 +35,12 @@ a, a:visited
 #header
 {
     background-color: #507AAA;
-    background-image: -moz-linear-gradient(#004D9F, #049CD9);
+/*    background-image: -moz-linear-gradient(#004D9F, #049CD9);*/
+
+	background: -moz-linear-gradient(#004D9F, #049CD9); /* Firefox */ 
+	background: -webkit-gradient(linear, left top, left bottom, from(#004D9F), to(#049CD9)); /* webkit */
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#004D9F', endColorstr='#049CD9'); /* IE */    
+
     background-repeat: no-repeat;
     padding: 5px;
     width: auto;
