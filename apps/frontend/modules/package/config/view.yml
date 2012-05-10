@@ -4,7 +4,6 @@ showSuccess:
     - vendor/jquery/ui-lightness/jquery-ui-1.8.13.custom.css
   javascripts:
     - package.js
-    - screenshots.js
 
 listSuccess:
   javascripts:

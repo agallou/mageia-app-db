@@ -19,10 +19,18 @@
 <br/>
 <h2>Screenshot</h2>
 (from <a href="http://screenshots.debian.net">http://screenshots.debian.net</a>)
-<br/>
-<a rel="screenshots" href="http://screenshots.debian.net/screenshot/<?php echo $package->getName() ?>">
-  <img src="http://screenshots.debian.net/thumbnail/<?php echo $package->getName() ?>" />
-</a>
+<div id="screenshots"></div>
+<?php use_helper('JavascriptBase') ?>
+<?php echo javascript_tag() ?>
+$(document).ready(function(){
+  $.ajax({
+    url: '<?php echo url_for('package/screenshots?package=' . $package->getName()) ?>',
+    success: function(data){
+      $('#screenshots').append(data);
+    }
+  })
+});
+<?php end_javascript_tag() ?>
 
 <br/>
 <br/>
