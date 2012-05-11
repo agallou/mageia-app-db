@@ -3,6 +3,12 @@
   float:left;
 }
 
+div.disabled_filter, div.disabled_filter div.button span
+{
+  cursor:not-allowed;
+  color: #888;
+}
+
 .filterwidget .button
 {
   border:1px solid;
@@ -13,10 +19,21 @@
   color:#000;
 }
 
+.disabled_filter .button
+{
+  background-color:#ddd;
+}
+
 .filterwidget .button:hover
 {
   background-color: #bbb;
 }
+
+.disabled_filter .button:hover
+{
+  background-color: #ddd;
+}
+
 
 .filterwidget div.apply
 {

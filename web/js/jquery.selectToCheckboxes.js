@@ -5,6 +5,7 @@
       defaults: [],
       searchfield: true,
       multi: true,
+      active: true,
       namespace: 'selectToCheckboxes_'
     };
     if (params)
@@ -25,6 +26,9 @@
       var label = $('label[for=' + selectId + ']');
 
       var widget = $('<div>', {id : 'global_' + selectId, 'class' : 'filterwidget'});
+      if (!settings.active) {
+        widget.addClass('disabled_filter');
+      }
       select.after(widget);
 
       var button = $('<div>', {id : 'button' + selectId, 'class' : 'button'});
@@ -39,9 +43,11 @@
       buttontext.appendTo(button);
       $('<span>', { id : 'buttonarrow' + selectId,'class' : 'arrow', html: '&darr;' }).appendTo(button);
 
-      button.click(function(){
-        document.getElementById('widgetcontent_' + selectId + '1').style.left = button.position().left+ 'px';
-        $('#widgetcontent_' + selectId + '1').toggle();
+      button.click(function() {
+        if (settings.active) {
+          document.getElementById('widgetcontent_' + selectId + '1').style.left = button.position().left+ 'px';
+          $('#widgetcontent_' + selectId + '1').toggle();
+        }
       });
 
       var ng1 = $('<div>', { id: 'widgetcontent_' + selectId + '1', 'class' : 'widgetcontent1' });

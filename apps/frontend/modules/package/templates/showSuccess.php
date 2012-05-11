@@ -88,3 +88,12 @@ $(document).ready(function(){
   </form>
   </div>
 <?php endif; ?>
+
+<?php // Disable unneeded filters ?>
+<?php echo javascript_tag() ?>
+$('#filtering_application').addClass('disabled_filter');
+$('#filtering_group').addClass('disabled_filter');
+$('#filtering_group').next().next().next('a').remove();
+$('#filtering_source').addClass('disabled_filter');
+$('#filtering_source').next().next().next('a').remove();
+<?php end_javascript_tag() ?>

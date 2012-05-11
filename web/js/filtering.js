@@ -4,33 +4,39 @@ $(document).ready(function(){
     apply: function(d){afterCheckboxChange(d);},
     defaults: getAllVals($('#filtering_application option[selected=selected]')),
     searchfield: false,
-    multi: false
+    multi: false,
+    active: $('#filtering_application').hasClass('disabled_filter') ? false : true
   });
   $('#filtering_group').selectToCheckboxes({
     apply: function(d){afterCheckboxChange(d);},
-    defaults: getAllVals($('#filtering_group option[selected=selected]'))
+    defaults: getAllVals($('#filtering_group option[selected=selected]')),
+    active: $('#filtering_group').hasClass('disabled_filter') ? false : true
   });
   $('#filtering_release').selectToCheckboxes({
     apply: function(d){afterCheckboxChange(d);},
     defaults: getAllVals($('#filtering_release option[selected=selected]')),
     searchfield: false,
-    multi: false
+    multi: false,
+    active: $('#filtering_release').hasClass('disabled_filter') ? false : true
   });
   $('#filtering_arch').selectToCheckboxes({
     apply: function(d){afterCheckboxChange(d);},
     defaults: getAllVals($('#filtering_arch option[selected=selected]')),
     searchfield: false,
-    multi: false
+    multi: false,
+    active: $('#filtering_arch').hasClass('disabled_filter') ? false : true
   });
   $('#filtering_media').selectToCheckboxes({
     apply: function(d){afterCheckboxChange(d);},
-    defaults: getAllVals($('#filtering_media option[selected=selected]'))
+    defaults: getAllVals($('#filtering_media option[selected=selected]')),
+    active: $('#filtering_media').hasClass('disabled_filter') ? false : true
   });
   $('#filtering_source').selectToCheckboxes({
     apply: function(d){afterCheckboxChange(d);},
     defaults: getAllVals($('#filtering_source option[selected=selected]')),
     searchfield: false,
-    multi: false
+    multi: false,
+    active: $('#filtering_source').hasClass('disabled_filter') ? false : true
   });
   $('div#filtering form:first input[type=submit]').remove();
 
