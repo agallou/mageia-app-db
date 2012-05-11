@@ -29,6 +29,12 @@
     </tr>
   </thead>
   <tbody>
+  <?php $madbBaseUrl = $madburl->urlFor(
+                         'package/show', 
+                         $madbcontext, 
+                         array('extra_parameters' => array('name' => '___REPLACE___ME___'))
+                       );
+  ?>
   <?php foreach ($rows as $row): ?>
     <tr<?php 
 if (!$row['update_version'] and !$row['update_testing_version'] and !$row['backport_version'] and !$row['backport_testing_version']) 
@@ -49,13 +55,9 @@ elseif ( !(RpmPeer::evrCompare($row['update_version'], $row['dev_version'])<0
   // nothing to do, remains white
 }
 ?>>
-      <td><?php echo link_to(
+      <td><?php  echo link_to(
                    $row['name'],
-                   $madburl->urlFor(
-                     'package/show', 
-                     $madbcontext, 
-                     array('extra_parameters' => array('name' => $row['name']))
-                   )
+                   str_replace("___REPLACE___ME___", $row['name'], $madbBaseUrl)
                  );
   ?>
         <span class="description"><?php echo htmlspecialchars($row['summary']) ?></span></td>
