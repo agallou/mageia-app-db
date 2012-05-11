@@ -14,3 +14,8 @@
   </li>
   <?php endforeach ?>
 </ul>
+
+<?php use_helper('JavascriptBase') ?>
+<?php echo javascript_tag() ?>
+$('div.filters').remove();
+<?php end_javascript_tag() ?>

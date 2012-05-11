@@ -59,3 +59,8 @@
 <br/>
 <?php echo link_to("View in Sophie", $sophie->getUrlForPkgId($rpm->getRpmPkgId())) ?>
 </div>
+
+<?php use_helper('JavascriptBase') ?>
+<?php echo javascript_tag() ?>
+$('div.filters').remove();
+<?php end_javascript_tag() ?>
