@@ -191,6 +191,7 @@ EOF;
       
       $fieldname = $media_type . "_version";
       
+      $con->beginTransaction();      
       foreach ($stmt as $row)
       {
         $sql = <<<EOF
@@ -200,6 +201,7 @@ WHERE id = $row[package_id];
 EOF;
         $con->exec($sql);
       }
+      $con->commit();      
     } 
     
     // Add new packages from the development release to the list
@@ -231,6 +233,7 @@ EOF;
     
     
     $stmt = BasePeer::doSelect($criteria);
+    $con->beginTransaction();      
     foreach ($stmt as $row)
     {
       // first check that it's not already in the table
@@ -250,13 +253,14 @@ EOF;
         $con->exec($sql);
       }
     }
-  
-    
+    $con->commit();
+
     $sql = <<<EOF
 SELECT id, $tablename.* 
 FROM $tablename
 EOF;
     $stmt = $con->query($sql);
+    $con->beginTransaction();      
     foreach ($stmt as $row)
     {
       if (((!is_null($row['update_version']) && RpmPeer::evrCompare($row['dev_version'], $row['update_version']) <= 0)
@@ -268,7 +272,7 @@ EOF;
         $con->exec($sql);
       }
     }
-    
+    $con->commit();
 
     $sql = <<<EOF
 SELECT * 
