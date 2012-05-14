@@ -21,7 +21,7 @@ class comparisonAction extends madbActions
     }
     if ($distrelease->getIsDevVersion())
     {
-      $this->message = "Sorry, but this page is not available when consulting a development distribution release. Please choose another distribution release filter or consult another page.";
+      $this->message = "This page is not available when consulting a development distribution release. Please choose another distribution release.";
       return 'Error';
     }
     
