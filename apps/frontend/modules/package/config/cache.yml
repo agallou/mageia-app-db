@@ -1,0 +1,12 @@
+comparison:
+  enabled: true
+  
+list:
+  enabled: true
+
+screenshots:
+  enabled: true
+  with_layout: true
+
+show: 
+  enabled: false #need to put the subscribe part in a separate component first

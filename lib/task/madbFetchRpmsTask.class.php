@@ -739,9 +739,18 @@ class madbFetchRpmsTask extends madbBaseTask
     echo "Total number of failed RPMs retrievals : $nbFailedRpms\n";
     echo "Total number of removed RPMs : $nbRemovedRpms\n";
     
-    // Update package.is_application
-    $pathToAppList = sfConfig::get('sf_root_dir') . '/' . $madbConfig->get('applications_list_file');
-    $this->updateIsApplicationFromFile($pathToAppList); 
+    
+    // if there was at least one retrieved Rpm or one removed Rpm, update application status and clear cache
+    if (($nbRetrievedRpms + $nbRemovedRpms) > 0)
+    {
+      // Update package.is_application
+      $pathToAppList = sfConfig::get('sf_root_dir') . '/' . $madbConfig->get('applications_list_file');
+      $this->updateIsApplicationFromFile($pathToAppList); 
+
+      // Clear cache
+      $task = new sfCacheClearTask($this->dispatcher, $this->formatter);
+      $task->run();
+    }
   }  
   
   protected function getDistreleasesArchsMedias (madbDistroConfig $madbDistroConfig, SophieClient $sophie)
