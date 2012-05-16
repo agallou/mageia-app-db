@@ -100,6 +100,7 @@ function updateResults(filtering)
   },
   function(data){
     if (data.changed) {
+      $("body").css("cursor", "wait");
       window.location = data.url;
     }
   });
