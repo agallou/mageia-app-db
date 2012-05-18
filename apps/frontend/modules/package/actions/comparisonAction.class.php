@@ -14,14 +14,14 @@ class comparisonAction extends madbActions
     
     $keyvalue = $this->madbcontext->getRealFilterValue('release');
     $distrelease = DistreleasePeer::retrieveByName(array_shift($keyvalue));
-    if (!$distrelease)
+    if (!$distrelease or !$distrelease->getRealDistrelease())
     {
-      $this->message = "There is no data in database.";
+      $this->message = "There is no data for this release.";
       return 'Error';
     }
     if ($distrelease->getIsDevVersion())
     {
-      $this->message = "This page is not available when consulting a development distribution release. Please choose another distribution release.";
+      $this->message = "This page is not available when consulting a development distribution release. Please choose another one.";
       return 'Error';
     }
     
