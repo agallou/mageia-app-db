@@ -1,4 +1,17 @@
 #!/bin/bash
 sh ./init_submodules.sh
 ./symfony plugin:publish-assets
+
+if [ ! -f ./config/madbconf.yml ]
+then
+  cp ./config/madbconf.yml-dist ./config/madbconf.yml
+fi
+
+if [ ! -f ./config/databases.yml ]
+then
+  ./symfony init --no-confirmation
+  exit 0
+fi
+
+./symfony clean-propel
 ./symfony propel:build-model
