@@ -19,6 +19,8 @@ class searchCriteriaFilter extends baseCriteriaFilter
     $criterion = $criteria->getNewCriterion(PackagePeer::NAME, sprintf('%%%s%%', $value), Criteria::LIKE);
     $criterion->addOr($criteria->getNewCriterion(PackagePeer::SUMMARY, sprintf('%%%s%%', $value), Criteria::LIKE));
     $criteria->addAnd($criterion);
+    $criteria->setIgnoreCase(true); // I don't like it because it could render some parts of the query case insensitive when not needed
+                                    // But it's needed to make the search case insensitive in postgresql
     return $criteria;
   }
 
