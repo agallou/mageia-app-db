@@ -36,5 +36,32 @@
   'madburl'     => $madburl,
 )) ?>
 
-
-
+<?php if ($application): ?>
+  <p>This list shows only applications. 
+  <?php echo link_to(
+               "Show all packages.",
+               $madburl->urlFor(
+                 'package/list',
+                 $other_madbcontext,
+                 array(
+                   'keep_all_parameters' => true
+                 )
+               )
+             );
+  ?>
+  </p>
+<?php else: ?>
+  <p>This list shows all types of packages. 
+  <?php echo link_to(
+               "Show only applications.",
+               $madburl->urlFor(
+                 'package/list',
+                 $other_madbcontext,
+                 array(
+                   'keep_all_parameters' => true
+                 )
+               )
+             );
+  ?>
+  </p>
+<?php endif; ?>
