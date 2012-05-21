@@ -120,7 +120,7 @@
           if (!settings.multi) {
             $('input[name=' + selectId + ']:checked').parent().removeClass('selected');
             $('input[name=' + selectId + ']:checked').removeAttr('checked');
-            $('input[id=' + $(label).attr('for') + ']').attr("checked", "checked");
+            $('input[id=\'' + $(label).attr('for') + '\']').attr("checked", "checked");
             $('.filterwidget div.widgetcontent input:checked').parent().addClass('selected');
             ng1.hide();
             settings.apply.apply(label, [$('input[name=' + selectId + ']:checked')]);
