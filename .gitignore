@@ -20,6 +20,7 @@ apps/frontend/i18n/*.mo
 config/propel.ini
 config/databases.yml
 config/madbconf.yml
+config/tracker.html
 
 #propel generated files
 config/buildtime-conf.xml
