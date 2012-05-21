@@ -14,6 +14,9 @@
      <?php echo $rpm->getMedia()->getName()?>)
   </li>
   <?php endforeach; ?>
+  <?php if (empty($rpms)) : ?>
+  <p>No RPM found for <?php echo $package->getName() ?> using the current filters, try other values.</p>
+  <?php endif; ?>
 </ul>
 </div>
 <br/>
