@@ -49,5 +49,6 @@
             </div>
             </div>
         <!-- </div> -->
+    <?php include_component('default', 'tracker') ?>
     </body>
 </html>

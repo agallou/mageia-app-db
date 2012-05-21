@@ -1,2 +1,5 @@
 home:
   enabled: true
+
+_tracker:
+  enabled: true
