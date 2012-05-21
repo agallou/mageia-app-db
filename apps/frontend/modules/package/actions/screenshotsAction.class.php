@@ -29,7 +29,6 @@ EOF;
       $output = "<p>No screenshot found for $package.";
       //$output .= "<a href=\"http://screenshots.debian.net/upload/$package\">Add one</a>.</p>";
     }
-    $output .= "\n<p><small>Got $i screenshot(s) in ${duration}s.</small></p>";
     
     $output .= <<<EOF
 <script type="text/javascript">

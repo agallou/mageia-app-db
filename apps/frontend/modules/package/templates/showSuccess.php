@@ -20,7 +20,7 @@
 </ul>
 </div>
 <br/>
-<h2>Screenshot</h2>
+<h2>Screenshot(s)</h2>
 (from <a href="http://screenshots.debian.net">http://screenshots.debian.net</a>)
 <div id="screenshots"></div>
 <?php use_helper('JavascriptBase') ?>
