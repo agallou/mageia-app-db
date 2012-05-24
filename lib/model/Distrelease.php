@@ -33,11 +33,11 @@ class Distrelease extends BaseDistrelease {
         {
           case DistreleasePeer::META_LATEST:
             $latest = $this->getRealDistrelease();
-            return "Latest stable" . (($latest) ? " (" . $latest->getDisplayedName() . ")" : " (none)");
+            return "Latest stable" . (($latest) ? " (" . $latest->getName() . ")" : " (none)");
             
           case DistreleasePeer::META_PREVIOUS:
             $previous = $this->getRealDistrelease();
-            return "Previous stable" . (($previous) ? " (" . $previous->getDisplayedName() . ")" : " (none)");
+            return "Previous stable" . (($previous) ? " (" . $previous->getName() . ")" : " (none)");
           
           default:
             throw new madbException('Unknown meta distrelease: ' . $this->getName());
