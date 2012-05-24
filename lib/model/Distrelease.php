@@ -45,7 +45,8 @@ class Distrelease extends BaseDistrelease {
       }
       else
       {
-        return $this->getName();
+        $madbConfig = new madbConfig();
+        return $madbConfig->get('distribution_name') . ' ' . $this->getName();
       }
     }
     

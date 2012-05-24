@@ -6,6 +6,7 @@ all:
   force-ssl: false
   host: localhost
   distribution: mageia
+  distribution_name: Mageia
 #  distro_config_file: data/distros/mageia/distro.yml
 #  applications_list_file: data/distros/mageia/applications.txt
   notifications:

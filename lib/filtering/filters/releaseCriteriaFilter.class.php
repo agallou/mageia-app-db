@@ -28,7 +28,7 @@ class releaseCriteriaFilter extends baseCriteriaFilterChoice
     {
       if ($distrelease->getIsDevVersion())
       {
-        $values[$distrelease->getName()] = $distrelease->getName();
+        $values[$distrelease->getName()] = $distrelease->getDisplayedName();
       }
     }
     

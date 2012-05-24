@@ -21,6 +21,10 @@ class madbConfig
         return isset($_SERVER["HTTP_HOST"]) ? $_SERVER["HTTP_HOST"] : "localhost";
       case 'distribution': 
         return "mageia";
+      case 'distribution_name': 
+        $madbDistroConfigFactory = new madbDistroConfigFactory();
+        $madbDistroConfig = $madbDistroConfigFactory->getCurrentDistroConfig($this);
+        return $madbDistroConfig->getName();
       case 'distro_config_file': 
         return "data/distros/" . $this->get('distribution') . "/distro.yml";
       case 'applications_list_file': 
