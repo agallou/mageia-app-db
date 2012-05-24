@@ -15,3 +15,5 @@ fi
 
 ./symfony clean-propel
 ./symfony propel:build-model
+./symfony propel:build-forms
+./symfony propel:build-filters
