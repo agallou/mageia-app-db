@@ -1,5 +1,5 @@
 <h1>Comparison between 2 releases</h1>
-<p>This page shows packages which have a newer version available in the development branch (<?php echo $target_release; ?>) than in the selected stable release.<br/>
+<p>This page compares the selected stable release with <?php echo $targetRelease->getDisplayedName(); ?>.
 Like the other lists, it is filtered using the filters available at the top of the page.</p>
 <p>Legend : 
 <span class="newpackage bordered">added in <?php echo $target_release; ?></span>, 

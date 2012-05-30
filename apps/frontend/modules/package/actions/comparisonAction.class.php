@@ -30,6 +30,7 @@ class comparisonAction extends madbActions
     {
       if ($target_release = DistreleasePeer::retrieveByName($request->getParameter('withrelease')))
       {
+        $this->targetRelease = $target_release;
         $this->target_release = $request->getParameter('withrelease');
       }
       else
@@ -42,6 +43,7 @@ class comparisonAction extends madbActions
     {
       if ($target_release = DistreleasePeer::getDevel())
       {
+        $this->targetRelease = $target_release;
         $this->target_release = $target_release->getName();
       }
       else
