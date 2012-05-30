@@ -52,6 +52,19 @@ class DistreleasePeer extends BaseDistreleasePeer {
   }  
 
   /**
+   * returns a the first devel distrelease it finds, or none
+   * 
+   * @return Distrelease 
+   */
+  public static function getDevel()
+  {
+    $criteria = new Criteria();
+    $criteria->add(DistreleasePeer::IS_DEV_VERSION, true);
+    $criteria->addAscendingOrderByColumn(DistreleasePeer::ID);
+    return DistreleasePeer::doSelectOne($criteria);
+  }
+  
+  /**
    * 
    * Compares 2 distreleases :
    * Returns : 1 if $distrelease1 is more recent than $distrelease2, 0 if equal, -1 otherwise

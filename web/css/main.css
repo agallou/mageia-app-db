@@ -369,6 +369,11 @@ table.comparisontable
   background-color:#CCC; 
 }
 
+.older
+{
+  background-color:#F66; 
+}
+
 .bordered
 {
   border: 1px solid #000;

@@ -25,6 +25,32 @@ class comparisonAction extends madbActions
       return 'Error';
     }
     
+    // Target second release for comparison : dev release if none defined, 'withrelease' if defined
+    if ($request->hasParameter('withrelease'))
+    {
+      if ($target_release = DistreleasePeer::retrieveByName($request->getParameter('withrelease')))
+      {
+        $this->target_release = $request->getParameter('withrelease');
+      }
+      else
+      {
+        $this->message = "Unknown release '" . $request->getParameter('withrelease') . "'. Check (or remove) the withrelease parameter.";
+        return 'Error';
+      }
+    }
+    else
+    {
+      if ($target_release = DistreleasePeer::getDevel())
+      {
+        $this->target_release = $target_release->getName();
+      }
+      else
+      {
+        $this->message = "No dev release in this database, impossible to use this page.";
+        return 'Error';
+      }
+    }
+    
     $con = Propel::getConnection();
     $databaseFactory = new databaseFactory();
     $database = $databaseFactory->createDefault();
@@ -106,21 +132,11 @@ EOF;
     }
     
     
-    // Get packages corresponding to current filters + cauldron versions
-    $dev_releases = DistreleasePeer::getDevels();
-    if (!empty($dev_releases))
-    {
-      $dev_release = $dev_releases[0]; // we take the first one, don't know what to do if there are several
-      $this->dev_release = $dev_release->getName();
-    }
-    else
-    {
-      $this->forward404('no dev release in this database, impossible to use this page.');
-    }
+    // Get packages corresponding to current filters but for the second release (dev or 'withrelease')
     $criteria = $this->getCriteria(filterPerimeters::PACKAGE);
     $criteria->addJoin(PackagePeer::ID, "$tablename_available.package_id", Criteria::LEFT_JOIN);
     $criteria->addJoin(PackagePeer::ID, RpmPeer::PACKAGE_ID);
-    $criteria->add(RpmPeer::DISTRELEASE_ID, $dev_release->getId());
+    $criteria->add(RpmPeer::DISTRELEASE_ID, $target_release->getId());
     $criteria->addJoin(RpmPeer::MEDIA_ID, MediaPeer::ID);
     $criteria->add(MediaPeer::IS_TESTING, false);
     $criteria->add(MediaPeer::IS_THIRD_PARTY, false);
@@ -152,6 +168,7 @@ ADD backport_testing_version VARCHAR(255) NULL;
 EOF;
     $con->exec($sql);   
 
+    // Get packages from the selected stable distrelease
     foreach (array('release', 'update', 'update_testing', 'backport', 'backport_testing') as $media_type)
     {
       $criteria = $this->getCriteria(filterPerimeters::RPM);
@@ -187,6 +204,9 @@ EOF;
       $criteria->clearSelectColumns();
       $criteria->addAsColumn('package_id', RpmPeer::PACKAGE_ID);
       $criteria->addAsColumn('version', RpmPeer::VERSION);
+      // If there are several RPMs in updates media or any other media, take the most recently built
+      // We do that with an order by, so that the more recent updates the table the last
+      $criteria->addAscendingOrderByColumn(RpmPeer::BUILD_TIME);
       $stmt = BasePeer::doSelect($criteria);
       
       $fieldname = $media_type . "_version";
@@ -207,7 +227,7 @@ EOF;
     // Add new packages from the development release to the list
     $dev_context = $this->getMadbContext();
     // FIXME : cleaner modification of the distrelease filter
-    $dev_context->getParameterHolder()->set('release', $dev_release->getName());
+    $dev_context->getParameterHolder()->set('release', $target_release->getName());
     $criteriaFactory = new criteriaFactory();
     $criteria = $criteriaFactory->createFromContext($dev_context, filterPerimeters::RPM);
     $criteria->addJoin(RpmPeer::MEDIA_ID, MediaPeer::ID);

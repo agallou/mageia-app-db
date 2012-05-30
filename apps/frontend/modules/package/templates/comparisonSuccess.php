@@ -1,11 +1,12 @@
 <h1>Comparison between 2 releases</h1>
-<p>This page shows packages which have a newer version available in the development branch (<?php echo $dev_release; ?>) than in the selected stable release.<br/>
+<p>This page shows packages which have a newer version available in the development branch (<?php echo $target_release; ?>) than in the selected stable release.<br/>
 Like the other lists, it is filtered using the filters available at the top of the page.</p>
 <p>Legend : 
-<span class="newpackage bordered">added in <?php echo $dev_release; ?></span>, 
-<span class="testing bordered">being tested: same version as in <?php echo $dev_release; ?></span>, 
-<span class="bordered">newer version in <?php echo $dev_release; ?></span>.
-<span class="newer_avail bordered">newer available outside <?php echo $dev_release; ?></span>.
+<span class="newpackage bordered">added in <?php echo $target_release; ?></span>, 
+<span class="testing bordered">being tested: same version as in <?php echo $target_release; ?></span>, 
+<span class="bordered">newer version in <?php echo $target_release; ?></span>.
+<span class="newer_avail bordered">newer available outside <?php echo $target_release; ?></span>.
+<span class="older bordered">older version in <?php echo $target_release; ?>!</span>.
 </p>
 <?php /*include_partial('default/pager', array(
   'pager'       => $pager, 
@@ -24,7 +25,7 @@ Like the other lists, it is filtered using the filters available at the top of t
       <?php if ($has_updates_testing) : ?><th>Update<br/>candidate</th><?php endif; ?>
       <?php if ($has_backports) : ?><th>Feature update</th><?php endif; ?>
       <?php if ($has_backports_testing) : ?><th>Feature update<br/> candidate</th><?php endif; ?>
-      <th>Dev (<?php echo $dev_release; ?>)</th>
+      <th>Dev (<?php echo $target_release; ?>)</th>
       <?php if ($has_available_versions) : ?><th>Newer available<br/>version</th><?php endif; ?>
     </tr>
   </thead>
@@ -41,9 +42,16 @@ if (!$row['update_version'] and !$row['update_testing_version'] and !$row['backp
 {
   echo ' class="newpackage"';
 }
-elseif (RpmPeer::evrCompare($row['update_testing_version'], $row['dev_version'])>=0 or RpmPeer::evrCompare($row['backport_testing_version'], $row['dev_version'])>=0)
+elseif (RpmPeer::evrCompare($row['update_testing_version'], $row['dev_version'])==0 or RpmPeer::evrCompare($row['backport_testing_version'], $row['dev_version'])==0)
 {
   echo ' class="testing"';
+}
+elseif ( RpmPeer::evrCompare($row['update_version'], $row['dev_version'])>0 
+      or RpmPeer::evrCompare($row['update_testing_version'], $row['dev_version'])>0
+      or RpmPeer::evrCompare($row['backport_version'], $row['dev_version'])>0
+      or RpmPeer::evrCompare($row['backport_testing_version'], $row['dev_version'])>0)
+{
+  echo ' class="older"';
 }
 elseif ( !(RpmPeer::evrCompare($row['update_version'], $row['dev_version'])<0 
       and RpmPeer::evrCompare($row['update_testing_version'], $row['dev_version'])<0
@@ -52,6 +60,9 @@ elseif ( !(RpmPeer::evrCompare($row['update_version'], $row['dev_version'])<0
       and $row['available'] )
 {
   echo ' class="newer_avail"';
+}
+else
+{
   // nothing to do, remains white
 }
 ?>>
