@@ -43,16 +43,16 @@ if (!$row['update_version'] and !$row['update_testing_version'] and !$row['backp
 {
   echo ' class="newpackage"';
 }
-elseif (RpmPeer::evrCompare($row['update_testing_version'], $row['dev_version'])==0 or RpmPeer::evrCompare($row['backport_testing_version'], $row['dev_version'])==0)
-{
-  echo ' class="testing"';
-}
 elseif ( RpmPeer::evrCompare($row['update_version'], $row['dev_version'])>0 
       or RpmPeer::evrCompare($row['update_testing_version'], $row['dev_version'])>0
       or RpmPeer::evrCompare($row['backport_version'], $row['dev_version'])>0
       or RpmPeer::evrCompare($row['backport_testing_version'], $row['dev_version'])>0)
 {
   echo ' class="older"';
+}
+elseif (RpmPeer::evrCompare($row['update_testing_version'], $row['dev_version'])==0 or RpmPeer::evrCompare($row['backport_testing_version'], $row['dev_version'])==0)
+{
+  echo ' class="testing"';
 }
 elseif ( !(RpmPeer::evrCompare($row['update_version'], $row['dev_version'])<0 
       and RpmPeer::evrCompare($row['update_testing_version'], $row['dev_version'])<0

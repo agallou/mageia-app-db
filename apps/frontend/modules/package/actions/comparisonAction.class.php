@@ -339,7 +339,12 @@ EOF;
                 !$this->show_updated 
                 || (!is_null($row['update_version']) && RpmPeer::evrCompare($row['dev_version'], $row['update_version']) <= 0)
               )
-              || (!$this->show_backported && !is_null($row['backport_version']) && RpmPeer::evrCompare($row['dev_version'], $row['backport_version']) <= 0)
+              && 
+              (
+                !$this->show_backported 
+                || is_null($row['backport_version']) 
+                || RpmPeer::evrCompare($row['dev_version'], $row['backport_version']) <= 0
+              )
             )
             && (!$this->show_older || is_null($row['update_version'])           || RpmPeer::evrCompare($row['dev_version'], $row['update_version']) >= 0)
             && (!$this->show_older || is_null($row['update_testing_version'])   || RpmPeer::evrCompare($row['dev_version'], $row['update_testing_version']) >= 0)

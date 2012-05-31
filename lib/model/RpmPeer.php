@@ -66,7 +66,7 @@ class RpmPeer extends BaseRpmPeer {
     }
   }
   
-  protected static function compareVersions($first, $second)
+  public static function compareVersions($first, $second)
   {
     if ($first === $second)
     {
@@ -82,13 +82,11 @@ class RpmPeer extends BaseRpmPeer {
       {
         return 1;
       }
-      if ($value > $tab2[$key])
+      
+      $comparison = self::compareItems($value, $tab2[$key]);
+      if ($comparison != 0)
       {
-        return 1;
-      }
-      if ($value < $tab2[$key])
-      {
-        return -1;
+        return $comparison;
       }
     }
     
@@ -102,6 +100,54 @@ class RpmPeer extends BaseRpmPeer {
     }
     
     return 0;
+  }
+  
+  /**
+   * compares 2 items, for example the 2RC4 from 3.2RC4 with the 2 from 3.2
+   * 2 > 2RC4
+   * 2 > 2[A-Za-z_][A-Za-z0-9_]*
+   */
+  public static function compareItems($first, $second)
+  {
+    $matches = array();
+    preg_match('/([0-9]+)([A-Za-z_][A-Za-z0-9_]*)?/', $first, $matches);
+    $number1 = $matches[1];
+    $rest1 = isset($matches[2]) ? $matches[2] : null;
+
+    $matches = array();
+    preg_match('/([0-9]+)([A-Za-z_][A-Za-z0-9_]*)?/', $second, $matches);
+    $number2 = $matches[1];
+    $rest2 = isset($matches[2]) ? $matches[2] : null;
+    
+    if ($number1 > $number2)
+    {
+      return 1;
+    }
+    elseif ($number1 < $number2)
+    {
+      return -1;
+    }
+    elseif ($rest1 === $rest2)
+    {
+      return 0;
+    }
+    // no rest is higher than some rest
+    elseif ($rest1 === null and $rest2 !== null)
+    {
+      return 1;
+    }
+    elseif ($rest1 !== null and $rest2 === null)
+    {
+      return -1;
+    }
+    elseif ($rest1 > $rest2)
+    {
+      return 1;
+    }
+    else
+    {
+      return -1;
+    }
   }
   
   /**
