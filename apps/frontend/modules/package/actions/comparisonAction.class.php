@@ -95,15 +95,15 @@ class comparisonAction extends madbActions
       $this->show_newer_avail = true;
     }
     
-    $exclude_testing = true;
+    $exclude_testing = false;
     if ($request->getParameter('exclude_testing') == 1)
     {
-      $exclude_testing = false;
+      $exclude_testing = true;
     }
-    $exclude_backports = true;
+    $exclude_backports = false;
     if ($request->getParameter('exclude_backports') == 1)
     {
-      $exclude_backports = false;
+      $exclude_backports = true;
     }
     
     $con = Propel::getConnection();
