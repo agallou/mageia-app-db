@@ -6,6 +6,7 @@ Like the other lists, it is filtered using the filters available at the top of t
 <span class="testing bordered">being tested: same version as in <?php echo $target_release; ?></span>, 
 <span class="bordered">newer version in <?php echo $target_release; ?></span>.
 <span class="newer_avail bordered">newer available outside <?php echo $target_release; ?></span>.
+<span class="backported bordered">backported</span>.
 <span class="older bordered">older version in <?php echo $target_release; ?>!</span>.
 </p>
 <?php /*include_partial('default/pager', array(
@@ -60,6 +61,10 @@ elseif ( !(RpmPeer::evrCompare($row['update_version'], $row['dev_version'])<0
       and $row['available'] )
 {
   echo ' class="newer_avail"';
+}
+elseif (RpmPeer::evrCompare($row['backport_version'], $row['dev_version'])==0)
+{
+  echo ' class="backported"';
 }
 else
 {

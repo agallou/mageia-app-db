@@ -369,6 +369,11 @@ table.comparisontable
   background-color:#CCC; 
 }
 
+.backported
+{
+  background-color:#ADF; 
+}
+
 .older
 {
   background-color:#F66; 

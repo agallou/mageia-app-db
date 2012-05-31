@@ -286,9 +286,21 @@ EOF;
     $con->beginTransaction();
     foreach ($stmt as $row)
     {
-      if (((!is_null($row['update_version']) && RpmPeer::evrCompare($row['dev_version'], $row['update_version']) <= 0)
-          || (!is_null($row['backport_version']) && RpmPeer::evrCompare($row['dev_version'], $row['backport_version']) <= 0))
-          && (is_null($row['available']))
+      // Keep only packages for which one of those criteria is met:
+      // - the base/update version is lower than that of the target
+      // - one of the versions is higher than that of the target
+      // - there is a newer version available outside the distro
+      if  (
+            (
+              (!is_null($row['update_version']) && RpmPeer::evrCompare($row['dev_version'], $row['update_version']) <= 0)
+              // TODO: change this false to true if you want to filter out backports which have the same version as the target
+              || (false && !is_null($row['backport_version']) && RpmPeer::evrCompare($row['dev_version'], $row['backport_version']) <= 0)
+            )
+            && (is_null($row['update_version'])           || RpmPeer::evrCompare($row['dev_version'], $row['update_version']) >= 0)
+            && (is_null($row['update_testing_version'])   || RpmPeer::evrCompare($row['dev_version'], $row['update_testing_version']) >= 0)
+            && (is_null($row['backport_version'])         || RpmPeer::evrCompare($row['dev_version'], $row['backport_version']) >= 0)
+            && (is_null($row['backport_testing_version']) || RpmPeer::evrCompare($row['dev_version'], $row['backport_testing_version']) >= 0)
+            && (is_null($row['available']))
           )
       {
         $sql = "DELETE FROM $tablename WHERE id=$row[id]"; 
