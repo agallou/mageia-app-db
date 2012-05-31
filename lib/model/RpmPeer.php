@@ -29,18 +29,9 @@ class RpmPeer extends BaseRpmPeer {
     $split_evr2 = self::evrSplit($evr2);
     
     // epoch
-    if (is_null($split_evr1[0]) or is_null($split_evr2[0]))
-    {
-      if (!is_null($split_evr1[0])) 
-      {
-        return 1;
-      }
-      if (!is_null($split_evr2[0]))
-      {
-        return -1;
-      }
-    }
-    elseif (version_compare($split_evr1[0], $split_evr2[0], '>'))
+    $split_evr1[0] = is_null($split_evr1[0]) ? 0 : $split_evr1[0];
+    $split_evr2[0] = is_null($split_evr2[0]) ? 0 : $split_evr2[0];
+    if (version_compare($split_evr1[0], $split_evr2[0], '>'))
     {
       return 1;
     }
