@@ -95,6 +95,17 @@ class comparisonAction extends madbActions
       $this->show_newer_avail = true;
     }
     
+    $exclude_testing = true;
+    if ($request->getParameter('exclude_testing') == 1)
+    {
+      $exclude_testing = false;
+    }
+    $exclude_backports = true;
+    if ($request->getParameter('exclude_backports') == 1)
+    {
+      $exclude_backports = false;
+    }
+    
     $con = Propel::getConnection();
     $databaseFactory = new databaseFactory();
     $database = $databaseFactory->createDefault();
@@ -277,10 +288,16 @@ EOF;
       $criteria->addJoin(RpmPeer::MEDIA_ID, MediaPeer::ID);
       $criteria->addJoin(RpmPeer::PACKAGE_ID, PackagePeer::ID);
       $criteria->addJoin(PackagePeer::ID, "$tablename_available.package_id", Criteria::LEFT_JOIN);
-      $criteria->add(MediaPeer::IS_TESTING, false);
+      if ($exclude_testing)
+      {
+        $criteria->add(MediaPeer::IS_TESTING, false);
+      }        
+      if ($exclude_backports)
+      {
+        $criteria->add(MediaPeer::IS_BACKPORTS, false);
+      }
       $criteria->add(MediaPeer::IS_THIRD_PARTY, false);
-      $criteria->add(MediaPeer::IS_BACKPORTS, false);
-
+  
       $criteria->clearSelectColumns();
       $criteria->addAsColumn('id', PackagePeer::ID);
       $criteria->addAsColumn('name', PackagePeer::NAME);
