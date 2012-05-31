@@ -148,10 +148,11 @@ EOF;
     $criteria->addAsColumn('id', PackagePeer::ID);
     $criteria->addAsColumn('name', PackagePeer::NAME);
     $criteria->addAsColumn('summary', PackagePeer::SUMMARY);
+    // FIXME : MAX is not accurate for RPM version
     $criteria->addAsColumn('dev_version', 'MAX('.RpmPeer::VERSION.')');
     $criteria->addAsColumn('available', "$tablename_available.available");
     $criteria->addAsColumn('source', "$tablename_available.source");
-    // group by just in case the dev release has several versions
+    // group by in case the package has several versions in the target release
     $criteria->addGroupByColumn(PackagePeer::ID);
     $criteria->addGroupByColumn(PackagePeer::NAME);
     $criteria->addGroupByColumn(PackagePeer::SUMMARY);
