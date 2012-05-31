@@ -3,6 +3,7 @@ class comparisonAction extends madbActions
 {
   public function execute($request)
   {
+    /*
     if ($request->hasParameter('page'))
     {
       $page = $request->getParameter('page');
@@ -10,7 +11,7 @@ class comparisonAction extends madbActions
     else
     {
       $page = 1;
-    }
+    }*/
     
     $keyvalue = $this->madbcontext->getRealFilterValue('release');
     $distrelease = DistreleasePeer::retrieveByName(array_shift($keyvalue));
@@ -53,10 +54,50 @@ class comparisonAction extends madbActions
       }
     }
     
+    // Parameters:
+    if ($request->hasParameter('comptype'))
+    {
+      $this->show_added = false;
+      $this->show_updated = false;
+      $this->show_backported = false;
+      $this->show_older = false;
+      $this->show_newer_avail = false;
+      foreach (explode('|', $request->getParameter('comptype')) as $type)
+      {
+        switch ($type)
+        {
+          case 'added':
+            $this->show_added=true;
+            break;
+          case 'updated':
+            $this->show_updated=true;
+            break;
+          case 'backported':
+            $this->show_backported=true;
+            break;
+          case 'older':
+            $this->show_older=true;
+            break;
+          case 'newer_avail':
+            $this->show_newer_avail=true;
+            break;
+          default:
+            break;
+        }
+      }
+    }
+    else
+    {
+      $this->show_added = true;
+      $this->show_updated = true;
+      $this->show_backported = true;
+      $this->show_older = true;
+      $this->show_newer_avail = true;
+    }
+    
     $con = Propel::getConnection();
     $databaseFactory = new databaseFactory();
     $database = $databaseFactory->createDefault();
-    
     
     // Available versions outside from Mageia
     $tablename_available = 'tmp_available';
@@ -67,10 +108,9 @@ CREATE TEMPORARY TABLE $tablename_available (
   source VARCHAR(255)
 );
 EOF;
-    $con->exec($sql);
+    $con->exec($sql);    
     
-    // fixme : only for Mageia / Mandriva
-    if (true)
+    if ($this->show_newer_avail)
     {
       $tablename_available_raw = 'tmp_available_raw';
       $sql = <<<EOF
@@ -102,22 +142,20 @@ EOF;
         }
         $con->exec(rtrim($sql, ',')); 
       }
-    }
     
-    
-    // Find source packages and binary packages corresponding to the source_packages having a newer available version
-    // Add them to $tablename_available
-    $sql = <<<EOF
+      // Find source packages and binary packages corresponding to the source_packages having a newer available version
+      // Add them to $tablename_available
+      $sql = <<<EOF
 INSERT INTO $tablename_available (package_id, available, source)
 SELECT sp.id, t.available, t.source
 FROM $tablename_available_raw t 
      JOIN package sp ON (sp.name=t.src_package AND sp.is_source=TRUE);
 EOF;
-    $con->exec($sql);
-    
-    try
-    {
-      $sql = <<<EOF
+      $con->exec($sql);
+
+      try
+      {
+        $sql = <<<EOF
 INSERT INTO $tablename_available (package_id, available, source)
 SELECT DISTINCT bp.id, t.available, t.source
 FROM $tablename_available_raw t
@@ -126,13 +164,14 @@ FROM $tablename_available_raw t
      JOIN rpm br ON br.source_rpm_id=sr.id
      JOIN package bp ON br.package_id=bp.id
 EOF;
-      $con->exec($sql);
+        $con->exec($sql);
+      }
+      catch (PDOException $e)
+      {
+        // do nothing, this is a way to emulate INSERT IGNORE
+      }
     }
-    catch (PDOException $e)
-    {
-      // do nothing, this is a way to emulate INSERT IGNORE
-    }
-    
+      
     
     // Get packages corresponding to current filters but for the second release (dev or 'withrelease')
     $criteria = $this->getCriteria(filterPerimeters::PACKAGE);
@@ -227,57 +266,61 @@ EOF;
       $con->commit();
     } 
     
-    // Add new packages from the development release to the list
-    $dev_context = $this->getMadbContext();
-    // FIXME : cleaner modification of the distrelease filter
-    $dev_context->getParameterHolder()->set('release', $target_release->getName());
-    $criteriaFactory = new criteriaFactory();
-    $criteria = $criteriaFactory->createFromContext($dev_context, filterPerimeters::RPM);
-    $criteria->addJoin(RpmPeer::MEDIA_ID, MediaPeer::ID);
-    $criteria->addJoin(RpmPeer::PACKAGE_ID, PackagePeer::ID);
-    $criteria->addJoin(PackagePeer::ID, "$tablename_available.package_id", Criteria::LEFT_JOIN);
-    $criteria->add(MediaPeer::IS_TESTING, false);
-    $criteria->add(MediaPeer::IS_THIRD_PARTY, false);
-    $criteria->add(MediaPeer::IS_BACKPORTS, false);
-    
-    $criteria->clearSelectColumns();
-    $criteria->addAsColumn('id', PackagePeer::ID);
-    $criteria->addAsColumn('name', PackagePeer::NAME);
-    $criteria->addAsColumn('summary', PackagePeer::SUMMARY);
-    $criteria->addAsColumn('dev_version', 'MAX('.RpmPeer::VERSION.')');
-    $criteria->addAsColumn('available', "$tablename_available.available");
-    $criteria->addAsColumn('source', "$tablename_available.source");
-    // group by just in case the dev release has several versions
-    $criteria->addGroupByColumn(PackagePeer::ID);
-    $criteria->addGroupByColumn(PackagePeer::NAME);
-    $criteria->addGroupByColumn(PackagePeer::SUMMARY);
-    $criteria->addGroupByColumn("$tablename_available.available");
-    $criteria->addGroupByColumn("$tablename_available.source");
-    
-    
-    $stmt = BasePeer::doSelect($criteria);
-    $con->beginTransaction();
-    foreach ($stmt as $row)
+    if ($this->show_added)
     {
-      // first check that it's not already in the table
-      // because postgresql doesn't handle INSERT IGNORE
-      $sql = "SELECT id FROM $tablename WHERE id='$row[id]'";
-      $stmt2 = $con->query($sql);
-      if (!$stmt2->fetch())
-      {
-        $row['name'] = addslashes($row['name']);
-        $row['summary'] = addslashes($row['summary']);
+      // Add new packages from the development release to the list
+      $dev_context = $this->getMadbContext();
+      // FIXME : cleaner modification of the distrelease filter
+      $dev_context->getParameterHolder()->set('release', $target_release->getName());
+      $criteriaFactory = new criteriaFactory();
+      $criteria = $criteriaFactory->createFromContext($dev_context, filterPerimeters::RPM);
+      $criteria->addJoin(RpmPeer::MEDIA_ID, MediaPeer::ID);
+      $criteria->addJoin(RpmPeer::PACKAGE_ID, PackagePeer::ID);
+      $criteria->addJoin(PackagePeer::ID, "$tablename_available.package_id", Criteria::LEFT_JOIN);
+      $criteria->add(MediaPeer::IS_TESTING, false);
+      $criteria->add(MediaPeer::IS_THIRD_PARTY, false);
+      $criteria->add(MediaPeer::IS_BACKPORTS, false);
 
-        $sql = <<<EOF
+      $criteria->clearSelectColumns();
+      $criteria->addAsColumn('id', PackagePeer::ID);
+      $criteria->addAsColumn('name', PackagePeer::NAME);
+      $criteria->addAsColumn('summary', PackagePeer::SUMMARY);
+      $criteria->addAsColumn('dev_version', 'MAX('.RpmPeer::VERSION.')');
+      $criteria->addAsColumn('available', "$tablename_available.available");
+      $criteria->addAsColumn('source', "$tablename_available.source");
+      // group by just in case the dev release has several versions
+      $criteria->addGroupByColumn(PackagePeer::ID);
+      $criteria->addGroupByColumn(PackagePeer::NAME);
+      $criteria->addGroupByColumn(PackagePeer::SUMMARY);
+      $criteria->addGroupByColumn("$tablename_available.available");
+      $criteria->addGroupByColumn("$tablename_available.source");
+
+
+      $stmt = BasePeer::doSelect($criteria);
+      $con->beginTransaction();
+      foreach ($stmt as $row)
+      {
+        // first check that it's not already in the table
+        // because postgresql doesn't handle INSERT IGNORE
+        $sql = "SELECT id FROM $tablename WHERE id='$row[id]'";
+        $stmt2 = $con->query($sql);
+        if (!$stmt2->fetch())
+        {
+          $row['name'] = addslashes($row['name']);
+          $row['summary'] = addslashes($row['summary']);
+
+          $sql = <<<EOF
 INSERT INTO $tablename
   (id, name, summary, dev_version, available, source)
   VALUES ($row[id], '$row[name]', '$row[summary]', '$row[dev_version]', '$row[available]', '$row[source]');
 EOF;
-        $con->exec($sql);
+          $con->exec($sql);
+        }
       }
+      $con->commit();
     }
-    $con->commit();
-
+    
+    
     $sql = <<<EOF
 SELECT id, $tablename.* 
 FROM $tablename
@@ -292,14 +335,16 @@ EOF;
       // - there is a newer version available outside the distro
       if  (
             (
-              (!is_null($row['update_version']) && RpmPeer::evrCompare($row['dev_version'], $row['update_version']) <= 0)
-              // TODO: change this false to true if you want to filter out backports which have the same version as the target
-              || (false && !is_null($row['backport_version']) && RpmPeer::evrCompare($row['dev_version'], $row['backport_version']) <= 0)
+              (
+                !$this->show_updated 
+                || (!is_null($row['update_version']) && RpmPeer::evrCompare($row['dev_version'], $row['update_version']) <= 0)
+              )
+              || (!$this->show_backported && !is_null($row['backport_version']) && RpmPeer::evrCompare($row['dev_version'], $row['backport_version']) <= 0)
             )
-            && (is_null($row['update_version'])           || RpmPeer::evrCompare($row['dev_version'], $row['update_version']) >= 0)
-            && (is_null($row['update_testing_version'])   || RpmPeer::evrCompare($row['dev_version'], $row['update_testing_version']) >= 0)
-            && (is_null($row['backport_version'])         || RpmPeer::evrCompare($row['dev_version'], $row['backport_version']) >= 0)
-            && (is_null($row['backport_testing_version']) || RpmPeer::evrCompare($row['dev_version'], $row['backport_testing_version']) >= 0)
+            && (!$this->show_older || is_null($row['update_version'])           || RpmPeer::evrCompare($row['dev_version'], $row['update_version']) >= 0)
+            && (!$this->show_older || is_null($row['update_testing_version'])   || RpmPeer::evrCompare($row['dev_version'], $row['update_testing_version']) >= 0)
+            && (!$this->show_older || is_null($row['backport_version'])         || RpmPeer::evrCompare($row['dev_version'], $row['backport_version']) >= 0)
+            && (!$this->show_older || is_null($row['backport_testing_version']) || RpmPeer::evrCompare($row['dev_version'], $row['backport_testing_version']) >= 0)
             && (is_null($row['available']))
           )
       {
