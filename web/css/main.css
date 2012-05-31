@@ -344,11 +344,6 @@ table.comparisontable
   vertical-align: top;
 }
 
-.comparisontable tr:hover 
-{ 
-  outline: 1px solid #000; 
-}
-
 .comparisontable th
 {
   border-bottom: 2px solid #000;
