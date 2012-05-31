@@ -31,24 +31,17 @@ class RpmPeer extends BaseRpmPeer {
     // epoch
     $split_evr1[0] = is_null($split_evr1[0]) ? 0 : $split_evr1[0];
     $split_evr2[0] = is_null($split_evr2[0]) ? 0 : $split_evr2[0];
-    if (version_compare($split_evr1[0], $split_evr2[0], '>'))
+    $comparison = self::compareVersions($split_evr1[0], $split_evr2[0]);
+    if ($comparison != 0)
     {
-      return 1;
+      return $comparison;
     }
-    elseif (version_compare($split_evr1[0], $split_evr2[0], '<'))
-    {
-      return -1;
-    }
-
 
     // version
-    if (version_compare($split_evr1[1], $split_evr2[1], '>'))
+    $comparison = self::compareVersions($split_evr1[1], $split_evr2[1]);
+    if ($comparison != 0)
     {
-      return 1;
-    }
-    elseif (version_compare($split_evr1[1], $split_evr2[1], '<'))
-    {
-      return -1;
+      return $comparison;
     }
 
     // release
@@ -67,18 +60,48 @@ class RpmPeer extends BaseRpmPeer {
         return 0;
       }
     }    
-    elseif (version_compare($split_evr1[2], $split_evr2[2], '>'))
+    else
     {
-      return 1;
+      return self::compareVersions($split_evr1[2], $split_evr2[2]);
     }
-    elseif (version_compare($split_evr1[2], $split_evr2[2], '<'))
-    {
-      return -1;
-    }
-    else 
+  }
+  
+  protected static function compareVersions($first, $second)
+  {
+    if ($first === $second)
     {
       return 0;
     }
+    
+    $tab1 = explode('.', $first);
+    $tab2 = explode('.', $second);
+    
+    foreach ($tab1 as $key => $value)
+    {
+      if (!isset($tab2[$key]))
+      {
+        return 1;
+      }
+      if ($value > $tab2[$key])
+      {
+        return 1;
+      }
+      if ($value < $tab2[$key])
+      {
+        return -1;
+      }
+    }
+    
+    if (count($tab1) > count($tab2))
+    {
+      return 1;
+    }
+    if (count($tab1) < count($tab2))
+    {
+      return -1;
+    }
+    
+    return 0;
   }
   
   /**
