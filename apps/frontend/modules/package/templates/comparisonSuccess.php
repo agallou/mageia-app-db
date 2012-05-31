@@ -26,7 +26,7 @@ Like the other lists, it is filtered using the filters available at the top of t
       <?php if ($has_updates_testing) : ?><th>Update<br/>candidate</th><?php endif; ?>
       <?php if ($has_backports) : ?><th>Feature update</th><?php endif; ?>
       <?php if ($has_backports_testing) : ?><th>Feature update<br/> candidate</th><?php endif; ?>
-      <th>Dev (<?php echo $target_release; ?>)</th>
+      <th><?php echo $targetRelease->getDisplayedName(); ?></th>
       <?php if ($has_available_versions) : ?><th>Newer available<br/>version</th><?php endif; ?>
     </tr>
   </thead>
