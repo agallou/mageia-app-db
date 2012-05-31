@@ -190,9 +190,15 @@ EOF;
     $criteria->addJoin(PackagePeer::ID, RpmPeer::PACKAGE_ID);
     $criteria->add(RpmPeer::DISTRELEASE_ID, $target_release->getId());
     $criteria->addJoin(RpmPeer::MEDIA_ID, MediaPeer::ID);
-    $criteria->add(MediaPeer::IS_TESTING, false);
+    if ($exclude_testing)
+    {
+      $criteria->add(MediaPeer::IS_TESTING, false);
+    }
     $criteria->add(MediaPeer::IS_THIRD_PARTY, false);
-    $criteria->add(MediaPeer::IS_BACKPORTS, false);
+    if ($exclude_backports)
+    {
+      $criteria->add(MediaPeer::IS_BACKPORTS, false);
+    }
     
     $criteria->clearSelectColumns();
     $criteria->addAsColumn('id', PackagePeer::ID);
