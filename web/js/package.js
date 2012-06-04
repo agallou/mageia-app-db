@@ -72,6 +72,31 @@ $(document).ready(function(){
 });
 
 
+$(document).ready(function(){
+  $('.install_link').click(function(event) {
+    var tag = $("<div></div>");
+    $.ajax({
+      url: $(event.target).attr('href'),
+      success: function(data) {
+        tag.html(data).dialog(
+         {
+           modal: true,
+           width: 600,
+           height: 500,
+           buttons: {
+             Cancel: function() {
+               $(this).dialog( "close" );
+             }
+           }
+         }).dialog('open');
+      }
+    });
+    return false;
+  });
+});
+
+
+
 function getAllVals_subscribeForm(options)
 {  
   var vals = [];

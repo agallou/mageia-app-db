@@ -37,6 +37,10 @@ class madbConfig
         return 6;
       case 'clean-urls': 
         return true;
+      case 'allow_install':
+        return false;
+      case 'allow_download':
+        return false;
     }
     
     return $default;

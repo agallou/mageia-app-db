@@ -12,6 +12,9 @@
     (<?php echo $rpm->getDistrelease()->getDisplayedName() ?>, 
      <?php echo $rpm->getArch()->getName()?> media, 
      <?php echo $rpm->getMedia()->getName()?>)
+     <?php if ($allow_install && !$rpm->getIsSource()) : ?>
+       <strong><?php echo link_to('Install', 'rpm/installDialog?id=' . $rpm->getId(), array('class' => 'install_link')) ?></strong>
+     <?php endif; ?>
   </li>
   <?php endforeach; ?>
   <?php if (empty($rpms)) : ?>
@@ -31,7 +34,7 @@ $(document).ready(function(){
     success: function(data){
       $('#screenshots').append(data);
     }
-  })
+  });
 });
 <?php end_javascript_tag() ?>
 

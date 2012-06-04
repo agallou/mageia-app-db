@@ -18,6 +18,11 @@ class showAction extends madbActions
     }
     $this->rpms = RpmPeer::sortByEvrAndDistrelease($this->rpms);
     
+    $madbConfig = new madbConfig();
+    $this->allow_install = $madbConfig->get('allow_install');
+    $this->allow_download = $madbConfig->get('allow_download');
+    
+    // Subscription
     if ($this->getUser()->isAuthenticated())
     {
       $user_id=$this->getUser()->getProfile()->getId();

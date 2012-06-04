@@ -74,21 +74,27 @@ class madbUrl
   public function urlForRpm(Rpm $rpm, madbContext $madbContext = null, $options = array())
   {
     return $this->urlFor(
-      'rpm/show', 
+      isset($options['moduleaction']) ? $options['moduleaction'] : 'rpm/show', 
       $madbContext, 
       sfToolkit::arrayDeepMerge(
         $options,
         array(
-          'extra_parameters' => array(
-            'name'        => $rpm->getName(),
-            'source'      => $rpm->getIsSource(),
-            'release'     => $rpm->getDistrelease()->getName(),
-            'arch'        => $rpm->getArch()->getName(),
-            't_media' => $rpm->getMediaId()
-          ),
+          'extra_parameters' => $this->getParamsForRpmUrl($rpm),
           'clear_defaults' => false  
         )
       )
     );
   }
+
+  protected function getParamsForRpmUrl (Rpm $rpm)
+  {
+    return array(
+      'name'        => $rpm->getName(),
+      'source'      => $rpm->getIsSource(),
+      'release'     => $rpm->getDistrelease()->getName(),
+      'arch'        => $rpm->getArch()->getName(),
+      't_media'     => $rpm->getMediaId()
+    );
+  }
+  
 }
