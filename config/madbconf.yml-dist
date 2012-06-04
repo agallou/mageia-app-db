@@ -7,8 +7,8 @@ all:
   host: localhost
   distribution: mageia
   distribution_name: Mageia
-#  distro_config_file: data/distros/mageia/distro.yml
-#  applications_list_file: data/distros/mageia/applications.txt
+#  distro_config_file: data/distros/{distribution}/distro.yml
+#  applications_list_file: data/distros/{distribution}/applications.txt
   notifications:
 #    display_notice: false
     mail:
