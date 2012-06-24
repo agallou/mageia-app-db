@@ -20,7 +20,7 @@ class madbInstallerMageia extends baseMadbInstaller
   <li>Distribution: <strong>$release</strong>.</li>
   <li>Media: <strong>$media</strong>, active and up to date.</li>
   <li>Architecture: <strong>$arch</strong>.</li>
-  <li>The media containing dependencies for $name must be active and up to date.</li>
+  <li>The media containing dependencies for $name must be <strong>active and up to date</strong>.</li>
 </ul>
 </p>
 <br/>    
@@ -30,21 +30,23 @@ class madbInstallerMageia extends baseMadbInstaller
 <br/>
 <br/>
 <br/>
-<p>To configure or update the installation sources, run the <strong>drakrpm-edit-media</strong> tool as root. 
-<ul>
-  <li><em>Add:</em> to add the online installation media, click the "Add" button (needed only once and only if they are not present already).</li>
-  <li><em>Activate:</em> click the checkboxes to activate the needed media.</li>
-  <li><em>Update:</em> select "File">"Update" in the menu to update the media.</li>
-</ul>
-Don't forget to un-activate media afterwards if you don't want to keep them activated (such as backports media).
-</p> 
+It doesn't work? <a href="#" onclick="\$('.installtips').show()">Click here to check a few things.</a>
+
+<div class="installtips" style="display:none;">
 <br/>
-<p><strong>Known issue:</strong>
 <ul>
-  <li>By default the <em>chromium</em> browser, instead of asking, downloads the file directly. Click the little arrow next to the download result 
-  and choose to always open that kind of file.</li>
-</ul>
-</p>
+  <li>Check the prerequisites <strong>again</strong>.</li>
+  <li>To configure or update the installation sources, run the <strong>drakrpm-edit-media</strong> tool as root.
+    <ul>
+      <li><em>Add:</em> to add the online installation media, click the "Add" button (needed only once and only if they are not present already).</li>
+      <li><em>Activate:</em> click the checkboxes to activate the needed media.</li>
+      <li><em>Update:</em> select "File">"Update" in the menu to update the media.</li>
+      <li>Don't forget to un-activate media afterwards if you don't want to keep them activated (such as backports media).</li>
+    </ul>
+  </li>
+  <li>For chromium users: if the file doesn't open, right-click the filename in the download bar and choose to always open that kind of file.</li>
+</ul>  
+</div>
 
 EOF;
   }
