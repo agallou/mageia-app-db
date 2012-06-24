@@ -33,14 +33,7 @@ class installDialogAction extends madbActions
 
     $url = $this->madburl->urlForRpm($rpm, $this->madbcontext, array('moduleaction' => 'rpm/install'));
     
-    $link = link_to('Click here to install ' . $rpm->getName(), $url);
-    $contents = <<<EOF
-<br/>    
-<strong>$link</strong>
-<br/>    
-<br/>  
-EOF;
-    $contents .= $installer->getMessageForRpm($rpm, $url);
+    $contents = $installer->getMessageForRpm($rpm, $url);
     return $this->renderText($contents);
   }
 }

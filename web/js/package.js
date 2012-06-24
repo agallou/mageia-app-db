@@ -81,8 +81,8 @@ $(document).ready(function(){
         tag.html(data).dialog(
          {
            modal: true,
-           width: 600,
-           height: 500,
+           width: 660,
+           height: 550,
            buttons: {
              Cancel: function() {
                $(this).dialog( "close" );
