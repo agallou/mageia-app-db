@@ -10,7 +10,7 @@ class madbInstallerMageia extends baseMadbInstaller
     $release = $rpm->getDistrelease()->getDisplayedName();
     $name = $rpm->getName();
     
-    $link = link_to('Click here to install ' . $rpm->getName(), $url, array('class' => 'button'));
+    $link = link_to('Install ' . $rpm->getName(), $url, array('class' => 'button'));
     
     return <<<EOF
 <p>This will install the RPM using the standard Mageia repositories configured on <strong>your</strong> system.</p> 

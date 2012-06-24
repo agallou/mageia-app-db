@@ -6,14 +6,14 @@
 <?php echo nl2br(htmlspecialchars($package->getDescription())) ?></p>
 <br/>
 <h2>List of RPMs</h2>
-<ul>
+<ul class="packlist">
   <?php foreach ($rpms as $rpm) : ?>
   <li><?php echo link_to($rpm->getName(), $madburl->urlForRpm($rpm, $madbcontext)); ?> 
     (<?php echo $rpm->getDistrelease()->getDisplayedName() ?>, 
      <?php echo $rpm->getArch()->getName()?> media, 
      <?php echo $rpm->getMedia()->getName()?>)
      <?php if ($allow_install && !$rpm->getIsSource()) : ?>
-       <strong><?php echo link_to('Install', 'rpm/installDialog?id=' . $rpm->getId(), array('class' => 'install_link')) ?></strong>
+       <?php echo link_to('Install', 'rpm/installDialog?id=' . $rpm->getId(), array('class' => 'install_link button')) ?>
      <?php endif; ?>
   </li>
   <?php endforeach; ?>
