@@ -41,7 +41,7 @@ It doesn't work? <a href="#" onclick="\$('.installtips').show()">Click here to c
       <li><em>Add:</em> to add the online installation media, click the "Add" button (needed only once and only if they are not present already).</li>
       <li><em>Activate:</em> click the checkboxes to activate the needed media.</li>
       <li><em>Update:</em> select "File">"Update" in the menu to update the media.</li>
-      <li>Don't forget to un-activate media afterwards if you don't want to keep them activated (such as backports media).</li>
+      <li>Don't forget to deactivate media afterwards if you don't want to keep them activated (such as backports media).</li>
     </ul>
   </li>
   <li>For chromium users: if the file doesn't open, right-click the filename in the download bar and choose to always open that kind of file.</li>
