@@ -32,8 +32,8 @@
             </div>
       <!--      <div id="global"> -->
                 <div id="menu">
-                    <?php include_component('default', 'menu') ?>
-                </div>                
+                    <?php include_component('default', 'menu', $sf_request->getParameterHolder()->getAll()) ?>
+                </div>
                 <div id="content">
                     <div id="filtering">
                       <?php include_component_slot('filtering') ?>
