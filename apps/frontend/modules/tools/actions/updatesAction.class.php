@@ -78,7 +78,7 @@ class updatesAction extends madbActions
           'whiteboard'      => $update[$rank['whiteboard']],
           'versions'        => $versions,
           'RPM'             => $update[$rank['RPM']],
-          'has_procedure'   => (bool) strpos($update[$rank['whiteboard']], 'has_procedure'),
+          'has_procedure'   => strpos($update[$rank['whiteboard']], 'has_procedure') === false ? false : true,
           'testing_status'  => $testing_status 
       );
       
