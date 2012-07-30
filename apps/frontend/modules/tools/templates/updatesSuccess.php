@@ -11,6 +11,7 @@
     <?php endforeach; ?>
     <th>Procedure available?</th>
     <th>RPM</th>
+    <th>Last action</th>
   </thead>
   <?php $count = 0; ?>
   <?php foreach (array('security', 'bugfix', 'enhancement') as $type) : ?>
@@ -39,6 +40,7 @@
         <?php endforeach; ?>
         <td><?php echo $updates[$id]['has_procedure'] ? "yes" : "&nbsp;" ?></td>
         <td><?php echo $updates[$id]['RPM'] ?></td>
+        <td><?php echo substr($updates[$id]['changed'], 0, 10) ?></td>
       </tbody>
       <?php endforeach; ?>
     <?php endif; ?>

@@ -16,6 +16,7 @@ class updatesAction extends madbActions
     $rank['version'] = 10;
     $rank['RPM'] = 11;
     $rank['component'] = 12;
+    $rank['changed'] = 13;
     
     
     $updates = array();
@@ -84,7 +85,8 @@ class updatesAction extends madbActions
           'has_procedure'   => strpos($update[$rank['whiteboard']], 'has_procedure') === false ? false : true,
           'testing_status'  => $testing_status,
           'component'       => $update[$rank['component']],
-          'severity'        => $update[$rank['severity']]
+          'severity'        => $update[$rank['severity']],
+          'changed'         => $update[$rank['changed']]
       );
       
       $this->updates_by_version = array();
