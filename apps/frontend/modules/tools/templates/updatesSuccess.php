@@ -12,9 +12,11 @@
     <th>Procedure available?</th>
     <th>RPM</th>
   </thead>
+  <?php $count = 0; ?>
   <?php foreach (array('security', 'bugfix', 'enhancement') as $type) : ?>
     <?php if (isset($updates_by_type[$type])): ?>
       <?php foreach ($updates_by_type[$type] as $id): ?>
+      <?php $count++; ?> 
       <tbody>
         <td><?php echo $type ?></td>
         <td><?php echo link_to($id, 'https://bugs.mageia.org/show_bug.cgi?id=' . $id) ?></td>
@@ -41,5 +43,7 @@
       <?php endforeach; ?>
     <?php endif; ?>
   <?php endforeach; ?>
-</table><br/>
+</table>
+Number of update candidates: <?php echo $count; ?><br/>
+<br/>
 <?php endforeach; ?>
