@@ -6,14 +6,17 @@ class updatesAction extends madbActions
     // This action is very Mageia-QA-specific, should be in a mageia-specific plugin
     
     // get the list of current updates candidates from bugzilla
-    $url = "https://bugs.mageia.org/buglist.cgi?bug_status=REOPENED&bug_status=NEW&bug_status=ASSIGNED&bug_status=UNCONFIRMED&columnlist=bug_severity%2Cpriority%2Cop_sys%2Cassigned_to%2Cbug_status%2Cresolution%2Cshort_desc%2Cstatus_whiteboard%2Ckeywords%2Cversion%2Ccf_rpmpkg&field0-0-0=assigned_to&field1-0-0=keywords&query_format=advanced&type0-0-0=substring&type1-0-0=notsubstring&value0-0-0=qa-bugs&value1-0-0=vali&ctype=csv";
+    $url = "https://bugs.mageia.org/buglist.cgi?bug_status=REOPENED&bug_status=NEW&bug_status=ASSIGNED&bug_status=UNCONFIRMED&columnlist=bug_severity%2Cpriority%2Cop_sys%2Cassigned_to%2Cbug_status%2Cresolution%2Cshort_desc%2Cstatus_whiteboard%2Ckeywords%2Cversion%2Ccf_rpmpkg%2Ccomponent%2Cchangeddate&field0-0-0=assigned_to&field1-0-0=keywords&query_format=advanced&type0-0-0=substring&type1-0-0=notsubstring&value0-0-0=qa-bugs&value1-0-0=vali&ctype=csv";
     $updates_csv = explode("\n", file_get_contents($url));
     $headers = $updates_csv[0];
     $rank['bug_id'] = 0;
+    $rank['severity'] = 1;
     $rank['summary'] = 7;
     $rank['whiteboard'] = 8;
     $rank['version'] = 10;
     $rank['RPM'] = 11;
+    $rank['component'] = 12;
+    
     
     $updates = array();
     unset($updates_csv[0]);
@@ -79,21 +82,39 @@ class updatesAction extends madbActions
           'versions'        => $versions,
           'RPM'             => $update[$rank['RPM']],
           'has_procedure'   => strpos($update[$rank['whiteboard']], 'has_procedure') === false ? false : true,
-          'testing_status'  => $testing_status 
+          'testing_status'  => $testing_status,
+          'component'       => $update[$rank['component']],
+          'severity'        => $update[$rank['severity']]
       );
       
       $this->updates_by_version = array();
       foreach ($updates as $id => $update)
       {
+        if ($update['component'] == 'Security')
+        {
+          $type = 'security';
+        }
+        elseif ($update['severity'] == 'enhancement')
+        {
+          $type = 'enhancement';
+        }
+        else
+        {
+          $type = 'bugfix';
+        }
+          
         foreach($update['versions'] as $version)
         {
-          $this->updates_by_version[$version][$id] = $id;
+          $this->updates_by_version[$version][$type][$id] = $id;
         }
       }
       ksort($this->updates_by_version);
       foreach ($this->updates_by_version as $version => $values)
       {
-        ksort($this->updates_by_version[$version]);
+        foreach ($values as $type => $ids)
+        {
+          ksort($this->updates_by_version[$version][$type]);
+        }
       }
       
       $this->archs = array();
