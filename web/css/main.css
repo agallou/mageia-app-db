@@ -26,6 +26,7 @@ a, a:visited
   text-decoration:none;
 }
 
+
 #container
 {
     display: block;
@@ -189,6 +190,12 @@ div#header div#search form input[type=submit]
 {
     border-bottom: 1px solid #BBBBBB;
     margin: 10px 0px 10px 0px;
+}
+
+#content a:hover, #menu a:hover
+{
+  background-color: #DDDDDD;
+  outline: 1px solid #507AAA;
 }
 
 div.pager
