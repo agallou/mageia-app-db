@@ -40,7 +40,29 @@
         ?></td>
         <?php endforeach; ?>
         <td><?php echo $updates[$id]['has_procedure'] ? "yes" : "&nbsp;" ?></td>
-        <td><?php echo implode(', ', $updates[$id]['versions']) ?></td>
+        <td><?php 
+        foreach ($updates[$id]['versions'] as $version)
+        {
+          $testing_complete = true;
+          foreach ($archs as $arch)
+          {
+            if (!isset($updates[$id]['testing_status'][$version][$arch]) or $updates[$id]['testing_status'][$version][$arch]!=1)
+            {
+              $testing_complete = false;
+            }
+          }
+          if ($testing_complete)
+          {
+            echo '<span style="text-decoration: line-through">';
+          }
+          echo "$version";
+          if ($testing_complete)
+          {
+            echo '</span>';
+          }
+          echo " ";
+        }
+        ?></td>
         <td><?php echo $updates[$id]['RPM'] ?></td>
         <td><?php echo substr($updates[$id]['changed'], 0, 10) ?></td>
       </tbody>
