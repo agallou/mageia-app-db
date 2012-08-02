@@ -14,21 +14,21 @@
     <th>Mageia <br/>Versions</th>
     <th>No action <br/>since (days)</th>
   </thead>
+  <tbody>
   <?php $count = array(); ?>
   <?php $count['total'] = 0; ?>
   <?php foreach (array('security', 'bugfix', 'enhancement') as $type) : ?>
     <?php $count[$type] = 0; ?>
     <?php if (isset($updates_by_type[$type])): ?>
       <?php foreach ($updates_by_type[$type] as $id): ?>
-      <?php $count[$type]++; ?> 
-      <?php $count['total']++; ?> 
-      <tbody>
+        <?php $count[$type]++; ?> 
+        <?php $count['total']++; ?> 
         <td><?php echo $type ?></td>
         <td><?php echo link_to($id, 'https://bugs.mageia.org/show_bug.cgi?id=' . $id) ?></td>
         <td style="text-align:left;" title="<?php echo $updates[$id]['RPM']?>"><?php echo link_to($updates[$id]['summary'], 'https://bugs.mageia.org/show_bug.cgi?id=' . $id) ?></td>
         <?php foreach ($archs as $arch): ?>
         <td><?php 
-        if (isset($updates[$id]['testing_status'][$version][$arch]) and $updates[$id]['testing_status'][$version][$arch])
+        if (isset($updates[$id]['testing_status'][$version][$arch]) && $updates[$id]['testing_status'][$version][$arch])
         {
           echo "OK";
           if ($updates[$id]['testing_status'][$version][$arch] == 2)
@@ -45,12 +45,12 @@
         <td><?php echo $updates[$id]['has_procedure'] ? "yes" : "&nbsp;" ?></td>
         <td><?php echo $updates[$id]['feedback'] ? "yes" : "&nbsp;" ?></td>
         <td><?php 
-        foreach ($updates[$id]['versions'] as $version)
+        foreach ($updates[$id]['versions'] as $the_version)
         {
           $testing_complete = true;
           foreach ($archs as $arch)
           {
-            if (!isset($updates[$id]['testing_status'][$version][$arch]) or $updates[$id]['testing_status'][$version][$arch]!=1)
+            if (!isset($updates[$id]['testing_status'][$the_version][$arch]) or $updates[$id]['testing_status'][$the_version][$arch]!=1)
             {
               $testing_complete = false;
             }
@@ -59,7 +59,7 @@
           {
             echo '<span style="text-decoration: line-through">';
           }
-          echo "$version";
+          echo "$the_version";
           if ($testing_complete)
           {
             echo '</span>';

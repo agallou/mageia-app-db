@@ -88,53 +88,52 @@ class updatesAction extends madbActions
           'severity'        => $update[$rank['severity']],
           'changed'         => $update[$rank['changed']],
           'feedback'        => strpos($update[$rank['whiteboard']], 'feedback') === false ? false : true
-      );
-      
-      $this->updates_by_version = array();
-      foreach ($updates as $id => $update)
-      {
-        if ($update['component'] == 'Security')
-        {
-          $type = 'security';
-        }
-        elseif ($update['severity'] == 'enhancement')
-        {
-          $type = 'enhancement';
-        }
-        else
-        {
-          $type = 'bugfix';
-        }
-          
-        foreach($update['versions'] as $version)
-        {
-          $this->updates_by_version[$version][$type][$id] = $id;
-        }
-      }
-      ksort($this->updates_by_version);
-      foreach ($this->updates_by_version as $version => $values)
-      {
-        foreach ($values as $type => $ids)
-        {
-          ksort($this->updates_by_version[$version][$type]);
-        }
-      }
-      
-      $this->archs = array();
-      foreach ($updates as $update)
-      {
-        foreach($update['testing_status'] as $statuses)
-        {
-          foreach ($statuses as $arch => $status)
-          {
-            $this->archs[$arch] = $arch;            
-          }
-        }
-      }
-      ksort($this->archs);
-            
-      $this->updates = $updates;
-      $this->now = new DateTime();
+      );      
     }
+    $this->updates_by_version = array();
+    foreach ($updates as $id => $update)
+    {
+      if ($update['component'] == 'Security')
+      {
+        $type = 'security';
+      }
+      elseif ($update['severity'] == 'enhancement')
+      {
+        $type = 'enhancement';
+      }
+      else
+      {
+        $type = 'bugfix';
+      }
+
+      foreach($update['versions'] as $version)
+      {
+        $this->updates_by_version[$version][$type][$id] = $id;
+      }
+    }
+    ksort($this->updates_by_version);
+    foreach ($this->updates_by_version as $version => $values)
+    {
+      foreach ($values as $type => $ids)
+      {
+        ksort($this->updates_by_version[$version][$type]);
+      }
+    }
+
+    $this->archs = array();
+    foreach ($updates as $update)
+    {
+      foreach($update['testing_status'] as $statuses)
+      {
+        foreach ($statuses as $arch => $status)
+        {
+          $this->archs[$arch] = $arch;            
+        }
+      }
+    }
+    ksort($this->archs);
+
+    $this->updates = $updates;
+    $this->now = new DateTime();
   }
 }
