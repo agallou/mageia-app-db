@@ -24,8 +24,8 @@
       <?php $count['total']++; ?> 
       <tbody>
         <td><?php echo $type ?></td>
-        <td style="text-align:left;"><?php echo link_to($id, 'https://bugs.mageia.org/show_bug.cgi?id=' . $id) ?></td>
-        <td title="<?php echo $updates[$id]['RPM']?>"><?php echo link_to($updates[$id]['summary'], 'https://bugs.mageia.org/show_bug.cgi?id=' . $id) ?></td>
+        <td><?php echo link_to($id, 'https://bugs.mageia.org/show_bug.cgi?id=' . $id) ?></td>
+        <td style="text-align:left;" title="<?php echo $updates[$id]['RPM']?>"><?php echo link_to($updates[$id]['summary'], 'https://bugs.mageia.org/show_bug.cgi?id=' . $id) ?></td>
         <?php foreach ($archs as $arch): ?>
         <td><?php 
         if (isset($updates[$id]['testing_status'][$version][$arch]) and $updates[$id]['testing_status'][$version][$arch])
