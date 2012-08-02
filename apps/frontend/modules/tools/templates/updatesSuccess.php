@@ -3,26 +3,29 @@
 <h2>Mageia <?php echo $version ?></h2>
 <table class='comparisontable'>
   <thead>
-    <th>Update type</th>
+    <th>Update <br/>type</th>
     <th>Bug number</th>
-    <th>Summary</th>
+    <th>Summary (hover for RPM name)</th>
     <?php foreach ($archs as $arch): ?>
     <th>Testing <?php echo $arch ?></th>
     <?php endforeach; ?>
-    <th>Procedure available?</th>
-    <th>Mageia Versions</th>
-    <th>RPM</th>
-    <th>Last action</th>
+    <th>Procedure <br/>available?</th>
+    <th>Packager <br/>feedback asked?</th>
+    <th>Mageia <br/>Versions</th>
+    <th>No action <br/>since (days)</th>
   </thead>
-  <?php $count = 0; ?>
+  <?php $count = array(); ?>
+  <?php $count['total'] = 0; ?>
   <?php foreach (array('security', 'bugfix', 'enhancement') as $type) : ?>
+    <?php $count[$type] = 0; ?>
     <?php if (isset($updates_by_type[$type])): ?>
       <?php foreach ($updates_by_type[$type] as $id): ?>
-      <?php $count++; ?> 
+      <?php $count[$type]++; ?> 
+      <?php $count['total']++; ?> 
       <tbody>
         <td><?php echo $type ?></td>
         <td><?php echo link_to($id, 'https://bugs.mageia.org/show_bug.cgi?id=' . $id) ?></td>
-        <td><?php echo link_to($updates[$id]['summary'], 'https://bugs.mageia.org/show_bug.cgi?id=' . $id) ?></td>
+        <td title="<?php echo $updates[$id]['RPM']?>"><?php echo link_to($updates[$id]['summary'], 'https://bugs.mageia.org/show_bug.cgi?id=' . $id) ?></td>
         <?php foreach ($archs as $arch): ?>
         <td><?php 
         if (isset($updates[$id]['testing_status'][$version][$arch]) and $updates[$id]['testing_status'][$version][$arch])
@@ -40,6 +43,7 @@
         ?></td>
         <?php endforeach; ?>
         <td><?php echo $updates[$id]['has_procedure'] ? "yes" : "&nbsp;" ?></td>
+        <td><?php echo $updates[$id]['feedback'] ? "yes" : "&nbsp;" ?></td>
         <td><?php 
         foreach ($updates[$id]['versions'] as $version)
         {
@@ -62,14 +66,19 @@
           }
           echo " ";
         }
+        ?></td> 
+        <td><?php 
+        $date = new DateTime(substr($updates[$id]['changed'], 0, 10));
+        echo $date->diff($now)->format("%a");
         ?></td>
-        <td><?php echo $updates[$id]['RPM'] ?></td>
-        <td><?php echo substr($updates[$id]['changed'], 0, 10) ?></td>
       </tbody>
       <?php endforeach; ?>
     <?php endif; ?>
   <?php endforeach; ?>
 </table>
-Number of update candidates: <?php echo $count; ?><br/>
+Number of update candidates: <?php echo $count['total']; ?> 
+(security: <?php echo $count['security'] ?>,
+bugfix: <?php echo $count['bugfix'] ?>,
+enhancement: <?php echo $count['enhancement'] ?>)<br/>
 <br/>
 <?php endforeach; ?>

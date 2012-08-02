@@ -86,7 +86,8 @@ class updatesAction extends madbActions
           'testing_status'  => $testing_status,
           'component'       => $update[$rank['component']],
           'severity'        => $update[$rank['severity']],
-          'changed'         => $update[$rank['changed']]
+          'changed'         => $update[$rank['changed']],
+          'feedback'        => strpos($update[$rank['whiteboard']], 'feedback') === false ? false : true
       );
       
       $this->updates_by_version = array();
@@ -133,6 +134,7 @@ class updatesAction extends madbActions
       ksort($this->archs);
             
       $this->updates = $updates;
+      $this->now = new DateTime();
     }
   }
 }
