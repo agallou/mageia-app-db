@@ -1,11 +1,11 @@
 <h1>Current Update candidates</h1>
 <?php foreach ($updates_by_version as $version => $updates_by_type): ?>
 <h2>Mageia <?php echo $version ?></h2>
-<table class='comparisontable'>
+<table style="text-align:center;" class='comparisontable'>
   <thead>
     <th>Update <br/>type</th>
     <th>Bug number</th>
-    <th>Summary (hover for RPM name)</th>
+    <th style="text-align:left;">Summary (hover for RPM name)</th>
     <?php foreach ($archs as $arch): ?>
     <th>Testing <?php echo $arch ?></th>
     <?php endforeach; ?>
@@ -24,7 +24,7 @@
       <?php $count['total']++; ?> 
       <tbody>
         <td><?php echo $type ?></td>
-        <td><?php echo link_to($id, 'https://bugs.mageia.org/show_bug.cgi?id=' . $id) ?></td>
+        <td style="text-align:left;"><?php echo link_to($id, 'https://bugs.mageia.org/show_bug.cgi?id=' . $id) ?></td>
         <td title="<?php echo $updates[$id]['RPM']?>"><?php echo link_to($updates[$id]['summary'], 'https://bugs.mageia.org/show_bug.cgi?id=' . $id) ?></td>
         <?php foreach ($archs as $arch): ?>
         <td><?php 
