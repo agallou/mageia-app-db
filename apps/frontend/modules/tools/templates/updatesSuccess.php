@@ -10,7 +10,7 @@
     <th>Testing <?php echo $arch ?></th>
     <?php endforeach; ?>
     <th>Procedure <br/>available?</th>
-    <th>Packager <br/>feedback asked?</th>
+    <th>Packager feedback <br/>requested?</th>
     <th>Mageia <br/>Versions</th>
     <th>No action <br/>since (days)</th>
   </thead>
