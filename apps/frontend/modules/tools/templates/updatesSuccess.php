@@ -1,7 +1,7 @@
 <h1>Current Update candidates</h1>
 <?php foreach ($updates_by_version as $version => $updates_by_type): ?>
 <h2>Mageia <?php echo $version ?></h2>
-<table style="text-align:center;" class='comparisontable'>
+<table class='buglist'>
   <thead>
     <th>Update <br/>type</th>
     <th>Bug number</th>
@@ -21,6 +21,30 @@
     <?php $count[$type] = 0; ?>
     <?php if (isset($updates_by_type[$type])): ?>
       <?php foreach ($updates_by_type[$type] as $id): ?>
+      <?php
+      $tr_class = "";
+      if ($type == 'security')
+      {
+        switch ($updates[$id]['severity'])
+        {
+          case 'enhancement':
+            $tr_class = 'enhancement';
+            break;
+          case 'low':
+            $tr_class = 'low';
+            break;
+          case 'major':
+            $tr_class = 'major';
+            break;
+          case 'critical':
+            $tr_class = 'critical';
+            break;
+          default:
+            break;
+        }
+      }
+      ?>
+      <tr class="<?php echo $tr_class ?>">
         <?php $count[$type]++; ?> 
         <?php $count['total']++; ?> 
         <td><?php echo $type ?></td>
@@ -71,10 +95,11 @@
         $date = new DateTime(substr($updates[$id]['changed'], 0, 10));
         echo $date->diff($now)->format("%a");
         ?></td>
-      </tbody>
+      </tr>  
       <?php endforeach; ?>
     <?php endif; ?>
   <?php endforeach; ?>
+  </tbody>
 </table>
 Number of update candidates: <?php echo $count['total']; ?> 
 (security: <?php echo $count['security'] ?>,

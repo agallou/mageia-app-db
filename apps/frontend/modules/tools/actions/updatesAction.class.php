@@ -77,6 +77,25 @@ class updatesAction extends madbActions
         }
       }
       
+      switch ($update[$rank['severity']])
+      {
+        case 'enhancement':
+          $severity_weight = 0;
+          break;
+        case 'low':
+          $severity_weight = 1;
+          break;
+        case 'major':
+          $severity_weight = 3;
+          break;
+        case 'critical':
+          $severity_weight = 4;
+          break;
+        default:
+          $severity_weight = 2; // normal
+          break;
+      }
+      
       $updates[$update[$rank['bug_id']]] = array(
           'summary'         => $update[$rank['summary']],
           'whiteboard'      => $update[$rank['whiteboard']],
@@ -86,6 +105,7 @@ class updatesAction extends madbActions
           'testing_status'  => $testing_status,
           'component'       => $update[$rank['component']],
           'severity'        => $update[$rank['severity']],
+          'severity_weight' => $severity_weight,
           'changed'         => $update[$rank['changed']],
           'feedback'        => strpos($update[$rank['whiteboard']], 'feedback') === false ? false : true
       );      
@@ -117,9 +137,31 @@ class updatesAction extends madbActions
       foreach ($values as $type => $ids)
       {
         ksort($this->updates_by_version[$version][$type]);
+        if ($type == 'security')
+        {
+          // sort security updates by severity
+          $updates_by_severity = array();
+          foreach ($this->updates_by_version[$version][$type] as $id)
+          {
+            if (!isset($updates_by_severity[$updates[$id]['severity_weight']]))
+            {
+              $updates_by_severity[$updates[$id]['severity_weight']] = array();
+            }
+            $updates_by_severity[$updates[$id]['severity_weight']][] = $id;
+          }
+          krsort($updates_by_severity);
+          $this->updates_by_version[$version][$type] = array();
+          foreach ($updates_by_severity as $severity_weight => $ids)
+          {
+            foreach ($ids as $id)
+            {
+              $this->updates_by_version[$version][$type][$id] = $id;
+            }
+          }
+        }
       }
     }
-
+    
     $this->archs = array();
     foreach ($updates as $update)
     {

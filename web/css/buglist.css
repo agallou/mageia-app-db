@@ -1,0 +1,34 @@
+table.buglist
+{
+  border-collapse: collapse;
+  border: 2px solid #000;
+  text-align:center;
+}
+
+.buglist td, .buglist th
+{
+  border:1px solid gray;
+  padding: 2px;
+  vertical-align: top;
+}
+
+.buglist th
+{
+  border-bottom: 2px solid #000;
+}
+
+.enhancement, .low
+{
+  color: gray;
+}
+
+.major
+{
+  font-weight: bold;
+}
+
+.critical
+{
+  font-weight: bold; 
+  color: red;
+}
