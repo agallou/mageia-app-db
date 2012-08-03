@@ -12,7 +12,6 @@
     <th>Proced. <br/>avail.?</th>
     <th>Mageia <br/>Version</th>
     <th>No action <br/>for (days)</th>
-    <th>Packager feedback <br/>requested?</th>
   </thead>
   <tbody>
   <?php $count = array(); ?>
@@ -95,7 +94,6 @@
         $date = new DateTime(substr($updates[$id]['changed'], 0, 10));
         echo $date->diff($now)->format("%a");
         ?></td>
-        <td><?php echo $updates[$id]['feedback'] ? "yes" : "&nbsp;" ?></td>
       </tr>  
       <?php endforeach; ?>
     <?php endif; ?>
@@ -108,3 +106,4 @@ bugfix: <?php echo $count['bugfix'] ?>,
 enhancement: <?php echo $count['enhancement'] ?>)<br/>
 <br/>
 <?php endforeach; ?>
+<span class="feedback">Gray background = packager feedback requested.</span>
