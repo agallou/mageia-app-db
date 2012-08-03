@@ -7,10 +7,10 @@
     <th>Bug number</th>
     <th style="text-align:left;">Summary (hover for RPM name)</th>
     <?php foreach ($archs as $arch): ?>
-    <th>Testing <?php echo $arch ?></th>
+    <th>Test <?php echo $arch ?></th>
     <?php endforeach; ?>
-    <th>Procedure <br/>available?</th>
-    <th>Mageia <br/>Versions</th>
+    <th>Proced. <br/>avail.?</th>
+    <th>Mageia <br/>Version</th>
     <th>No action <br/>for (days)</th>
     <th>Packager feedback <br/>requested?</th>
   </thead>
