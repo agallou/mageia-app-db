@@ -49,7 +49,11 @@
         <?php $count['total']++; ?> 
         <td><?php echo $type ?></td>
         <td><?php echo link_to($id, 'https://bugs.mageia.org/show_bug.cgi?id=' . $id) ?></td>
-        <td style="text-align:left;" title="<?php echo $updates[$id]['RPM']?>"><?php echo link_to($updates[$id]['summary'], 'https://bugs.mageia.org/show_bug.cgi?id=' . $id) ?></td>
+        <td style="text-align:left;" title="<?php echo $updates[$id]['RPM']?>"><?php 
+        echo link_to(
+                substr($updates[$id]['summary'], 0, 100) . (strlen($updates[$id]['summary'])>100 ? "[...]" : ""), 
+                'https://bugs.mageia.org/show_bug.cgi?id=' . $id) 
+        ?></td>
         <?php foreach ($archs as $arch): ?>
         <td><?php 
         if (isset($updates[$id]['testing_status'][$version][$arch]) && $updates[$id]['testing_status'][$version][$arch])
@@ -106,4 +110,4 @@ bugfix: <?php echo $count['bugfix'] ?>,
 enhancement: <?php echo $count['enhancement'] ?>)<br/>
 <br/>
 <?php endforeach; ?>
-<span class="feedback">Gray background = packager feedback requested.</span>
+<span class="feedback" style="border: 1px solid">Gray background = packager feedback requested.</span>
