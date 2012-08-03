@@ -22,26 +22,23 @@
     <?php if (isset($updates_by_type[$type])): ?>
       <?php foreach ($updates_by_type[$type] as $id): ?>
       <?php
-      $tr_class = "";
-      if ($type == 'security')
+      $tr_class = '';
+      switch ($updates[$id]['severity'])
       {
-        switch ($updates[$id]['severity'])
-        {
-          case 'enhancement':
-            $tr_class = 'enhancement';
-            break;
-          case 'low':
-            $tr_class = 'low';
-            break;
-          case 'major':
-            $tr_class = 'major';
-            break;
-          case 'critical':
-            $tr_class = 'critical';
-            break;
-          default:
-            break;
-        }
+        case 'enhancement':
+          $tr_class = 'enhancement';
+          break;
+        case 'low':
+          $tr_class = 'low';
+          break;
+        case 'major':
+          $tr_class = ($type == 'security') ? 'major' : '';
+          break;
+        case 'critical':
+          $tr_class = ($type == 'security') ? 'critical' : 'major';
+          break;
+        default:
+          break;
       }
       ?>
       <tr class="<?php echo $tr_class ?>">
