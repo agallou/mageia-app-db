@@ -32,3 +32,8 @@ table.buglist
   font-weight: bold; 
   color: red;
 }
+
+.feedback
+{
+  background-color: #dfdfdf;
+}

@@ -40,6 +40,10 @@
         default:
           break;
       }
+      if ($updates[$id]['feedback'])
+      {
+        $tr_class .= " feedback";
+      }
       ?>
       <tr class="<?php echo $tr_class ?>">
         <?php $count[$type]++; ?> 
