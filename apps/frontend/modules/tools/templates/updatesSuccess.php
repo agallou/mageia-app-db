@@ -10,9 +10,9 @@
     <th>Testing <?php echo $arch ?></th>
     <?php endforeach; ?>
     <th>Procedure <br/>available?</th>
-    <th>Packager feedback <br/>requested?</th>
     <th>Mageia <br/>Versions</th>
-    <th>No action <br/>since (days)</th>
+    <th>No action <br/>for (days)</th>
+    <th>Packager feedback <br/>requested?</th>
   </thead>
   <tbody>
   <?php $count = array(); ?>
@@ -68,7 +68,6 @@
         ?></td>
         <?php endforeach; ?>
         <td><?php echo $updates[$id]['has_procedure'] ? "yes" : "&nbsp;" ?></td>
-        <td><?php echo $updates[$id]['feedback'] ? "yes" : "&nbsp;" ?></td>
         <td><?php 
         foreach ($updates[$id]['versions'] as $the_version)
         {
@@ -96,6 +95,7 @@
         $date = new DateTime(substr($updates[$id]['changed'], 0, 10));
         echo $date->diff($now)->format("%a");
         ?></td>
+        <td><?php echo $updates[$id]['feedback'] ? "yes" : "&nbsp;" ?></td>
       </tr>  
       <?php endforeach; ?>
     <?php endif; ?>
