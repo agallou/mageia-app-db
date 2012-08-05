@@ -24,14 +24,13 @@ class sourcepkgAction extends sfActions
     $pkg   = array();
     foreach ($ptemp as $pi) 
     {
-      if (is_int(substr($pi, 0, 1)))
+      if (is_numeric(substr($pi, 0, 1)))
       {
         break;
       }
       $pkg[] = $pi;
     }
     $pkg = implode('-', $pkg);
-    
     if ($name = $this->match($pkg))
     {
       $this->renderText($name);
