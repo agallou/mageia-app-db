@@ -162,7 +162,7 @@ class updatesAction extends madbActions
       }
     }
     
-    $this->archs = array();
+    $this->archs = array('32' => '32', '64' => '64');
     foreach ($updates as $update)
     {
       foreach($update['testing_status'] as $statuses)
