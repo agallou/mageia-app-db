@@ -87,7 +87,7 @@ class PackagePeer extends BasePackagePeer {
   {
     // we try to deduce the package name
     // x11-driver-video-ati-6.14.1-4.mga1.src.rpm => x11-driver-video-ati
-    $ptemp = explode('-', $q);
+    $ptemp = explode('-', $name);
     $pkg   = array();
     foreach ($ptemp as $pi) 
     {

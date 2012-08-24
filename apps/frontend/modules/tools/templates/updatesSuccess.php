@@ -12,6 +12,7 @@
     <th>Proced. <br/>avail.?</th>
     <th>Mageia <br/>Version</th>
     <th>No action <br/>for (days)</th>
+    <th>Bugzilla <br/>search</th>
   </thead>
   <tbody>
   <?php $count = array(); ?>
@@ -96,7 +97,21 @@
         ?></td> 
         <td><?php 
         $date = new DateTime(substr($updates[$id]['changed'], 0, 10));
-        echo $date->diff($now)->format("%a");
+        ?></td>
+        <td style="text-align:left;"><?php 
+        if ($source_package = $updates[$id]['source_package'])
+        {
+          if (is_object($source_package))
+          {
+            $name = $source_package->getName();
+            echo link_to($name, str_replace('{{SEARCH}}', $name, $search_url));
+          }
+          else
+          {
+            $name = $source_package;
+            echo link_to($name . " (u)", str_replace('{{SEARCH}}', $name, $search_url));
+          }
+        }
         ?></td>
       </tr>  
       <?php endforeach; ?>
