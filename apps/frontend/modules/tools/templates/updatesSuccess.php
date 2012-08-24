@@ -12,7 +12,7 @@
     <th>Proced. <br/>avail.?</th>
     <th>Mageia <br/>Version</th>
     <th>No action <br/>for (days)</th>
-    <th>Quick <br/>search</th>
+    <th>Quick search</th>
   </thead>
   <tbody>
   <?php $count = array(); ?>
