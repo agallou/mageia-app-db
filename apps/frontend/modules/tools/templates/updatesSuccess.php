@@ -105,16 +105,17 @@
           if (is_object($source_package))
           {
             $name = $source_package->getName();
+            $name2 = $name;
           }
           else
           {
             $name = $source_package;
-            echo ".";
+            $name2 = ".$name";
           }
-          echo "$name: ";
           echo link_to("Bugzilla", str_replace('{{SEARCH}}', $name, $search_url));
           echo ", ";
-          echo link_to("QA Wiki", str_replace('{{SEARCH}}', $name, $procedure_search_url));
+          echo link_to("Wiki", str_replace('{{SEARCH}}', $name, $procedure_search_url));
+          echo " ($name2)";
         }
         ?></td>
       </tr>  
