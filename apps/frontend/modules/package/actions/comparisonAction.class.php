@@ -441,7 +441,7 @@ EOF;
             $available = $fields->item(4)->nodeValue;
             $source = $fields->item(5)->nodeValue;
 
-            $list[] = array($src_package, $available, $source);
+            $list[strtolower($src_package)] = array($src_package, $available, $source);
           }
         }
       }
