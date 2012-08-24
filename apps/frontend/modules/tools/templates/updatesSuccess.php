@@ -97,6 +97,7 @@
         ?></td> 
         <td><?php 
         $date = new DateTime(substr($updates[$id]['changed'], 0, 10));
+        echo $date->diff($now)->format("%a");
         ?></td>
         <td style="text-align:left;"><?php 
         if ($source_package = $updates[$id]['source_package'])
