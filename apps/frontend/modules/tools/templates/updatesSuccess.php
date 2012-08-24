@@ -12,7 +12,7 @@
     <th>Proced. <br/>avail.?</th>
     <th>Mageia <br/>Version</th>
     <th>No action <br/>for (days)</th>
-    <th>Bugzilla <br/>search</th>
+    <th>Quick <br/>search</th>
   </thead>
   <tbody>
   <?php $count = array(); ?>
@@ -105,13 +105,16 @@
           if (is_object($source_package))
           {
             $name = $source_package->getName();
-            echo link_to($name, str_replace('{{SEARCH}}', $name, $search_url));
           }
           else
           {
             $name = $source_package;
-            echo link_to($name . " (u)", str_replace('{{SEARCH}}', $name, $search_url));
+            echo ".";
           }
+          echo "$name: ";
+          echo link_to("Bugzilla", str_replace('{{SEARCH}}', $name, $search_url));
+          echo ", ";
+          echo link_to("QA Wiki", str_replace('{{SEARCH}}', $name, $procedure_search_url));
         }
         ?></td>
       </tr>  
