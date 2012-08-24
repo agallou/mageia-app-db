@@ -10,12 +10,13 @@ class sourcepkgAction extends sfActions
 
     $this->forward404Unless($request->hasParameter('q'));
     
-    if (!($q = $request->getParameter('q')))
+    $q = $request->getParameter('q');
+    // a defined parameter without a value returns true, hence the test on true
+    if (!$q or $q === true)
     {
       $this->renderText('NOTFOUND');
       return sfView::NONE;
     }
-
     if ($name = $this->match($q))
     {
       $this->renderText($name);
