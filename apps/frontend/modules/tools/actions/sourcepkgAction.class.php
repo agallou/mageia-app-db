@@ -9,7 +9,12 @@ class sourcepkgAction extends sfActions
     // Output: source package name
 
     $this->forward404Unless($request->hasParameter('q'));
-    $q = $request->getParameter('q');
+    
+    if (!($q = $request->getParameter('q')))
+    {
+      $this->renderText('NOTFOUND');
+      return sfView::NONE;
+    }
 
     if ($name = $this->match($q))
     {
