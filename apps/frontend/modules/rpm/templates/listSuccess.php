@@ -5,5 +5,7 @@
   'page'           => $page,
   'showpager'      => true,
   'display_header' => true,
-  'limit'          => 50,
+  'limit'          => 30,
+  'show_bug_links' => $show_bug_links,
+  'show_all_bug_links' => $show_all_bug_links
 )) ?>

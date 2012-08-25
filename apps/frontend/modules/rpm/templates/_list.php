@@ -8,6 +8,13 @@
     'showtotal'   => true,
   )) ?>
 <?php endif; ?>
+<?php 
+if ($show_bug_links)
+{
+  $bugtrackerFactory = new madbBugtrackerFactory();
+  $bugtracker = $bugtrackerFactory->create();
+}
+?>
 <table class="packlist">
   <thead>
     <?php if ($display_header): ?>
@@ -18,6 +25,9 @@
       <?php if (!isset($short)): ?>
       <th>Build date</th>
       <th>Distribution<br/>release</th>
+        <?php if ($show_bug_links): ?>
+      <th>Bug link</th>
+        <?php endif; ?>
       <?php endif; ?>
     </tr>
     <?php endif; ?>
@@ -45,6 +55,17 @@
       <?php if (!isset($short)): ?>
       <td><?php echo $buildDate ?></td>
       <td><?php echo $rpm->getDistrelease()->getDisplayedName() ?></td>
+        <?php if ($show_bug_links and $rpm->getIsSource()): 
+          $link = "";
+          $tab = $bugtracker->findBugForUpdateCandidate($rpm->getName(), $show_all_bug_links);
+          if ($tab)
+          {
+            list($number, $match_type) = $tab;
+            $link = link_to($number . " (" . $bugtracker->getLabelForMatchType($match_type) . ")", $bugtracker->getUrlForBug($number));
+          }
+        ?>
+      <td><?php echo $link ?></td>
+        <?php endif; ?>
       <?php endif; ?>
     </tr> 
   <?php endforeach; ?>
