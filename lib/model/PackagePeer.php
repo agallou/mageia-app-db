@@ -89,6 +89,8 @@ class PackagePeer extends BasePackagePeer {
     // x11-driver-video-ati-6.14.1-4.mga1.src.rpm => x11-driver-video-ati
     $ptemp = explode('-', $name);
     $pkg   = array();
+    $pkg[] = $ptemp[0];
+    unset($ptemp[0]);
     foreach ($ptemp as $pi) 
     {
       if (is_numeric(substr($pi, 0, 1)))
