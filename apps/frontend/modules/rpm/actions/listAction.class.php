@@ -13,9 +13,8 @@ class listAction extends madbActions
     $this->listtype = $request->getParameter('listtype');
     $this->forward404Unless(in_array($this->listtype, array('updates', 'updates_testing', 'backports', 'backports_testing')), 'listtype value \'' . $this->listtype . '\' is not valid.');
     $this->page = $request->getParameter('page', 1);
-    // FIXME: mageia-specific
-    $this->show_bug_links = $request->hasParameter('show_bug_links'); // experimental
-    $this->show_all_bug_links = $request->hasParameter('show_all_bug_links'); // experimental
+    $madbConfig = new madbConfig();
+    $this->show_bug_links = $madbConfig->get('show_bug_links');
     switch ($this->listtype)
     {
       case 'updates':

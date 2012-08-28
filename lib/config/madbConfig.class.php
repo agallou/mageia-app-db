@@ -41,6 +41,8 @@ class madbConfig
         return false;
       case 'allow_download':
         return false;
+      case 'show_bug_links':
+        return false;
     }
     
     return $default;

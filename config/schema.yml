@@ -36,6 +36,8 @@ propel:
     is_source:                                                         { type: boolean, required: true }
     source_rpm_id:                                                     { type: integer, foreignTable: rpm, foreignReference: id }
     source_rpm_name:                                                   { type: varchar(900) }
+    bug_number:                                                        { type: integer } 
+    bug_match_type:                                                    { type: integer } 
     _indexes:
       fk_rpm_distrelease1:                                             [ distrelease_id ]
       fk_rpm_package1:                                                 [ package_id ]
