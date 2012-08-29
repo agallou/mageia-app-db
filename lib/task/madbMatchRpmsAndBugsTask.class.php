@@ -8,6 +8,7 @@ class madbMatchRpmsAndBugsTask extends madbBaseTask
   {
     $this->namespace = 'madb';
     $this->name      = 'match-rpms';
+    $this->addOption('limit', null, sfCommandOption::PARAMETER_REQUIRED, 'max number of rpms to match', null);
     $this->addOption('all', null, sfCommandOption::PARAMETER_NONE, 'add this option to match all updates and backports, not only testing ones', null);
   }
   protected function execute($arguments = array(), $options = array())
@@ -52,27 +53,37 @@ class madbMatchRpmsAndBugsTask extends madbBaseTask
       $criterion->addOr($criteria->getNewCriterion(MediaPeer::IS_BACKPORTS, true));
       $criteria->add($criterion);
     }
-    $criteria->addAsColumn('column1', RpmPeer::ID);
-    $criteria->addAsColumn('column2', RpmPeer::NAME);
+    $criteria->addAsColumn('column1', RpmPeer::NAME);
+    $criteria->setDistinct('column1');
     $criteria->addDescendingOrderByColumn(RpmPeer::BUILD_TIME);
+    $limit = (int) $options['limit'];
+    if ($limit > 0)
+    {
+      $criteria->setLimit($limit);
+    }
     
     $stmt = RpmPeer::doSelectStmt($criteria);
     foreach ($stmt as $row)
     {
-      echo $row['column2'] . ": ";
+      $name = $row['column1'];
+      echo "$name: ";
       // match the source RPM with a bug report
       $start = microtime(true);
-      $match = $bugtracker->findBugForUpdateCandidate($row['column2'], true);
+      $match = $bugtracker->findBugForUpdateCandidate($name, true);
       $duration = round(microtime(true) - $start, 1);
       if ($match)
       {
         list($bug_number, $match_type) = $match;
         echo "$bug_number - " . $bugtracker->getLabelForMatchType($match_type);
-        $rpm = RpmPeer::retrieveByPK($row['column1']);
-        $rpm->setBugNumber($bug_number);
-        $rpm->setBugMatchType($match_type);
-        $rpm->save();
-        $rpm->clearAllReferences(true);
+        $criteria = new Criteria();
+        $criteria->add(RpmPeer::NAME, $name);
+        foreach (RpmPeer::doSelect($criteria) as $rpm)
+        {
+          $rpm->setBugNumber($bug_number);
+          $rpm->setBugMatchType($match_type);
+          $rpm->save();
+          $rpm->clearAllReferences(true);
+        }
       }
       else
       {
