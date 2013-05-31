@@ -1,7 +1,11 @@
-<h1>Comparison between 2 releases</h1>
-<p>This page compares the selected stable release with <?php echo $targetRelease->getDisplayedName(); ?>.
-Like the other lists, it is filtered using the filters available at the top of the page.</p>
-<p>Legend : 
+<h1>Comparison between releases <?php echo $distrelease->getDisplayedName(); ?> and <?php echo $targetRelease->getDisplayedName(); ?></h1>
+<p>This page compares a stable release (here <?php echo $distrelease->getDisplayedName(); ?>) with another higher release (here <?php echo $targetRelease->getDisplayedName(); ?>).
+ Like the other lists, it is filtered using the filters available at the top of the page.</p>
+<br/>
+<p><strong>Important notice: after clicking a link, you will sometimes need to change the filter values.
+For example, change the selected release from <?php echo $distrelease->getDisplayedName(); ?> to <?php echo $targetRelease->getDisplayedName(); ?>, or change the arch value.</strong></p>
+<br/>
+<p>Legend: 
 <span class="newpackage bordered">added in <?php echo $target_release; ?></span>, 
 <span class="testing bordered">being tested: same version as in <?php echo $target_release; ?></span>, 
 <span class="bordered">newer version in <?php echo $target_release; ?></span>.

@@ -11,8 +11,6 @@
        ); ?>
 , RPM : <?php echo $rpm->getName() ?></h1>
 <div>
-<h2 class='todo'>TODO</h2>
-<p class='todo'>Make this page a well organized and designed page :)</p>
 <h2>Basic items</h2>
 <ul>
   <li>Name : <?php echo $rpm->getShortName() ?></li>
@@ -54,7 +52,6 @@
   <li>Changelog : <?php echo link_to("View in Sophie", $sophie->getUrlForPkgId($rpm->getRpmPkgId()) . '/changelog') ?></li>
   <li>Files : <?php echo link_to("View in Sophie", $sophie->getUrlForPkgId($rpm->getRpmPkgId()) . '/files') ?></li>
   <li>Dependencies : <?php echo link_to("View in Sophie", $sophie->getUrlForPkgId($rpm->getRpmPkgId()) . '/deps') ?></li>
-  <li>installed size : <span class='todo'>TODO</span></li>
 </ul>
 <br/>
 <?php echo link_to("View in Sophie", $sophie->getUrlForPkgId($rpm->getRpmPkgId())) ?>
