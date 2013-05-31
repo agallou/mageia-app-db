@@ -1,6 +1,7 @@
 name: Mageia
 only_releases:
   - cauldron
+  - '3'
   - '2'
   - '1'
 exclude_releases:
@@ -13,8 +14,8 @@ exclude_rpms:
 #  - ^@\d+:rpmlint.*$ #transient pb, rpms with @ in them
 devel_releases: 
   - cauldron
-latest_stable_release: '2'
-previous_stable_release: '1'
+latest_stable_release: '3'
+previous_stable_release: '2'
 
 updates_medias: ^.*-updates.*$
 testing_medias: ^.*[-_]testing.*$
