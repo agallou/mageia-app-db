@@ -278,4 +278,35 @@ class RpmPeer extends BaseRpmPeer {
     
     return $rpm;
   }
+  
+  /**
+   * 
+   * Retrieve a list of SRPMs for a given bug number
+   * 
+   * @param $bugnum       the bug number
+   * @param $match_types  array. List of values for rpm.bug_match_type. Not used if null.
+   * @param $arch         arch name. Not used if null.
+   * 
+   * @return array Array of selected Objects
+   */
+  public static function retrieveByBugNumber($bugnum, $match_types = null, $arch = null)
+  {
+    $criteria = new Criteria();
+    $criteria->add(RpmPeer::BUG_NUMBER, $bugnum);
+    $criteria->add(RpmPeer::IS_SOURCE, true);
+    if (!is_null($match_types))
+    {
+      $criteria->add(RpmPeer::BUG_MATCH_TYPE, $match_types, Criteria::IN);
+    }
+    if (!is_null($arch))
+    {
+      $criteria->addJoin(RpmPeer::ARCH_ID, ArchPeer::ID);
+      $criteria->add(ArchPeer::NAME, $arch);
+    }
+    
+    $criteria->addAscendingOrderByColumn(RpmPeer::NAME);
+    $rpms = RpmPeer::doSelect($criteria);
+    return $rpms;
+  }
+
 } // RpmPeer

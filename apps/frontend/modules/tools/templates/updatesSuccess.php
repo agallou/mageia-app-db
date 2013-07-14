@@ -12,6 +12,7 @@
     <th>Proced. <br/>avail.?</th>
     <th>Mageia <br/>Version</th>
     <th>No action <br/>for (days)</th>
+    <th>Lists</th>
     <th>Quick search</th>
   </thead>
   <tbody>
@@ -99,6 +100,7 @@
         $date = new DateTime(substr($updates[$id]['changed'], 0, 10));
         echo $date->diff($now)->format("%a");
         ?></td>
+        <td><?php echo link_to("RPMs", $madburl->urlFor("tools/listRpmsForQaBug?bugnum=$id", $madbcontext)); ?></td>
         <td style="text-align:left;"><?php 
         if ($source_package = $updates[$id]['source_package'])
         {
