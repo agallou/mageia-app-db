@@ -1,5 +1,5 @@
 <?php
-class mysqlCliWrapper 
+class mysqlCliWrapper
 {
 
   protected $dbInfos = null;
@@ -39,8 +39,8 @@ class mysqlCliWrapper
     $this->getFilesystem()->execute(sprintf('mysql %s < %s', $this->getArgs(), $filePath));
   }
 
-  public function execute($sql)
+  public function execute($sql, $options = '')
   {
-    $this->getFilesystem()->execute(sprintf('mysql %s -e "%s"', $this->getArgs(), $sql));
+    $this->getFilesystem()->execute(sprintf('mysql %s %s -e "%s"', $this->getArgs(), $options, $sql));
   }
 }

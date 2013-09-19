@@ -10,6 +10,8 @@ class madbInsertTestDataTask extends madbBaseTask
     $this->name      = 'insert-test-data';
     $this->defaultUrl = 'http://stormi.lautre.net/fichiers/mageia/test-data-mageia.zip';
     $this->addOption('url', null, sfCommandOption::PARAMETER_OPTIONAL, 'url where test data are stored. Setting this option forces the download even if test data already are on the local system.', null);
+    $this->addOption('load-cli', null, sfCommandOption::PARAMETER_NONE, 'Uses mysql client for load data');
+
     $this->propel = true;
     $this->aliases = array($this->name);
   }
@@ -18,7 +20,7 @@ class madbInsertTestDataTask extends madbBaseTask
     sfContext::createInstance($this->createConfiguration('frontend', 'prod'));
     $dbCli = new mysqlCliWrapper(dbInfosFactory::getDefault(), $this->getFilesystem());
     $con = Propel::getConnection();
-    
+
     // TODO : replace with configured tmp dir
     $this->getFilesystem()->mkdirs('tmp/');
     $archive_name = 'tmp/data.zip';
@@ -26,7 +28,7 @@ class madbInsertTestDataTask extends madbBaseTask
     $this->getFilesystem()->mkdirs($content_dir);
     $this->getFilesystem()->execute("rm -f $content_dir/*");
 
-    
+
     // Download test data if they are absent from the local system, or if the --url option was used
     if (!file_exists($archive_name) or $options['url']!==null)
     {
@@ -36,12 +38,12 @@ class madbInsertTestDataTask extends madbBaseTask
 
     $databaseFactory = new databaseFactory($con);
     $database = $databaseFactory->createDefault();
-    
+
     if (file_exists($archive_name))
     {
       $this->getFilesystem()->execute("unzip -o -d $content_dir/ " . $archive_name);
       $this->getFilesystem()->rename($content_dir . '/rpm_group.txt', $content_dir . '/00_rpm_group.txt');
-    
+
       $database->getConnection()->beginTransaction();
       $database->disableConstraints();
 
@@ -53,14 +55,24 @@ class madbInsertTestDataTask extends madbBaseTask
         {
           $table = 'rpm_group';
         }
-   
+
         $this->log("Inserting values into table $table");
         $database->truncateTable($table);
-        $database->loadData($table, $file);
+
+        if ($options['load-cli'])
+        {
+          $sql = sprintf("LOAD DATA LOCAL INFILE '%s' INTO TABLE %s;", $file, $table);
+          $dbCli->execute($sql, "--local_infile=1");
+        }
+        else
+        {
+          $database->loadData($table, $file);
+        }
+
       }
       $database->getConnection()->commit();
     }
-    else 
+    else
     {
       echo "No file named $archive_name found, aborting test data insertion.";
       return false;
