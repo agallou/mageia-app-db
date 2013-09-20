@@ -61,7 +61,7 @@ class madbInsertTestDataTask extends madbBaseTask
 
         if ($options['load-cli'])
         {
-          $sql = sprintf("LOAD DATA LOCAL INFILE '%s' INTO TABLE %s;", $file, $table);
+          $sql = sprintf("SET FOREIGN_KEY_CHECKS=0;LOAD DATA LOCAL INFILE '%s' INTO TABLE %s;", $file, $table);
           $dbCli->execute($sql, "--local_infile=1");
         }
         else
