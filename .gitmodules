@@ -6,7 +6,7 @@
 	url = git://github.com/propelorm/sfPropelORMPlugin
 [submodule "plugins/sfAtoumPlugin"]
 	path = plugins/sfAtoumPlugin
-	url = git://github.com/agallou/sfAtoumPlugin.git
+	url = git://github.com/atoum/sfAtoumPlugin.git
 [submodule "lib/vendor/atoum"]
 	path = lib/vendor/atoum
-	url = git://github.com/mageekguy/atoum.git
+	url = git://github.com/atoum/atoum.git
