@@ -1,3 +1,4 @@
+<?php slot('title', ' - Groups') ?>
 <h1>Groups</h1>
 <?php if (!is_null($group_name)): ?>
 <h2><?php echo $group_name ?></h2>

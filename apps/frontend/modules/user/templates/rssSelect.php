@@ -1,3 +1,4 @@
+<?php slot('title', ' - RSS Feeds') ?>
 <h2>Select a feed:</h2>
 
 <?php if($rssFeeds): ?>

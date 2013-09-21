@@ -1,3 +1,4 @@
+<?php slot('title', ' - '.$package->getName()) ?>
 <h1>Package : <?php echo $package->getName() ?></h1>
 <div>
 <h2>Package details</h2>

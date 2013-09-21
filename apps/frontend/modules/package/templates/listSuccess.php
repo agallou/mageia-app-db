@@ -1,3 +1,10 @@
+<?php 
+if ($rpm_group) {
+  slot('title', ' - '.$rpm_group->getName());
+} else {
+  slot('title', ' - Packages/Applications');
+}
+?>
 <h1>Packages/Applications</h1>
 <?php if ($rpm_group): ?>
 <h2><?php echo $rpm_group->getName(); ?></h2>

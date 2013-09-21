@@ -4,7 +4,10 @@
     <head>
         <?php include_http_metas() ?>
         <?php include_metas() ?>
-        <?php echo content_tag('title', $madbConfig->get('name'))."\n"; ?>
+        <title>
+	    <?php echo $madbConfig->get('name'); ?>
+	    <?php include_slot('title') ?>
+        </title>
         <link rel="shortcut icon" href="/favicon.ico" />
         <?php include_stylesheets() ?>
         <?php include_javascripts() ?>
