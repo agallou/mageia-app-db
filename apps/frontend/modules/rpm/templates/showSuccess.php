@@ -1,15 +1,19 @@
-<h1>Package : <?php echo link_to(
+<div class="rpm">
+<h1>
+Package : <?php echo link_to(
          $rpm->getPackage()->getName(),
-         $madburl->urlFor( 'package/show', 
-                           $madbcontext, 
-                           array( 
+         $madburl->urlFor( 'package/show',
+                           $madbcontext,
+                           array(
                              'extra_parameters' => array(
-                               'name' => $rpm->getPackage()->getName() 
+                               'name' => $rpm->getPackage()->getName()
                              )
                            )
                          )
        ); ?>
-, RPM : <?php echo $rpm->getName() ?></h1>
+ > RPM : <?php echo $rpm->getName() ?>
+</h1>
+
 <div>
 <h2>Basic items</h2>
 <ul>
@@ -33,16 +37,16 @@
 
 <h2>Advanced items</h2>
 <ul>
-  <li>Source RPM : <?php 
-  if ($src_rpm = $rpm->getRpmRelatedBySourceRpmId()) 
+  <li>Source RPM : <?php
+  if ($src_rpm = $rpm->getRpmRelatedBySourceRpmId())
   {
     echo link_to(
            $src_rpm->getName(),
            $madburl->urlForRpm(
-             $src_rpm, 
+             $src_rpm,
              $madbcontext
            )
-         ); 
+         );
   }
   else
   {
@@ -61,3 +65,5 @@
 <?php echo javascript_tag() ?>
 $('div.filters').remove();
 <?php end_javascript_tag() ?>
+
+</div>

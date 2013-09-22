@@ -41,7 +41,7 @@
                     <?php echo $sf_content ?>
                 </div>
 
-                    
+
                 <div id="footer">
                 <div class="content">
                   <?php include_component('default', 'footer') ?>
