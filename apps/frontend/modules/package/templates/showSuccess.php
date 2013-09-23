@@ -1,3 +1,4 @@
+<div class="package">
 <h1>Package : <?php echo $package->getName() ?></h1>
 <div>
 <h2>Package details</h2>
@@ -8,9 +9,9 @@
 <h2>List of RPMs</h2>
 <ul class="packlist">
   <?php foreach ($rpms as $rpm) : ?>
-  <li><?php echo link_to($rpm->getName(), $madburl->urlForRpm($rpm, $madbcontext)); ?> 
-    (<?php echo $rpm->getDistrelease()->getDisplayedName() ?>, 
-     <?php echo $rpm->getArch()->getName()?> media, 
+  <li><?php echo link_to($rpm->getName(), $madburl->urlForRpm($rpm, $madbcontext)); ?>
+    (<?php echo $rpm->getDistrelease()->getDisplayedName() ?>,
+     <?php echo $rpm->getArch()->getName()?> media,
      <?php echo $rpm->getMedia()->getName()?>)
      <?php if ($allow_install && !$rpm->getIsSource()) : ?>
        <?php echo link_to('Install', 'rpm/installDialog?id=' . $rpm->getId(), array('class' => 'install_link button')) ?>
@@ -47,13 +48,13 @@ $(document).ready(function(){
   </a>
 
   <div id="subscribeForm" title="Subscribe to changes for this package">
-  Select the type of changes for which you want to be notified, and if needed restrict the subscription to one or 
+  Select the type of changes for which you want to be notified, and if needed restrict the subscription to one or
   several distribution releases, archs and/or medias. Unchecking everything means "all".
   <br/>
   <br/>
   <form action="<?php echo $madburl->urlFor('package/subscribe')?>">
   <?php echo $subscribe_form['package_id']->render() ?>
- 
+
   <?php $formField = $subscribe_form['type']?>
   <?php echo $formField->renderLabel() ?>
   <?php echo $formField->render() ?>
@@ -65,11 +66,11 @@ $(document).ready(function(){
     <span class='filtervalues'><?php echo implode(', ', $displayed_values); ?></span>
   <?php else : ?>
     <span class='filtervalues'>All</span>
-  <?php endif; ?>  
+  <?php endif; ?>
   <br style="clear:both;"/>
   <br/>
-  <p>In the following filter, values "Latest stable" and "Previous stable" are dynamic values: their meaning will 
-    evolve automatically when new releases of the distribution appear. Use them if you want your subscriptions to adapt 
+  <p>In the following filter, values "Latest stable" and "Previous stable" are dynamic values: their meaning will
+    evolve automatically when new releases of the distribution appear. Use them if you want your subscriptions to adapt
     to new releases of the distribution.</p>
   <br/>
   <?php foreach (array('release', 'arch', 'media') as $fieldName) : ?>
@@ -86,7 +87,7 @@ $(document).ready(function(){
     <span class='filtervalues'><?php echo implode(', ', $displayed_values); ?></span>
   <?php else : ?>
     <span class='filtervalues'>All</span>
-  <?php endif; ?>  
+  <?php endif; ?>
   <br style="clear:both;"/>
   <br/>
   <?php endforeach;?>
@@ -103,3 +104,4 @@ $('#filtering_group').next().next().next('a').remove();
 $('#filtering_source').addClass('disabled_filter');
 $('#filtering_source').next().next().next('a').remove();
 <?php end_javascript_tag() ?>
+</div>
