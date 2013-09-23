@@ -19,10 +19,10 @@
       <?php $exploded_name = explode('/', $values['the_name']); ?>
       <?php $name          = $exploded_name[count($exploded_name)-1]; ?>
       <?php echo link_to(
-              $name, 
-              $madburl->urlFor('group/list', 
-                $madbcontext, 
-                 array( 
+              $name,
+              $madburl->urlFor('group/list',
+                $madbcontext,
+                 array(
                    'extra_parameters' => array(
                       't_group'    => implode(',', RpmGroupPeer::getChildGroupsFor($values['the_name'], true)),
                       'level'      =>  1 + 1,
@@ -53,13 +53,14 @@
     'display_header' => false,
     'limit'          => $madbConfig->get('homepage_rpm_limit'),
     'short'          => true,
+    'show_bug_links' => false,
   )) ?>
   <br/>
   <?php echo link_to(
-          "More updates...", 
-          $madburl->urlFor('rpm/list', 
-            $madbcontext, 
-             array( 
+          "More updates...",
+          $madburl->urlFor('rpm/list',
+            $madbcontext,
+             array(
                'extra_parameters' => array(
                   'listtype' => 'updates'
                )
@@ -79,13 +80,14 @@
     'display_header' => false,
     'limit'          => $madbConfig->get('homepage_rpm_limit'),
     'short'          => true,
+    'show_bug_links' => false,
   )) ?>
   <br/>
   <?php echo link_to(
-          "More backports...", 
-          $madburl->urlFor('rpm/list', 
-            $madbcontext, 
-             array( 
+          "More backports...",
+          $madburl->urlFor('rpm/list',
+            $madbcontext,
+             array(
                'extra_parameters' => array(
                   'listtype' => 'backports'
                )
