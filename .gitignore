@@ -13,6 +13,10 @@ cache/*
 .buildpath
 doc/schema_mageia_packagedb.mwb.bak
 
+#vagrant files
+.vagrant/
+Vagrantfile
+
 #generated i18 files
 apps/frontend/i18n/*.mo
 
