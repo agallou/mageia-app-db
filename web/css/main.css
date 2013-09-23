@@ -420,6 +420,11 @@ table.comparisontable
 }
 
 
+.rpm div.rpm-description 
+{
+  margin-left:15px;
+}
+
 .rpm h1, .package h1
 {
   background-color:#EEEEEE;
@@ -436,4 +441,15 @@ table.comparisontable
   padding:5px;
   margin-bottom:4px;
   margin-top:16px;
+}
+
+.rpm table.infos td
+{
+  padding:3px;
+}
+
+.rpm table.infos td.name
+{
+  text-align:right;
+  font-size:12px;
 }
