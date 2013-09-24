@@ -10,7 +10,8 @@
     },
     "require-dev": {
         "atoum/sfAtoumPlugin": "dev-master",
-        "atoum/atoum"        : "dev-master"
+        "atoum/atoum"        : "dev-master",
+	"elXHProfPlugin"     : "1.0.0"
     },
     "repositories": [
         {
@@ -53,6 +54,22 @@
                     "url": "http://svn.symfony-project.com/plugins/omCrossAppUrlPlugin/",
                     "type": "svn",
                     "reference": "trunk/"
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "elXHProfPlugin",
+                "type" : "symfony1-plugin",
+                "require" : {
+                  "composer/installers":"*"
+                },
+                "version": "1.0.0",
+                "source": {
+                    "url": "http://svn.symfony-project.com/plugins/elXHProfPlugin/",
+                    "type": "svn",
+                    "reference": "tags/1.0.0"
                 }
             }
         }

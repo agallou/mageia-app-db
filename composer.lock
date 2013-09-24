@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "db0b6e4109adb3a93b43f4c3dc9b1295",
+    "hash": "bb4b22d911e4dc38bc01d76b9fa8318f",
     "packages": [
         {
             "name": "composer/installers",
@@ -362,6 +362,19 @@
             "type": "symfony1-plugin",
             "notification-url": "https://packagist.org/downloads/",
             "time": "2012-11-30 08:32:39"
+        },
+        {
+            "name": "elXHProfPlugin",
+            "version": "1.0.0",
+            "source": {
+                "type": "svn",
+                "url": "http://svn.symfony-project.com/plugins/elXHProfPlugin/",
+                "reference": "tags/1.0.0"
+            },
+            "require": {
+                "composer/installers": "*"
+            },
+            "type": "symfony1-plugin"
         }
     ],
     "aliases": [
