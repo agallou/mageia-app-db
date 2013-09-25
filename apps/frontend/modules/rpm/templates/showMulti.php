@@ -1,4 +1,4 @@
-<?php slot('title', ' - Disambiguation') ?>
+<?php slot('title', 'Disambiguation') ?>
 <h1>Disambiguation</h1>
 <p>Several RPMs match your current selection. Please choose one.</p>
 <ul>

@@ -5,8 +5,12 @@
         <?php include_http_metas() ?>
         <?php include_metas() ?>
         <title>
-	    <?php echo $madbConfig->get('name'); ?>
-	    <?php include_slot('title') ?>
+	    <?php echo $madbConfig->get('name');
+	    
+		  if(get_slot('title') != '') {
+		    echo ' - ' . get_slot('title');
+		  }
+	    ?>
         </title>
         <link rel="shortcut icon" href="/favicon.ico" />
         <?php include_stylesheets() ?>

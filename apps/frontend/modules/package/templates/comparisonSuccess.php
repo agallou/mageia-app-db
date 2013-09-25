@@ -1,4 +1,4 @@
-<?php slot('title', ' - Comparison between releases '.$distrelease->getDisplayedName().' and '.$targetRelease->getDisplayedName()) ?>
+<?php slot('title', 'Comparison between releases '.$distrelease->getDisplayedName().' and '.$targetRelease->getDisplayedName()) ?>
 <h1>Comparison between releases <?php echo $distrelease->getDisplayedName(); ?> and <?php echo $targetRelease->getDisplayedName(); ?></h1>
 <p>This page compares a stable release (here <?php echo $distrelease->getDisplayedName(); ?>) with another higher release (here <?php echo $targetRelease->getDisplayedName(); ?>).
  Like the other lists, it is filtered using the filters available at the top of the page.</p>

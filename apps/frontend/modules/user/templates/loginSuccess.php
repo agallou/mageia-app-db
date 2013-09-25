@@ -1,4 +1,4 @@
-<?php slot('title', ' - Login') ?>
+<?php slot('title', 'Login') ?>
 <div id="login_form">
   <?php echo $form->renderFormTag(url_for('@login')) ?>
     <h2>Username</h2>

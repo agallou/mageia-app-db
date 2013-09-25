@@ -1,4 +1,4 @@
-<?php slot('title', ' - '.$rpm->getName()) ?>
+<?php slot('title', $rpm->getName()) ?>
 <h1>Package : <?php echo link_to(
          $rpm->getPackage()->getName(),
          $madburl->urlFor( 'package/show', 

@@ -1,8 +1,8 @@
 <?php 
 if ($rpm_group) {
-  slot('title', ' - '.$rpm_group->getName());
+  slot('title', $rpm_group->getName());
 } else {
-  slot('title', ' - Packages/Applications');
+  slot('title', 'Packages/Applications');
 }
 ?>
 <h1>Packages/Applications</h1>

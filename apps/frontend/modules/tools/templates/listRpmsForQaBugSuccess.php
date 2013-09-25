@@ -1,4 +1,4 @@
-<?php slot('title', ' - RPM list for Bug '.$bugnum) ?>
+<?php slot('title', 'RPM list for Bug '.$bugnum) ?>
 <h1>RPM list for <?php echo link_to("Bug $bugnum", $bugtracker->getUrlForBug($bugnum)) ?></h1>
 <p>There are two types of matches: 
   <strong>exact matches</strong> (the exact SRPM name was found in the bug report) 
