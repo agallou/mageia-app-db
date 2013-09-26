@@ -35,6 +35,9 @@
                     <?php include_component('default', 'menu', $sf_request->getParameterHolder()->getAll()) ?>
                 </div>
                 <div id="content">
+                    <?php if (has_slot('name')): ?>
+                      <div class="pagename"> <?php include_slot('name') ?></div>
+                    <?php endif ?>
                     <div id="filtering">
                       <?php include_component_slot('filtering') ?>
                     </div>

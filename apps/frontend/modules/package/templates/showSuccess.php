@@ -1,5 +1,8 @@
+<?php slot('name') ?>
+Package : <?php echo $package->getName() ?>
+<?php end_slot('name') ?>
+
 <div class="package">
-<h1>Package : <?php echo $package->getName() ?></h1>
 <div>
 <h2>Package details</h2>
 <p> <strong>Summary</strong> : <?php echo htmlspecialchars($package->getSummary()) ?></p>

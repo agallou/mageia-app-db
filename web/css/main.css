@@ -337,14 +337,23 @@ img
   border:0px;
 }
 
-.content_group
+
+.pagename
 {
   background-color:#03344D;
   padding: 4px;
   color: #fff;
   font-weight:bold;
-  margin-top: 15px;
+  margin-bottom: 9px;
 }
+
+.pagename a, 
+.pagename a:visited
+{
+  color: #fff;
+}
+
+
 
 th 
 {
@@ -440,15 +449,10 @@ table.comparisontable
   margin-left:15px;
 }
 
-.rpm h1, .package h1
-{
-  background-color:#EEEEEE;
-  font-weight:bold;
-  font-size:20px;
-  padding:5px;
-}
 
-.rpm h2, .package h2
+.rpm h2,
+.package h2,
+.homepage h2
 {
   background-color:#CEE0F5;
   font-weight:bold;

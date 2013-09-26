@@ -1,4 +1,6 @@
-<h1><?php echo $title ?></h1>
+<?php slot('name') ?>
+<?php echo $title ?>
+<?php end_slot('name') ?>
 
 <?php include_component('rpm', 'list', array(
   'listtype'       => $listtype,

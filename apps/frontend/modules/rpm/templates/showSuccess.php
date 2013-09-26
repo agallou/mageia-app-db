@@ -1,5 +1,4 @@
-<div class="rpm">
-<h1>
+<?php slot('name') ?>
 Package : <?php echo link_to(
          $rpm->getPackage()->getName(),
          $madburl->urlFor( 'package/show',
@@ -12,7 +11,9 @@ Package : <?php echo link_to(
                          )
        ); ?>
  > RPM : <?php echo $rpm->getName() ?>
-</h1>
+<?php end_slot('name') ?>
+
+<div class="rpm">
 
 <div>
 <h2>Basic items</h2>

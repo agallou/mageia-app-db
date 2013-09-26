@@ -1,6 +1,12 @@
+<?php slot('name') ?>
+Homepage
+<?php end_slot('name') ?>
+
+<div class="homepage">
+
 <?php $madbConfig = new madbConfig(); ?>
 <div id="intro" class="links">
-  <div class="content_group">Welcome to <?php echo $madbConfig->get('name')?></div>
+  <h2>Welcome to <?php echo $madbConfig->get('name')?></h2>
 
   <p>This is a work in progress lacking many features, but you can already search and browse packages. Use the search form, browse by category or use the left menu.</p>
   <p>There are persistent navigation filters, which you can change at any time from the filter banner : distribution release, show only applications or all packages, media, arch, etc.</p>
@@ -8,7 +14,7 @@
 </div>
 
 <div id="groups" class="links">
-  <div class="content_group">Groups</div>
+  <h2>Groups</h2>
   <table width="100%">
   <?php $cpt = 0 ?>
   <?php foreach ($groups as $values): ?>
@@ -45,7 +51,7 @@
 
 <?php if ($has_updates) : ?>
 <div id="updates">
-  <div class="content_group">Latest updates</div>
+  <h2>Latest updates</h2>
   <?php include_component('rpm', 'list', array(
     'listtype'       => 'updates',
     'page'           => 1,
@@ -72,7 +78,7 @@
 
 <?php if ($has_backports) : ?>
 <div id="backports">
-  <div class="content_group">Latest backports</div>
+  <h2>Latest backports</h2>
   <?php include_component('rpm', 'list', array(
     'listtype'       => 'backports',
     'page'           => 1,
@@ -96,3 +102,5 @@
         ); ?>
 </div>
 <?php endif; ?>
+
+</div>
