@@ -118,7 +118,7 @@ div#header div#search form input[type=submit]
     display: block;
     width: 14em;
     background-color: #EEEEEE;
-    padding: 0.5em;
+    padding: 0px;
     min-height: 81.6%;
     height:auto !important;
    /* height: 81.6%; */
@@ -126,43 +126,58 @@ div#header div#search form input[type=submit]
 
 #menu ul
 {
-    padding: inherit;
+    margin:0px;
+    padding: 0px;
     list-style-type: none;
 }
 
 #menu li
 {
     font-size: 10pt;
-}
-
-#menu li.current
-{
- background-color:#ccccff;
-}
-
-#menu li a, #menu li a:visited
-{
-  color:#0000EE;
-  text-decoration:none;
+    width:100%;
 }
 
 #menu ul h2
 {
-    margin: 2px 0px 2px 0px;
-    border-bottom: 1px solid #BBBBBB;
-    font-size: 12pt;
+  background-color:#CEE0F5;
+  font-weight:bold;
+  font-size:15px;
+  padding:5px;
+  padding-right:15px;
+  margin-bottom:4px;
+  margin-top:16px;
+  text-align:right;
 }
 
-#menu ul ul li
+#menu ul li.leaf
 {
-    margin: 0px 0px 1px 0px;
-    text-indent: 4px;
+    margin: 0px;
+    padding: 4px 0px 4px 0px;
+    text-indent: 8px;
+    font-style:italic;
 }
 
-#menu ul ul li.current
+#menu ul li a, 
+#menu ul li a:visited
 {
- background-color:#ccccff;
+  padding: 4px 0px 4px 0px;
+  margin: 0px; 
+  display: block; 
+  width: 100%;
+  height: 100%;
+  font-style:normal;
+  color:#000;
+}
 
+#menu ul li a:hover
+{
+  outline:none;
+  background-color:#ccccff;
+}
+
+#menu ul li.current a
+{
+  background-color:#ccccff;
 }
 
 /* RIGHT Column stuff a.k.a Content */

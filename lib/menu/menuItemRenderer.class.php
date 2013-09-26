@@ -21,10 +21,10 @@ class menuItemRenderer
     $name = __($item->getName());
     if (null === $item->getInternalUri())
     {
-      return sprintf('<li>%s</li>', $name);
+      return sprintf('<li class="leaf">%s</li>', $name);
     }
-    $current = $isCurrent ? ' class="current"' : '';
-    $render  = sprintf('<li%s><a href="%s">%s</a></li>', $current, $this->madbUrl->urlFor($item->getInternalUri(), $this->context, $item->getOptions()), $name);
+    $current = $isCurrent ? 'current' : '';
+    $render  = sprintf('<li class="leaf %s"><a href="%s">%s</a></li>', $current, $this->madbUrl->urlFor($item->getInternalUri(), $this->context, $item->getOptions()), $name);
     return $render;
   }
 
