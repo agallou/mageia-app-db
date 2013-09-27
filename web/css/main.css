@@ -41,25 +41,27 @@ a, a:visited
 #header
 {
     background-color: #507AAA;
-    background: -moz-linear-gradient(#004D9F, #049CD9); /* Firefox */ 
-    background: -webkit-gradient(linear, left top, left bottom, from(#004D9F), to(#049CD9)); /* webkit */
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#004D9F', endColorstr='#049CD9'); /* IE */    
-    background-repeat: no-repeat;
     padding: 5px;
     width: auto;
-    min-height: 8%;
+    min-height: 40px;
     vertical-align: middle;
     border-bottom: 1px solid #DDDDDD;
     position: relative;
 }
 
-#header h1
+#appname
 {
-    color: white;
-    font-size: 24pt;
+  color: white;
+  font-size: 14pt;
+  clear:left;
+  float:left;
+  display:block;
+  padding:0px;
+  position:relative;
+  width:200px;
 }
 
-#header h1 a, #header h1 a:visited
+#appname a, #appname h1 a:visited
 {
   color:white;
 }
@@ -81,8 +83,8 @@ a, a:visited
 div#header div#search
 {
     width:420px;
-    margin:0px auto;
-    margin-top:0px;
+    margin-left:300px;
+    margin-top:7px;
     position: relative;
 }
 
@@ -119,9 +121,8 @@ div#header div#search form input[type=submit]
     width: 14em;
     background-color: #EEEEEE;
     padding: 0px;
-    min-height: 81.6%;
+    min-height: 90%;
     height:auto !important;
-   /* height: 81.6%; */
 }
 
 #menu ul
@@ -189,7 +190,7 @@ div#header div#search form input[type=submit]
     width: auto;
     padding: 0.5em;
     height:auto !important;
-    min-height: 81.6%;
+    min-height: 90%;
     display: block;
     border-left: 1px solid #DDDDDD;
     overflow-x: auto;
@@ -286,10 +287,17 @@ div.pager
     font-size:12px;
     padding-left:10px;
     text-align:right;
-    min-height: 7%;
-    height: 7%;
+    min-height: 40px;
+    height: 40px;
     border-top: 1px solid #DDDDDD;
     position: relative;
+    color:#000;
+}
+
+#footer a, #footer a:visited
+{
+  color:#000;
+  text-decoration:underline;
 }
 
 .content
