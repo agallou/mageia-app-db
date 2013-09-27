@@ -4,7 +4,7 @@ class menuGroupBuilderFrontend extends menuGroupBuilder
 
   protected function build()
   {
-    $this->addItem($this->createItem('Homepage', '@homepage', array('extra_active' => array('default/news'))));
+    $this->addItem($this->createItem('Homepage', '@homepage', array('extra_active' => array('default/home'))));
     $items = array();
     if (MediaPeer::countMediaByType(true, false, false) + count(DistreleasePeer::getDevels()))
     {
