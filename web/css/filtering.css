@@ -16,10 +16,9 @@ div.filters
 {
   margin:0px 0px 2px 0px;
   padding: 6px;
-  border:1px solid #ccc;
-  background-color:#E1E7E8;
   overflow: hidden;
   height: 1%;
+  color:#000;
 }
 
 div.filters form span

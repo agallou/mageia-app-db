@@ -62,7 +62,7 @@ div.disabled_filter, div.disabled_filter div.button span
 .filterwidget .widgetcontent1
 {
   max-height:200px;
-  background-color:#eee;
+  background-color:#CEE0F5;
   overflow:auto;
   overflow-x: hidden;
   border:1px solid #03344D;
@@ -90,7 +90,7 @@ div.disabled_filter, div.disabled_filter div.button span
 
 .filterwidget div.widgetcontent div:hover
 {
-  background-color: #CCCCFF;
+  background-color: #97B4D5;
 }
 
 .filterwidget div.widgetcontent div.apply:hover
@@ -118,5 +118,5 @@ div.disabled_filter, div.disabled_filter div.button span
 
 .filterwidget div.widgetcontent div.selected
 {
-  background-color:#CCCCFF;
+  background-color:#97B4D5;
 }

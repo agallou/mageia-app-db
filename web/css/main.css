@@ -353,9 +353,12 @@ img
   color: #fff;
   border: 1px solid #1A426E;
   border: 1px solid #ccc;
-
-  font-weight:bold;
   margin-bottom: 9px;
+}
+
+.pagename p
+{
+  font-weight:bold;
 }
 
 .pagename a, 
