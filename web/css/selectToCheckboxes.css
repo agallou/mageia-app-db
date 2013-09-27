@@ -50,7 +50,7 @@ div.disabled_filter, div.disabled_filter div.button span
 
 .filterwidget .arrow
 {
-  font-weight:bolder;
+  margin-left:5px;
 }
 
 .filterwidget .widgetcontent
@@ -65,7 +65,7 @@ div.disabled_filter, div.disabled_filter div.button span
   background-color:#eee;
   overflow:auto;
   overflow-x: hidden;
-  border:1px solid #996A75;
+  border:1px solid #03344D;
   position:absolute;
   z-index:1200;
 }
@@ -90,8 +90,15 @@ div.disabled_filter, div.disabled_filter div.button span
 
 .filterwidget div.widgetcontent div:hover
 {
-  background-color: #bbb;
+  background-color: #CCCCFF;
 }
+
+.filterwidget div.widgetcontent div.apply:hover
+{
+  background-color:#03344D;
+  color:#fff;
+}
+
 
 .filterwidget .widgetcontent label
 {
@@ -111,5 +118,5 @@ div.disabled_filter, div.disabled_filter div.button span
 
 .filterwidget div.widgetcontent div.selected
 {
-  background-color:#bbb;
+  background-color:#CCCCFF;
 }

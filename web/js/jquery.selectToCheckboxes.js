@@ -41,7 +41,7 @@
         text    : label.text()
       });
       buttontext.appendTo(button);
-      $('<span>', { id : 'buttonarrow' + selectId,'class' : 'arrow', html: '&darr;' }).appendTo(button);
+      $('<span>', { id : 'buttonarrow' + selectId,'class' : 'arrow', html: '<i class="icon-chevron-down"></i>' }).appendTo(button);
 
       button.click(function() {
         if (settings.active) {

@@ -27,10 +27,12 @@ div.filters form span
   cursor:default;
 }
 
-div.filters img.delete
+div.filters i.icon-remove
 {
   vertical-align:middle;
   float:left;
+  margin: 6px 15px 0px -15px;
+  color:#9D261D;
 }
 
 div.filters .filtervalues
