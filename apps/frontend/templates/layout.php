@@ -7,8 +7,6 @@
         <?php echo content_tag('title', $madbConfig->get('name'))."\n"; ?>
         <link rel="shortcut icon" href="/favicon.ico" />
         <?php include_stylesheets() ?>
-        <link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
-
         <?php include_javascripts() ?>
     </head>
     <body>
