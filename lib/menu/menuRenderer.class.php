@@ -17,7 +17,9 @@ class menuRenderer
     {
       if ($groupOrItem instanceof menuGroup)
       {
-        $render .= "<li>".PHP_EOL."<h2>".__($groupOrItem->getName())."</h2>".PHP_EOL.$this->render($groupOrItem).'</li>'.PHP_EOL;
+        $icon = $groupOrItem->getIcon();
+        $iconString = null === $icon ? '' : sprintf('<i class="%s"></i> ', $icon);
+        $render .= "<li><h2>" . PHP_EOL . $iconString .__($groupOrItem->getName())."</h2>".PHP_EOL.$this->render($groupOrItem).'</li>'.PHP_EOL;
       }
       elseif ($groupOrItem instanceof menuItem)
       {

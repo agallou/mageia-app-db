@@ -37,9 +37,10 @@ abstract class menuGroupBuilder
     $this->menuGroup->addMenuItem($item);
   }
 
-  protected function addGroup($name, array $values)
+  protected function addGroup($name, array $values, $icon = null)
   {
     $group = new menuGroup($name);
+    $group->setIcon($icon);
     foreach ($values as $value)
     {
       $group->append($value);

@@ -22,19 +22,19 @@ class menuGroupBuilderFrontend extends menuGroupBuilder
     {
       $items[] = $this->createItem('Backport candidates', 'rpm/list', array('extra_parameters' => array('listtype' => 'backports_testing')));
     }
-    $this->addGroup('Latest', $items);
+    $this->addGroup('Latest', $items, 'icon-bell');
     $this->addGroup('Browse', array(
       $this->createItem('By group', 'group/list'),
       $this->createItem('By popularity'),
       $this->createItem('By name', 'package/list'),
-    ));
+    ), 'icon-tasks');
     $this->addGroup('Requests', array(
       $this->createItem('Backports requests'),
       $this->createItem('New soft request'),
-    ));
+    ), 'icon-share');
     $this->addGroup('Tools', array(
       $this->createItem('Comparison with dev branch', 'package/comparison'),
-    ));
+    ), 'icon-puzzle-piece');
     if ($this->isUserAuthenticated())
     {
       $this->addItem($this->createItem('My account'));

@@ -3,6 +3,7 @@ class menuGroup extends ArrayIterator
 {
 
   private $name;
+  private $icon;
 
   public function __construct($name = null, $array = array())
   {
@@ -23,6 +24,16 @@ class menuGroup extends ArrayIterator
   public function getName()
   {
     return $this->name;
+  }
+
+  public function setIcon($icon)
+  {
+    $this->icon = $icon;
+  }
+
+  public function getIcon()
+  {
+    return $this->icon;
   }
 
   public function append($value)
