@@ -140,7 +140,6 @@ div#header div#search form input[type=submit]
 
 #menu ul h2
 {
-  background-color:#CEE0F5;
   font-weight:bold;
   font-size:15px;
   padding:5px;
@@ -148,6 +147,8 @@ div#header div#search form input[type=submit]
   margin-bottom:4px;
   margin-top:16px;
   text-align:right;
+  color:#fff;
+  background-color:#507AAA;
 }
 
 #menu ul li.leaf
