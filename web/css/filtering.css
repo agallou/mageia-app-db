@@ -1,3 +1,8 @@
+#filtering
+{
+  border-top:1px solid #fff;
+}
+
 #linkmore
 {
   cursor:pointer;
@@ -5,6 +10,8 @@
   position: absolute;
   top: 4;
   right: 0;
+  color:#fff;
+  font-size:18px;
 }
 
 #otherFilters
@@ -41,5 +48,6 @@ div.filters .filtervalues
   padding-top: 5px;
   padding-left: 3px;
   font-weight: bold;
+  color:#fff;
 }
 

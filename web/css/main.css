@@ -45,7 +45,6 @@ a, a:visited
     width: auto;
     min-height: 40px;
     vertical-align: middle;
-    border-bottom: 1px solid #DDDDDD;
     position: relative;
 }
 
@@ -192,7 +191,6 @@ div#header div#search form input[type=submit]
     height:auto !important;
     min-height: 90%;
     display: block;
-    border-left: 1px solid #DDDDDD;
     overflow-x: auto;
     overflow-y: hidden;
     zoom:1;
@@ -351,9 +349,9 @@ img
   background-color:#80A8D5;
   padding: 4px;
   color: #fff;
-  border: 1px solid #1A426E;
-  border: 1px solid #ccc;
+  margin: -0.5em;
   margin-bottom: 9px;
+  background-color:#1A426F;
 }
 
 .pagename p
