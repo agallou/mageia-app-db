@@ -25,8 +25,7 @@
                         (<?php echo $sf_user->getProfile()->getMail() ?>)
                         <?php echo link_to('Logout', url_for('@logout')); ?>
                     <?php else: ?>
-                        <span>Register? |</span>
-                        <?php echo link_to('Login', url_for('@login')) ?>
+                        <?php echo link_to('<i class="icon-signin"></i>', url_for('@login')) ?>
                     <?php endif; ?>
                 </div>
             </div>
