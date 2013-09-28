@@ -85,6 +85,6 @@ if ($show_bug_links)
     'action'      => 'list',
     'madbcontext' => $madbcontext,
     'madburl'     => $madburl,
-    'extra_class' => 'pager-bottom',
+    'bottom'      => true,
   )) ?>
 <?php endif; ?>

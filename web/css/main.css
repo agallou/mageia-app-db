@@ -232,6 +232,7 @@ div.pager
   background-color:#CEE0F5;
   text-align:right;
   padding-bottom:-3px;
+  min-height:17px;
 }
 
 .pager li

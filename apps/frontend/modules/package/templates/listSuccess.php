@@ -67,7 +67,7 @@ Packages/Applications
   'action'      => 'list',
   'madbcontext' => $madbcontext,
   'madburl'     => $madburl,
-  'extra_class' => 'pager-bottom',
+  'bottom'      => true,
 )) ?>
 
 
