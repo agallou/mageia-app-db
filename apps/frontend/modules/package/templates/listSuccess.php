@@ -31,14 +31,6 @@ Packages/Applications
 </ul>
 </div>
 
-<?php include_partial('default/pager', array(
-  'pager'       => $pager,
-  'module'      => 'package',
-  'action'      => 'list',
-  'madbcontext' => $madbcontext,
-  'madburl'     => $madburl,
-)) ?>
-
 <?php if ($application): ?>
   <p>This list shows only applications.
   <?php echo link_to(
@@ -68,3 +60,14 @@ Packages/Applications
   ?>
   </p>
 <?php endif; ?>
+
+<?php include_partial('default/pager', array(
+  'pager'       => $pager,
+  'module'      => 'package',
+  'action'      => 'list',
+  'madbcontext' => $madbcontext,
+  'madburl'     => $madburl,
+  'extra_class' => 'pager-bottom',
+)) ?>
+
+

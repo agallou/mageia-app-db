@@ -1,14 +1,14 @@
 <?php if ($showpager): ?>
   <?php include_partial('default/pager', array(
-    'pager'       => $pager, 
-    'module'      => 'rpm', 
-    'action'      => 'list', 
-    'madbcontext' => $madbcontext, 
+    'pager'       => $pager,
+    'module'      => 'rpm',
+    'action'      => 'list',
+    'madbcontext' => $madbcontext,
     'madburl'     => $madburl,
     'showtotal'   => true,
   )) ?>
 <?php endif; ?>
-<?php 
+<?php
 if ($show_bug_links)
 {
   $bugtrackerFactory = new madbBugtrackerFactory();
@@ -39,16 +39,16 @@ if ($show_bug_links)
     <?php $dates[$buildDate] = $buildDate; ?>
     <tr class="rpm-<?php echo count($dates) % 2 ? 'odd' : 'even'?>">
       <td><?php echo link_to(
-                  $rpm->getPackage()->getName(), 
+                  $rpm->getPackage()->getName(),
                   $madburl->urlFor(
-                    'package/show', 
-                    $madbcontext, 
+                    'package/show',
+                    $madbcontext,
                     array('extra_parameters' => array('name' => $rpm->getPackage()->getName()))
                   )
                 ); ?></td>
       <td><?php echo htmlspecialchars($rpm->getSummary()) ?></td>
       <td><?php echo link_to(
-                  $rpm->getVersion(), 
+                  $rpm->getVersion(),
                   $madburl->urlForRpm($rpm, $madbcontext)
                 ); ?>
       </td>
@@ -74,16 +74,17 @@ if ($show_bug_links)
       }
       ?></td>
       <?php endif; ?>
-    </tr> 
+    </tr>
   <?php endforeach; ?>
 </tbody>
 </table>
 <?php if ($showpager): ?>
   <?php include_partial('default/pager', array(
-    'pager'       => $pager, 
-    'module'      => 'rpm', 
-    'action'      => 'list', 
-    'madbcontext' => $madbcontext, 
+    'pager'       => $pager,
+    'module'      => 'rpm',
+    'action'      => 'list',
+    'madbcontext' => $madbcontext,
     'madburl'     => $madburl,
+    'extra_class' => 'pager-bottom',
   )) ?>
 <?php endif; ?>

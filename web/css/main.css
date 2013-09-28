@@ -223,17 +223,14 @@ form.searchform input[type=submit]
 
 div.pager
 {
-    margin: 10px 0px 10px 0px;
-    /*margin: 0px 0px 5px 0px;
-    margin-left:auto;
-    margin-right:auto;*/
-    width:100%;
-    text-align:center;
-}
-
-.pager ul
-{
-    margin-bottom: 15px;
+  margin: -0.5em;
+  padding: 4px;
+  border: 0px;
+  margin-bottom:15px;
+  margin-top: -0.6em;
+  background-color:#CEE0F5;
+  text-align:right;
+  padding-bottom:-3px;
 }
 
 .pager li
@@ -241,6 +238,20 @@ div.pager
     display: inline;
     border-bottom: 1px solid #BBBBBB;
     padding: 2px;
+}
+
+#pagercount
+{
+  position: relative;
+  top:0px;
+  left:0px;
+  float:left;
+}
+
+div.pager-bottom
+{
+	margin-top:20px;
+	margin-bottom:-7px;
 }
 
 #user_infos a
