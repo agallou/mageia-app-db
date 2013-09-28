@@ -365,6 +365,11 @@ img
   color: #fff;
 }
 
+.pagename a:hover
+{
+  color: #000;
+}
+
 
 
 th 
