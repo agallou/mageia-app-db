@@ -40,16 +40,18 @@ a, a:visited
 
 #header
 {
-    background-color: #507AAA;
-    padding: 5px;
-    width: auto;
-    min-height: 40px;
-    vertical-align: middle;
-    position: relative;
+  background:url("../images/cauldron_alpha_ln_1_2.png") no-repeat scroll 7px 3px #507AAA;
+  padding: 5px;
+  width: auto;
+  min-height: 40px;
+  vertical-align: middle;
+  position: relative;
 }
 
 #appname
 {
+  top:6px;
+  left:35px;
   color: white;
   font-size: 14pt;
   clear:left;
@@ -58,6 +60,7 @@ a, a:visited
   padding:0px;
   position:relative;
   width:200px;
+  font-weight:bold;
 }
 
 #appname a, #appname h1 a:visited
