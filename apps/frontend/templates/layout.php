@@ -7,8 +7,8 @@
         <title>
 	    <?php echo $madbConfig->get('name');
 	    
-		  if(get_slot('title') != '') {
-		    echo ' - ' . get_slot('title');
+		  if(($slot = get_slot('title')) != '') {
+		    echo ' - ' . $slot;
 		  }
 	    ?>
         </title>
