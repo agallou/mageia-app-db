@@ -8,7 +8,7 @@ Search in this page:
   <?php if ($madbcontext->hasParameter('t_search')): ?>
   <span class="links">
   You searched for : <?php echo $madbcontext->getParameter('t_search') ?>
-  <?php echo link_to('Clear', $urldelete) ?>
+  <?php echo link_to('<i class="icon-remove"></i>', $urldelete) ?>
   </span>
   <?php endif; ?>
 <?php endif; ?>
