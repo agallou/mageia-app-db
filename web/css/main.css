@@ -30,8 +30,9 @@ a, a:visited
 
 #container
 {
+
     display: block;
-    background-color: #CEE0F5;
+    background-color: #E8E8E8;
     min-height: 100%;
     height: 100%;
     overflow: auto;
@@ -128,7 +129,7 @@ form.searchform input[type=submit]
     float: left;
     display: block;
     width: 14em;
-    background-color: #CEE0F5;
+    background-color: #E8E8E8;
     padding: 0px;
     min-height: 90%;
     height:auto !important;
@@ -154,9 +155,8 @@ form.searchform input[type=submit]
   padding:5px;
   margin-bottom:4px;
   margin-top:16px;
-  text-align:center;
-  color:#fff;
-  background-color:#507AAA;
+  text-align:left;
+  color:#1A426F;
 }
 
 #menu ul li.leaf
@@ -187,13 +187,15 @@ form.searchform input[type=submit]
 
 #menu ul li.current a
 {
-  background-color:#97B4D5;
+  background-color: #507AAA;
+  color:#fff;
 }
 
 /* RIGHT Column stuff a.k.a Content */
 
 #content
 {
+    border-left:1px solid #1A426F;
     position: relative;
     background-color: white;
     width: auto;
