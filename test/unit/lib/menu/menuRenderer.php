@@ -83,7 +83,7 @@ class menuRenderer extends atoum\test
 
     $expected = <<<EOF
 <ul>
-<li><a href="/index.php/default/news/release/2010">Homepage</a></li>
+<li><a href="/index.php/default/home/release/2010">Homepage</a></li>
 <li>
 <h2>Latest</h2>
 <ul>

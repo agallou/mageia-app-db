@@ -23,9 +23,9 @@
                     <?php if ($sf_user->isAuthenticated()): ?>
                         <?php echo $sf_user->getUsername() ?>
                         (<?php echo $sf_user->getProfile()->getMail() ?>)
-                        <?php echo link_to('Logout', url_for('@logout')); ?>
+                        <?php echo link_to('Logout', url_for('@sf_guard_signout')); ?>
                     <?php else: ?>
-                        <?php echo link_to('<i class="icon-signin"></i>', url_for('@login')) ?>
+                        <?php echo link_to('<i class="icon-signin"></i>', url_for('@sf_guard_signin')) ?>
                     <?php endif; ?>
                 </div>
             </div>

@@ -15,6 +15,7 @@ class ProjectConfiguration extends sfProjectConfiguration
 
     if (sfConfig::get('sf_environment') != 'prod')
     {
+      require_once sfConfig::get('sf_root_dir') . '/vendor/symfony/symfony1/lib/helper/AssetHelper.php';
       $this->enablePlugins('sfAtoumPlugin', 'elXHProfPlugin');
     }
     sfConfig::set('sf_phing_path', sfConfig::get('sf_root_dir') .'/vendor/phing/phing');
