@@ -511,3 +511,20 @@ table.comparisontable
   text-align:right;
   font-size:12px;
 }
+
+
+div#login_form
+{
+  text-align:center;
+  background-color:#1A426F;
+  background-color:#507AAA;
+
+  border:1px solid #000;
+  margin-top:20px;
+  color:#fff;
+}
+
+div#login_form input[type=text]
+{
+  margin-bottom:10px;
+}
