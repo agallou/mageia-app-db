@@ -27,7 +27,7 @@
                         <?php endif ?>
                         <?php echo link_to('<i class="icon-signout"></i>', url_for('@sf_guard_signout')); ?>
                     <?php else: ?>
-                        <?php echo link_to('<i class="icon-signin"></i>', url_for('@sf_guard_signin')) ?>
+                        <?php echo link_to('<i class="icon-signin" title="Login"></i>', url_for('@sf_guard_signin')) ?>
                     <?php endif; ?>
                 </div>
             </div>

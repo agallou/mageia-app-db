@@ -24,7 +24,7 @@
   <?php endif; ?>
 <?php endforeach; ?>
 
-<span id="linkmore"><i class="icon-double-angle-down"></i></span>
+<span id="linkmore"><i class="icon-double-angle-down" title="More filters"></i></span>
 <br style="clear:left;"/>
 <div id="otherFilters">
 <?php $order = array('source', 'media', 'group'); ?>
