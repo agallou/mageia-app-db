@@ -32,10 +32,9 @@ class Rpm extends atoum\test
     $this->assert->integer(\RpmPeer::evrCompare("2:1-1mdk", "1:1-1mdk"))->isEqualTo(1, "comparing epoch:version-release only, higther");
     $this->assert->integer(\RpmPeer::evrCompare("1:1-1mdk", "2:1-1mdk"))->isEqualTo(-1, "comparing epoch:version-release only, lesser");
 
-    $this->assert->integer(\RpmPeer::evrCompare("0:1-1mdk", "1-1mdk"))->isEqualTo(1, "comparing epoch 0 vs no epoch");
+    $this->assert->integer(\RpmPeer::evrCompare("0:1-1mdk", "1-1mdk"))->isEqualTo(0, "comparing epoch 0 vs no epoch");
     $this->assert->integer(\RpmPeer::evrCompare("1:1-1mdk", "1-1mdk"))->isEqualTo(1, "comparing epoch 1 vs no epoch");
     $this->assert->integer(\RpmPeer::evrCompare("1.0-1mdk", "1.0"))->isEqualTo(1, "comparing version-release vs version only");
-    $this->assert->integer(\RpmPeer::evrCompare("0:1-1mdk", "1.0"))->isEqualTo(1, "comparing epoch:version-release vs no version");
   }
 
 }
