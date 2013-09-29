@@ -1,8 +1,7 @@
 all:
   .actions:
     login_module: sfGuardAuth
-    login_action: signin
-
+    login_action: login
     secure_module: sfGuardAuth
     secure_action: secure
 

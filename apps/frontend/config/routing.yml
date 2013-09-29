@@ -3,14 +3,6 @@
 
 # default rules
 
-login:
-  url: /login
-  param: { module: user, action: login }
-
-logout:
-  url: /logout
-  param: { module: user, action: logout }
-
 homepage:
   url:   /
   class: madbHomepageRoute
