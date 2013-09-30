@@ -2,9 +2,9 @@
 
 
 namespace {
-  if (!class_exists('distreleaseDefault'))
+  if (!class_exists('releaseDefault'))
   {
-    class distreleaseDefault
+    class releaseDefault
     {
       public function getDefault()
       {
