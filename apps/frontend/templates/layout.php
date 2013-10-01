@@ -39,11 +39,13 @@
                     <?php if (has_slot('name')): ?>
                       <div class="pagename">
                         <p><?php include_slot('name') ?></p>
+                      </div>
+
+                    <?php endif ?>
                         <div id="filtering">
                           <?php include_component_slot('filtering') ?>
                         </div>
-                      </div>
-                    <?php endif ?>
+
                     <?php echo $sf_content ?>
                 </div>
 

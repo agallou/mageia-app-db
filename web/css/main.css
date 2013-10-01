@@ -104,6 +104,11 @@ div#header div#search form input[type=text]:focus
   background-color:#F7F3D0;
 }
 
+#filtering form.searchform
+{
+  margin-left:10px;
+}
+
 form.searchform input[type=submit]
 {
   border-color: #CCCCCC #666666 #666666 #CCCCCC;
@@ -117,6 +122,7 @@ form.searchform input[type=submit]
 #filtering form.searchform input[type=submit]
 {
   padding: 0px 0px;
+  margin-bottom:5px;
 }
 
 

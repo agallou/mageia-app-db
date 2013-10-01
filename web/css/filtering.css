@@ -1,7 +1,8 @@
 #filtering
 {
   padding-top:8px;
-  border-top:1px solid #fff;
+  background-color:#E8E8E8;
+  border: 1px dotted #1A426F;
 }
 
 #linkmore
@@ -11,7 +12,7 @@
   position: absolute;
   top: 4;
   right: 0;
-  color:#fff;
+  color:#000;
   font-size:18px;
 }
 
@@ -49,6 +50,6 @@ div.filters .filtervalues
   padding-top: 5px;
   padding-left: 3px;
   font-weight: bold;
-  color:#fff;
+  color:#000;
 }
 
