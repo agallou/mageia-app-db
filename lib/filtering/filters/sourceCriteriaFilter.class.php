@@ -1,4 +1,4 @@
-<?php 
+<?php
 class sourceCriteriaFilter extends baseCriteriaFilterChoice
 {
 
@@ -15,16 +15,16 @@ class sourceCriteriaFilter extends baseCriteriaFilterChoice
   public function getValues()
   {
     return array(
-      '0' => 'regular packages',
-      '1' => 'source packages',
+      '0' => 'Regular packages',
+      '1' => 'Source packages',
     );
   }
 
   /**
-   * doFilterChoice 
-   * 
-   * @param Criteria             $criteria 
-   * @param                      $value 
+   * doFilterChoice
+   *
+   * @param Criteria             $criteria
+   * @param                      $value
    * @return Criteria
    */
   protected function doFilterChoice(Criteria $criteria, $value)
@@ -52,8 +52,8 @@ class sourceCriteriaFilter extends baseCriteriaFilterChoice
   }
 
   /**
-   * name 
-   * 
+   * name
+   *
    * @return void
    */
   public function getName()
