@@ -57,14 +57,15 @@ div.disabled_filter, div.disabled_filter div.button span
 {
   margin-top:4px;
   font-size: 14px;
+  overflow-y:auto;
+  overflow-x: hidden;
+  max-height:200px;
+
 }
 
 .filterwidget .widgetcontent1
 {
-  max-height:200px;
   background-color:#fff;
-  overflow:auto;
-  overflow-x: hidden;
   border:1px solid #03344D;
   position:absolute;
   z-index:1200;
@@ -80,13 +81,12 @@ div.disabled_filter, div.disabled_filter div.button span
 
 .filterwidget .widgetcontent1
 {
-  font-family:verdana;
   font-size:small;
 }
 
 .filterwidget .widgetcontent1 input[type=text]
 {
-  width:95%;
+  width:85%;
   margin-left:2px;
   margin-top:2px;
 }
@@ -101,7 +101,7 @@ div.disabled_filter, div.disabled_filter div.button span
   background-color: #97B4D5;
 }
 
-.filterwidget div.widgetcontent div.apply:hover
+.filterwidget div.apply:hover
 {
   background-color:#03344D;
   color:#fff;

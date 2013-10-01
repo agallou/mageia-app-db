@@ -56,14 +56,16 @@
         ng1.addClass('multi');
       }
       var div = $('<div>', { id: 'widgetcontent_' + selectId, 'class' : 'widgetcontent' });
-      ng1.append(div);
       widget.append(ng1);
       var recherche = $('<input>', { type: 'text', id: 'recherche_' + selectId});
       if (settings.searchfield)
       {
-        div.append(recherche);
-        div.append('<br>');
+        ng1.append('<i class="icon-search"></i>');
+        ng1.append(recherche);
+        ng1.append('<br>');
       }
+      ng1.append(div);
+
       recherche.keyup(function(e){
         var letext = $(e.target).val();
         var regepx = new RegExp('/.*' + letext + '.*/'); // regepx is unused
@@ -84,7 +86,7 @@
           'class' : 'apply',
           text    : 'Apply'
         });
-        jApply.appendTo(div);
+        jApply.appendTo(ng1);
         jApply.click(function(){
           ng1.hide();
           settings.apply.apply(this, [$('input[name=' + selectId + ']:checked')]);
