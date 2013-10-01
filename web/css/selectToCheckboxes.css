@@ -60,7 +60,8 @@ div.disabled_filter, div.disabled_filter div.button span
   overflow-y:auto;
   overflow-x: hidden;
   max-height:200px;
-
+  margin-left:8px;
+  margin-right:8px;
 }
 
 .filterwidget .widgetcontent1
