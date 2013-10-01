@@ -62,12 +62,20 @@ div.disabled_filter, div.disabled_filter div.button span
 .filterwidget .widgetcontent1
 {
   max-height:200px;
-  background-color:#CEE0F5;
+  background-color:#fff;
   overflow:auto;
   overflow-x: hidden;
   border:1px solid #03344D;
   position:absolute;
   z-index:1200;
+
+  padding:2px;
+
+  -moz-box-shadow: -2px 2px 4px 0px #656565;
+  -webkit-box-shadow: -2px 2px 4px 0px #656565;
+  -o-box-shadow: -2px 2px 4px 0px #656565;
+  box-shadow: -2px 2px 4px 0px #656565;
+  filter:progid:DXImageTransform.Microsoft.Shadow(color=#656565, Direction=224, Strength=4);
 }
 
 .filterwidget .widgetcontent1
