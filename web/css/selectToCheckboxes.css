@@ -91,6 +91,11 @@ div.disabled_filter, div.disabled_filter div.button span
   margin-top:2px;
 }
 
+.filterwidget div.widgetcontent input[type=checkbox]
+{
+  vertical-align:middle;
+}
+
 .filterwidget div.widgetcontent div
 {
   width:100%;
@@ -117,6 +122,8 @@ div.disabled_filter, div.disabled_filter div.button span
 {
   cursor:pointer;
   white-space: nowrap;
+  display:inline-block;
+  vertical-align:middle;
 }
 
 .filterwidget div.widgetcontent label:hover
