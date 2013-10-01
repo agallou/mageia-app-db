@@ -5,7 +5,6 @@
     'action'      => 'list',
     'madbcontext' => $madbcontext,
     'madburl'     => $madburl,
-    'showtotal'   => true,
   )) ?>
 <?php endif; ?>
 <?php
@@ -86,5 +85,6 @@ if ($show_bug_links)
     'madbcontext' => $madbcontext,
     'madburl'     => $madburl,
     'bottom'      => true,
+    'showtotal'   => true,
   )) ?>
 <?php endif; ?>

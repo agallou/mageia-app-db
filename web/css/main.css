@@ -232,12 +232,10 @@ form.searchform input[type=submit]
 
 div.pager
 {
-  margin: -0.5em;
   padding: 4px;
   border: 0px;
+  margin-top:5px;
   margin-bottom:15px;
-  margin-top: -0.6em;
-  background-color:#CEE0F5;
   text-align:right;
   padding-bottom:-3px;
   min-height:17px;
@@ -260,8 +258,13 @@ div.pager
 
 div.pager-bottom
 {
+  background-color:#E8E8E8;
+  border:0px;
+  border-top:1px dotted #1A426F;
+  margin:-0.5em;
 	margin-top:20px;
 	margin-bottom:-7px;
+  padding-bottom:6px;
 }
 
 #user_infos a
