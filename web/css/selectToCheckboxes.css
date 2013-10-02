@@ -104,12 +104,13 @@ div.disabled_filter, div.disabled_filter div.button span
 
 .filterwidget div.widgetcontent div:hover
 {
-  background-color: #97B4D5;
+  background-color: #262F45;
+  color:#fff;
 }
 
 .filterwidget div.apply:hover
 {
-  background-color:#03344D;
+  background-color:#262F45;
   color:#fff;
 }
 
@@ -134,5 +135,6 @@ div.disabled_filter, div.disabled_filter div.button span
 
 .filterwidget div.widgetcontent div.selected
 {
-  background-color:#97B4D5;
+  background-color:#2397D4;
+  color:#fff;
 }

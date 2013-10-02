@@ -23,7 +23,7 @@ h1
 
 a, a:visited
 {
-  color:#1A426F;
+  color:#3494D3;
   text-decoration:none;
 }
 
@@ -42,8 +42,9 @@ a, a:visited
 
 #header
 {
-  background:url("../images/cauldron_alpha_ln_1_2.png") no-repeat scroll 7px 3px #507AAA;
-  padding: 5px;
+  background:-moz-linear-gradient(center top , #2383C2 0%, #1272B1 50%) repeat scroll 0 0 transparent;
+  padding: 6px;
+  min-height:40px;
   width: auto;
   min-height: 40px;
   vertical-align: middle;
@@ -52,16 +53,20 @@ a, a:visited
 
 #appname
 {
-  top:6px;
-  left:35px;
+  background:url("../images/cauldron_alpha_ln_1_2.png") no-repeat scroll 0px 0px transparent;
+  top:0px;
+  left:0px;
   color: white;
   font-size: 14pt;
   clear:left;
   float:left;
   display:block;
   padding:0px;
+  padding-left:35px;
+  padding-top:6px;
   position:relative;
   width:200px;
+  min-height:40px;
   font-weight:bold;
 }
 
@@ -162,7 +167,7 @@ form.searchform input[type=submit]
   margin-bottom:4px;
   margin-top:16px;
   text-align:left;
-  color:#1A426F;
+  color:#3494D3;
 }
 
 #menu ul li.leaf
@@ -188,12 +193,13 @@ form.searchform input[type=submit]
 #menu ul li a:hover
 {
   outline:none;
-  background-color:#97B4D5;
+  color:#fff;
+  background-color:#262F45;
 }
 
 #menu ul li.current a
 {
-  background-color: #507AAA;
+  background-color: #2397D4;
   color:#fff;
 }
 
@@ -201,7 +207,7 @@ form.searchform input[type=submit]
 
 #content
 {
-    border-left:1px solid #1A426F;
+    border-left:1px solid #bbb;
     position: relative;
     background-color: white;
     width: auto;
@@ -318,8 +324,8 @@ div.pager-bottom
     font-size:12px;
     padding-left:10px;
     text-align:right;
-    min-height: 40px;
-    height: 40px;
+    min-height: 30px;
+    height: 30px;
     border-top: 1px solid #DDDDDD;
     position: relative;
     color:#000;
@@ -354,7 +360,7 @@ div.pager-bottom
 .packlist li a, .links a, .links a:visited
 {
     text-decoration: none;
-    color: #1A426F;
+    color: #3494D3;
 }
 
 .packlist li a:hover, .links a:hover, .links a:visited
@@ -379,12 +385,11 @@ img
 
 .pagename
 {
-  background-color:#80A8D5;
   padding: 4px;
   color: #fff;
   margin: -0.5em;
   margin-bottom: 9px;
-  background-color:#1A426F;
+  background-color:#262F45;
 }
 
 .pagename p
@@ -504,13 +509,13 @@ table.comparisontable
 .package h2,
 .homepage h2
 {
-  background-color:#CEE0F5;
+  background-color:#2397D4;
   font-weight:bold;
+  color:#fff;
   font-size:15px;
   padding:5px;
   margin-bottom:4px;
   margin-top:16px;
-  border-bottom:1px solid #000;
 }
 
 .rpm table.infos td
