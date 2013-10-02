@@ -95,6 +95,7 @@ div.disabled_filter, div.disabled_filter div.button span
 .filterwidget div.widgetcontent input[type=checkbox]
 {
   vertical-align:middle;
+  margin-right:4px;
 }
 
 .filterwidget div.widgetcontent div
