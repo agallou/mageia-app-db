@@ -23,7 +23,7 @@ h1
 
 a, a:visited
 {
-  color:#3494D3;
+  color:#2383C2;
   text-decoration:none;
 }
 
@@ -360,7 +360,7 @@ div.pager-bottom
 .packlist li a, .links a, .links a:visited
 {
     text-decoration: none;
-    color: #3494D3;
+    color: #2383C2;
 }
 
 .packlist li a:hover, .links a:hover, .links a:visited
