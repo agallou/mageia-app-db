@@ -6,7 +6,7 @@ Homepage
 
 <?php $madbConfig = new madbConfig(); ?>
 <div id="intro" class="links">
-  <h2>Welcome to <?php echo $madbConfig->get('name')?></h2>
+  <h2>Welcome to <?php echo $madbConfig->get('name')?> (<?php echo $madbConfig->get('subname') ?>)</h2>
 
   <p>This is a work in progress lacking many features, but you can already search and browse packages. Use the search form, browse by category or use the left menu.</p>
   <p>There are persistent navigation filters, which you can change at any time from the filter banner : distribution release, show only applications or all packages, media, arch, etc.</p>

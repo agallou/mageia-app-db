@@ -4,7 +4,7 @@
     <head>
         <?php include_http_metas() ?>
         <?php include_metas() ?>
-        <?php echo content_tag('title', $madbConfig->get('name'))."\n"; ?>
+        <?php echo content_tag('title', $madbConfig->get('name') . ' - ' . $madbConfig->get('subname'))."\n"; ?>
         <link rel="shortcut icon" href="/favicon.ico" />
         <?php include_stylesheets() ?>
         <?php include_javascripts() ?>
@@ -12,7 +12,12 @@
     <body>
         <div id="container">
             <div id="header">
-                <div id="appname"><?php echo link_to($madbConfig->get('name'), 'http://' . $madbConfig->get('host')) ?></div>
+                <div id="appname">
+                  <?php echo link_to($madbConfig->get('name'), 'http://' . $madbConfig->get('host')) ?><br />
+                  <?php if (strlen($subname = $madbConfig->get('subname'))): ?>
+                  <span class="subname"><?php echo link_to($subname, 'http://' . $madbConfig->get('host')) ?></span>
+                  <?php endif ?>
+                </div>
                 <div id="search">
                     <?php include_component('default', 'searching', array(
                       'module_to' => 'package',
