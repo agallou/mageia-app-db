@@ -13,8 +13,10 @@ class ProjectConfiguration extends sfProjectConfiguration
     }
     $this->enablePlugins('sfPropelORMPlugin', 'sfGuardPlugin', 'omCrossAppUrlPlugin');
 
-    if ((in_array(sfConfig::get('sf_environment'), array('dev', 'test')))
-       || (is_dir(sfConfig::get('sf_root_dir') . '/plugins/sfAtoumPlugin') && sfConfig::get('sf_environment') != 'prod')
+    if (
+      is_dir(sfConfig::get('sf_root_dir') . '/plugins/sfAtoumPlugin')
+      &&
+      (in_array(sfConfig::get('sf_environment'), array('dev', 'test')) || (sfConfig::get('sf_environment') === null))
     )
     {
       require_once sfConfig::get('sf_root_dir') . '/vendor/symfony/symfony1/lib/helper/AssetHelper.php';
