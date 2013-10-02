@@ -1,23 +1,26 @@
-<h1>Comparison between releases <?php echo $distrelease->getDisplayedName(); ?> and <?php echo $targetRelease->getDisplayedName(); ?></h1>
+<?php slot('name') ?>
+  Comparison between releases <?php echo $distrelease->getDisplayedName(); ?> and <?php echo $targetRelease->getDisplayedName(); ?>
+<?php end_slot('name') ?>
+
 <p>This page compares a stable release (here <?php echo $distrelease->getDisplayedName(); ?>) with another higher release (here <?php echo $targetRelease->getDisplayedName(); ?>).
  Like the other lists, it is filtered using the filters available at the top of the page.</p>
 <br/>
 <p><strong>Important notice: after clicking a link, you will sometimes need to change the filter values.
 For example, change the selected release from <?php echo $distrelease->getDisplayedName(); ?> to <?php echo $targetRelease->getDisplayedName(); ?>, or change the arch value.</strong></p>
 <br/>
-<p>Legend: 
-<span class="newpackage bordered">added in <?php echo $target_release; ?></span>, 
-<span class="testing bordered">being tested: same version as in <?php echo $target_release; ?></span>, 
+<p>Legend:
+<span class="newpackage bordered">added in <?php echo $target_release; ?></span>,
+<span class="testing bordered">being tested: same version as in <?php echo $target_release; ?></span>,
 <span class="bordered">newer version in <?php echo $target_release; ?></span>.
 <span class="newer_avail bordered">newer available outside <?php echo $target_release; ?></span>.
 <span class="backported bordered">backported</span>.
 <span class="older bordered">older version in <?php echo $target_release; ?>!</span>.
 </p>
 <?php /*include_partial('default/pager', array(
-  'pager'       => $pager, 
-  'module'      => 'package', 
+  'pager'       => $pager,
+  'module'      => 'package',
   'action'      => 'comparison',
-  'madbcontext' => $madbcontext, 
+  'madbcontext' => $madbcontext,
   'madburl'     => $madburl,
   'showtotal'   => true,
 )); */?>
@@ -36,18 +39,18 @@ For example, change the selected release from <?php echo $distrelease->getDispla
   </thead>
   <tbody>
   <?php $madbBaseUrl = $madburl->urlFor(
-                         'package/show', 
-                         $madbcontext, 
+                         'package/show',
+                         $madbcontext,
                          array('extra_parameters' => array('name' => '___REPLACE___ME___'))
                        );
   ?>
   <?php foreach ($rows as $row): ?>
-    <tr<?php 
-if (!$row['update_version'] and !$row['update_testing_version'] and !$row['backport_version'] and !$row['backport_testing_version']) 
+    <tr<?php
+if (!$row['update_version'] and !$row['update_testing_version'] and !$row['backport_version'] and !$row['backport_testing_version'])
 {
   echo ' class="newpackage"';
 }
-elseif ( RpmPeer::evrCompare($row['update_version'], $row['dev_version'])>0 
+elseif ( RpmPeer::evrCompare($row['update_version'], $row['dev_version'])>0
       or RpmPeer::evrCompare($row['update_testing_version'], $row['dev_version'])>0
       or RpmPeer::evrCompare($row['backport_version'], $row['dev_version'])>0
       or RpmPeer::evrCompare($row['backport_testing_version'], $row['dev_version'])>0)
@@ -58,7 +61,7 @@ elseif (RpmPeer::evrCompare($row['update_testing_version'], $row['dev_version'])
 {
   echo ' class="testing"';
 }
-elseif ( !(RpmPeer::evrCompare($row['update_version'], $row['dev_version'])<0 
+elseif ( !(RpmPeer::evrCompare($row['update_version'], $row['dev_version'])<0
       and RpmPeer::evrCompare($row['update_testing_version'], $row['dev_version'])<0
       and RpmPeer::evrCompare($row['backport_version'], $row['dev_version'])<0
       and RpmPeer::evrCompare($row['backport_testing_version'], $row['dev_version'])<0)
@@ -87,16 +90,16 @@ else
       <?php if ($has_backports_testing) : ?><td><?php echo $row['backport_testing_version'] ?></td><?php endif; ?>
       <td><strong><?php echo $row['dev_version'] ?></strong></td>
       <?php if ($has_available_versions) : ?><td><?php echo $row['available'] ?><?php echo $row['available'] ? "&nbsp;(".$row['source'].")" : "" ?></td><?php endif; ?>
-    </tr> 
+    </tr>
   <?php endforeach; ?>
 </tbody>
 </table>
 
 
 <?php /*include_partial('default/pager', array(
-  'pager'       => $pager, 
+  'pager'       => $pager,
   'module'      => 'package',
   'action'      => 'comparison',
-  'madbcontext' => $madbcontext, 
+  'madbcontext' => $madbcontext,
   'madburl'     => $madburl,
 )) */?>
