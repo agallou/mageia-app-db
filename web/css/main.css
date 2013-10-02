@@ -386,10 +386,10 @@ img
 .pagename
 {
   padding: 4px;
-  color: #fff;
   margin: -0.5em;
   margin-bottom: 9px;
-  background-color:#262F45;
+  background-color:orange;
+  color:#000;
 }
 
 .pagename p
