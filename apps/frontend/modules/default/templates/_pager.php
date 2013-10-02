@@ -22,11 +22,11 @@
         <ul>
 
           <?php if ($link = $pager->getFirstPage() && $pager->getPage() != 1): ?>
-            <li><?php echo link_to('<i class="icon-double-angle-left"></i> First', $madburl->urlFor($module . '/' . $action, $madbcontext, array('keep_all_parameters' => true, 'extra_parameters' => array('page' => $link)))) ?></li>
+            <li class="tooltip" title="First page"><?php echo link_to('<i class="icon-double-angle-left"></i>', $madburl->urlFor($module . '/' . $action, $madbcontext, array('keep_all_parameters' => true, 'extra_parameters' => array('page' => $link)))) ?></li>
           <?php endif; ?>
 
           <?php if ($link = $pager->getPrev()):?>
-            <li><?php echo link_to('<i class="icon-angle-left"></i> Previous', $madburl->urlFor($module . '/' . $action, $madbcontext, array('keep_all_parameters' => true, 'extra_parameters' => array('page' => $link))))  ?></li>
+            <li class="tooltip" title="Previous page"><?php echo link_to('<i class="icon-angle-left"></i>', $madburl->urlFor($module . '/' . $action, $madbcontext, array('keep_all_parameters' => true, 'extra_parameters' => array('page' => $link))))  ?></li>
           <?php endif; ?>
 
           <?php foreach ($pager->getPrevLinks() as $link): ?>
@@ -40,11 +40,11 @@
           <?php endforeach; ?>
 
           <?php if ($link = $pager->getNext()): ?>
-            <li><?php echo link_to('Next <i class="icon-angle-right"></i>', $madburl->urlFor($module . '/' . $action, $madbcontext, array('keep_all_parameters' => true, 'extra_parameters' => array('page' => $link)))) ?></li>
+            <li class="tooltip" title="Next page"><?php echo link_to('<i class="icon-angle-right"></i>', $madburl->urlFor($module . '/' . $action, $madbcontext, array('keep_all_parameters' => true, 'extra_parameters' => array('page' => $link)))) ?></li>
           <?php endif; ?>
 
           <?php if (($link = $lastPage) && $currentPage != $link): ?>
-            <li><?php echo link_to('Last <i class="icon-double-angle-right"></i>', $madburl->urlFor($module . '/' . $action, $madbcontext, array('keep_all_parameters' => true, 'extra_parameters' => array('page' => $link)))) ?></li>
+            <li class="tooltip" title="Last page"><?php echo link_to('<i class="icon-double-angle-right"></i>', $madburl->urlFor($module . '/' . $action, $madbcontext, array('keep_all_parameters' => true, 'extra_parameters' => array('page' => $link)))) ?></li>
           <?php endif; ?>
 
         </ul>
