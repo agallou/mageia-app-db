@@ -100,7 +100,7 @@ $advanced = array(
 
 <?php use_helper('JavascriptBase') ?>
 <?php echo javascript_tag() ?>
-$('div.filters').remove();
+$('#filtering').remove();
 <?php end_javascript_tag() ?>
 
 </div>

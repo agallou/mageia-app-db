@@ -4,12 +4,12 @@
   <?php foreach ($rpms as $rpm) : ?>
   <li>
   <?php echo link_to(
-          $rpm->getName(), 
+          $rpm->getName(),
           $madburl->urlForRpm($rpm, $madbcontext)
-        ); ?> 
+        ); ?>
     (<?php echo $rpm->getIsSource() == 1 ? "Source RPM, " : "" ?>
-     <?php echo $rpm->getDistrelease()->getDisplayedName() ?>, 
-     <?php echo $rpm->getArch()->getName()?> media, 
+     <?php echo $rpm->getDistrelease()->getDisplayedName() ?>,
+     <?php echo $rpm->getArch()->getName()?> media,
      <?php echo $rpm->getMedia()->getName()?>)
   </li>
   <?php endforeach ?>
@@ -17,5 +17,5 @@
 
 <?php use_helper('JavascriptBase') ?>
 <?php echo javascript_tag() ?>
-$('div.filters').remove();
+$('#filtering').remove();
 <?php end_javascript_tag() ?>
