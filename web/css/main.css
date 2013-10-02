@@ -44,9 +44,9 @@ a, a:visited
 {
   background:-moz-linear-gradient(center top , #2383C2 0%, #1272B1 50%) repeat scroll 0 0 transparent;
   padding: 6px;
-  min-height:40px;
+  min-height:45px;
   width: auto;
-  min-height: 40px;
+  min-height: 45px;
   vertical-align: middle;
   position: relative;
 }
@@ -236,6 +236,25 @@ form.searchform input[type=submit]
   outline: 1px solid #507AAA;
 }
 
+
+#user_infos a
+{
+  color:black;
+  font-weight:bold;
+  font-family:verdana;
+  font-size:small;
+}
+
+
+
+#pagercount
+{
+  position: relative;
+  top:0px;
+  left:0px;
+  float:left;
+}
+
 div.pager
 {
   padding: 4px;
@@ -245,21 +264,6 @@ div.pager
   text-align:right;
   padding-bottom:-3px;
   min-height:17px;
-}
-
-.pager li
-{
-    display: inline;
-    border-bottom: 1px solid #BBBBBB;
-    padding: 2px;
-}
-
-#pagercount
-{
-  position: relative;
-  top:0px;
-  left:0px;
-  float:left;
 }
 
 div.pager-bottom
@@ -273,47 +277,53 @@ div.pager-bottom
   padding-bottom:6px;
 }
 
-#user_infos a
-{
-  color:black;
-  font-weight:bold;
-  font-family:verdana;
-  font-size:small;
-}
 
-.pager li
+#content .pager li
 {
-  display: inline;
+  display: inline-block;
+
   border : 1px solid #B6BADB;
-  padding: 2px;
+  text-decoration:none;
+  text-align:center;
   font-family:verdana;
   font-size:small;
 }
 
-.pager li.current
+
+#content .pager li.current a
 {
-    color: black;
-    font-weight: bold;
+  color: #fff;
+  font-weight: bold;
+  background-color:#2397D4;
 }
 
-.pager li:hover
+#content .pager li:hover
 {
-    background-color: #DDDDDD;
-    outline: 1px solid #507AAA;
+  background-color: orange;
 }
 
-.pager a, .pager a:visited
+#content .pager li.current
 {
-    text-decoration:none;
-    color:black;
+  color: #fff;
+  background-color:#2397D4;
+  min-width:16px;
+  padding:2px;
 }
 
-.pager p
+#content .pager li a,
+#content .pager li a:visited
 {
-    font-style:italic;
-    margin: 5px;
-    padding: 2px;
+  padding:2px;
+  display: block;
+  min-width: 18px;
+  text-align: center;
+  outline:none;
+  color:#000;
+  background-color:transparent;
 }
+
+
+
 
 /* FOOTER Stuff */
 
