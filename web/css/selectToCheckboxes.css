@@ -105,8 +105,8 @@ div.disabled_filter, div.disabled_filter div.button span
 
 .filterwidget div.widgetcontent div:hover
 {
-  background-color: #262F45;
-  color:#fff;
+  background-color:orange;
+  color:#000;
 }
 
 .filterwidget div.apply:hover

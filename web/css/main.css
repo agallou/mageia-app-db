@@ -193,8 +193,8 @@ form.searchform input[type=submit]
 #menu ul li a:hover
 {
   outline:none;
-  color:#fff;
-  background-color:#262F45;
+  color:#000;
+  background-color:orange;
 }
 
 #menu ul li.current a
