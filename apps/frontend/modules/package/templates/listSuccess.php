@@ -12,7 +12,7 @@ Packages/Applications
   'action'      => 'list',
   'madbcontext' => $madbcontext,
   'madburl'     => $madburl,
-  'showtotal'   => true,
+  'showtotal'   => false,
 )); ?>
 
 <div>
@@ -68,6 +68,7 @@ Packages/Applications
   'madbcontext' => $madbcontext,
   'madburl'     => $madburl,
   'bottom'      => true,
+  'showtotal'   => true,
 )) ?>
 
 
