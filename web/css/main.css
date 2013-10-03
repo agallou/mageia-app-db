@@ -23,7 +23,7 @@ h1
 
 a, a:visited
 {
-  color:#2383C2;
+  color:#1272b1;
   text-decoration:none;
 }
 
@@ -32,7 +32,7 @@ a, a:visited
 {
 
     display: block;
-    background-color: #E8E8E8;
+    background-color: #F0EFEF;
     min-height: 100%;
     height: 100%;
     overflow: auto;
@@ -155,10 +155,16 @@ form.searchform input[type=submit]
     float: left;
     display: block;
     width: 14em;
-    background-color: #E8E8E8;
     padding: 0px;
     min-height: 90%;
-    height:auto !important;
+    height: auto !important;
+    background: #E8E8E8; /* Old browsers */
+    background: -moz-linear-gradient(top,  #E8E8E8 0%, #F3EFEF 50%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#E8E8E8), color-stop(50%,#F3EFEF)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top,  #E8E8E8 0%,#F3EFEF 50%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top,  #E8E8E8 0%,#F3EFEF 50%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top,  #E8E8E8 0%,#F3EFEF 50%); /* IE10+ */
+    background: linear-gradient(to bottom,  #E8E8E8 0%,#F3EFEF 50%); /* W3C */
 }
 
 #menu ul
@@ -209,7 +215,7 @@ form.searchform input[type=submit]
 {
   outline:none;
   color:#000;
-  background-color:orange;
+  background-color: #FFD973;
 }
 
 #menu ul li.current a
@@ -344,7 +350,7 @@ div.pager-bottom
 
 #footer
 {
-    background-color: #507AAA;
+    background-color: #1272B1;
     clear:both;
     font-size:12px;
     padding-left:10px;
@@ -409,8 +415,15 @@ img
 }
 
 
-.pagename
+.pagename 
 {
+  background: #E8E8E8; /* Old browsers */
+  background: -moz-linear-gradient(top,  #FFD973 0%, #FFE373 50%); /* FF3.6+ */
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#FFD973), color-stop(50%,#FFE373)); /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(top,  #FFD973 0%,#FFE373 50%); /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(top,  #FFD973 0%,#FFE373 50%); /* Opera 11.10+ */
+  background: -ms-linear-gradient(top,  #FFD973 0%,#FFE373 50%); /* IE10+ */
+  background: linear-gradient(to bottom,  #FFD973 0%,#FFE373 50%); /* W3C */
   padding: 4px;
   margin: -0.5em;
   margin-bottom: 9px;

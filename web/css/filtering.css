@@ -1,9 +1,7 @@
 #filtering
 {
-  padding-top:8px;
   background-color:#E8E8E8;
   border: 1px solid #bbb;
-
 }
 
 #linkmore
@@ -25,7 +23,7 @@
 div.filters
 {
   margin:0px 0px 2px 0px;
-  padding: 6px;
+  padding: 3px;
   overflow: hidden;
   height: 1%;
   color:#000;
