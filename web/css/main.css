@@ -44,9 +44,9 @@ a, a:visited
 {
   background:-moz-linear-gradient(center top , #2383C2 0%, #1272B1 50%) repeat scroll 0 0 transparent;
   padding: 6px;
-  min-height:45px;
+  min-height:47px;
   width: auto;
-  min-height: 45px;
+  min-height: 47px;
   vertical-align: middle;
   position: relative;
 }
