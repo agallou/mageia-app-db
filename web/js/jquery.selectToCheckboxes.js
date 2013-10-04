@@ -139,6 +139,7 @@
         } else {
           clickable = jSpan; //clickable all ready declared no need to redeclare
         }
+
         $(clickable).click(function(event){
           if (!settings.multi) {
             $('input[name=' + selectId + ']:checked').parent().removeClass('selected');
@@ -150,6 +151,7 @@
             event.preventDefault();
           }
         });
+
         $('<br>').appendTo(jSpan);
 
         div.append(jSpan);
@@ -174,15 +176,27 @@
       });
       ng1.trigger('disappear');
       ng1.hide();
+
+      $('div.widgetcontent input:checked', widget).parent().addClass('selected');
+
+      $('div.widgetcontent div', widget).click(function(event) {
+        if (event.target.nodeName == 'DIV') {
+          $('input', this).click().change();
+        }
+      });
+
+      $('div.widgetcontent div input', widget).change(function(event) {
+        if ($(event.target).attr('checked')) {
+          $(event.target).parent().addClass('selected');
+        }
+        else {
+          $(event.target).parent().removeClass('selected');
+        }
+      });
+
+
     });
-    $('.filterwidget div.widgetcontent input:checked').parent().addClass('selected');
-    $('.filterwidget div.widgetcontent input').click(function(event) {
-      if ($(event.target).attr('checked')) {
-        $(event.target).parent().addClass('selected');
-      }
-      else {
-        $(event.target).parent().removeClass('selected');
-      }
-    });
+
+
   };
 })(jQuery);
