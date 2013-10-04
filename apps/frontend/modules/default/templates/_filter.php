@@ -4,7 +4,7 @@
 <?php endif; ?>
 <?php if (in_array($name, array_keys($filters))): ?>
   <?php $values = $filters[$name] ?>
-  <span class='filtervalues'><?php echo implode(',', $values); ?></span>
+  <span class='filtervalues'><?php echo implode(', ', $values); ?></span>
   <?php if (!in_array($name, $unremoveableFilters) && $show_delete): ?>
     <?php echo link_to('<i class="icon-remove"></i>', $madburl->urlFor($moduleaction, $madbcontext, array('keep_all_parameters' => true, 'ignored_parameters' => array($name)))); ?>
   <?php endif; ?>
