@@ -33,13 +33,17 @@ div.filters form span
   cursor:default;
 }
 
-div.filters i.icon-remove
+#content div.filters span.filtervalues a:hover
 {
-  vertical-align:middle;
-  float:left;
-  margin: 6px 15px 0px -15px;
+  outline:none;
+  background:transparent;
+}
+
+#content div.filters span.filtervalues i.icon-remove:hover
+{
   color:#9D261D;
 }
+
 
 div.filters .filtervalues
 {
