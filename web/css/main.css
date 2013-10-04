@@ -127,6 +127,7 @@ div#header div#search form input[type=text]:focus
 #filtering form.searchform
 {
   margin-left:10px;
+  font-size:small;
 }
 
 form.searchform input[type=submit]
@@ -143,7 +144,16 @@ form.searchform input[type=submit]
 {
   padding: 0px 0px;
   margin-bottom:5px;
+  background-color:#fff;
+  border-color:#CCCCCC;
 }
+
+#filtering form.searchform input[type=submit]:hover
+{
+  background:#252D42;
+  color:#fff;
+}
+
 
 
 /* LEFT Column stuff a.k.a Navigation */
@@ -214,8 +224,8 @@ form.searchform input[type=submit]
 #menu ul li a:hover
 {
   outline:none;
-  color:#000;
-  background-color: #FFD973;
+  background-color:#252D42;
+  color:#fff;
 }
 
 #menu ul li.current a
@@ -320,7 +330,7 @@ div.pager-bottom
 
 #content .pager li:hover
 {
-  background-color: orange;
+  background-color:#252D42;
 }
 
 #content .pager li.current
@@ -341,6 +351,11 @@ div.pager-bottom
   outline:none;
   color:#000;
   background-color:transparent;
+}
+
+#content .pager li:hover a
+{
+  color:#fff;
 }
 
 
@@ -417,18 +432,11 @@ img
 
 .pagename 
 {
-  background: #E8E8E8; /* Old browsers */
-  background: -moz-linear-gradient(top,  #FFD973 0%, #FFE373 50%); /* FF3.6+ */
-  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#FFD973), color-stop(50%,#FFE373)); /* Chrome,Safari4+ */
-  background: -webkit-linear-gradient(top,  #FFD973 0%,#FFE373 50%); /* Chrome10+,Safari5.1+ */
-  background: -o-linear-gradient(top,  #FFD973 0%,#FFE373 50%); /* Opera 11.10+ */
-  background: -ms-linear-gradient(top,  #FFD973 0%,#FFE373 50%); /* IE10+ */
-  background: linear-gradient(to bottom,  #FFD973 0%,#FFE373 50%); /* W3C */
   padding: 4px;
   margin: -0.5em;
-  margin-bottom: 9px;
-  background-color:orange;
-  color:#000;
+  margin-bottom: 3px;
+  background:#252D42;
+  color:#fff;
 }
 
 .pagename p
@@ -439,21 +447,24 @@ img
 .pagename a, 
 .pagename a:visited
 {
-  color: #2383c2;
+  color:#fff;
+  text-decoration:underline;
 }
 
 #content .pagename a:hover
 {
   background-color:transparent;
-  outline: 1px solid #2383c2;
+  color: #2383c2;
+  outline:none;
 }
-
 
 
 th 
 {
   text-align: left;
   padding: 1px;
+  background: none repeat scroll 0 0 #485E82;
+  color: #fff;
 }
 
 td

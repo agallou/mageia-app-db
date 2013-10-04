@@ -3,7 +3,7 @@
 <?php $isBottom = isset($bottom) && $bottom ?>
 <?php $hasMultiplePages = ($lastPage > 1) ?>
 
-<?php if (!$isBottom || ($isBottom && $hasMultiplePages)):  ?>
+<?php if ($hasMultiplePages):  ?>
 
   <div class="pager <?php $isBottom && print 'pager-bottom' ?>">
 

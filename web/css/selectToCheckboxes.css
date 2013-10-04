@@ -14,9 +14,11 @@ div.disabled_filter, div.disabled_filter div.button span
   border:1px solid;
   padding:2px 5px 2px 5px ;
   font-size:small;
-  border-color: #ccc #666 #666 #ccc;
+  border-color:#CCCCCC;
   background-color:#fff;
+  border-bottom: 2px solid #2383C2;
   color:#000;
+  background: linear-gradient(to bottom, #F5F5F5 0%, #F1F1F1 50%) repeat scroll 0 0 transparent;
 }
 
 .disabled_filter .button
@@ -91,8 +93,8 @@ div.disabled_filter, div.disabled_filter div.button span
 
 .filterwidget div.widgetcontent1 div.widgetcontent div:hover
 {
-  background-color:#FFD973;
-  color:#000;
+  background-color: #252D42;
+  color:#fff;
 }
 
 .filterwidget div.widgetcontent1 div.widgetcontent div.selected

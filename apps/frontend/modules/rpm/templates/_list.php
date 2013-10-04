@@ -23,7 +23,7 @@ if ($show_bug_links)
       <th>Version</th>
       <?php if (!isset($short)): ?>
       <th>Build date</th>
-      <th>Distribution<br/>release</th>
+      <th>Dist. Rel.</th>
         <?php if ($show_bug_links): ?>
       <th>Bug link</th>
         <?php endif; ?>
