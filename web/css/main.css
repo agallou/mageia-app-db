@@ -127,7 +127,7 @@ div#header div#search form input[type=text]:focus
 #filtering form.searchform
 {
   margin-left:10px;
-  font-size:small;
+  font-size:12px;
 }
 
 form.searchform input[type=submit]
@@ -136,9 +136,15 @@ form.searchform input[type=submit]
   border-style: solid;
   border-width: 1px;
   color: #000000;
-  font-size: small;
+  font-size: 12px;
   padding: 2px 5px;
 }
+
+#filtering form.searchform input[type=text]
+{
+  height:13px;
+}
+
 
 #filtering form.searchform input[type=submit]
 {
