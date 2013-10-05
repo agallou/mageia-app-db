@@ -1,3 +1,5 @@
+<?php slot('title', $rpm->getName()) ?>
+
 <?php slot('name') ?>
 Package : <?php echo link_to(
          $rpm->getPackage()->getName(),

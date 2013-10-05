@@ -1,3 +1,5 @@
+<?php slot('title', $package->getName()) ?>
+
 <?php slot('name') ?>
 Package : <?php echo $package->getName() ?>
 <?php end_slot('name') ?>

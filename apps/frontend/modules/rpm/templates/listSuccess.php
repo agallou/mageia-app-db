@@ -1,3 +1,5 @@
+<?php slot('title', $title) ?>
+
 <?php slot('name') ?>
 <?php echo $title ?>
 <?php end_slot('name') ?>

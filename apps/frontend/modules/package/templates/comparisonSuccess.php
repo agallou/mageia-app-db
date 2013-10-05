@@ -1,3 +1,5 @@
+<?php slot('title', 'Comparison between releases '.$distrelease->getDisplayedName().' and '.$targetRelease->getDisplayedName()) ?>
+
 <?php slot('name') ?>
   Comparison between releases <?php echo $distrelease->getDisplayedName(); ?> and <?php echo $targetRelease->getDisplayedName(); ?>
 <?php end_slot('name') ?>
