@@ -117,17 +117,26 @@
       $.each(options, function(key, value)
       {
         var jSpan = $('<div>', { id: prefix + 'span_' + value[0] });
+        var checked = (jQuery.inArray(value[0], settings.defaults) > -1);
         var input = $("<input>", {
             type    : "checkbox",
             name    : selectId,
             val     : value[0],
-            checked : (jQuery.inArray(value[0], settings.defaults) > -1),
+            checked : checked,
             id      : 'inp_' + selectId + '_' + value[0]
            });
         input.appendTo(jSpan);
         if (!settings.multi)
         {
           input.hide();
+        }
+        if (settings.multi) {
+          if (checked) {
+            var icon = $('<i class="icon-check"></i>');
+          } else {
+            var icon = $('<i class="icon-check-empty"></i>');
+          }
+          icon.appendTo(jSpan);
         }
         var label = $('<label>', {
           'for' : 'inp_' + selectId + '_' + value[0],
@@ -180,16 +189,19 @@
       $('div.widgetcontent input:checked', widget).parent().addClass('selected');
 
       $('div.widgetcontent div', widget).click(function(event) {
-        if (event.target.nodeName == 'DIV') {
+        if (event.target.nodeName == 'DIV' || event.target.nodeName == 'I') {
           $('input', this).click().change();
         }
       });
 
       $('div.widgetcontent div input', widget).change(function(event) {
         if ($(event.target).attr('checked')) {
+          $('i', $(event.target).parent()).addClass('icon-check');
+          $('i', $(event.target).parent()).removeClass('icon-check-empty');
           $(event.target).parent().addClass('selected');
-        }
-        else {
+        } else {
+          $('i', $(event.target).parent()).removeClass('icon-check');
+          $('i', $(event.target).parent()).addClass('icon-check-empty');
           $(event.target).parent().removeClass('selected');
         }
       });

@@ -116,14 +116,26 @@ div.disabled_filter, div.disabled_filter div.button span
 {
   vertical-align:middle;
   margin-right:4px;
+  display:none;
 }
+
+.filterwidget div.widgetcontent1 div.widgetcontent div i
+{
+  margin-right:4px;
+  color:#000;
+}
+.filterwidget div.widgetcontent1 div.widgetcontent div i.icon-check-empty
+{
+  margin-right:6px;
+}
+
 
 
 .filterwidget div.apply
 {
   text-align:center;
-  font-weight:bold;
-  margin:1px 5px 1px 5px;
+  font-size:small;
+  margin:5px 5px 5px 5px;
   height:20px;
   padding-top:5px;
 }
@@ -131,9 +143,8 @@ div.disabled_filter, div.disabled_filter div.button span
 .filterwidget div.apply:hover
 {
   cursor:pointer;
-  background-color:#262F45;
-  color:#000;
-  background-color:orange;
+  color:#fff;
+  background-color:#252D42;
 }
 
 
