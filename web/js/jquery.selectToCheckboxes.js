@@ -176,6 +176,7 @@
           && target[0].id != 'buttontext' + selectId
           && target[0].id != 'buttonarrow' + selectId
           && target.parents('#' + 'widgetcontent_' + selectId + '1').length == 0
+          && target.parents('#' + 'button' + selectId).length == 0
         )
         {
           ng1.hide();
