@@ -47,9 +47,11 @@
                       </div>
 
                     <?php endif ?>
+                    <div id="filtering-border">
                         <div id="filtering">
                           <?php include_component_slot('filtering') ?>
                         </div>
+                    </div>
 
                     <?php echo $sf_content ?>
                 </div>
