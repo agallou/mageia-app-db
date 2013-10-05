@@ -54,6 +54,7 @@ div.disabled_filter, div.disabled_filter div.button span
 .filterwidget div.widgetcontent
 {
   margin-top:4px;
+  margin-bottom:4px;
   font-size: 14px;
   overflow-y:auto;
   overflow-x: hidden;
