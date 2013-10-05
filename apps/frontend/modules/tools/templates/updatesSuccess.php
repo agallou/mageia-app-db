@@ -1,3 +1,4 @@
+<?php slot('title', 'Current Update candidates') ?>
 <h1>Current Update candidates</h1>
 <?php foreach ($updates_by_version as $version => $updates_by_type): ?>
 <h2>Mageia <?php echo $version ?></h2>

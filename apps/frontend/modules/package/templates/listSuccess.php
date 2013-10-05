@@ -1,3 +1,11 @@
+<?php 
+if ($rpm_group) {
+  slot('title', $rpm_group->getName());
+} else {
+  slot('title', 'Packages/Applications');
+}
+?>
+
 <?php slot('name') ?>
 Packages/Applications
 <?php if ($rpm_group): ?>

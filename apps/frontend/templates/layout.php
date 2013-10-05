@@ -4,7 +4,14 @@
     <head>
         <?php include_http_metas() ?>
         <?php include_metas() ?>
-        <?php echo content_tag('title', $madbConfig->get('name') . ' - ' . $madbConfig->get('subname'))."\n"; ?>
+        <title>
+	    <?php echo $madbConfig->get('name');
+	    
+		  if(($slot = get_slot('title')) != '') {
+		    echo ' - ' . $slot;
+		  }
+	    ?>
+        </title>
         <link rel="shortcut icon" href="/favicon.ico" />
         <?php include_stylesheets() ?>
         <?php include_javascripts() ?>
