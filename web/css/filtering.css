@@ -47,9 +47,15 @@ div.filters form span
   background:transparent;
 }
 
-#content div.filters span.filtervalues i.icon-remove:hover
+
+#content div.filters span.filtervalues a i.icon-remove
 {
   color:#252D42;
+}
+
+#content div.filters span.filtervalues a i.icon-remove:hover
+{
+  color:#1272B1;
 }
 
 
