@@ -215,7 +215,7 @@ form.searchform input[type=submit]
 {
   outline:none;
   color:#000;
-  background-color: #FFD973;
+  background-color: #FFE69D;
 }
 
 #menu ul li.current a
@@ -418,12 +418,12 @@ img
 .pagename 
 {
   background: #E8E8E8; /* Old browsers */
-  background: -moz-linear-gradient(top,  #FFD973 0%, #FFE373 50%); /* FF3.6+ */
-  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#FFD973), color-stop(50%,#FFE373)); /* Chrome,Safari4+ */
-  background: -webkit-linear-gradient(top,  #FFD973 0%,#FFE373 50%); /* Chrome10+,Safari5.1+ */
-  background: -o-linear-gradient(top,  #FFD973 0%,#FFE373 50%); /* Opera 11.10+ */
-  background: -ms-linear-gradient(top,  #FFD973 0%,#FFE373 50%); /* IE10+ */
-  background: linear-gradient(to bottom,  #FFD973 0%,#FFE373 50%); /* W3C */
+  background: -moz-linear-gradient(top,  #FFE69D 0%, #FFE8A7 50%); /* FF3.6+ */
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#FFE69D), color-stop(50%,#FFE8A7)); /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(top,  #FFE69D 0%,#FFE8A7 50%); /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(top,  #FFE69D 0%,#FFE8A7 50%); /* Opera 11.10+ */
+  background: -ms-linear-gradient(top,  #FFE69D 0%,#FFE8A7 50%); /* IE10+ */
+  background: linear-gradient(to bottom,  #FFE69D 0%,#FFE8A7 50%); /* W3C */
   padding: 4px;
   margin: -0.5em;
   margin-bottom: 9px;
@@ -549,7 +549,7 @@ table.comparisontable
 .package h2,
 .homepage h2
 {
-  background-color:#2397D4;
+  background-color:#1272b1;
   font-weight:bold;
   color:#fff;
   font-size:15px;
