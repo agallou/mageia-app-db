@@ -1,5 +1,4 @@
 #!/bin/bash
-sh ./init_submodules.sh
 ./symfony plugin:publish-assets
 
 if [ ! -f ./config/madbconf.yml ]

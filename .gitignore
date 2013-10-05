@@ -13,6 +13,10 @@ cache/*
 .buildpath
 doc/schema_mageia_packagedb.mwb.bak
 
+#vagrant files
+.vagrant/
+Vagrantfile
+
 #generated i18 files
 apps/frontend/i18n/*.mo
 
@@ -30,13 +34,13 @@ lib/filter/base/*
 lib/form/base/*
 lib/model/map/*
 lib/model/om/*
-plugins/sfGuardPlugin/lib/filter/base/*
-plugins/sfGuardPlugin/lib/form/base/*
-plugins/sfGuardPlugin/lib/model/map/*
-plugins/sfGuardPlugin/lib/model/om/*
+
+plugins/*
+vendor/*
 
 #published assets
 web/sfPropelORMPlugin
+web/elXHProfPlugin
 
 #miscellaneous
 tmp/*

@@ -41,4 +41,5 @@ all:
     # Enable the database manager
     use_database:           true
     i18n: true
+    standard_helpers: [Partial, Cache, Asset]
 

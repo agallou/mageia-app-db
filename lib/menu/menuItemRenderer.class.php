@@ -1,10 +1,10 @@
 <?php
 
-require_once(dirname(__FILE__) . '/../vendor/symfony/lib/helper/UrlHelper.php');
-require_once(dirname(__FILE__) . '/../vendor/symfony/lib/helper/AssetHelper.php');
-require_once(dirname(__FILE__) . '/../vendor/symfony/lib/helper/I18NHelper.php');
+require_once(dirname(__FILE__) . '/../../vendor/symfony/symfony1/lib/helper/UrlHelper.php');
+require_once(dirname(__FILE__) . '/../../vendor/symfony/symfony1/lib/helper/AssetHelper.php');
+require_once(dirname(__FILE__) . '/../../vendor/symfony/symfony1/lib/helper/I18NHelper.php');
 
-require_once(dirname(__FILE__) . '/../vendor/symfony/lib/helper/TagHelper.php');
+require_once(dirname(__FILE__) . '/../../vendor/symfony/symfony1/lib/helper/TagHelper.php');
 
 
 class menuItemRenderer

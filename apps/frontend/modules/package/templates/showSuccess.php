@@ -1,4 +1,5 @@
 <?php slot('title', $package->getName()) ?>
+<div class="package">
 <h1>Package : <?php echo $package->getName() ?></h1>
 <div>
 <h2>Package details</h2>
@@ -104,3 +105,4 @@ $('#filtering_group').next().next().next('a').remove();
 $('#filtering_source').addClass('disabled_filter');
 $('#filtering_source').next().next().next('a').remove();
 <?php end_javascript_tag() ?>
+</div>
