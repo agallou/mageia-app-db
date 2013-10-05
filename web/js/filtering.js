@@ -50,6 +50,7 @@ $(document).ready(function(){
       || window.location.href.match('\/group\/[0-9](%2C[0-9]+)*') 
       || window.location.href.match('\/source\/[1-9]'))
   {
+    $('span#linkmore').click();
     $('div#otherFilters').show();
   }
   $('.filters').removeAttr('style');
