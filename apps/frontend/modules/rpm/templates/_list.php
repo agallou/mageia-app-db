@@ -56,8 +56,9 @@ if ($show_bug_links)
         <?php if (!isset($short)): ?>
         <td><?php echo $buildDate ?></td>
         <td><?php echo $rpm->getDistrelease()->getDisplayedName() ?></td>
-        <td><?php if ($show_bug_links)
-        {
+        <?php if ($show_bug_links): ?>
+        <td>
+        <?php
           if ($rpm->getIsSource() and $rpm->getBugNumber())
           {
             echo $link = link_to($rpm->getBugNumber() . " (" . $bugtracker->getLabelForMatchType($rpm->getBugMatchType()) . ")", $bugtracker->getUrlForBug($rpm->getBugNumber()));
@@ -72,8 +73,8 @@ if ($show_bug_links)
               }
             }
           }
-        }
         ?></td>
+        <?php endif ?>
         <?php endif; ?>
       </tr>
     <?php endforeach; ?>
