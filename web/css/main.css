@@ -98,11 +98,15 @@ a, a:visited
     right: 0;
 }
 
-#user_infos a, #user_infos span, #user_infos a:visited
+#user_infos a, 
+#user_infos a:visited
 {
-    text-decoration:none;
-    color: white;
+  margin-left:15px;
+  text-decoration:none;
+  color: #fff;
+  font-size:16px;
 }
+
 
 div#header div#search
 {
@@ -273,14 +277,6 @@ form.searchform input[type=submit]
   outline: 1px solid #507AAA;
 }
 
-
-#user_infos a
-{
-  color:black;
-  font-weight:bold;
-  font-family:verdana;
-  font-size:small;
-}
 
 
 
