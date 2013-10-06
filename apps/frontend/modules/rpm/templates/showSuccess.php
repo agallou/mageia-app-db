@@ -102,7 +102,7 @@ $advanced = array(
 
 <?php use_helper('JavascriptBase') ?>
 <?php echo javascript_tag() ?>
-$('#filtering').remove();
+$('#filtering-border').remove();
 <?php end_javascript_tag() ?>
 
 </div>
