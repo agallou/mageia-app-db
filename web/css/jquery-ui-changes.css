@@ -1,0 +1,12 @@
+.ui-widget-overlay
+{
+  background-image:none;
+  background-color:#ccc;
+}
+
+.ui-widget-header 
+{
+  background-image:none;
+  background-color:#252D42;
+  border:1px solid #000;
+}
