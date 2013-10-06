@@ -1,5 +1,5 @@
 <?php slot('name') ?>
-Homepage
+Home
 <?php end_slot('name') ?>
 
 <div class="homepage">
