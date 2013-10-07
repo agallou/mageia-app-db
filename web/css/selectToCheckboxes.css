@@ -16,7 +16,7 @@ div.disabled_filter, div.disabled_filter div.button span
   font-size:13px;
   border-color:#CCCCCC;
   background-color:#fff;
-  border-bottom: 2px solid #252D42;
+  border-bottom: 2px solid #3494D3;
   background: linear-gradient(to bottom, #F5F5F5 0%, #F1F1F1 50%) repeat scroll 0 0 transparent;
 }
 
@@ -103,8 +103,8 @@ div.disabled_filter, div.disabled_filter div.button span
 
 .filterwidget div.widgetcontent1 div.widgetcontent div:hover
 {
-  background-color: #252D42;
-  color:#fff;
+  background-color: #FFE69D;
+  color:#000;
 }
 
 .filterwidget div.widgetcontent1 div.widgetcontent div.selected

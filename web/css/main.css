@@ -332,7 +332,7 @@ div.pager-bottom
 
 #content .pager li:hover
 {
-  background-color:#orange;
+  background-color: #FFE69D;
 }
 
 #content .pager li.current
@@ -353,11 +353,6 @@ div.pager-bottom
   outline:none;
   color:#000;
   background-color:transparent;
-}
-
-#content .pager li:hover a
-{
-  color:#fff;
 }
 
 
@@ -437,8 +432,8 @@ img
   padding: 4px;
   margin: -0.5em;
   margin-bottom: 3px;
-  background:#252D42;
-  color:#fff;
+  background-color: #FFE69D;
+  color:#000;
 }
 
 .pagename p
