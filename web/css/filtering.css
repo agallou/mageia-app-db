@@ -1,13 +1,12 @@
 #filtering-border
 {
-  border-bottom: 1px solid #bbb;
   margin-left:-7px;
   margin-right:-7px;
 }
 
 #filtering
 {
-  border-bottom: 1px solid #2397D4;
+  border-bottom: 1px solid #bbb;
   padding-left:7px;
 }
 
