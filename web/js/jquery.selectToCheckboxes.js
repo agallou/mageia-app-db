@@ -43,14 +43,35 @@
       buttontext.appendTo(button);
       $('<span>', { id : 'buttonarrow' + selectId,'class' : 'arrow', html: '<i class="icon-chevron-down"></i>' }).appendTo(button);
 
+      var ng1 = $('<div>', { id: 'widgetcontent_' + selectId + '1', 'class' : 'widgetcontent1' });
+
       button.click(function() {
         if (settings.active) {
           document.getElementById('widgetcontent_' + selectId + '1').style.left = button.position().left+ 'px';
-          $('#widgetcontent_' + selectId + '1').toggle();
+          $('#widgetcontent_' + selectId + '1').toggle({
+            duration: 0,
+            complete: function() {
+              ng1.trigger('toggle')
+            }
+          });
         }
       });
 
-      var ng1 = $('<div>', { id: 'widgetcontent_' + selectId + '1', 'class' : 'widgetcontent1' });
+      ng1.bind('toggle', function() {
+          if (ng1.css('display') == 'block') {
+            ng1.trigger('appear');
+          } else {
+            ng1.trigger('disappear');
+          }
+      });
+
+      ng1.bind('appear', function() {
+          $('#button' + selectId).addClass('button-clicked');
+      });
+      ng1.bind('disappear', function() {
+          $('#button' + selectId).removeClass('button-clicked');
+      });
+
       if (settings.multi)
       {
         ng1.addClass('multi');
@@ -96,17 +117,26 @@
       $.each(options, function(key, value)
       {
         var jSpan = $('<div>', { id: prefix + 'span_' + value[0] });
+        var checked = (jQuery.inArray(value[0], settings.defaults) > -1);
         var input = $("<input>", {
             type    : "checkbox",
             name    : selectId,
             val     : value[0],
-            checked : (jQuery.inArray(value[0], settings.defaults) > -1),
+            checked : checked,
             id      : 'inp_' + selectId + '_' + value[0]
            });
         input.appendTo(jSpan);
         if (!settings.multi)
         {
           input.hide();
+        }
+        if (settings.multi) {
+          if (checked) {
+            var icon = $('<i class="icon-check"></i>');
+          } else {
+            var icon = $('<i class="icon-check-empty"></i>');
+          }
+          icon.appendTo(jSpan);
         }
         var label = $('<label>', {
           'for' : 'inp_' + selectId + '_' + value[0],
@@ -118,6 +148,7 @@
         } else {
           clickable = jSpan; //clickable all ready declared no need to redeclare
         }
+
         $(clickable).click(function(event){
           if (!settings.multi) {
             $('input[name=' + selectId + ']:checked').parent().removeClass('selected');
@@ -129,6 +160,7 @@
             event.preventDefault();
           }
         });
+
         $('<br>').appendTo(jSpan);
 
         div.append(jSpan);
@@ -144,22 +176,40 @@
           && target[0].id != 'buttontext' + selectId
           && target[0].id != 'buttonarrow' + selectId
           && target.parents('#' + 'widgetcontent_' + selectId + '1').length == 0
+          && target.parents('#' + 'button' + selectId).length == 0
         )
         {
           ng1.hide();
+          ng1.trigger('disappear');
           settings.apply.apply(this, [$('input[name=' + selectId + ']:checked')]);
         }
       });
+      ng1.trigger('disappear');
       ng1.hide();
+
+      $('div.widgetcontent input:checked', widget).parent().addClass('selected');
+
+      $('div.widgetcontent div', widget).click(function(event) {
+        if (event.target.nodeName == 'DIV' || event.target.nodeName == 'I') {
+          $('input', this).click().change();
+        }
+      });
+
+      $('div.widgetcontent div input', widget).change(function(event) {
+        if ($(event.target).attr('checked')) {
+          $('i', $(event.target).parent()).addClass('icon-check');
+          $('i', $(event.target).parent()).removeClass('icon-check-empty');
+          $(event.target).parent().addClass('selected');
+        } else {
+          $('i', $(event.target).parent()).removeClass('icon-check');
+          $('i', $(event.target).parent()).addClass('icon-check-empty');
+          $(event.target).parent().removeClass('selected');
+        }
+      });
+
+
     });
-    $('.filterwidget div.widgetcontent input:checked').parent().addClass('selected');
-    $('.filterwidget div.widgetcontent input').click(function(event) {
-      if ($(event.target).attr('checked')) {
-        $(event.target).parent().addClass('selected');
-      }
-      else {
-        $(event.target).parent().removeClass('selected');
-      }
-    });
+
+
   };
 })(jQuery);

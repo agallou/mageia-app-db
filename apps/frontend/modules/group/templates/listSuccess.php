@@ -1,5 +1,4 @@
 <?php slot('title', 'Groups') ?>
-
 <?php slot('name') ?>
 Groups
 <?php if (!is_null($group_name)): ?>

@@ -6,7 +6,7 @@
         <?php include_metas() ?>
         <title>
 	    <?php echo $madbConfig->get('name');
-	    
+
 		  if(($slot = get_slot('title')) != '') {
 		    echo ' - ' . $slot;
 		  }
@@ -37,7 +37,7 @@
                         <?php if ($mail = $sf_user->getProfile()->getMail()): ?>
                           (<?php echo $sf_user->getProfile()->getMail() ?>)
                         <?php endif ?>
-                        <?php echo link_to('<i class="icon-signout"></i>', url_for('@sf_guard_signout')); ?>
+                        <?php echo link_to('<i class="icon-signout" title="Logout"></i>', url_for('@sf_guard_signout')); ?>
                     <?php else: ?>
                         <?php echo link_to('<i class="icon-signin" title="Login"></i>', url_for('@sf_guard_signin')) ?>
                     <?php endif; ?>
@@ -54,9 +54,11 @@
                       </div>
 
                     <?php endif ?>
+                    <div id="filtering-border">
                         <div id="filtering">
                           <?php include_component_slot('filtering') ?>
                         </div>
+                    </div>
 
                     <?php echo $sf_content ?>
                 </div>

@@ -1,7 +1,14 @@
+#filtering-border
+{
+  border-bottom: 1px solid #bbb;
+  margin-left:-7px;
+  margin-right:-7px;
+}
+
 #filtering
 {
-  background-color:#E8E8E8;
-  border: 1px solid #bbb;
+  border-bottom: 1px solid #252D42;
+  padding-left:7px;
 }
 
 #linkmore
@@ -34,13 +41,23 @@ div.filters form span
   cursor:default;
 }
 
-div.filters i.icon-remove
+#content div.filters span.filtervalues a:hover
 {
-  vertical-align:middle;
-  float:left;
-  margin: 6px 15px 0px -15px;
-  color:#9D261D;
+  outline:none;
+  background:transparent;
 }
+
+
+#content div.filters span.filtervalues a i.icon-remove
+{
+  color:#252D42;
+}
+
+#content div.filters span.filtervalues a i.icon-remove:hover
+{
+  color:#1272B1;
+}
+
 
 div.filters .filtervalues
 {
@@ -48,7 +65,8 @@ div.filters .filtervalues
   padding-right: 20px;
   padding-top: 5px;
   padding-left: 3px;
-  font-weight: bold;
+  font-size:13px;
+  font-weight:bold;
   color:#000;
 }
 

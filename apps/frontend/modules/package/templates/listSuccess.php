@@ -4,6 +4,7 @@ if ($rpm_group) {
 } else {
   slot('title', 'Packages/Applications');
 }
+?>
 
 <?php slot('name') ?>
 Packages/Applications

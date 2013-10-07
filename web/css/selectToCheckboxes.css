@@ -13,10 +13,19 @@ div.disabled_filter, div.disabled_filter div.button span
 {
   border:1px solid;
   padding:2px 5px 2px 5px ;
-  font-size:small;
-  border-color: #ccc #666 #666 #ccc;
+  font-size:13px;
+  border-color:#CCCCCC;
   background-color:#fff;
-  color:#000;
+  border-bottom: 2px solid #252D42;
+  background: linear-gradient(to bottom, #F5F5F5 0%, #F1F1F1 50%) repeat scroll 0 0 transparent;
+}
+
+.filterwidget .button-clicked
+{
+  border-bottom:2px solid #666;
+  border-right:1px solid #666;
+  color: #252D42;
+
 }
 
 .disabled_filter .button
@@ -24,8 +33,10 @@ div.disabled_filter, div.disabled_filter div.button span
   background-color:#ddd;
 }
 
-.filterwidget .button:hover
+.filterwidget .button:hover,
+.filterwidget .button-clicked:hover
 {
+  color: #252D42;
   background-color: #bbb;
 }
 
@@ -43,6 +54,7 @@ div.disabled_filter, div.disabled_filter div.button span
 .filterwidget div.widgetcontent
 {
   margin-top:4px;
+  margin-bottom:4px;
   font-size: 14px;
   overflow-y:auto;
   overflow-x: hidden;
@@ -57,7 +69,7 @@ div.disabled_filter, div.disabled_filter div.button span
   border:1px solid #03344D;
   position:absolute;
   z-index:1200;
-  font-size:small;
+  font-size:13px;
 
   -moz-box-shadow: -2px 2px 4px 0px #656565;
   -webkit-box-shadow: -2px 2px 4px 0px #656565;
@@ -91,8 +103,8 @@ div.disabled_filter, div.disabled_filter div.button span
 
 .filterwidget div.widgetcontent1 div.widgetcontent div:hover
 {
-  background-color:#FFEBB1;
-  color:#000;
+  background-color: #252D42;
+  color:#fff;
 }
 
 .filterwidget div.widgetcontent1 div.widgetcontent div.selected
@@ -105,14 +117,26 @@ div.disabled_filter, div.disabled_filter div.button span
 {
   vertical-align:middle;
   margin-right:4px;
+  display:none;
 }
+
+.filterwidget div.widgetcontent1 div.widgetcontent div i
+{
+  margin-right:4px;
+  color:#000;
+}
+.filterwidget div.widgetcontent1 div.widgetcontent div i.icon-check-empty
+{
+  margin-right:6px;
+}
+
 
 
 .filterwidget div.apply
 {
   text-align:center;
-  font-weight:bold;
-  margin:1px 5px 1px 5px;
+  font-size:13px;
+  margin:5px 5px 5px 5px;
   height:20px;
   padding-top:5px;
 }
@@ -120,9 +144,8 @@ div.disabled_filter, div.disabled_filter div.button span
 .filterwidget div.apply:hover
 {
   cursor:pointer;
-  background-color:#262F45;
-  color:#000;
-  background-color:orange;
+  color:#fff;
+  background-color:#252D42;
 }
 
 
