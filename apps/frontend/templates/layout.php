@@ -57,6 +57,9 @@
                           <?php include_component_slot('filtering') ?>
                         </div>
                     </div>
+                    <div id="search-page">
+                      <?php include_component_slot('searching') ?>
+                    </div>
 
                     <?php echo $sf_content ?>
                 </div>

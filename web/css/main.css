@@ -167,7 +167,7 @@ div#header div#search form input[type=text]:focus
   background-color:#F7F3D0;
 }
 
-#filtering form.searchform
+#search-page form.searchform
 {
   margin-left:10px;
   font-size:12px;
@@ -183,24 +183,32 @@ form.searchform input[type=submit]
   padding: 2px 5px;
 }
 
-#filtering form.searchform input[type=text]
+#search-page 
+{
+  margin-top:2px;
+}
+
+#search-page form.searchform input[type=text]
 {
   height:13px;
+  border:1px solid #bbb;
 }
 
 
-#filtering form.searchform input[type=submit]
+#search-page form.searchform input[type=submit]
 {
+  margin-left:5px;
+  font: 12px "Trebuchet MS", Helvetica, sans-serif;
   padding: 0px 0px;
   margin-bottom:5px;
   background-color:#fff;
   border-color:#CCCCCC;
 }
 
-#filtering form.searchform input[type=submit]:hover
+#search-page form.searchform input[type=submit]:hover
 {
-  background:#252D42;
-  color:#fff;
+  background:#FFE69D;
+  color:#000;
 }
 
 

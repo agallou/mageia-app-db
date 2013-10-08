@@ -46,4 +46,4 @@
 <script>
   $('.filters').hide();
 </script>
-<?php include_component_slot('searching') ?>
+
