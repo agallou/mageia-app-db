@@ -32,15 +32,13 @@
                     )) ?>
                 </div>
                 <div id="user_infos">
+                    <div class="header-button">
                     <?php if ($sf_user->isAuthenticated()): ?>
-                        <?php echo $sf_user->getUsername() ?>
-                        <?php if ($mail = $sf_user->getProfile()->getMail()): ?>
-                          (<?php echo $sf_user->getProfile()->getMail() ?>)
-                        <?php endif ?>
-                        <?php echo link_to('<i class="icon-signout" title="Logout"></i>', url_for('@sf_guard_signout')); ?>
+                        <?php echo link_to('<i class="icon-signout"></i><br />Logout', url_for('@sf_guard_signout')); ?>
                     <?php else: ?>
-                        <?php echo link_to('<i class="icon-signin" title="Login"></i>', url_for('@sf_guard_signin')) ?>
+                        <?php echo link_to('<i class="icon-signin"></i><br />Login', url_for('@sf_guard_signin')) ?>
                     <?php endif; ?>
+                    </div>
                 </div>
             </div>
       <!--      <div id="global"> -->
