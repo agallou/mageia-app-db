@@ -18,8 +18,15 @@
   top: 4;
   right: 0;
   color:#000;
-  font-size:18px;
+  font-size:11px;
 }
+
+#linkmore i
+{
+  font-size:18px;
+  vertical-align:middle;
+}
+
 
 #otherFilters
 {
