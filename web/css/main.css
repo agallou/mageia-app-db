@@ -186,6 +186,7 @@ form.searchform input[type=submit]
 #search-page 
 {
   margin-top:2px;
+  position:absolute;
 }
 
 #search-page form.searchform input[type=text]
