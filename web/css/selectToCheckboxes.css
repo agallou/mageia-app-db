@@ -144,8 +144,8 @@ div.disabled_filter, div.disabled_filter div.button span
 .filterwidget div.apply:hover
 {
   cursor:pointer;
-  color:#fff;
-  background-color:#252D42;
+  background-color: #FFE69D;
+  color:#000;
 }
 
 
