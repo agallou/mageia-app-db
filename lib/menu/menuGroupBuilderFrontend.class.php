@@ -24,13 +24,9 @@ class menuGroupBuilderFrontend extends menuGroupBuilder
     $this->addGroup('Latest', $items, 'icon-bell');
     $this->addGroup('Browse', array(
       $this->createItem('By group', 'group/list'),
-      $this->createItem('By popularity'),
       $this->createItem('By name', 'package/list'),
     ), 'icon-tasks');
-    $this->addGroup('Requests', array(
-      $this->createItem('Backports requests'),
-      $this->createItem('New soft request'),
-    ), 'icon-share');
+
     $this->addGroup('Tools', array(
       $this->createItem('Comparison with dev branch', 'package/comparison'),
     ), 'icon-puzzle-piece');
