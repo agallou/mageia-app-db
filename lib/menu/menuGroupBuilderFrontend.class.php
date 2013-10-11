@@ -28,7 +28,7 @@ class menuGroupBuilderFrontend extends menuGroupBuilder
     ), 'icon-tasks');
 
     $this->addGroup('Tools', array(
-      $this->createItem('Comparison with dev branch', 'package/comparison'),
+      $this->createItem('Versions comparison', 'package/comparison'),
     ), 'icon-puzzle-piece');
     if ($this->isUserAuthenticated())
     {
