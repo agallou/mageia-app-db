@@ -188,8 +188,9 @@ form.searchform input[type=submit]
 
 #search-page 
 {
-  margin-top:2px;
-  position:absolute;
+  margin-top:8px;
+  margin-left:1px;
+  font: 12px "Trebuchet MS", Helvetica, sans-serif;
 }
 
 #search-page form.searchform input[type=text]
@@ -202,9 +203,8 @@ form.searchform input[type=submit]
 #search-page form.searchform input[type=submit]
 {
   margin-left:5px;
-  font: 12px "Trebuchet MS", Helvetica, sans-serif;
+  margin-right:5px;
   padding: 0px 0px;
-  margin-bottom:5px;
   background-color:#fff;
   border-color:#CCCCCC;
 }
@@ -298,7 +298,7 @@ form.searchform input[type=submit]
 
 #sfcontent
 {
-  padding-top:25px;
+  margin-top:25px;
   padding-bottom:40px;
 }
 
@@ -311,8 +311,8 @@ form.searchform input[type=submit]
     display: block;
     overflow-x: auto;
     overflow-y: hidden;
-   padding-bottom:8000px;
-     margin-bottom:-8000px;
+    padding-bottom:8000px;
+    margin-bottom:-8000px;
 }
 #content ul
 {
@@ -344,23 +344,21 @@ form.searchform input[type=submit]
 
 div.pager
 {
-  padding: 4px;
+  padding: 2px;
   border: 0px;
-  margin-top:5px;
-  margin-bottom:15px;
+  margin-top:-25px;
+  margin-bottom:3px;
   text-align:center;
   padding-bottom:-3px;
-  min-height:17px;
+  height:21px;
 }
 
 div.pager-bottom
 {
-  background-color:#E8E8E8;
   border:0px;
-  border-top:1px dotted #1A426F;
   margin:-0.5em;
-	margin-top:20px;
-	margin-bottom:-7px;
+  margin-top:0;
+  margin-bottom:-7px;
   padding-bottom:6px;
 }
 
@@ -465,7 +463,28 @@ div.pager-bottom
     outline: 1px solid #1A426F;
 }
 
+table.packlist
+{
+  max-width:100%;
+}
 
+.packlist td, .packlist th
+{
+  padding-left:0.5em;
+  padding-right:0.5em;
+  white-space:nowrap;
+}
+
+.packlist td.summary
+{
+  width:90%;
+  white-space:normal;
+}
+
+.app-filter-warning
+{
+  margin-top:1em;
+}
 
 .todo 
 {
@@ -523,20 +542,32 @@ td
 
 table.comparisontable
 {
+  margin-top:3px;
+  max-width:100%;
   border-collapse: collapse;
-  border: 2px solid #000;
+}
+
+.comparisontable td
+{
+  white-space:nowrap;
+}
+
+.comparisontable td.summary
+{
+  width:80%;
+  white-space:no;
 }
 
 .comparisontable td, .comparisontable th
 {
-  border:1px solid gray;
+  border:1px solid gray;  
   padding: 2px;
   vertical-align: top;
 }
 
 .comparisontable th
 {
-  border-bottom: 2px solid #000;
+/*  border-bottom: 2px solid #000;*/
 }
 
 .newpackage
@@ -579,7 +610,7 @@ table.comparisontable
 
 .rpm-odd
 {
-  background-color: #e8e8e8;
+  background-color: #f3f3f3;
 }
 
 .rpm-even
@@ -602,11 +633,6 @@ table.comparisontable
 .rpm div.rpm-description 
 {
   margin-left:15px;
-}
-
-.homepage, .package, .rpm
-{
-  margin-top:-25px;
 }
 
 .rpm h2,

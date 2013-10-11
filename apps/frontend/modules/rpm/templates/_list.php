@@ -47,7 +47,7 @@ if ($show_bug_links)
                       array('extra_parameters' => array('name' => $rpm->getPackage()->getName()))
                     )
                   ); ?></td>
-        <td><?php echo htmlspecialchars($rpm->getSummary()) ?></td>
+        <td class='summary'><?php echo htmlspecialchars($rpm->getSummary()) ?></td>
         <td><?php echo link_to(
                     $rpm->getVersion(),
                     $madburl->urlForRpm($rpm, $madbcontext)

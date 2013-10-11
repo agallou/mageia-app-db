@@ -80,7 +80,7 @@ else
   // nothing to do, remains white
 }
 ?>>
-      <td><?php  echo link_to(
+      <td class='summary'><?php  echo link_to(
                    $row['name'],
                    str_replace("___REPLACE___ME___", $row['name'], $madbBaseUrl)
                  );

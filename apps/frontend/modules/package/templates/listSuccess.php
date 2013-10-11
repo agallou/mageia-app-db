@@ -39,8 +39,18 @@ Packages/Applications
 </ul>
 </div>
 
+<?php include_partial('default/pager', array(
+  'pager'       => $pager,
+  'module'      => 'package',
+  'action'      => 'list',
+  'madbcontext' => $madbcontext,
+  'madburl'     => $madburl,
+  'bottom'      => true,
+  'showtotal'   => true,
+)) ?>
+
 <?php if ($application): ?>
-  <p>This list shows only applications.
+  <p class='app-filter-warning'>This list shows only applications.
   <?php echo link_to(
                "Show all packages.",
                $madburl->urlFor(
@@ -54,7 +64,7 @@ Packages/Applications
   ?>
   </p>
 <?php else: ?>
-  <p>This list shows all types of packages.
+  <p class='app-filter-warning'>This list shows all types of packages.
   <?php echo link_to(
                "Show only applications.",
                $madburl->urlFor(
@@ -68,15 +78,3 @@ Packages/Applications
   ?>
   </p>
 <?php endif; ?>
-
-<?php include_partial('default/pager', array(
-  'pager'       => $pager,
-  'module'      => 'package',
-  'action'      => 'list',
-  'madbcontext' => $madbcontext,
-  'madburl'     => $madburl,
-  'bottom'      => true,
-  'showtotal'   => true,
-)) ?>
-
-

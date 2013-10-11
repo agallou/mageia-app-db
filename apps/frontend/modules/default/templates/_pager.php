@@ -3,9 +3,9 @@
 <?php $isBottom = isset($bottom) && $bottom ?>
 <?php $hasMultiplePages = ($lastPage > 1) ?>
 
-<?php if ($hasMultiplePages):  ?>
+<div class="pager <?php $isBottom && print 'pager-bottom' ?>">
 
-  <div class="pager <?php $isBottom && print 'pager-bottom' ?>">
+  <?php if ($hasMultiplePages):  ?>
 
     <div id="pagercount">
       <?php if (isset($showtotal) && $showtotal): ?>
@@ -52,6 +52,6 @@
     <?php endif ?>
 
 
-  </div>
+  <?php endif ?>
+</div>
 
-<?php endif ?>
