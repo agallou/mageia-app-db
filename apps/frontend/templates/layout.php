@@ -41,37 +41,42 @@
                     </div>
                 </div>
             </div>
-      <!--      <div id="global"> -->
-                <div id="menu">
-                    <?php include_component('default', 'menu', $sf_request->getParameterHolder()->getAll()) ?>
-                </div>
-                <div id="content">
-                    <?php if (has_slot('name')): ?>
-                      <div class="pagename">
-                        <p><?php include_slot('name') ?></p>
-                      </div>
 
-                    <?php endif ?>
-                    <div id="filtering-border">
-                        <div id="filtering">
-                          <?php include_component_slot('filtering') ?>
-                        </div>
-                    </div>
-                    <div id="search-page">
-                      <?php include_component_slot('searching') ?>
-                    </div>
-
-                    <?php echo $sf_content ?>
-                </div>
-
-
-                <div id="footer">
-                <div class="content">
-                  <?php include_component('default', 'footer') ?>
-                </div>
+            <div id="menu">
+                <?php include_component('default', 'menu', $sf_request->getParameterHolder()->getAll()) ?>
             </div>
+            <div id="content">
+                <?php if (has_slot('name')): ?>
+                  <div class="pagename">
+                    <p><?php include_slot('name') ?></p>
+                  </div>
+
+                <?php endif ?>
+                <div id="filtering-border">
+                    <div id="filtering">
+                      <?php include_component_slot('filtering') ?>
+                    </div>
+                </div>
+                <div id="search-page">
+                  <?php include_component_slot('searching') ?>
+                </div>
+
+                <div id="sfcontent">
+                  <?php echo $sf_content ?>
+                </div>
+
+
             </div>
-        <!-- </div> -->
+
+
+             <div id="footer">
+                <?php include_component('default', 'footer') ?>
+             </div>
+
+            </div>
+
+
+
     <?php include_component('default', 'tracker') ?>
     </body>
 </html>

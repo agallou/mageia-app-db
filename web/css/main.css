@@ -11,7 +11,6 @@ ul
 
 html, body
 {
-    min-height: 100%;
     height: 100%;
     font: 14px "Trebuchet MS", Helvetica, sans-serif;
 }
@@ -30,13 +29,13 @@ a, a:visited
 
 #container
 {
-
-    display: block;
-    background-color: #F0EFEF;
-    min-height: 100%;
-    height: 100%;
-    overflow: auto;
+  position:relative;
+  margin:0 auto; /* center, not in IE5 */
+  height: auto !important;
+  min-height: 100%;
+overflow:hidden;
 }
+
 
 /* HEADER Stuff */
 
@@ -119,7 +118,6 @@ a, a:visited
 
 #user_infos .header-button
 {
-  padding-top:7px;
   border-left:1px solid #2383C2;
   border-right:1px solid #2383C2;
   padding-left:7px;
@@ -128,11 +126,14 @@ a, a:visited
   color:#fff;
 }
 
+
 #user_infos .header-button a
 {
+
   display:block;
   margin:0px;
   padding:0px;
+  padding-top:7px;
   width:100%;
   height:100%;
   text-align:center;
@@ -227,9 +228,8 @@ form.searchform input[type=submit]
     display: block;
     width: 14em;
     padding: 0px;
-    min-height: 90%;
-    height: auto !important;
-    background: #E8E8E8; /* Old browsers */
+    padding-bottom:8000px;
+    margin-bottom:-8000px;
     background: -moz-linear-gradient(top,  #E8E8E8 0%, #F3EFEF 50%); /* FF3.6+ */
     background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#E8E8E8), color-stop(50%,#F3EFEF)); /* Chrome,Safari4+ */
     background: -webkit-linear-gradient(top,  #E8E8E8 0%,#F3EFEF 50%); /* Chrome10+,Safari5.1+ */
@@ -297,19 +297,23 @@ form.searchform input[type=submit]
 
 /* RIGHT Column stuff a.k.a Content */
 
+#sfcontent
+{
+  padding-top:25px;
+  padding-bottom:40px;
+}
+
 #content
 {
     border-left:1px solid #bbb;
-    position: relative;
     background-color: white;
     width: auto;
     padding: 0.5em;
-    height:auto !important;
-    min-height: 90%;
     display: block;
     overflow-x: auto;
     overflow-y: hidden;
-    zoom:1;
+   padding-bottom:8000px;
+     margin-bottom:-8000px;
 }
 #content ul
 {
@@ -413,16 +417,22 @@ div.pager-bottom
 
 #footer
 {
-    background-color: #1272B1;
-    clear:both;
-    font-size:12px;
-    padding-left:10px;
-    text-align:right;
-    min-height: 30px;
-    height: 30px;
-    border-top: 1px solid #DDDDDD;
-    position: relative;
-    color:#000;
+  position: absolute;
+  margin-top: -30px; /* negative value of footer height */
+  height: 30px;
+  clear:both; 
+  bottom:0;
+  width:100%;
+  background-color: #1272B1;
+  font-size:12px;
+  text-align:right;
+  border-top: 1px solid #DDDDDD;
+}
+
+#footer p
+{
+  padding-right:10px;
+  padding-top:4px;
 }
 
 #footer a, #footer a:visited
@@ -431,19 +441,11 @@ div.pager-bottom
   text-decoration:underline;
 }
 
-.content
-{
-    position: absolute;
-    padding: 10px;
-    bottom: 0px;
-    right: 0px;
-}
 
 /* Package List Stuff */
 
 .packlist
 {
-  margin-top:25px;
   list-style-type: none;
 }
 
@@ -603,6 +605,10 @@ table.comparisontable
   margin-left:15px;
 }
 
+.homepage, .package, .rpm
+{
+  margin-top:-25px;
+}
 
 .rpm h2,
 .package h2,
