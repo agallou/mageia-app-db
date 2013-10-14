@@ -2,7 +2,7 @@
 <?php if($showTitle): ?>
 Filter by package name:
 <?php endif; ?>
-<input type="text" name="t_search" /><input type="submit" value="filter" />
+<input type="text" name="t_search" /><input type="submit" value="search" />
 </form>
 <?php if ($showinfos): ?>
   <?php if ($madbcontext->hasParameter('t_search')): ?>
