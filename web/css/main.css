@@ -30,10 +30,12 @@ a, a:visited
 #container
 {
   position:relative;
-  margin:0 auto; /* center, not in IE5 */
+  margin:0 auto; /* center, not in IE5 */ 
   height: auto !important;
   min-height: 100%;
-overflow:hidden;
+  overflow:hidden;
+  border-right: 1px solid #1272B1;
+  border-left: 1px solid #1272B1;
 }
 
 
@@ -225,7 +227,7 @@ form.searchform input[type=submit]
     clear: left;
     float: left;
     display: block;
-    width: 14em;
+    width: 190px;
     padding: 0px;
     padding-bottom:8000px;
     margin-bottom:-8000px;
@@ -300,6 +302,7 @@ form.searchform input[type=submit]
 {
   margin-top:25px;
   padding-bottom:40px;
+  max-width:1280px;
 }
 
 #content
@@ -422,7 +425,6 @@ div.pager-bottom
   width:100%;
   background-color: #1272B1;
   font-size:12px;
-  text-align:right;
   border-top: 1px solid #DDDDDD;
 }
 
@@ -430,6 +432,8 @@ div.pager-bottom
 {
   padding-right:10px;
   padding-top:4px;
+  text-align:right;
+  max-width:1475px;
 }
 
 #footer a, #footer a:visited
@@ -645,7 +649,7 @@ table.comparisontable
   font-size:15px;
   padding:5px;
   margin-bottom:4px;
-  margin-top:16px;
+  margin-top:20px;
 }
 
 .rpm table.infos td

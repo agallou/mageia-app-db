@@ -13,8 +13,8 @@
 #linkmore
 {
   cursor:pointer;
-  margin-right:14px;
-  position: absolute;
+  margin-right:8px;
+  float:right;
   top: 4;
   right: 0;
   color:#000;
@@ -40,6 +40,7 @@ div.filters
   overflow: hidden;
   height: 1%;
   color:#000;
+  max-width:1280px;
 }
 
 div.filters form span
