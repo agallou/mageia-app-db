@@ -339,10 +339,12 @@ form.searchform input[type=submit]
 
 #pagercount
 {
-  position: relative;
-  top:0px;
-  left:0px;
-  float:left;
+  margin:auto;
+  width:250px;
+  border-top:1px solid #000;
+  text-align:center;
+  padding-top:4px;
+  margin-bottom:7px;
 }
 
 div.pager
@@ -362,7 +364,7 @@ div.pager-bottom
   margin:-0.5em;
   margin-top:0;
   margin-bottom:-7px;
-  padding-bottom:6px;
+  padding-bottom:32px;
 }
 
 

@@ -18,15 +18,6 @@ For example, change the selected release from <?php echo $distrelease->getDispla
 <span class="backported bordered">backported</span>.
 <span class="older bordered">older version in <?php echo $target_release; ?>!</span>.
 </p>
-<?php /*include_partial('default/pager', array(
-  'pager'       => $pager,
-  'module'      => 'package',
-  'action'      => 'comparison',
-  'madbcontext' => $madbcontext,
-  'madburl'     => $madburl,
-  'showtotal'   => true,
-)); */?>
-
 <table class="comparisontable">
   <thead>
     <tr>
@@ -96,12 +87,3 @@ else
   <?php endforeach; ?>
 </tbody>
 </table>
-
-
-<?php /*include_partial('default/pager', array(
-  'pager'       => $pager,
-  'module'      => 'package',
-  'action'      => 'comparison',
-  'madbcontext' => $madbcontext,
-  'madburl'     => $madburl,
-)) */?>

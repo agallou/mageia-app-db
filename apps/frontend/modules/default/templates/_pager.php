@@ -7,15 +7,12 @@
 
   <?php if ($hasMultiplePages):  ?>
 
+    <?php if (isset($showtotal) && $showtotal): ?>
     <div id="pagercount">
-      <?php if (isset($showtotal) && $showtotal): ?>
         Total results : <span id="count"><?php echo $pager->getTotalRecordCount() ?></span>
-      <?php endif; ?>
-
-      <?php if (isset($message)): ?>
-        <p><?php echo sprintf($message, $pager->getTotalRecordCount()) ?></p>
-      <?php endif; ?>
     </div>
+    <?php endif; ?>
+
 
     <?php if ($hasMultiplePages): ?>
       <div id="pagerbuttons">
