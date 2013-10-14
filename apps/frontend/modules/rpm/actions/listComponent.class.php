@@ -43,11 +43,11 @@ class listComponent extends madbComponent
         $criteria->addDescendingOrderByColumn(RpmPeer::BUILD_TIME);
         $this->title = 'Backports awaiting your testing';
         break;
-      default : 
+      default :
         throw new Exception('Unknown value for listtype : \'' . $this->listtype . '\'');
         break;
     }
-    $this->pager = new PropelPager($criteria, 'RpmPeer', 'doSelect', $this->page, $this->limit);
+    $this->pager = new madbPager($criteria, 'RpmPeer', 'doSelect', $this->page, $this->limit);
   }
 
 }

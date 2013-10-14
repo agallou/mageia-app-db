@@ -2,14 +2,13 @@
 <?php $lastPage = $pager->getLastPage() ?>
 <?php $isBottom = isset($bottom) && $bottom ?>
 <?php $hasMultiplePages = ($lastPage > 1) ?>
-
 <div class="pager <?php $isBottom && print 'pager-bottom' ?>">
 
   <?php if ($hasMultiplePages):  ?>
 
     <?php if (isset($showtotal) && $showtotal): ?>
     <div id="pagercount">
-        Total results : <span id="count"><?php echo $pager->getTotalRecordCount() ?></span>
+        <?php echo $pager->getNumberBeginOnPage() ?>-<?php echo $pager->getNumberEndOnPage() ?> of <?php echo $pager->getTotalRecordCount() ?>.<br />
     </div>
     <?php endif; ?>
 
