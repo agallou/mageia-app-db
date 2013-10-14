@@ -19,6 +19,7 @@
     <body>
         <div id="container">
             <div id="header">
+              <div id="header-container">
                 <div id="appname">
                   <?php echo link_to($madbConfig->get('name'), 'http://' . $madbConfig->get('host')) ?><br />
                   <?php if (strlen($subname = $madbConfig->get('subname'))): ?>
@@ -40,6 +41,7 @@
                     <?php endif; ?>
                     </div>
                 </div>
+              </div>
             </div>
 
             <div id="menu">
