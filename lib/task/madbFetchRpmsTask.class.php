@@ -20,7 +20,7 @@ class madbFetchRpmsTask extends madbBaseTask
     {
       $limit = $options['limit'];
     }
-    
+
     sfContext::createInstance($this->createConfiguration('frontend', 'prod'));
     $con = Propel::getConnection();
     Propel::disableInstancePooling();
@@ -28,29 +28,29 @@ class madbFetchRpmsTask extends madbBaseTask
     $madbConfig = new madbConfig();
     $madbDistroConfigFactory = new madbDistroConfigFactory();
     $madbDistroConfig = $madbDistroConfigFactory->getCurrentDistroConfig($madbConfig);
-    
+
     // check config file validity (TODO : make it an actual check !)
     if (!$madbDistroConfig->check())
     {
       throw new madbException("Invalid distro configuration file'");
     }
-    
+
     $distribution = $madbDistroConfig->getName();
-    
+
     $sophie = new SophieClient();
     $sophie->setDefaultType('json');
-    
+
     // Get release, arch and media information from sophie
     // $distreleases[$release][$arch][$media] = true
     if (!$distreleases = $this->getDistreleasesArchsMedias($madbDistroConfig, $sophie))
     {
       echo "Failed to get distrelease, arch and media information, aborting.\n";
       return false;
-    } 
-    
+    }
+
     // Now that we have all wanted media for all archs for all distreleases, perform some checking
     // TODO : better checking
-    // Distreleases : 
+    // Distreleases :
     $criteria = new Criteria();
     $criteria->add(DistreleasePeer::IS_META, false);
     $distreleaseObjs = DistreleasePeer::doSelect($criteria);
@@ -59,7 +59,7 @@ class madbFetchRpmsTask extends madbBaseTask
     {
       $distreleasesDb[] = $distreleaseObj->getName();
     }
-    // - releases present in database must be still present in result. 
+    // - releases present in database must be still present in result.
     //   If not, abort, or ignore, following $options['ignore-missing-from-sophie']
     $missing_from_sophie = array_diff($distreleasesDb, array_keys($distreleases));
     if (count($missing_from_sophie))
@@ -74,8 +74,8 @@ class madbFetchRpmsTask extends madbBaseTask
         throw new madbException($message);
       }
     }
-    
-    // - releases present in result but absent from database : 
+
+    // - releases present in result but absent from database :
     //   abort or add them, following $options['add']
     $missing_from_db = array_diff(array_keys($distreleases), $distreleasesDb);
     if (count($missing_from_db))
@@ -98,7 +98,7 @@ class madbFetchRpmsTask extends madbBaseTask
         throw new madbException($message);
       }
     }
-    
+
     // - devel distreleases
     // TODO :  It could be tricky (can a devel version lose it's devel version status ? Can it become obsolete ?)
     $new_list_devel = $madbDistroConfig->getDevelReleases();
@@ -185,9 +185,9 @@ class madbFetchRpmsTask extends madbBaseTask
       else
       {
         throw new madbException($message);
-      }      
+      }
     }
-    
+
     // - previous stable release
     $previous = $madbDistroConfig->getPreviousStableRelease();
     if (trim($previous) !== '')
@@ -211,7 +211,7 @@ class madbFetchRpmsTask extends madbBaseTask
         else
         {
           throw new madbException($message);
-        }      
+        }
       }
     }
     else // There's no previous release in config file
@@ -268,7 +268,7 @@ class madbFetchRpmsTask extends madbBaseTask
     {
       $message = "New arch(s) in Sophie's response : " . implode(' ', $missing_from_db);
       if ($options['add'])
-      {  
+      {
         echo $message . "\n";
         // add them
         foreach ($missing_from_db as $arch)
@@ -284,8 +284,8 @@ class madbFetchRpmsTask extends madbBaseTask
         throw new madbException($message);
       }
     }
-    
-    
+
+
     // Media :
     $allMedias = MediaPeer::MediasToNames(MediaPeer::doSelect(new Criteria()));
     $mediasSophie = array();
@@ -322,7 +322,7 @@ class madbFetchRpmsTask extends madbBaseTask
     {
       $message = "New media(s) in Sophie's response : " . implode(' ', $missing_from_db);
       if ($options['add'])
-      {  
+      {
         echo $message . "\n";
         // add them
         foreach ($missing_from_db as $media)
@@ -337,23 +337,23 @@ class madbFetchRpmsTask extends madbBaseTask
       {
         throw new madbException($message);
       }
-    }    
-    
+    }
+
     // Update the $allMedias array so that it knows the new media now
     $allMedias = MediaPeer::MediasToNames(MediaPeer::doSelect(new Criteria()));
-    
+
     // updates media
     $currentUpdatesMedias = MediaPeer::MediasToNames(MediaPeer::getUpdatesMedias());
     $newUpdatesMedias = madbToolkit::filterArrayKeepOnly($allMedias, $madbDistroConfig->getUpdatesMedias());
-    
-    // - update media according to config but not according to database. 
+
+    // - update media according to config but not according to database.
     //   abort or add them, following $options['add']
     $missing_from_db = array_diff($newUpdatesMedias, $currentUpdatesMedias);
     if (count($missing_from_db))
     {
       $message = "New updates media(s) according to config file : " . implode(' ', $missing_from_db);
       if ($options['add'])
-      {  
+      {
         echo $message . "\n";
         // add them
         foreach ($missing_from_db as $media)
@@ -369,15 +369,15 @@ class madbFetchRpmsTask extends madbBaseTask
         throw new madbException($message);
       }
     }
-    
-    // - update media according to database but not according to config. 
+
+    // - update media according to database but not according to config.
     //   abort or change their status, following $options['add']
     $missing_from_config = array_diff($currentUpdatesMedias, $newUpdatesMedias);
     if (count($missing_from_config))
     {
       $message = "Not updates media(s) according to config file, but updates media in database : " . implode(' ', $missing_from_config);
       if ($options['add'])
-      {  
+      {
         echo $message . "\n";
         // add them
         foreach ($missing_from_config as $media)
@@ -393,19 +393,19 @@ class madbFetchRpmsTask extends madbBaseTask
         throw new madbException($message);
       }
     }
-        
+
     // - testing media
     $currentTestingMedias = MediaPeer::MediasToNames(MediaPeer::getTestingMedias());
     $newTestingMedias = madbToolkit::filterArrayKeepOnly($allMedias, $madbDistroConfig->getTestingMedias());
-    
-    // - testing media according to config but not according to database. 
+
+    // - testing media according to config but not according to database.
     //   abort or add them, following $options['add']
     $missing_from_db = array_diff($newTestingMedias, $currentTestingMedias);
     if (count($missing_from_db))
     {
       $message = "New testing media(s) according to config file : " . implode(' ', $missing_from_db);
       if ($options['add'])
-      {  
+      {
         echo $message . "\n";
         // add them
         foreach ($missing_from_db as $media)
@@ -421,15 +421,15 @@ class madbFetchRpmsTask extends madbBaseTask
         throw new madbException($message);
       }
     }
-    
-    // - testing media according to database but not according to config. 
+
+    // - testing media according to database but not according to config.
     //   abort or change their status, following $options['add']
     $missing_from_config = array_diff($currentTestingMedias, $newTestingMedias);
     if (count($missing_from_config))
     {
       $message = "Not testing media(s) according to config file, but updates media in database : " . implode(' ', $missing_from_config);
       if ($options['add'])
-      {  
+      {
         echo $message . "\n";
         // add them
         foreach ($missing_from_config as $media)
@@ -445,19 +445,19 @@ class madbFetchRpmsTask extends madbBaseTask
         throw new madbException($message);
       }
     }
-    
+
     // - backports media
     $currentBackportsMedias = MediaPeer::MediasToNames(MediaPeer::getBackportsMedias());
-    $newBackportsMedias = madbToolkit::filterArrayKeepOnly($allMedias, $madbDistroConfig->getBackportsMedias());    
-    
-    // - backports media according to config but not according to database. 
+    $newBackportsMedias = madbToolkit::filterArrayKeepOnly($allMedias, $madbDistroConfig->getBackportsMedias());
+
+    // - backports media according to config but not according to database.
     //   abort or add them, following $options['add']
     $missing_from_db = array_diff($newBackportsMedias, $currentBackportsMedias);
     if (count($missing_from_db))
     {
       $message = "New backports media(s) according to config file : " . implode(' ', $missing_from_db);
       if ($options['add'])
-      {  
+      {
         echo $message . "\n";
         // add them
         foreach ($missing_from_db as $media)
@@ -473,15 +473,15 @@ class madbFetchRpmsTask extends madbBaseTask
         throw new madbException($message);
       }
     }
-    
-    // - backports media according to database but not according to config. 
+
+    // - backports media according to database but not according to config.
     //   abort or change their status, following $options['add']
     $missing_from_config = array_diff($currentBackportsMedias, $newBackportsMedias);
     if (count($missing_from_config))
     {
       $message = "Not backports media(s) according to config file, but updates media in database : " . implode(' ', $missing_from_config);
       if ($options['add'])
-      {  
+      {
         echo $message . "\n";
         // add them
         foreach ($missing_from_config as $media)
@@ -495,21 +495,21 @@ class madbFetchRpmsTask extends madbBaseTask
       else
       {
         throw new madbException($message);
-      }    
+      }
     }
-    
+
     // - third party media
     $currentThirdPartyMedias = MediaPeer::MediasToNames(MediaPeer::getThirdPartyMedias());
     $newThirdPartyMedias = madbToolkit::filterArrayKeepOnly($allMedias, $madbDistroConfig->getThirdPartyMedias());
-    
-    // - third party media according to config but not according to database. 
+
+    // - third party media according to config but not according to database.
     //   abort or add them, following $options['add']
     $missing_from_db = array_diff($newThirdPartyMedias, $currentThirdPartyMedias);
     if (count($missing_from_db))
     {
       $message = "New third party media(s) according to config file : " . implode(' ', $missing_from_db);
       if ($options['add'])
-      {  
+      {
         echo $message . "\n";
         // add them
         foreach ($missing_from_db as $media)
@@ -525,15 +525,15 @@ class madbFetchRpmsTask extends madbBaseTask
         throw new madbException($message);
       }
     }
-    
-    // - third party media according to database but not according to config. 
+
+    // - third party media according to database but not according to config.
     //   abort or change their status, following $options['add']
     $missing_from_config = array_diff($currentThirdPartyMedias, $newThirdPartyMedias);
     if (count($missing_from_config))
     {
       $message = "Not third party media(s) according to config file, but updates media in database : " . implode(' ', $missing_from_config);
       if ($options['add'])
-      {  
+      {
         echo $message . "\n";
         // add them
         foreach ($missing_from_config as $media)
@@ -547,9 +547,9 @@ class madbFetchRpmsTask extends madbBaseTask
       else
       {
         throw new madbException($message);
-      }    
-    }    
-    
+      }
+    }
+
     if($options['notify']) $notify = true;
     else
     {
@@ -561,20 +561,20 @@ class madbFetchRpmsTask extends madbBaseTask
     $nbFailedRpms = 0;
     $nbRetrievedRpms = 0;
     $nbRemovedRpms = 0;
-    
+
     foreach ($distreleases as $distrelease => $archs)
     {
       if (!$distreleaseObj = DistreleasePeer::retrieveByName($distrelease))
       {
         throw new madbException("Distrelease $distrelease not found in database");
-      } 
-      
+      }
+
       foreach ($archs as $arch => $medias)
       {
         if (!$archObj = ArchPeer::retrieveByName($arch))
         {
           throw new madbException("Arch $arch not found in database");
-        } 
+        }
         foreach ($medias as $media => $unused_value)
         {
           // get list of RPMs for this media in our database
@@ -595,13 +595,13 @@ class madbFetchRpmsTask extends madbBaseTask
           }
           asort($rpmsInDatabase);
           unset($stmt);
-          
-          
+
+
           $sophieMedias = array(
             'bin' => $media,
             'src' => $sophie->getSrcMediaNameFromBinMediaName($media)
           );
-          
+
           $rpmsBySophieMedia = array();
           foreach ($sophieMedias as $mediaType => $sophieMedia)
           {
@@ -618,22 +618,22 @@ class madbFetchRpmsTask extends madbBaseTask
                 continue;
               }
             }
-            
+
             // Get the list of pkgids and RPM names
             // Filter list of RPMs with only_packages and exclude_packages filters
-            $rpmsBySophieMedia[$sophieMedia] = $sophie->getRpmsFromMedia( 
+            $rpmsBySophieMedia[$sophieMedia] = $sophie->getRpmsFromMedia(
                       $distribution,
                       $distrelease,
                       $arch,
                       $sophieMedia,
                       array(
-                        'only' => $madbDistroConfig->getOnlyRpms(), 
+                        'only' => $madbDistroConfig->getOnlyRpms(),
                         'exclude' => $madbDistroConfig->getExcludeRpms()
                       )
                     );
             asort($rpmsBySophieMedia[$sophieMedia]);
           }
-          
+
           // handle missing packages from sophie as compared to database
           // and for being able to do it, treat -src media along with their non-src media
           //(array_diff_assoc($rpms2, $rpms));
@@ -643,7 +643,7 @@ class madbFetchRpmsTask extends madbBaseTask
           {
             $missing_from_sophie = array_diff_assoc($missing_from_sophie, $rpmsInSophie);
           }
-          
+
           if (count($missing_from_sophie))
           {
             echo "\n" . count($missing_from_sophie) . " RPMs are no more in Sophie, removing them :\n";
@@ -652,12 +652,12 @@ class madbFetchRpmsTask extends madbBaseTask
           {
             $startTime = microtime(true);
             echo " Remove " . $filename . " ( " . $pkgid . " )";
-            
+
             if (!$rpm = RpmPeer::retrieveUniqueByName($distreleaseObj, $archObj, $mediaObj, $filename))
             {
               throw new madbException("Couldn't retrieve $filename for distrelease $distrelease, arch $arch and media $media");
             }
-            
+
             // Update related RPMs if needed (binary RPMs for this source RPM)
             foreach ($relatedRpms = $rpm->getRpmsRelatedById() as $relatedRpm)
             {
@@ -667,15 +667,15 @@ class madbFetchRpmsTask extends madbBaseTask
             }
             unset($relatedRpm);
             $relatedRpms->clearIterator();
-                
+
             // Remove the RPM itself
             $rpm->delete();
-            
+
             $nbRemovedRpms++;
-            
+
             $time = round(microtime(true) - $startTime, 2);
             echo " - ${time}s";
-            echo "\n"; 
+            echo "\n";
           }
           if (count($missing_from_sophie))
           {
@@ -688,20 +688,20 @@ class madbFetchRpmsTask extends madbBaseTask
             // Search for missing RPMs in our database
             $missing_from_db = array_diff_assoc($rpmsInSophie, $rpmsInDatabase);
             echo " (" . count($rpmsInSophie) . " RPMs , " . count($missing_from_db) . " new) ---\n";
-            // For each unknown RPM 
+            // For each unknown RPM
             // TODO : (batch processing would be great here)
             foreach ($missing_from_db as $pkgid => $filename)
             {
               echo " Add " . $filename . " ( " . $pkgid . " )";
               $startTime = microtime(true);
-              
+
               // Fetch RPM infos
-              try 
+              try
               {
                 $rpmInfos = $sophie->getRpmByPkgid($pkgid);
                 $rpmInfos['real_filename'] = $filename;
                 $time1 = round(microtime(true) - $startTime, 2);
-                echo " - ${time1}s"; 
+                echo " - ${time1}s";
                 $nbRetrievedRpms++;
               }
               catch (SophieClientException $e)
@@ -710,13 +710,13 @@ class madbFetchRpmsTask extends madbBaseTask
                 $nbFailedRpms++;
                 continue;
               }
-              
+
               // Process RPM
               $rpmImporter->importFromArray($distreleaseObj, $archObj, $mediaObj, $rpmInfos);
               $time2 = round(microtime(true) - $startTime - $time1, 2);
               echo " + ${time2}s";
               echo "\n";
-              
+
               // Apply --limit
               if (isset($limit) and (($nbRetrievedRpms + $nbFailedRpms) >= $limit))
               {
@@ -724,45 +724,48 @@ class madbFetchRpmsTask extends madbBaseTask
                 break 5;
               }
             }
-            
+
             if (count($missing_from_db))
             {
               echo "\n";
             }
           }
-          
+
         }
       }
     }
-    
+
     echo "Total number of retrieved RPMs : $nbRetrievedRpms\n";
     echo "Total number of failed RPMs retrievals : $nbFailedRpms\n";
     echo "Total number of removed RPMs : $nbRemovedRpms\n";
-    
-    
+
+
     // if there was at least one retrieved Rpm or one removed Rpm, update application status and clear cache
     if (($nbRetrievedRpms + $nbRemovedRpms) > 0)
     {
       // Update package.is_application
       $pathToAppList = sfConfig::get('sf_root_dir') . '/' . $madbConfig->get('applications_list_file');
-      $this->updateIsApplicationFromFile($pathToAppList); 
+      $this->updateIsApplicationFromFile($pathToAppList);
 
       // Clear cache
       $task = new sfCacheClearTask($this->dispatcher, $this->formatter);
       $task->run();
+
+      $task = new madbUpdateScreenshotsCacheTask($this->dispatcher, $this->formatter);
+      $task->run();
     }
-  }  
-  
+  }
+
   protected function getDistreleasesArchsMedias (madbDistroConfig $madbDistroConfig, SophieClient $sophie)
   {
     // TODO : better error handling (no echo inside the method...)
     $distribution = $madbDistroConfig->getName();
     $distreleases = array();
-    
-    $releases = $sophie->getReleases( 
-                  $distribution, 
+
+    $releases = $sophie->getReleases(
+                  $distribution,
                   array(
-                    'only' => $madbDistroConfig->getOnlyReleases(), 
+                    'only' => $madbDistroConfig->getOnlyReleases(),
                     'exclude' => $madbDistroConfig->getExcludeReleases()
                   )
               );
@@ -771,17 +774,17 @@ class madbFetchRpmsTask extends madbBaseTask
       echo "Failed to get a list of releases for distribution '$distribution'\n";
       return false;
     }
-    
+
     // For each release
     foreach ($releases as $release)
     {
       // Get list of archs
       // Filter list with only_archs and exclude_archs filters
-      $archs = $sophie->getArchs( 
+      $archs = $sophie->getArchs(
                     $distribution,
                     $release,
                     array(
-                      'only' => $madbDistroConfig->getOnlyArchs(), 
+                      'only' => $madbDistroConfig->getOnlyArchs(),
                       'exclude' => $madbDistroConfig->getExcludeArchs()
                     )
                   );
@@ -790,18 +793,18 @@ class madbFetchRpmsTask extends madbBaseTask
         echo "Failed to get a list of archs for distribution '$distribution', release '$release'.\n";
         return false;
       }
-      
+
       // For each arch
       foreach ($archs as $arch)
       {
         // Get list of media
         // Filter list with only_media and exclude_media filters
-        $medias = $sophie->getMedias( 
+        $medias = $sophie->getMedias(
                       $distribution,
                       $release,
-                      $arch, 
+                      $arch,
                       array(
-                        'only' => $madbDistroConfig->getOnlyMedias(), 
+                        'only' => $madbDistroConfig->getOnlyMedias(),
                         'exclude' => $madbDistroConfig->getExcludeMedias()
                       )
                     );
@@ -810,7 +813,7 @@ class madbFetchRpmsTask extends madbBaseTask
           echo "Failed to get a list of medias for distribution '$distribution', release '$release', arch '$arch'.\n";
           return false;
         }
-          
+
         // For each media
         foreach ($medias as $media)
         {
@@ -818,10 +821,10 @@ class madbFetchRpmsTask extends madbBaseTask
         }
       }
     }
-    
+
     return $distreleases;
   }
-  
+
   protected function updateIsApplicationFromFile($filename)
   {
     $con = Propel::getConnection();
@@ -830,18 +833,18 @@ class madbFetchRpmsTask extends madbBaseTask
 
     $sql = "CREATE TEMPORARY TABLE tmpapplications (name VARCHAR(255), PRIMARY KEY (name))";
     $con->exec($sql);
-    
+
     $database->loadData('tmpapplications', $filename, false);
-    
-    
+
+
     $sql = "UPDATE package SET is_application = FALSE";
     $con->exec($sql);
-   
-    
+
+
     $database->updateWithJoin(
-      'package', 
+      'package',
       '',
-      'is_application=TRUE', 
+      'is_application=TRUE',
       'tmpapplications',
       'package.name = tmpapplications.name AND package.is_source=FALSE'
     );
@@ -852,10 +855,10 @@ class madbFetchRpmsTask extends madbBaseTask
       'source_package',
       'is_application = TRUE',
       'rpm AS source_rpm, rpm, package',
-      'source_package.ID = source_rpm.PACKAGE_ID 
-        AND source_rpm.ID = rpm.SOURCE_RPM_ID 
-        AND rpm.is_source = FALSE 
-        AND rpm.PACKAGE_ID = package.ID 
+      'source_package.ID = source_rpm.PACKAGE_ID
+        AND source_rpm.ID = rpm.SOURCE_RPM_ID
+        AND rpm.is_source = FALSE
+        AND rpm.PACKAGE_ID = package.ID
         AND package.is_application = TRUE'
     );
   }
