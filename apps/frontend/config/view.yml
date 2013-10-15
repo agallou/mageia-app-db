@@ -44,6 +44,7 @@ default:
     - jquery.selectToCheckboxes.js
     - searchform.js
     - tooltip.js
+    - header.js
 
   has_layout:     true
   
