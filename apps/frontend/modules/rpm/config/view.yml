@@ -1,3 +1,9 @@
 listSuccess:
   components:
     searching: [ default, searching ]
+
+showSuccess:
+  stylesheets:
+    - vendor/jquery/ui-lightness/jquery-ui-1.8.13.custom.css
+    - jquery-ui-changes.css
+

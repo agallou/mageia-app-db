@@ -33,6 +33,10 @@ $basics = array(
 );
 ?>
 
+<?php if ($allow_install && !$rpm->getIsSource()) : ?>
+  <?php echo link_to('<i class="icon-cloud-download"></i> Install', "rpm/installDialog?id=" . $rpm->getId(), array('class' => 'install_link button', 'id' => 'rpm-install')) ?>
+<?php endif ?>
+
 <table class="infos">
   <tbody>
     <?php foreach ($basics as $name => $value): ?>
@@ -43,6 +47,34 @@ $basics = array(
     <?php endforeach ?>
   </tbody>
 </table>
+
+
+<?php use_helper('JavascriptBase') ?>
+<?php echo javascript_tag() ?>
+$(document).ready(function(){
+  $('a.install_link').click(function(event) {
+    var tag = $("<div></div>");
+    $.ajax({
+      url: $(event.target).attr('href'),
+      success: function(data) {
+        tag.html(data).dialog(
+         {
+           modal: true,
+           width: 660,
+           height: 550,
+           buttons: {
+             Cancel: function() {
+               $(this).dialog( "close" );
+             }
+           }
+         }).dialog('open');
+      }
+    });
+    return false;
+  });
+});
+<?php end_javascript_tag() ?>
+
 
 <ul>
 </ul>
@@ -96,8 +128,6 @@ $advanced = array(
 </table>
 
 
-<br/>
-<?php echo link_to("View in Sophie", $sophie->getUrlForPkgId($rpm->getRpmPkgId())) ?>
 </div>
 
 <?php use_helper('JavascriptBase') ?>

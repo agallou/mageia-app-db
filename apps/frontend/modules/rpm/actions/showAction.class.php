@@ -9,7 +9,7 @@ class showAction extends madbActions
 
     $criteriaFactory = new criteriaFactory();
     $criteria = $criteriaFactory->createFromContext($this->madbcontext, filterPerimeters::RPM, false);
-    
+
     if ($pkgid !== null)
     {
       $criteria->add(RpmPeer::RPM_PKGID, $pkgid);
@@ -19,13 +19,16 @@ class showAction extends madbActions
       $criteria->add(RpmPeer::NAME, $name);
     }
     $criteria->addAscendingOrderByColumn(RpmPeer::DISTRELEASE_ID); // should be useless, but can't hurt
-    $criteria->addAscendingOrderByColumn(RpmPeer::IS_SOURCE);  
-    $criteria->addAscendingOrderByColumn(RpmPeer::MEDIA_ID);  
-    $criteria->addAscendingOrderByColumn(RpmPeer::ARCH_ID);  
+    $criteria->addAscendingOrderByColumn(RpmPeer::IS_SOURCE);
+    $criteria->addAscendingOrderByColumn(RpmPeer::MEDIA_ID);
+    $criteria->addAscendingOrderByColumn(RpmPeer::ARCH_ID);
+
+    $madbConfig = new madbConfig();
+    $this->allow_install = $madbConfig->get('allow_install');
 
     $this->rpms = RpmPeer::doSelect($criteria);
     $this->forward404Unless($this->rpms, 'No RPM found for this name or pkgid');
-    if (count($this->rpms) > 1) 
+    if (count($this->rpms) > 1)
     {
       return 'Multi';
     }

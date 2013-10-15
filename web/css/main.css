@@ -632,6 +632,30 @@ table.comparisontable
 
 }
 
+#content .package .packlist a.install_link,
+.rpm a#rpm-install
+{
+  background-color: #F3EFEF;
+  border: 1px solid #bbb;
+  color:#000;
+}
+
+#content .package .packlist a.install_link:hover,
+.rpm a#rpm-install:hover
+{
+  outline:none;
+  background-color:#FFE69D;
+}
+
+.rpm a#rpm-install
+{
+  text-align:center;
+  float:right;
+  padding:10px 15px 10px 15px;
+  margin-right:10px;
+  margin-top:10px;
+}
+
 .button
 {
   text-decoration:none;

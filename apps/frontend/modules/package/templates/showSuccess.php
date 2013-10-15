@@ -19,7 +19,7 @@ Package : <?php echo $package->getName() ?>
      <?php echo $rpm->getArch()->getName()?> media,
      <?php echo $rpm->getMedia()->getName()?>)
      <?php if ($allow_install && !$rpm->getIsSource()) : ?>
-       <?php echo link_to('Install', 'rpm/installDialog?id=' . $rpm->getId(), array('class' => 'install_link button')) ?>
+       <?php echo link_to('<i class="icon-cloud-download"></i> Install', 'rpm/installDialog?id=' . $rpm->getId(), array('class' => 'install_link button')) ?>
      <?php endif; ?>
   </li>
   <?php endforeach; ?>
