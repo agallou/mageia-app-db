@@ -7,10 +7,24 @@ Package : <?php echo $package->getName() ?>
 <div class="package">
 <div>
 <h2>Package details</h2>
-<p> <strong>Summary</strong> : <?php echo htmlspecialchars($package->getSummary()) ?></p>
-<p> <strong>Description</strong> :<br/>
-<?php echo nl2br(htmlspecialchars($package->getDescription())) ?></p>
-<br/>
+
+<div class="package-details <?php count($first_screenshot) && print 'package-details-with-screenshot' ?>">
+  <?php if (count($first_screenshot)): ?>
+  <a rel="screenshots" href="<?php echo $first_screenshot['large_image_url'] ?>">
+    <?php echo image_tag($first_screenshot['large_image_url']) ?>
+  </a>
+  <?php endif ?>
+
+  <span>
+    <strong>Summary</strong> : <?php echo htmlspecialchars($package->getSummary()) ?>
+    <br />
+    <br />
+    <strong>Description</strong> :<br/>
+    <?php echo nl2br(htmlspecialchars($package->getDescription())) ?></p>
+    <br/>
+  </span>
+</div>
+
 <h2>List of RPMs</h2>
 <ul class="packlist">
   <?php foreach ($rpms as $rpm) : ?>
@@ -29,20 +43,32 @@ Package : <?php echo $package->getName() ?>
 </ul>
 </div>
 <br/>
+
+<?php if (count($other_screenshots)): ?>
 <h2>Screenshot(s)</h2>
 (from <a href="http://screenshots.debian.net">http://screenshots.debian.net</a>)
-<div id="screenshots"></div>
+<div id="screenshots">
+<?php foreach ($other_screenshots as $screenshot): ?>
+  <a rel="screenshots" href="<?php echo $screenshot['large_image_url'] ?>">
+    <img src="<?php echo $screenshot['small_image_url'] ?>" alt="screenshot" />
+  </a>
+<?php endforeach ?>
+
+</div>
+<?php endif ?>
+
+
 <?php use_helper('JavascriptBase') ?>
-<?php echo javascript_tag() ?>
-$(document).ready(function(){
-  $.ajax({
-    url: '<?php echo url_for('package/screenshots?package=' . $package->getName()) ?>',
-    success: function(data){
-      $('#screenshots').append(data);
-    }
-  });
+<script type="text/javascript">
+//<![CDATA[
+$("a[rel=screenshots]").fancybox({
+  'transitionIn' : 'none',
+  'transitionOut' : 'none',
+  'type' : 'image'
 });
-<?php end_javascript_tag() ?>
+//]]>
+</script>
+
 
 <br/>
 <br/>

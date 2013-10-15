@@ -9,7 +9,7 @@ class showAction extends madbActions
     $is_source = $is_source[0];
     $this->package = PackagePeer::retrieveByNameAndIsSource($name, $is_source);
     $this->forward404Unless($this->package, $is_source ? "There's no source package called: $name." : "There's no package called: $name.");
-    
+
     $criteria = $this->getCriteria(filterPerimeters::RPM);
     $this->rpms = array();
     foreach ($this->package->getRpms($criteria) as $rpm)
@@ -17,21 +17,25 @@ class showAction extends madbActions
       $this->rpms[] = $rpm;
     }
     $this->rpms = RpmPeer::sortByEvrAndDistrelease($this->rpms);
-    
+
     $madbConfig = new madbConfig();
     $this->allow_install = $madbConfig->get('allow_install');
     $this->allow_download = $madbConfig->get('allow_download');
-    
+
+    $screenshots = new madbScreenshots($name);
+    $this->setVar('first_screenshot', $screenshots->getFirst());
+    $this->setVar('other_screenshots', $screenshots->getOthers());
+
     // Subscription
     if ($this->getUser()->isAuthenticated())
     {
       $user_id=$this->getUser()->getProfile()->getId();
-      
+
       // Distrelease : . Default : current subscription if there's one. Otherwise, current distrelease filter.
       // Arch : Default : current subscription if there's one. Otherwise current arch filter.
       // Media : Default : current subscription if there's one. Otherwise none.
       // type of changes : updates, update candidates, backports, backport candidates, (comments)
-      
+
       // Check whether the user has subscribed to this package's changes
       $criteria = new Criteria();
       $criteria->addJoin(SubscriptionPeer::ID, SubscriptionElementPeer::SUBSCRIPTION_ID);
@@ -50,12 +54,12 @@ class showAction extends madbActions
           if (null !== $subscriptionElement->getMediaId())
           {
             $parameters['media'][$subscriptionElement->getMediaId()] = $subscriptionElement->getMediaId();
-          } 
+          }
           if (null !== $subscriptionElement->getDistreleaseId())
           {
             $distrelease = DistreleasePeer::retrieveByPK($subscriptionElement->getDistreleaseId());
             $parameters['release'][$distrelease->getName()] = $distrelease->getName();
-          } 
+          }
           if (null !== $subscriptionElement->getArchId())
           {
             $arch = ArchPeer::retrieveByPK($subscriptionElement->getArchId());
@@ -98,7 +102,7 @@ class showAction extends madbActions
         2 => 'new update candidate',
         3 => 'new backport',
         4 => 'new backport candidate'
-      ); 
+      );
       $this->subscribe_form->setWidget('package_id', new sfWidgetFormInputHidden(array(), array('value' => $this->package->getId())));
       $this->subscribe_form->setWidget('type', new sfWidgetFormChoice(array('choices' => $this->types, 'multiple' => true, 'label' => "Watched events")));
       $this->subscribe_form->setValidator('type', new myValidatorChoice(array('choices' => array_keys($this->types), 'required' => true)));
@@ -126,7 +130,7 @@ class showAction extends madbActions
       else
       {
         $extra_bind_parameters['type'] = array(2,3,4);
-      }      
+      }
       formFactory::bind($this->subscribe_form, $filtersIterator, $subscribe_form_madbcontext, $extra_bind_parameters, false);
     }
   }

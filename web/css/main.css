@@ -673,6 +673,20 @@ table.comparisontable
   margin-left:15px;
 }
 
+.package-details-with-screenshot
+{
+  min-height:210px;
+}
+
+
+.package-details-with-screenshot a img
+{
+  height:200px;
+  float:right;
+  margin-right:15px;
+}
+
+
 .rpm h2,
 .package h2,
 .homepage h2
