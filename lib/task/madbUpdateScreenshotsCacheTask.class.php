@@ -26,7 +26,7 @@ class madbUpdateScreenshotsCacheTask extends madbBaseTask
     }
 
     $cache = new sfFileCache(array(
-      'cache_dir' => sfConfig::get('sf_cache_dir') . DIRECTORY_SEPARATOR . 'screenshots',
+      'cache_dir' => sfConfig::get('sf_upload_dir') . DIRECTORY_SEPARATOR . 'screenshots',
     ));
     foreach ($packages as $name => $images) {
       $cache->set($name, serialize($images));

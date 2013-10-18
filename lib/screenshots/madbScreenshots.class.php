@@ -16,7 +16,7 @@ class madbScreenshots
   protected function initialize()
   {
     $cache = new sfFileCache(array(
-      'cache_dir' => sfConfig::get('sf_cache_dir') . DIRECTORY_SEPARATOR . 'screenshots',
+      'cache_dir' => sfConfig::get('sf_upload_dir') . DIRECTORY_SEPARATOR . 'screenshots',
     ));
     if (!$cache->has($this->packageName))
     {
