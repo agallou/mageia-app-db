@@ -8,21 +8,23 @@ Package : <?php echo $package->getName() ?>
 <div>
 <h2>Package details</h2>
 
-<div class="package-details <?php count($first_screenshot) && print 'package-details-with-screenshot' ?>">
-  <?php if (count($first_screenshot)): ?>
-  <a rel="screenshots" href="<?php echo $first_screenshot['large_image_url'] ?>">
-    <?php echo image_tag($first_screenshot['large_image_url']) ?>
-  </a>
-  <?php endif ?>
-
-  <span>
+<div class="package-details">
+  <div class="package-description">
     <strong>Summary</strong> : <?php echo htmlspecialchars($package->getSummary()) ?>
     <br />
     <br />
     <strong>Description</strong> :<br/>
     <?php echo nl2br(htmlspecialchars($package->getDescription())) ?></p>
     <br/>
-  </span>
+  </div>
+  
+  <?php if (count($first_screenshot)): ?>
+  <div class='main-screenshot'>
+    <a rel="screenshots" href="<?php echo $first_screenshot['large_image_url'] ?>">
+      <?php echo image_tag($first_screenshot['large_image_url']) ?>
+    </a>
+  </div>
+  <?php endif ?>
 </div>
 
 <h2>List of RPMs</h2>

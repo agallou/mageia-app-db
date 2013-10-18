@@ -673,19 +673,36 @@ table.comparisontable
   margin-left:15px;
 }
 
-.package-details-with-screenshot
+div.package-details
 {
-  min-height:210px;
+  width:100%;
+  display:table;
 }
 
-
-.package-details-with-screenshot a img
+div.package-description
 {
-  height:200px;
-  float:right;
-  margin-right:15px;
+  width:50%;
+  min-width:500px;
+  vertical-align:top;
+  display:table-cell;
 }
 
+div.main-screenshot
+{
+  vertical-align:top;
+  display:table-cell;
+  text-align:right;
+}
+
+.main-screenshot a 
+{
+  width:100%;
+}
+
+.main-screenshot img
+{
+  width:100%;
+}
 
 .rpm h2,
 .package h2,
