@@ -47,7 +47,7 @@ Package : <?php echo $package->getName() ?>
 <br/>
 
 <?php if (count($other_screenshots)): ?>
-<h2>Screenshot(s)</h2>
+<h2>More screenshots</h2>
 (from <a href="http://screenshots.debian.net">http://screenshots.debian.net</a>)
 <div id="screenshots">
 <?php foreach ($other_screenshots as $screenshot): ?>
