@@ -23,8 +23,8 @@ class menuGroupBuilderFrontend extends menuGroupBuilder
     }
     $this->addGroup('Latest', $items, 'icon-bell');
     $this->addGroup('Browse', array(
-      $this->createItem('By group', 'group/list'),
-      $this->createItem('By name', 'package/list'),
+      $this->createItem('Groups', 'group/list'),
+      $this->createItem('Packages/Applications', 'package/list'),
     ), 'icon-tasks');
 
     $this->addGroup('Tools', array(

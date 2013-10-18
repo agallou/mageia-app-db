@@ -69,11 +69,11 @@ class menuRenderer extends atoum\test
 
     $browseGroup = new \menuGroup('Browse');
 
-    $groupItem = new \menuItem('By group', 'group/list', array('extra_parameters' => $extraparams));
+    $groupItem = new \menuItem('Groups', 'group/list', array('extra_parameters' => $extraparams));
     $browseGroup->addMenuItem($groupItem);
 
 
-    $nameItem = new \menuItem('By name', 'package/list', array('extra_parameters' => $extraparams));
+    $nameItem = new \menuItem('Packages/Applications', 'package/list', array('extra_parameters' => $extraparams));
     $browseGroup->addMenuItem($nameItem);
 
     $menuGroup->addMenuGroup($browseGroup);
@@ -96,8 +96,8 @@ class menuRenderer extends atoum\test
 <li>
 <h2>Browse</h2>
 <ul>
-<li class="leaf "><a href="/index.php/group/list/release/2010/arch/1/media/1/source/0">By group</a></li>
-<li class="leaf "><a href="/index.php/package/list/release/2010/arch/1/media/1/source/0">By name</a></li>
+<li class="leaf "><a href="/index.php/group/list/release/2010/arch/1/media/1/source/0">Groups</a></li>
+<li class="leaf "><a href="/index.php/package/list/release/2010/arch/1/media/1/source/0">Packages/Applications</a></li>
 </ul>
 </li>
 </ul>
