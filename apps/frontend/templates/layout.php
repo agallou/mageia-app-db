@@ -21,10 +21,11 @@
             <div id="header">
               <div id="header-container">
                 <div id="appname">
-                  <?php echo link_to($madbConfig->get('name'), 'http://' . $madbConfig->get('host')) ?><br />
+                  <?php $linkName = $madbConfig->get('name') . '<br />'; ?>
                   <?php if (strlen($subname = $madbConfig->get('subname'))): ?>
-                  <span class="subname"><?php echo link_to($subname, 'http://' . $madbConfig->get('host')) ?></span>
+                    <?php $linkName .= '<span class="subname">' . $subname . '</subname>'; ?>
                   <?php endif ?>
+                  <?php echo link_to($linkName, 'http://' . $madbConfig->get('host')) ?>
                 </div>
                 <div id="search">
                     <?php include_component('default', 'searching', array(
