@@ -10,7 +10,12 @@ class madbUpdateScreenshotsCacheTask extends madbBaseTask
 
   protected function execute($arguments = array(), $options = array())
   {
-    $json = json_decode(file_get_contents('http://screenshots.debian.net/json/screenshots'), true);
+    $context = stream_context_create(array(
+      'http'=> array(
+        'timeout' => 300,
+      )
+    ));
+    $json = json_decode(file_get_contents('http://screenshots.debian.net/json/screenshots', false, $context), true);
     $screenshots = $json['screenshots'];
 
     $packages = array();
