@@ -17,7 +17,7 @@ Package : <?php echo $package->getName() ?>
     <?php echo nl2br(htmlspecialchars($package->getDescription())) ?></p>
     <br/>
   </div>
-  
+
   <?php if (count($first_screenshot)): ?>
   <div class='main-screenshot'>
     <a rel="screenshots" href="<?php echo $first_screenshot['large_image_url'] ?>">
@@ -48,7 +48,7 @@ Package : <?php echo $package->getName() ?>
 
 <?php if (count($other_screenshots)): ?>
 <h2>More screenshots</h2>
-(from <a href="http://screenshots.debian.net">http://screenshots.debian.net</a>)
+
 <div id="screenshots">
 <?php foreach ($other_screenshots as $screenshot): ?>
   <a rel="screenshots" href="<?php echo $screenshot['large_image_url'] ?>">
