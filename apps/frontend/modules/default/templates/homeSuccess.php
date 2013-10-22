@@ -48,6 +48,7 @@ Home
     <?php endif; ?>
   <?php endforeach; ?>
   </table>
+
 </div>
 
 <?php if ($has_updates) : ?>
@@ -61,19 +62,20 @@ Home
     'limit'          => $madbConfig->get('homepage_rpm_limit'),
     'short'          => true,
     'show_bug_links' => false,
-  )) ?>
-  <br/>
-  <?php echo link_to(
-          "More updates...",
-          $madburl->urlFor('rpm/list',
-            $madbcontext,
-             array(
-               'extra_parameters' => array(
-                  'listtype' => 'updates'
-               )
-             )
+    'end_callback'   => function() use ($madburl, $madbcontext) {
+      return '<br />' . link_to(
+        "More updates...",
+        $madburl->urlFor('rpm/list',
+          $madbcontext,
+          array(
+            'extra_parameters' => array(
+              'listtype' => 'updates'
+            )
           )
-        ); ?>
+        )
+      );
+    }
+  )) ?>
 </div>
 <?php endif; ?>
 
@@ -88,19 +90,22 @@ Home
     'limit'          => $madbConfig->get('homepage_rpm_limit'),
     'short'          => true,
     'show_bug_links' => false,
-  )) ?>
-  <br/>
-  <?php echo link_to(
-          "More backports...",
-          $madburl->urlFor('rpm/list',
-            $madbcontext,
-             array(
-               'extra_parameters' => array(
-                  'listtype' => 'backports'
-               )
+    'end_callback'   => function() use ($madburl, $madbcontext) {
+       return '<br />' .  link_to(
+         "More backports...",
+         $madburl->urlFor('rpm/list',
+           $madbcontext,
+           array(
+            'extra_parameters' => array(
+              'listtype' => 'backports'
              )
-          )
-        ); ?>
+           )
+         )
+       );
+    }
+  )) ?>
+
+  <?php  ?>
 </div>
 <?php endif; ?>
 

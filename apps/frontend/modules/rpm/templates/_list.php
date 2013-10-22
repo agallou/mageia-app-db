@@ -81,11 +81,16 @@ if ($show_bug_links)
   </tbody>
   </table>
 
+  <?php if (isset($end_callback)): ?>
+    <?php echo $end_callback() ?>
+  <?php endif ?>
+
 <?php else: ?>
 
 No result.
 
 <?php endif ?>
+
 
 <?php if ($showpager): ?>
   <?php include_partial('default/pager', array(
