@@ -1,6 +1,7 @@
-#symfony cache and lgo folders
+#symfony cache, log and uploads folders
 log/*
 cache/*
+web/uploads/*
 
 #ide files
 *.kdev4
