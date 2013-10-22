@@ -694,6 +694,14 @@ div.main-screenshot
   text-align:right;
 }
 
+#content .main-screenshot a,
+#content .screenshots a
+{
+  outline:none;
+  background:none;
+}
+
+
 .main-screenshot a 
 {
   width:100%;
