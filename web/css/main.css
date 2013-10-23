@@ -164,6 +164,7 @@ a, a:visited
 div#header div#search
 {
     width:420px;
+    padding-left:202px;
     margin:auto;
     margin-top:7px;
 }
