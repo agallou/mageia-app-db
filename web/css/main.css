@@ -164,9 +164,8 @@ a, a:visited
 div#header div#search
 {
     width:420px;
-    margin-left:300px;
+    margin:auto;
     margin-top:7px;
-    position: relative;
 }
 
 div#header div#search form input[type=text]
