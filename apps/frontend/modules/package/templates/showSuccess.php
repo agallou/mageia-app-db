@@ -17,7 +17,7 @@ Package : <?php echo $package->getName() ?>
     <?php echo nl2br(htmlspecialchars($package->getDescription())) ?></p>
     <br/>
     <?php if (null !== $license): ?>
-    <strong>Licence</strong> : <?php echo $license ?>
+    <strong>License</strong> : <?php echo $license ?>
     <?php endif ?>
   </div>
 
