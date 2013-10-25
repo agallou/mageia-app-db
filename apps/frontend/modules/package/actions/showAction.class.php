@@ -18,6 +18,12 @@ class showAction extends madbActions
     }
     $this->rpms = RpmPeer::sortByEvrAndDistrelease($this->rpms);
 
+    $packageLicense = null;
+    if (count($this->rpms) && isset($this->rpms[0]))
+    {
+      $packageLicense = $this->rpms[0]->getLicense();
+    }
+
     $madbConfig = new madbConfig();
     $this->allow_install = $madbConfig->get('allow_install');
     $this->allow_download = $madbConfig->get('allow_download');
@@ -25,6 +31,7 @@ class showAction extends madbActions
     $screenshots = new madbScreenshots($name);
     $this->setVar('first_screenshot', $screenshots->getFirst());
     $this->setVar('other_screenshots', $screenshots->getOthers());
+    $this->setVar('license', $packageLicense);
 
     // Subscription
     if ($this->getUser()->isAuthenticated())

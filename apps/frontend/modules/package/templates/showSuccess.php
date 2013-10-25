@@ -16,6 +16,9 @@ Package : <?php echo $package->getName() ?>
     <strong>Description</strong> :<br/>
     <?php echo nl2br(htmlspecialchars($package->getDescription())) ?></p>
     <br/>
+    <?php if (null !== $license): ?>
+    <strong>Licence</strong> : <?php echo $license ?>
+    <?php endif ?>
   </div>
 
   <?php if (count($first_screenshot)): ?>
