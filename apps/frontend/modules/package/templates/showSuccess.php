@@ -18,8 +18,8 @@ Package : <?php echo $package->getName() ?>
     <br />
     <?php if (null !== $url): ?>
     <strong>URL</strong> : <?php echo link_to($url, $url) ?>
-    <?php endif ?>
     <br/>
+    <?php endif ?>
     <?php if (null !== $license): ?>
     <strong>License</strong> : <?php echo $license ?>
     <?php endif ?>
