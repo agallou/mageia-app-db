@@ -26,5 +26,7 @@ class ProjectConfiguration extends sfProjectConfiguration
     sfConfig::set('sf_phing_path', sfConfig::get('sf_root_dir') .'/vendor/phing/phing');
     sfConfig::set('sf_propel_path', sfConfig::get('sf_root_dir') .'/vendor/propel/propel1');
     sfConfig::set('sf_atoum_path', dirname(__FILE__) . '/../vendor/atoum/atoum');
+
+    require_once dirname(__FILE__).'/../vendor/openlss/func-format/func/format.php';
   }
 }
