@@ -6,7 +6,8 @@
 	"symfony/symfony1"                    : "v1.4.20",
 	"sfGuardPlugin"       : "v4.0.2",
 	"omCrossAppUrlPlugin" : "v1.0.2",
-        "propel/sf-propel-o-r-m-plugin"       : "dev-master"
+        "propel/sf-propel-o-r-m-plugin"       : "dev-master",
+        "openlss/func-format" : "0.0.8"
     },
     "require-dev": {
         "atoum/sfAtoumPlugin": "dev-master",

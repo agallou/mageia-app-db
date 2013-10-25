@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "bb4b22d911e4dc38bc01d76b9fa8318f",
+    "hash": "d90905df21f30b26288c433e2b7efbe0",
     "packages": [
         {
             "name": "composer/installers",
@@ -90,6 +90,57 @@
                 "composer/installers": "*"
             },
             "type": "symfony1-plugin"
+        },
+        {
+            "name": "openlss/func-format",
+            "version": "0.0.8",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/openlss/func-format.git",
+                "reference": "dcb22f619746d28d6c0eedf3315a42f2ba718323"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/openlss/func-format/zipball/dcb22f619746d28d6c0eedf3315a42f2ba718323",
+                "reference": "dcb22f619746d28d6c0eedf3315a42f2ba718323",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.2"
+            },
+            "require-dev": {
+                "openlss/core-boot": "~0.0.1"
+            },
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "func/format.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPL-3.0+"
+            ],
+            "authors": [
+                {
+                    "name": "Bryan Tong",
+                    "email": "contact@nullivex.com",
+                    "homepage": "http://bryantong.com"
+                },
+                {
+                    "name": "Tony Butler",
+                    "email": "spudz76@gmail.com",
+                    "homepage": "http://openlss.org"
+                }
+            ],
+            "description": "Display formatting functions",
+            "homepage": "http://openlss.org",
+            "keywords": [
+                "byte format",
+                "format",
+                "ip format"
+            ],
+            "time": "2013-04-07 02:54:56"
         },
         {
             "name": "phing/phing",
