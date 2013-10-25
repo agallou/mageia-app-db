@@ -30,6 +30,7 @@ $basics = array(
   'Summary' => htmlspecialchars($rpm->getSummary()),
   'Size' => $rpm->getSize(),
   'Arch' => $rpm->getRealarch(),
+  'License' => $rpm->getLicense(),
 );
 ?>
 
