@@ -28,7 +28,7 @@ $basics = array(
   'URL' => $rpm->getUrl() ? link_to($rpm->getUrl(), $rpm->getUrl()) : '',
   'Group' => $rpm->getRpmGroup()->getName(),
   'Summary' => htmlspecialchars($rpm->getSummary()),
-  'Size' => $rpm->getSize(),
+  'Size' => format_bytes($rpm->getSize()),
   'Arch' => $rpm->getRealarch(),
   'License' => $rpm->getLicense(),
 );
