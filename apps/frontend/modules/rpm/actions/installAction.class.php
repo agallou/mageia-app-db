@@ -44,6 +44,7 @@ class installAction extends madbActions
     $this->getResponse()->clearHttpHeaders();
     $this->getResponse()->setContentType($type);
     $this->getResponse()->setHttpHeader('Content-Disposition', 'attachment; filename="' . $filename .'"');
+    $this->getResponse()->setHttpHeader('Content-Type', 'application/x-urpmi; charset=UTF-8');
     return $this->renderText($contents);
   }
 }
