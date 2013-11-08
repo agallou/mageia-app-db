@@ -1,5 +1,8 @@
 <?php slot('title', 'Current Update candidates') ?>
-<h1>Current Update candidates</h1>
+<?php slot('name') ?>
+Current Update candidates
+<?php end_slot('name') ?>
+
 <?php foreach ($updates_by_version as $version => $updates_by_type): ?>
 <h2>Mageia <?php echo $version ?></h2>
 <table class='buglist'>

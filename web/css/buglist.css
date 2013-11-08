@@ -1,7 +1,6 @@
 table.buglist
 {
   border-collapse: collapse;
-  border: 2px solid #000;
   text-align:center;
   font-size:13px;
 }
@@ -11,11 +10,6 @@ table.buglist
   border:1px solid gray;
   padding: 2px;
   vertical-align: top;
-}
-
-.buglist th
-{
-  border-bottom: 2px solid #000;
 }
 
 .enhancement, .low
@@ -36,5 +30,5 @@ table.buglist
 
 .feedback
 {
-  background-color: #dfdfdf;
+  background-color: #ccc;
 }
