@@ -114,7 +114,8 @@ class updatesAction extends madbActions
                                ? ($source_package = PackagePeer::retrieveSourcePackageFromString($update[$rank['RPM']], false))
                                  ? $source_package
                                  : PackagePeer::stripVersionFromName($update[$rank['RPM']])
-                               : false
+                               : false,
+          'has_advisory'    => strpos($update[$rank['whiteboard']], 'advisory') === false ? false : true
       );      
     }
     $this->updates_by_version = array();
