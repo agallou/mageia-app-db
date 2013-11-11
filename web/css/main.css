@@ -676,22 +676,30 @@ table.comparisontable
 div.package-details
 {
   width:100%;
-  display:table;
+  overflow: hidden;
 }
 
 div.package-description
 {
+  background: rgba(255,0,0,.3);
+  float: left;
   width:50%;
-  min-width:500px;
+  min-width:520px;
   vertical-align:top;
-  display:table-cell;
 }
 
 div.main-screenshot
 {
-  vertical-align:top;
-  display:table-cell;
+  min-width: 160px;
+  background: rgba(0,255,0,.3);
+  overflow:hidden;
   text-align:right;
+}
+
+@media (max-width:920px) {
+  div.package-description {float: none; width: auto;}
+  div.main-screenshot {text-align: center; padding-top: 10px;}
+  div.main-screenshot img {max-height:300px;}
 }
 
 #content .main-screenshot a,
@@ -701,15 +709,9 @@ div.main-screenshot
   background:none;
 }
 
-
-.main-screenshot a 
-{
-  width:100%;
-}
-
 .main-screenshot img
 {
-  width:100%;
+  max-width:100%;
 }
 
 .rpm h2,
