@@ -681,7 +681,6 @@ div.package-details
 
 div.package-description
 {
-  background: rgba(255,0,0,.3);
   float: left;
   width:50%;
   min-width:520px;
@@ -691,7 +690,6 @@ div.package-description
 div.main-screenshot
 {
   min-width: 160px;
-  background: rgba(0,255,0,.3);
   overflow:hidden;
   text-align:right;
 }
