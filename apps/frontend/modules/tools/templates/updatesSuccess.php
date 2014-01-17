@@ -104,7 +104,7 @@ Current Update candidates
         $date = new DateTime(substr($updates[$id]['changed'], 0, 10));
         echo $date->diff($now)->format("%a");
         ?></td>
-        <td><?php echo link_to("RPMs", $madburl->urlFor("tools/listRpmsForQaBug?bugnum=$id", $madbcontext)); ?></td>
+        <td><?php echo link_to("RPMs", $madburl->urlFor("tools/listRpmsForQaBug", $madbcontext, array('extra_parameters' => array('bugnum' => $id, 'application'=>0)))); ?></td>
         <td style="text-align:left;"><?php 
         if ($source_package = $updates[$id]['source_package'])
         {
@@ -138,3 +138,8 @@ enhancement: <?php echo $count['enhancement'] ?>)<br/>
 <?php endforeach; ?>
 <span class="feedback">Gray background</span> = packager feedback requested.<br />
 A star* next to the update type means that an advisory has been uploaded to SVN already.
+
+<?php use_helper('JavascriptBase') ?>
+<?php echo javascript_tag() ?>
+  $('#filtering-border').remove();
+<?php end_javascript_tag() ?>

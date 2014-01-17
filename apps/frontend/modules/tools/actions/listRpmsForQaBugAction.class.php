@@ -1,5 +1,5 @@
 <?php
-class listRpmsForQaBugAction extends sfActions
+class listRpmsForQaBugAction extends madbActions
 {
   public function execute($request)
   {
@@ -46,10 +46,10 @@ class listRpmsForQaBugAction extends sfActions
         $distrelease = $srpm->getDistrelease()->getDisplayedName();
         $arch = $srpm->getArch()->getName();
 
-        $this->results[$distrelease][$match_type][$arch]['SRPM'][$srpm->getMedia()->getName()][$srpm->getName()] = $srpm->getName();
+        $this->results[$distrelease][$match_type][$arch]['SRPM'][$srpm->getMedia()->getName()][$srpm->getName()] = $srpm;
         foreach ($srpm->getRpmsRelatedById() as $rpm)
         {
-          $this->results[$distrelease][$match_type][$arch]['RPM'][$rpm->getMedia()->getName()][$rpm->getName()] = $rpm->getName();
+          $this->results[$distrelease][$match_type][$arch]['RPM'][$rpm->getMedia()->getName()][$rpm->getName()] = $rpm;
         }
       }      
     }
