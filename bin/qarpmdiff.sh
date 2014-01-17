@@ -55,3 +55,7 @@ rpm2cpio ../$rpm2 | cpio -idm
 cd ..
 
 LC_ALL=C diff -ru $rpm1.d/ $rpm2.d/
+rm -f $rpm1
+rm -f $rpm2
+rm -rf $rpm1.d
+rm -rf $rpm2.d
