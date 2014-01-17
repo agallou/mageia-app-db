@@ -36,7 +36,7 @@ Package : <?php echo link_to(
 <div class="rpm">
 <p>(from media <?php echo $rpm_for_comparison->getMedia()->getName() ?>)</p>
   
-<pre>
+<pre style='overflow:auto;'>
 <?php echo $output ?>
 </pre>
 
