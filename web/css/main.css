@@ -801,3 +801,8 @@ div#login_form input[type=submit]:hover
   border:0px;
   background-color: #FFE69D;
 }
+
+pre
+{
+  font-size: smaller;
+}
