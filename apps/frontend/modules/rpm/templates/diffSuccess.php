@@ -37,7 +37,7 @@ Package : <?php echo link_to(
 <p>(from media <?php echo $rpm_for_comparison->getMedia()->getName() ?>)</p>
   
 <pre style='overflow:auto;'>
-<?php echo $output ?>
+<?php echo htmlentities($output) ?>
 </pre>
 
 <?php use_helper('JavascriptBase') ?>
