@@ -33,8 +33,8 @@ else
   filler=
 fi
 
-rsync -av --no-motd $mirror/$distro/$arch/$filler$media1/$rpm1 $rpm1
-rsync -av --no-motd  $mirror/$distro/$arch/$filler$media2/$rpm2 $rpm2
+rsync -a --no-motd $mirror/$distro/$arch/$filler$media1/$rpm1 $rpm1
+rsync -a --no-motd  $mirror/$distro/$arch/$filler$media2/$rpm2 $rpm2
 
 echo
 echo "*** rpmdiff output between $rpm1 and $rpm2 ***"
