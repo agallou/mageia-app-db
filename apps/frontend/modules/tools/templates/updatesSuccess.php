@@ -2,7 +2,11 @@
 <?php slot('name') ?>
 Current Update candidates
 <?php end_slot('name') ?>
-
+<p>
+A <span class="feedback">gray background</span> means "QA team waiting for packager feedback".<br />
+A star* next to the update type means that an advisory has been uploaded to SVN already.
+</p>
+<br />
 <?php foreach ($updates_by_version as $version => $updates_by_type): ?>
 <h2>Mageia <?php echo $version ?></h2>
 <table class='buglist'>
@@ -136,8 +140,6 @@ bugfix: <?php echo $count['bugfix'] ?>,
 enhancement: <?php echo $count['enhancement'] ?>)<br/>
 <br/>
 <?php endforeach; ?>
-<span class="feedback">Gray background</span> = packager feedback requested.<br />
-A star* next to the update type means that an advisory has been uploaded to SVN already.
 
 <?php use_helper('JavascriptBase') ?>
 <?php echo javascript_tag() ?>
