@@ -3,8 +3,8 @@
 Current Update candidates
 <?php end_slot('name') ?>
 <p>
-A <span class="feedback">gray background</span> means "QA team waiting for packager feedback".<br />
-A star* next to the update type means that an advisory has been uploaded to SVN already.
+See <a href="https://wiki.mageia.org/en/QA_process_for_validating_updates">QA process for validating updates</a> for instructions (and join <a href="irc://irc.freenode.net/#mageia-qa">our QA IRC channel</a>).</p>
+<p>A <span class="feedback">gray background</span> means "QA team waiting for packager feedback". A star* next to the update type means that an advisory has been uploaded to SVN already.
 </p>
 <br />
 <?php foreach ($updates_by_version as $version => $updates_by_type): ?>
