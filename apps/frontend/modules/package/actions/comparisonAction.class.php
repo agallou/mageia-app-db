@@ -24,7 +24,7 @@ class comparisonAction extends madbActions
     $this->distrelease = $distrelease;
     if ($distrelease->getIsDevVersion())
     {
-      $this->message = "This page is not available when consulting a development distribution release. Please choose another one.";
+      $this->message = "There is no higher release to compare " . $distrelease->getDisplayedName() . " with.";
       return 'Error';
     }
     

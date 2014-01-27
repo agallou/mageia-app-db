@@ -4,11 +4,11 @@
   Comparison between releases <?php echo $distrelease->getDisplayedName(); ?> and <?php echo $targetRelease->getDisplayedName(); ?>
 <?php end_slot('name') ?>
 
-<p>This page compares a stable release (here <?php echo $distrelease->getDisplayedName(); ?>) with another higher release (here <?php echo $targetRelease->getDisplayedName(); ?>).
- Like the other lists, it is filtered using the filters available at the top of the page.</p>
+<p>This page compares the packages present in <?php echo $distrelease->getDisplayedName(); ?> with those in <?php echo $targetRelease->getDisplayedName(); ?>.
+ It can be customized by using the filters available at the top of the page.</p>
 <br/>
-<p><strong>Important notice: after clicking a link, you will sometimes need to change the filter values.
-For example, change the selected release from <?php echo $distrelease->getDisplayedName(); ?> to <?php echo $targetRelease->getDisplayedName(); ?>, or change the arch value.</strong></p>
+<p><strong>After clicking a link, you might need to change the filter values.
+For example, change <?php echo $distrelease->getDisplayedName(); ?> to <?php echo $targetRelease->getDisplayedName(); ?>, or change the arch value.</strong></p>
 <br/>
 <p>Legend:
 <span class="newpackage bordered">added in <?php echo $target_release; ?></span>,
