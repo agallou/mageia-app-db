@@ -11,12 +11,12 @@
 For example, change <?php echo $distrelease->getDisplayedName(); ?> to <?php echo $targetRelease->getDisplayedName(); ?>, or change the arch value.</strong></p>
 <br/>
 <p>Legend:
-<span class="newpackage bordered">added in <?php echo $target_release; ?></span>,
-<span class="testing bordered">being tested: same version as in <?php echo $target_release; ?></span>,
-<span class="bordered">newer version in <?php echo $target_release; ?></span>.
-<span class="newer_avail bordered">newer available outside <?php echo $target_release; ?></span>.
-<span class="backported bordered">backported</span>.
-<span class="older bordered">older version in <?php echo $target_release; ?>!</span>.
+<span class="newpackage bordered">added in <?php echo $target_release; ?></span>
+<span class="testing bordered">being tested: same version as in <?php echo $target_release; ?></span>
+<span class="bordered">newer version in <?php echo $target_release; ?></span>
+<span class="newer_avail bordered">newer available outside <?php echo $target_release; ?></span>
+<span class="backported bordered">backported</span>
+<span class="older bordered">older version in <?php echo $target_release; ?>!</span>
 </p>
 <table class="comparisontable">
   <thead>
