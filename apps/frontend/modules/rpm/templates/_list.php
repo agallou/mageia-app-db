@@ -59,19 +59,9 @@ if ($show_bug_links)
         <?php if ($show_bug_links): ?>
         <td>
         <?php
-          if ($rpm->getIsSource() and $rpm->getBugNumber())
+          if ($rpm->getBugNumber(true))
           {
-            echo $link = link_to($rpm->getBugNumber() . " (" . $bugtracker->getLabelForMatchType($rpm->getBugMatchType()) . ")", $bugtracker->getUrlForBug($rpm->getBugNumber()));
-          }
-          elseif (!$rpm->getIsSource())
-          {
-            if ($srpm = $rpm->getRpmRelatedBySourceRpmId())
-            {
-              if ($srpm->getBugNumber())
-              {
-                echo $link = link_to($srpm->getBugNumber() . " (" . $bugtracker->getLabelForMatchType($srpm->getBugMatchType()) . ")", $bugtracker->getUrlForBug($srpm->getBugNumber()));
-              }
-            }
+            echo $link = link_to($rpm->getBugNumber(true) . " (" . $bugtracker->getLabelForMatchType($rpm->getBugMatchType(true)) . ")", $bugtracker->getUrlForBug($rpm->getBugNumber(true)));
           }
         ?></td>
         <?php endif ?>

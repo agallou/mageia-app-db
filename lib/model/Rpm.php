@@ -31,6 +31,50 @@ class Rpm extends BaseRpm {
     $criteria->add(RpmPeer::SOURCE_RPM_NAME, $this->getFilename());
     $rpms = RpmPeer::doSelect($criteria);
     return $rpms;
-  }    
+  }
+
+  /**
+   * @param bool $get_from_source_rpm if set to true, this function will return the bug number associated with the source RPM
+   *
+   * @return bool|int
+   */
+  public function getBugNumber($get_from_source_rpm=false)
+  {
+    if (!$this->getIsSource() && $get_from_source_rpm)
+    {
+      if ($srpm = $this->getRpmRelatedBySourceRpmId())
+      {
+        return $srpm->getBugNumber();
+      }
+    }
+    else
+    {
+      return parent::getBugNumber();
+    }
     
+    return false;
+  }
+
+  /**
+   * @param bool $get_from_source_rpm if set to true, this function will return the bug match type associated with the source RPM
+   *
+   * @return bool|int
+   */
+  public function getBugMatchType($get_from_source_rpm=false)
+  {
+    if (!$this->getIsSource() && $get_from_source_rpm)
+    {
+      if ($srpm = $this->getRpmRelatedBySourceRpmId())
+      {
+        return $srpm->getBugMatchType();
+      }
+    }
+    else
+    {
+      return parent::getBugMatchType();
+    }
+
+    return false;
+  }  
+  
 } // Rpm

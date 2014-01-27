@@ -18,7 +18,19 @@ Package : <?php echo link_to(
 <div class="rpm">
 
 <div>
+  
+<?php
+  $bugtrackerFactory = new madbBugtrackerFactory();
+  $bugtracker = $bugtrackerFactory->create();
+  if ($bugnumber = $rpm->getBugNumber(true)):
+    echo "<p>";
+    echo link_to("Bug report found for this RPM: " . $rpm->getBugNumber(true) . " (" . $bugtracker->getLabelForMatchType($rpm->getBugMatchType(true)) . ")", $bugtracker->getUrlForBug($rpm->getBugNumber(true)));
+    echo "</p>";
+  endif;
+?>
 <h2>Basic items</h2>
+
+
 
 <?php
 $basics = array(
