@@ -561,15 +561,9 @@ table.comparisontable
   border-collapse: collapse;
 }
 
-.comparisontable td
-{
-  white-space:nowrap;
-}
-
 .comparisontable td.summary
 {
   width:80%;
-  white-space:no;
 }
 
 .comparisontable td, .comparisontable th
