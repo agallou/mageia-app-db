@@ -11,12 +11,12 @@
 For example, change <?php echo $distrelease->getDisplayedName(); ?> to <?php echo $targetRelease->getDisplayedName(); ?>, or change the arch value.</strong></p>
 <br/>
 <p>Legend:
-<span class="newpackage bordered">added in <?php echo $target_release; ?></span>
-<span class="testing bordered">being tested: same version as in <?php echo $target_release; ?></span>
-<span class="bordered">newer version in <?php echo $target_release; ?></span>
-<span class="newer_avail bordered">newer available outside <?php echo $target_release; ?></span>
-<span class="backported bordered">backported</span>
-<span class="older bordered">older version in <?php echo $target_release; ?>!</span>
+<span class="newpackage bordered">added in <?php echo $target_release; ?></span> 
+<?php if ($has_updates_testing || $has_backports_testing) : ?><span class="testing bordered">being tested: same version as in <?php echo $target_release; ?></span> <?php endif; ?>
+<span class="bordered">newer version in <?php echo $target_release; ?></span> 
+<?php if ($has_available_versions) : ?><span class="newer_avail bordered">newer available outside <?php echo $target_release; ?></span> <?php endif; ?>
+<?php if ($has_backports) : ?><span class="backported bordered">backported</span> <?php endif; ?>
+<span class="older bordered">older version in <?php echo $target_release; ?>!</span> 
 </p>
 <table class="comparisontable">
   <thead>
