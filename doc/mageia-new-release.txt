@@ -4,12 +4,12 @@ Listing here the steps just before a new Mageia is released:
 ** extract it and get from it the /usr/share/rpmdrake/gui.lst file
 ** sort the file
 ** meld it with data/distros/mageia/applications.txt. We add new applications but never remove missing ones because they can exist in older versions of the distro. Remove one entry only if it's clearly misleading.
-* give the comparison links for blog post
+* make the "comparison" page not show newer versions from other distros, to not distract from comparison to previous release (gray lines can be frightening)
+* make the "comparison" page not show backports, if any (or use an option in the URL)
+* give the comparison links for blog post, web page and press release
 * fetch RPMs one last time from Sophie, then temporarily stop syncing from Sophie so that cache is preserved
 * in distrelease, rename 'cauldron' to e.g. '5' and update the is_latest and is_previous fields in the table
 * (to be confirmed) keep the is_dev_version field set to 1 for the former 'cauldron' entry
-* make the "comparison" page not show newer versions from other distros, to not distract from comparison to previous release (gray lines can be frightening)
-* give the comparison links for blog post
 * restarting httpd and mysqld can do no harm and free some RAM
 
 A few days later (when number of visits per day is low enough and Sophie has the new Mageia listed in it)
