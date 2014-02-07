@@ -8,10 +8,8 @@ Home
 <div id="intro" class="links">
   <?php $subname = $madbConfig->get('subname') ?>
   <h2>Welcome to <?php echo $madbConfig->get('name')?> <?php strlen($subname) && print sprintf('(%s)', $madbConfig->get('subname')) ?></h2>
-
-  <p>This is a work in progress lacking many features, but you can already search and browse packages. Use the search form, browse by category or use the left menu.</p>
+  <p>Mageia App Db is the online applications and packages database from the Mageia linux distribution. Search for a specific package, select a category, or use the left menu.</p>
   <p>There are persistent navigation filters, which you can change at any time from the filter banner : distribution release, show only applications or all packages, media, arch, etc.</p>
-  <p>Click <a href="http://madb.org">here</a> for more information about this project.</p>
 </div>
 
 <div id="groups" class="links">
