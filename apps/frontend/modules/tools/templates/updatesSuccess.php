@@ -26,7 +26,7 @@ See <a href="https://wiki.mageia.org/en/QA_process_for_validating_updates">QA pr
   <tbody>
   <?php $count = array(); ?>
   <?php $count['total'] = 0; ?>
-  <?php foreach (array('security', 'bugfix', 'enhancement') as $type) : ?>
+  <?php foreach (array('security', 'bugfix', 'enhancement', 'backport') as $type) : ?>
     <?php $count[$type] = 0; ?>
     <?php if (isset($updates_by_type[$type])): ?>
       <?php foreach ($updates_by_type[$type] as $id): ?>
@@ -35,6 +35,7 @@ See <a href="https://wiki.mageia.org/en/QA_process_for_validating_updates">QA pr
       switch ($updates[$id]['severity'])
       {
         case 'enhancement':
+        case 'backport':
           $tr_class = 'enhancement';
           break;
         case 'low':
@@ -134,10 +135,11 @@ See <a href="https://wiki.mageia.org/en/QA_process_for_validating_updates">QA pr
   <?php endforeach; ?>
   </tbody>
 </table>
-Number of update candidates: <?php echo $count['total']; ?> 
+Number of update candidates: <?php echo $count['total'] - $count['backport']; ?> 
 (security: <?php echo $count['security'] ?>,
 bugfix: <?php echo $count['bugfix'] ?>,
 enhancement: <?php echo $count['enhancement'] ?>)<br/>
+Number of backports : <?php echo $count['backport'] ?><br/>
 <br/>
 <?php endforeach; ?>
 

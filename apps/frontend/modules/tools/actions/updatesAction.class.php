@@ -78,6 +78,15 @@ class updatesAction extends madbActions
           }          
         }
       }
+
+      // for backports severity is low unless it's major or critical (bugfix or security fix to a backport)
+      if ($update[$rank['component']] == 'Backports')
+      {
+        if (!in_array($update[$rank['severity']], array('major', 'critical')))
+        {
+          $update[$rank['severity']] = 'low';
+        }
+      }
       
       switch ($update[$rank['severity']])
       {
@@ -124,6 +133,10 @@ class updatesAction extends madbActions
       if ($update['component'] == 'Security')
       {
         $type = 'security';
+      }
+      elseif ($update['component'] == 'Backports')
+      {
+        $type = "backport";
       }
       elseif ($update['severity'] == 'enhancement')
       {
