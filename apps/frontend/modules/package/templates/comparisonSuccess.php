@@ -22,7 +22,7 @@ For example, change <?php echo $distrelease->getDisplayedName(); ?> to <?php ech
   <thead>
     <tr>
       <th>Name</th>
-      <th>Base version</th>
+      <th><?php echo $distrelease->getDisplayedName(); ?></th>
       <?php if ($has_updates_testing) : ?><th>Update<br/>candidate</th><?php endif; ?>
       <?php if ($has_backports) : ?><th>Feature update</th><?php endif; ?>
       <?php if ($has_backports_testing) : ?><th>Feature update<br/> candidate</th><?php endif; ?>

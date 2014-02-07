@@ -51,7 +51,7 @@ class comparisonAction extends madbActions
       }
       else
       {
-        $this->message = "No dev release in this database, impossible to use this page.";
+        $this->message = "There is no development version to compare " . $distrelease->getDisplayedName() . " with.";
         return 'Error';
       }
     }
