@@ -93,16 +93,7 @@ See <a href="https://wiki.mageia.org/en/QA_process_for_validating_updates">QA pr
               $testing_complete = false;
             }
           }
-          if ($testing_complete)
-          {
-            echo '<span style="text-decoration: line-through">';
-          }
-          echo "$the_version";
-          if ($testing_complete)
-          {
-            echo '</span>';
-          }
-          echo " ";
+          echo "$the_version" . ($testing_complete ? '✓' : '') . " ";
         }
         ?></td> 
         <td><?php 
