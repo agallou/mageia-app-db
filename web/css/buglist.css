@@ -3,6 +3,7 @@ table.buglist
   border-collapse: collapse;
   text-align:center;
   font-size:13px;
+  width:100%;
 }
 
 .buglist td, .buglist th
