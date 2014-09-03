@@ -800,3 +800,23 @@ pre
 {
   font-size: smaller;
 }
+
+span.testing_complete
+{
+  font-weight:bolder;
+  color:green;
+}
+
+span.testing_one_ok
+{
+  font-size:14px;
+  font-weight:bolder;
+  color:#F59B00;
+}
+
+span.testing_not_ok
+{
+  font-size:14px;
+  font-weight:bolder;
+  color:lightgrey;
+}

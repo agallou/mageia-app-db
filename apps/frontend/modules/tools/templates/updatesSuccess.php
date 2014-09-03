@@ -100,14 +100,33 @@ See <a href="https://wiki.mageia.org/en/QA_process_for_validating_updates">QA pr
           foreach ($updates[$id]['versions'] as $the_version)
           {
             $testing_complete = true;
+            $testing_one_ok = false;
             foreach ($archs as $arch)
             {
               if (!isset($updates[$id]['testing_status'][$the_version][$arch]) or $updates[$id]['testing_status'][$the_version][$arch]!=1)
               {
                 $testing_complete = false;
               }
+              if (isset($updates[$id]['testing_status'][$the_version][$arch]) and $updates[$id]['testing_status'][$the_version][$arch]==1)
+              {
+                $testing_one_ok = true;
+              }
             }
-            echo "$the_version" . ($testing_complete ? '✓' : '') . " ";
+            $testing_class = "testing_not_ok";
+            $title = "Testing not complete for any arch";
+            if ($testing_complete)
+            {
+              $testing_class = "testing_complete";
+              $title = "Testing complete for both archs";
+            }
+            elseif ($testing_one_ok)
+            {
+              $testing_class = "testing_one_ok";
+              $title = "Testing half-complete (only one arch)";
+            }
+
+            echo "$the_version";
+            echo "<span class=\"$testing_class\" title= \"$title\">●</span>";
           }
           ?></td> 
           <td><?php 
