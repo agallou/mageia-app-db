@@ -96,37 +96,45 @@ See <a href="https://wiki.mageia.org/en/QA_process_for_validating_updates">QA pr
           ?></td>
           <?php endforeach; ?>
           <td><?php echo $updates[$id]['has_procedure'] ? "yes" : "&nbsp;" ?></td>
-          <td><?php 
-          foreach ($updates[$id]['versions'] as $the_version)
+          <td style="white-space:nowrap"><?php
+          foreach (array_keys($updates_by_version) as $the_version)
           {
-            $testing_complete = true;
-            $testing_one_ok = false;
-            foreach ($archs as $arch)
+            if (in_array($the_version, $updates[$id]['versions']))
             {
-              if (!isset($updates[$id]['testing_status'][$the_version][$arch]) or $updates[$id]['testing_status'][$the_version][$arch]!=1)
+              $testing_complete = true;
+              $testing_one_ok = false;
+              foreach ($archs as $arch)
               {
-                $testing_complete = false;
+                if (!isset($updates[$id]['testing_status'][$the_version][$arch]) or $updates[$id]['testing_status'][$the_version][$arch]!=1)
+                {
+                  $testing_complete = false;
+                }
+                if (isset($updates[$id]['testing_status'][$the_version][$arch]) and $updates[$id]['testing_status'][$the_version][$arch]==1)
+                {
+                  $testing_one_ok = true;
+                }
               }
-              if (isset($updates[$id]['testing_status'][$the_version][$arch]) and $updates[$id]['testing_status'][$the_version][$arch]==1)
+              $testing_class = "testing_not_ok";
+              $title = "Testing not complete for any arch";
+              $symbol = "⚈";
+              if ($testing_complete)
               {
-                $testing_one_ok = true;
+                $testing_class = "testing_complete";
+                $title = "Testing complete for both archs";
+                $symbol = "⚉";
+              }
+              elseif ($testing_one_ok)
+              {
+                $testing_class = "testing_one_ok";
+                $title = "Testing half-complete (only one arch)";
               }
             }
-            $testing_class = "testing_not_ok";
-            $title = "Testing not complete for any arch";
-            if ($testing_complete)
+            else
             {
-              $testing_class = "testing_complete";
-              $title = "Testing complete for both archs";
+              $testing_class = "testing_hidden";
             }
-            elseif ($testing_one_ok)
-            {
-              $testing_class = "testing_one_ok";
-              $title = "Testing half-complete (only one arch)";
-            }
-
-            echo "$the_version";
-            echo "<span class=\"$testing_class\" title= \"$title\">●</span>";
+            echo "<span class=\"$testing_class\" title= \"$title\">$the_version";
+            echo "<span>$symbol</span></span> ";
           }
           ?></td> 
           <td><?php 
