@@ -49,8 +49,9 @@ class mysqlDatabase extends baseDatabase
    */
   public function loadData($tablename, $filename)
   {
-    $query = "LOAD DATA LOCAL INFILE '$filename' INTO TABLE $tablename";
-    $this->prepareAndExecuteQuery($query);
+    $sql = sprintf("SET FOREIGN_KEY_CHECKS=0;LOAD DATA LOCAL INFILE '%s' INTO TABLE %s;", $filename, $tablename);
+    $dbCli = new mysqlCliWrapper(dbInfosFactory::getDefault(), new sfFileSystem());
+    $dbCli->execute($sql, "--local_infile=1");
 
     return $this;
   }

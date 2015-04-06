@@ -831,11 +831,14 @@ class madbFetchRpmsTask extends madbBaseTask
     $databaseFactory = new databaseFactory($con);
     $database = $databaseFactory->createDefault();
 
-    $sql = "CREATE TEMPORARY TABLE tmpapplications (name VARCHAR(255), PRIMARY KEY (name))";
+    $sql = "DROP TABLE IF EXISTS tmpapplications";
+    $con->exec($sql);
+
+    // not temporary so that we can load data from CLI
+    $sql = "CREATE TABLE tmpapplications (name VARCHAR(255), PRIMARY KEY (name))";
     $con->exec($sql);
 
     $database->loadData('tmpapplications', $filename, false);
-
 
     $sql = "UPDATE package SET is_application = FALSE";
     $con->exec($sql);
@@ -861,5 +864,8 @@ class madbFetchRpmsTask extends madbBaseTask
         AND rpm.PACKAGE_ID = package.ID
         AND package.is_application = TRUE'
     );
+
+    $sql = "DROP TABLE IF EXISTS tmpapplications";
+    $con->exec($sql);
   }
 }

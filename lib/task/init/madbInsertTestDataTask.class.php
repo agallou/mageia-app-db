@@ -10,7 +10,6 @@ class madbInsertTestDataTask extends madbBaseTask
     $this->name      = 'insert-test-data';
     $this->defaultUrl = 'http://stormi.lautre.net/fichiers/mageia/test-data-mageia.zip';
     $this->addOption('url', null, sfCommandOption::PARAMETER_OPTIONAL, 'url where test data are stored. Setting this option forces the download even if test data already are on the local system.', null);
-    $this->addOption('load-cli', null, sfCommandOption::PARAMETER_NONE, 'Uses mysql client for load data');
 
     $this->propel = true;
     $this->aliases = array($this->name);
@@ -18,7 +17,6 @@ class madbInsertTestDataTask extends madbBaseTask
   protected function execute($arguments = array(), $options = array())
   {
     sfContext::createInstance($this->createConfiguration('frontend', 'prod'));
-    $dbCli = new mysqlCliWrapper(dbInfosFactory::getDefault(), $this->getFilesystem());
     $con = Propel::getConnection();
 
     // TODO : replace with configured tmp dir
@@ -59,16 +57,7 @@ class madbInsertTestDataTask extends madbBaseTask
         $this->log("Inserting values into table $table");
         $database->truncateTable($table);
 
-        if ($options['load-cli'])
-        {
-          $sql = sprintf("SET FOREIGN_KEY_CHECKS=0;LOAD DATA LOCAL INFILE '%s' INTO TABLE %s;", $file, $table);
-          $dbCli->execute($sql, "--local_infile=1");
-        }
-        else
-        {
-          $database->loadData($table, $file);
-        }
-
+        $database->loadData($table, $file);
       }
       $database->getConnection()->commit();
     }
