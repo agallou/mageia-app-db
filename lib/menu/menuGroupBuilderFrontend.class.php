@@ -4,6 +4,7 @@ class menuGroupBuilderFrontend extends menuGroupBuilder
 
   protected function build()
   {
+    // Latest
     $items = array();
     if (MediaPeer::countMediaByType(true, false, false) + count(DistreleasePeer::getDevels()))
     {
@@ -22,14 +23,24 @@ class menuGroupBuilderFrontend extends menuGroupBuilder
       $items[] = $this->createItem('Backport candidates', 'rpm/list', array('extra_parameters' => array('listtype' => 'backports_testing')));
     }
     $this->addGroup('Latest', $items, 'icon-bell');
+
+    // Browse
     $this->addGroup('Browse', array(
       $this->createItem('Groups', 'group/list'),
       $this->createItem('Packages/Applications', 'package/list'),
     ), 'icon-tasks');
 
-    $this->addGroup('Tools', array(
-      $this->createItem('Versions comparison', 'package/comparison'),
-    ), 'icon-puzzle-piece');
+    // Tools
+    $items = array();
+    $items[] = $this->createItem('Versions comparison', 'package/comparison');
+    $madbConfig = new madbConfig();
+    if ($madbConfig->get("distribution") == "mageia")
+    {
+      $items[] = $this->createItem('QA Updates', 'tools/updates');
+    }
+    $this->addGroup('Tools', $items, 'icon-puzzle-piece');
+
+    // User
     if ($this->isUserAuthenticated())
     {
       $this->addItem($this->createItem('My account'));
