@@ -39,6 +39,12 @@ rsync -a --no-motd  $mirror/$distro/$arch/$filler$media2/$rpm2 $rpm2
 echo
 echo "*** rpmdiff output between $rpm1 and $rpm2 ***"
 /usr/bin/rpmdiff -iT $rpm1 $rpm2
+rm -rf /tmp/rpmlint.$rpm1*
+rm -rf /tmp/rpmlint.$rpm2*
+
+if [ $arch != 'SRPMS' ]; then
+  exit
+fi
 
 echo 
 echo "*** unified diff between RPM contents ***"
@@ -59,5 +65,3 @@ rm -f $rpm1
 rm -f $rpm2
 rm -rf $rpm1.d
 rm -rf $rpm2.d
-rm -rf /tmp/rpmlint.$rpm1*
-rm -rf /tmp/rpmlint.$rpm2*
