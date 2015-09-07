@@ -59,3 +59,5 @@ rm -f $rpm1
 rm -f $rpm2
 rm -rf $rpm1.d
 rm -rf $rpm2.d
+rm -rf /tmp/rpmlint.$rpm1*
+rm -rf /tmp/rpmlint.$rpm2*
