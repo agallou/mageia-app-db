@@ -42,10 +42,6 @@ echo "*** rpmdiff output between $rpm1 and $rpm2 ***"
 rm -rf /tmp/rpmlint.$rpm1*
 rm -rf /tmp/rpmlint.$rpm2*
 
-if [ $arch != 'SRPMS' ]; then
-  exit
-fi
-
 echo 
 echo "*** unified diff between RPM contents ***"
 rm -rf $rpm1.d
