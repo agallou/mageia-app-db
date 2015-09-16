@@ -24,8 +24,8 @@ if ($show_bug_links)
         <th>Summary</th>
         <th>Version</th>
         <?php if (!isset($short)): ?>
+        <th>Release</th>
         <th>Build date</th>
-        <th>Dist. Rel.</th>
           <?php if ($show_bug_links): ?>
         <th>Bug link</th>
           <?php endif; ?>
@@ -54,8 +54,8 @@ if ($show_bug_links)
                   ); ?>
         </td>
         <?php if (!isset($short)): ?>
+        <td><?php echo $rpm->getRelease() ?>
         <td><?php echo $buildDate ?></td>
-        <td><?php echo $rpm->getDistrelease()->getDisplayedName() ?></td>
         <?php if ($show_bug_links): ?>
         <td>
         <?php
