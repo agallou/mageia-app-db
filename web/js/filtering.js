@@ -41,6 +41,7 @@ $(document).ready(function(){
   $('#filtering_maint').selectToCheckboxes({
     apply: function(d){afterCheckboxChange(d);},
     defaults: getAllVals($('#filtering_maint option[selected=selected]')),
+    multi: false,
     active: $('#filtering_maint').hasClass('disabled_filter') ? false : true
   });
   $('div#filtering form:first input[type=submit]').remove();
@@ -53,7 +54,8 @@ $(document).ready(function(){
   });
   if (window.location.href.lastIndexOf('/media/') != -1 
       || window.location.href.match('\/group\/[0-9](%2C[0-9]+)*') 
-      || window.location.href.match('\/source\/[1-9]'))
+      || window.location.href.match('\/source\/[1-9]')
+      || window.location.href.match('\/maint\/'))
   {
     $('span#linkmore').click();
     $('div#otherFilters').show();
