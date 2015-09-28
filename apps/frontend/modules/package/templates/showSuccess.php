@@ -10,18 +10,25 @@ Package : <?php echo $package->getName() ?>
 
 <div class="package-details">
   <div class="package-description">
-    <strong>Summary</strong> : <?php echo htmlspecialchars($package->getSummary()) ?>
+    <strong>Summary</strong>: <?php echo htmlspecialchars($package->getSummary()) ?>
     <br />
     <br />
-    <strong>Description</strong> :<br/>
+    <strong>Description</strong>:<br/>
     <?php echo nl2br(htmlspecialchars($package->getDescription())) ?></p>
     <br />
     <?php if (null !== $url): ?>
-    <strong>URL</strong> : <?php echo link_to($url, $url) ?>
+    <strong>URL</strong>: <?php echo link_to($url, $url) ?>
     <br/>
     <?php endif ?>
     <?php if (null !== $license): ?>
-    <strong>License</strong> : <?php echo $license ?>
+    <strong>License</strong>: <?php echo $license ?>
+    <br/>
+    <?php endif ?>
+    <?php if (null !== $package->getMaintainer()): ?>
+    <?php $urlHelperFactory = new madbUrlHelperFactory();
+          $urlHelper = $urlHelperFactory->create(); ?>
+    <br/>
+    <strong>Maintainer</strong>: <?php echo $urlHelper->getLinkToMaintainer($package->getMaintainer(), $package->getMaintainer()) ?>
     <?php endif ?>
   </div>
 

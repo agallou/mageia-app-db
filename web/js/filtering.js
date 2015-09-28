@@ -38,6 +38,11 @@ $(document).ready(function(){
     multi: false,
     active: $('#filtering_source').hasClass('disabled_filter') ? false : true
   });
+  $('#filtering_maint').selectToCheckboxes({
+    apply: function(d){afterCheckboxChange(d);},
+    defaults: getAllVals($('#filtering_maint option[selected=selected]')),
+    active: $('#filtering_maint').hasClass('disabled_filter') ? false : true
+  });
   $('div#filtering form:first input[type=submit]').remove();
 
   $('div#otherFilters').hide();
@@ -81,6 +86,7 @@ function getFiltering()
   filtering['arch'] = getValuesFromCheckboxes($('input[type=checkbox][name=filtering_arch]:checked'));
   filtering['media'] = getValuesFromCheckboxes($('input[type=checkbox][name=filtering_media]:checked'));
   filtering['source'] = getValuesFromCheckboxes($('input[type=checkbox][name=filtering_source]:checked')); 
+  filtering['maint'] = getValuesFromCheckboxes($('input[type=checkbox][name=filtering_maint]:checked'));
   return filtering;
 }
 

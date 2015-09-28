@@ -11,7 +11,7 @@
   'madbcontext'        => $madbcontext,
 ); ?>
 
-<?php $otherFilters = array('group', 'source', 'media'); ?>
+<?php $otherFilters = array('group', 'source', 'media', 'maint'); ?>
 <?php $order = array('release', 'application', 'arch'); ?>
 <?php foreach ($order as $name) : ?>
   <?php $formField = $form[$name]; ?>
@@ -27,7 +27,7 @@
 <span id="linkmore" title="Show/hide more filters">More <i class="icon-double-angle-down"></i></span>
 <br style="clear:left;"/>
 <div id="otherFilters">
-<?php $order = array('source', 'media', 'group'); ?>
+<?php $order = array('source', 'media', 'group', 'maint'); ?>
 <?php foreach ($order as $name) : ?>
   <?php $formField = $form[$name]; ?>
   <?php if (in_array($name, $otherFilters)): ?>
