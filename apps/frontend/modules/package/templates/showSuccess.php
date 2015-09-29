@@ -150,5 +150,7 @@ $('#filtering_group').addClass('disabled_filter');
 $('#filtering_group').next().next().next('a').remove();
 $('#filtering_source').addClass('disabled_filter');
 $('#filtering_source').next().next().next('a').remove();
+$('#filtering_maint').addClass('disabled_filter');
+$('#filtering_maint').next().next().next('a').remove();
 <?php end_javascript_tag() ?>
 </div>
