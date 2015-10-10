@@ -25,8 +25,8 @@ class madbUpdateScreenshotsCacheTask extends madbBaseTask
         $packages[$name] = array();
       }
       $packages[$name][] = array(
-        'large_image_url' => $screenshot['large_image_url'],
-        'small_image_url' => $screenshot['small_image_url'],
+        'large_image_url' => $this->cleanUrl($screenshot['large_image_url']),
+        'small_image_url' => $this->cleanUrl($screenshot['small_image_url']),
       );
     }
 
@@ -37,6 +37,14 @@ class madbUpdateScreenshotsCacheTask extends madbBaseTask
     foreach ($packages as $name => $images) {
       $cache->set($name, serialize($images));
     }
+  }
+
+  /**
+   * Allow to use screenshots in https
+   */
+  protected function cleanUrl($url)
+  {
+      return ltrim($url, 'http:');
   }
 
 }
