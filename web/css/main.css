@@ -43,6 +43,15 @@ a, a:visited
 
 #header
 {
+    min-height:47px;
+    width: auto;
+    min-height: 47px;
+    vertical-align: middle;
+    position: relative;
+}
+
+#madb-header
+{
   background: #2383c2; /* Old browsers */
   background: -moz-linear-gradient(top,  #2383c2 0%, #1272b1 50%); /* FF3.6+ */
   background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#2383c2), color-stop(50%,#1272b1)); /* Chrome,Safari4+ */
@@ -51,23 +60,29 @@ a, a:visited
   background: -ms-linear-gradient(top,  #2383c2 0%,#1272b1 50%); /* IE10+ */
   background: linear-gradient(to bottom,  #2383c2 0%,#1272b1 50%); /* W3C */
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#2383c2', endColorstr='#1272b1',GradientType=0 ); /* IE6-9 */
-
-
-  min-height:47px;
-  width: auto;
-  min-height: 47px;
-  vertical-align: middle;
-  position: relative;
+    min-height:47px;
+    width: auto;
+    min-height: 47px;
+    vertical-align: middle;
+    position: relative;
 }
 
 #header-container
 {
-  padding: 6px;
   margin:0;
-  max-width:1470px; /* width du menu + max-width du sfcontainer */
   position:relative;
   min-height: 47px;
-  margin-right:5px;
+}
+
+#madb-header-container
+{
+    padding: 6px;
+    margin:0;
+    max-width:1470px; /* width du menu + max-width du sfcontainer */
+    position:relative;
+    /*min-height: 47px;*/
+    min-height: 47px;
+    margin-right:5px;
 }
 
 #appname
@@ -161,7 +176,7 @@ a, a:visited
 }
 
 
-div#header div#search
+div#mab-header div#search
 {
     width:420px;
     padding-left:202px;
@@ -169,14 +184,14 @@ div#header div#search
     margin-top:7px;
 }
 
-div#header div#search form input[type=text]
+div#madb-header div#search form input[type=text]
 {
   height:22px;
   width:330px;
   margin-right:5px;
 }
 
-div#header div#search form input[type=text]:focus
+div#madb-header div#search form input[type=text]:focus
 {
   background-color:#F7F3D0;
 }
@@ -309,7 +324,7 @@ form.searchform input[type=submit]
 #sfcontent
 {
   margin-top:25px;
-  padding-bottom:40px;
+  padding-bottom:110px;
   max-width:1280px;
 }
 

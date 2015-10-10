@@ -27,3 +27,4 @@ all:
   allow_install: false #set to true only for distros with an installer class in lib/distroSpecific/installer
   allow_download: false #set to true only for distros with a downloader class in lib/distroSpecific/downloader
   show_bug_links: false #set to true only for distros with a bugtracker class in lib/distroSpecific/bugtracker
+  display_mageia_header: false

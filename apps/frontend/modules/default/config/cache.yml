@@ -3,3 +3,8 @@ home:
 
 _tracker:
   enabled: true
+
+_mageiaNav:
+  enabled: true
+  #7 days
+  lifetime: 604800

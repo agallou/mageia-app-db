@@ -18,30 +18,38 @@
     </head>
     <body>
         <div id="container">
+
             <div id="header">
+
               <div id="header-container">
-                <div id="appname">
-                  <?php $linkName = $madbConfig->get('name') . '<br />'; ?>
-                  <?php if (strlen($subname = $madbConfig->get('subname'))): ?>
-                    <?php $linkName .= '<span class="subname">' . $subname . '</subname>'; ?>
-                  <?php endif ?>
-                  <?php echo link_to($linkName, 'http://' . $madbConfig->get('host')) ?>
-                </div>
-                <div id="search">
-                    <?php include_component('default', 'searching', array(
-                      'module_to' => 'package',
-                      'action_to' => 'list',
-                    )) ?>
-                </div>
-                <div id="user_infos">
-                    <div class="header-button">
-                    <?php if ($sf_user->isAuthenticated()): ?>
-                        <?php echo link_to('<i class="icon-signout"></i><br />Logout', url_for('@sf_guard_signout')); ?>
-                    <?php else: ?>
-                        <?php echo link_to('<i class="icon-signin"></i><br />Login', url_for('@sf_guard_signin')) ?>
-                    <?php endif; ?>
-                    </div>
-                </div>
+                <?php include_component('default', 'mageiaNav') ?>
+
+                  <div id="madb-header">
+                      <div id="madb-header-container">
+                          <div id="appname">
+                              <?php $linkName = $madbConfig->get('name') . '<br />'; ?>
+                              <?php if (strlen($subname = $madbConfig->get('subname'))): ?>
+                                  <?php $linkName .= '<span class="subname">' . $subname . '</subname>'; ?>
+                              <?php endif ?>
+                              <?php echo link_to($linkName, 'http://' . $madbConfig->get('host')) ?>
+                          </div>
+                          <div id="search">
+                              <?php include_component('default', 'searching', array(
+                                  'module_to' => 'package',
+                                  'action_to' => 'list',
+                              )) ?>
+                          </div>
+                          <div id="user_infos">
+                              <div class="header-button">
+                                  <?php if ($sf_user->isAuthenticated()): ?>
+                                      <?php echo link_to('<i class="icon-signout"></i><br />Logout', url_for('@sf_guard_signout')); ?>
+                                  <?php else: ?>
+                                      <?php echo link_to('<i class="icon-signin"></i><br />Login', url_for('@sf_guard_signin')) ?>
+                                  <?php endif; ?>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
               </div>
             </div>
 
