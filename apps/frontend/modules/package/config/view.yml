@@ -1,14 +1,3 @@
-showSuccess:
-  stylesheets:
-    - package.css
-    - vendor/jquery/ui-lightness/jquery-ui-1.8.13.custom.css
-    - jquery-ui-changes.css
-
-  javascripts:
-    - package.js
-
-listSuccess:
-  javascripts:
 listSuccess:
   components:
     searching: [ default, searching ]
