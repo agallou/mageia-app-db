@@ -47,3 +47,16 @@ web/elXHProfPlugin
 tmp/*
 nbproject
 web/test.php
+
+web/assets/
+bower_components/
+bin/atoum
+bin/bowerphp
+bin/phing
+bin/propel-gen
+bin/propel-gen.bat
+bin/pscss
+bin/robo
+bin/semver
+bin/update-versions
+
