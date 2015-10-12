@@ -5,6 +5,7 @@
     "private": true,
     "dependencies": {
         "jquery": "1.5.1",
-        "js-base64": "2.1.9"
+        "js-base64": "2.1.9",
+        "jquery-ui": "git@github.com:jquery/jquery-ui.git#1.8.13"
     }
 }

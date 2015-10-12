@@ -74,14 +74,13 @@ class RoboFile extends \Robo\Tasks
                 'bower_components/jquery/jquery.js',
                 'bower_components/js-base64/base64.js',
 
-                'resources/assets/js/vendor/jquery/jquery.ui.core.min.js',
-                'resources/assets/js/vendor/jquery/jquery.ui.core.min.js',
-                'resources/assets/js/vendor/jquery/jquery.ui.position.min.js',
-                'resources/assets/js/vendor/jquery/jquery.ui.widget.min.js',
-                'resources/assets/js/vendor/jquery/jquery.ui.mouse.min.js',
-                'resources/assets/js/vendor/jquery/jquery.ui.draggable.min.js',
-                'resources/assets/js/vendor/jquery/jquery.ui.resizable.min.js',
-                'resources/assets/js/vendor/jquery/jquery.ui.dialog.min.js',
+                'bower_components/jquery-ui/ui/jquery.ui.core.js',
+                'bower_components/jquery-ui/ui/jquery.ui.position.js',
+                'bower_components/jquery-ui/ui/jquery.ui.widget.js',
+                'bower_components/jquery-ui/ui/jquery.ui.mouse.js',
+                'bower_components/jquery-ui/ui/jquery.ui.draggable.js',
+                'bower_components/jquery-ui/ui/jquery.ui.resizable.js',
+                'bower_components/jquery-ui/ui/jquery.ui.dialog.js',
 
                 'resources/assets/js/vendor/tipsy/jquery.tipsy.js',
 
