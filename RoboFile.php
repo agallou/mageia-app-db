@@ -82,7 +82,7 @@ class RoboFile extends \Robo\Tasks
                 'bower_components/jquery-ui/ui/jquery.ui.resizable.js',
                 'bower_components/jquery-ui/ui/jquery.ui.dialog.js',
 
-                'resources/assets/js/vendor/tipsy/jquery.tipsy.js',
+                'bower_components/tipsy/src/javascripts/jquery.tipsy.js',
 
                 'resources/assets/js/../fancybox/jquery.easing-1.3.pack.js',
                 'resources/assets/js/../fancybox/jquery.fancybox-1.3.4.js',
