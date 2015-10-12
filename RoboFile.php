@@ -148,6 +148,6 @@ class RoboFile extends \Robo\Tasks
 
     protected function _buildOtherAssets()
     {
-        $this->_copyDir('resources/assets/sass/css/vendor/font-awesome/font/', 'web/assets/font');
+        $this->_copyDir('bower_components/fontawesome/font/', 'web/assets/font');
     }
 }

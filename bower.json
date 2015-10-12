@@ -7,6 +7,7 @@
         "jquery": "1.5.1",
         "js-base64": "2.1.9",
         "jquery-ui": "git@github.com:jquery/jquery-ui.git#1.8.13",
-        "tipsy": "git@github.com:jaz303/tipsy.git#*"
+        "tipsy": "git@github.com:jaz303/tipsy.git#*",
+        "fontawesome": "3.2.1"
     }
 }
