@@ -103,6 +103,7 @@ class RoboFile extends \Robo\Tasks
 
         $this
             ->taskMinify('cache/assets/main.js')
+            ->keepImportantComments(false)
             ->to('web/assets/js/main.js')
             ->run()
         ;
