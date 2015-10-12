@@ -71,8 +71,8 @@ class RoboFile extends \Robo\Tasks
     {
         $this
             ->taskConcat([
-                'resources/assets/js/vendor/jquery/jquery-1.5.1.min.js',
-                'resources/assets/js/vendor/jquery/jquery.base64.min.js',
+                'bower_components/jquery/jquery.js',
+                'bower_components/js-base64/base64.js',
 
                 'resources/assets/js/vendor/jquery/jquery.ui.core.min.js',
                 'resources/assets/js/vendor/jquery/jquery.ui.core.min.js',

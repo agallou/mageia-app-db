@@ -1,0 +1,10 @@
+{
+    "name": "mageia-app-db",
+    "homepage": "https:\/\/github.com\/agallou\/mageia-app-db",
+    "license": "AGPL-3.0",
+    "private": true,
+    "dependencies": {
+        "jquery": "1.5.1",
+        "js-base64": "2.1.9"
+    }
+}
