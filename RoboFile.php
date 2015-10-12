@@ -44,6 +44,8 @@ class RoboFile extends \Robo\Tasks
 
     protected function _buildCss()
     {
+        $this->copySass();
+
         $this
             ->taskScss(['resources/assets/sass/main.scss' => 'cache/assets/sass/main_sass.css'])
             ->addImportPath('resources/assets/sass')
@@ -111,6 +113,11 @@ class RoboFile extends \Robo\Tasks
         $this->taskHash('web/assets/js/main.js')->to('web/assets/js/')->run();
     }
 
+    protected function copySass()
+    {
+        $this->_copy('bower_components/tipsy/src/stylesheets/tipsy.css', 'cache/assets/sass-copies/tipsy.scss');
+    }
+
     protected function _clean()
     {
         $this->_mkdir('cache/assets/');
@@ -132,6 +139,8 @@ class RoboFile extends \Robo\Tasks
         $this->_cleanDir('web/assets/css');
         $this->_mkdir('cache/assets/sass');
         $this->_cleanDir('cache/assets/sass');
+        $this->_mkdir('cache/assets/sass-copies');
+        $this->_cleanDir('cache/assets/sass-copies');
     }
 
     protected function _cleanJs()
