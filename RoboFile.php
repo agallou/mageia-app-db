@@ -97,16 +97,15 @@ class RoboFile extends \Robo\Tasks
 
                 'resources/assets/js/package.js',
             ])
-            //->to('cache/assets/main.js')
-            ->to('web/assets/js/main.js')
+            ->to('cache/assets/main.js')
             ->run()
         ;
 
-        /*$this
+        $this
             ->taskMinify('cache/assets/main.js')
             ->to('web/assets/js/main.js')
             ->run()
-        ;*/
+        ;
 
         $this->taskHash('web/assets/js/main.js')->to('web/assets/js/')->run();
     }
