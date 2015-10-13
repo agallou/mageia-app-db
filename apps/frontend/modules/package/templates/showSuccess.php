@@ -77,10 +77,12 @@ Package : <?php echo $package->getName() ?>
 <?php use_helper('JavascriptBase') ?>
 <script type="text/javascript">
 //<![CDATA[
-$("a[rel=screenshots]").fancybox({
-  'transitionIn' : 'none',
-  'transitionOut' : 'none',
-  'type' : 'image'
+$(document).ready(function() {
+    $("a[rel=screenshots]").colorbox({
+        rel:'screenshots',
+        photo: true,
+        transition: "none"
+    });
 });
 //]]>
 </script>

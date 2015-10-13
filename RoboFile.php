@@ -86,10 +86,7 @@ class RoboFile extends \Robo\Tasks
 
                 'bower_components/tipsy/src/javascripts/jquery.tipsy.js',
 
-                'resources/assets/js/../fancybox/jquery.easing-1.3.pack.js',
-                'resources/assets/js/../fancybox/jquery.fancybox-1.3.4.js',
-                'resources/assets/js/../fancybox/jquery.fancybox-1.3.4.pack.js',
-                'resources/assets/js/../fancybox/jquery.mousewheel-3.0.4.pack.js',
+                'bower_components/colorbox/jquery.colorbox.js',
 
                 'resources/assets/js/filtering.js',
                 'resources/assets/js/jquery.selectToCheckboxes.js',
@@ -120,6 +117,7 @@ class RoboFile extends \Robo\Tasks
         $this->_copy('bower_components/jquery-ui/themes/base/jquery.ui.theme.css', 'cache/assets/sass-copies/jquery.ui.theme.scss');
         $this->_copy('bower_components/jquery-ui/themes/base/jquery.ui.resizable.css', 'cache/assets/sass-copies/jquery.ui.resizable.scss');
         $this->_copy('bower_components/jquery-ui/themes/base/jquery.ui.dialog.css', 'cache/assets/sass-copies/jquery.ui.dialog.scss');
+        $this->_copy('bower_components/colorbox/example2/colorbox.css', 'cache/assets/sass-copies/colorbox.scss');
     }
 
     protected function _clean()
@@ -163,5 +161,6 @@ class RoboFile extends \Robo\Tasks
     {
         $this->_copyDir('bower_components/fontawesome/font/', 'web/assets/font');
         $this->_copyDir('bower_components/jquery-ui/themes/base/images/', 'web/assets/css/images/');
+        $this->_copyDir('bower_components/colorbox/example2/images/', 'web/assets/css/images/');
     }
 }
