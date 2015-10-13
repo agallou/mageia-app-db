@@ -162,5 +162,6 @@ class RoboFile extends \Robo\Tasks
     protected function _buildOtherAssets()
     {
         $this->_copyDir('bower_components/fontawesome/font/', 'web/assets/font');
+        $this->_copyDir('bower_components/jquery-ui/themes/base/images/', 'web/assets/css/images/');
     }
 }
