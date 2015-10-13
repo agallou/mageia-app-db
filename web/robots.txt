@@ -1,2 +1,2 @@
-User-agent: *                                                                                                                                                                                                                         [0/257]
+User-agent: *
 Disallow: /rpm/diff/
