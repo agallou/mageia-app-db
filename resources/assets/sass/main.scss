@@ -1,7 +1,7 @@
-@import "../../../cache/assets/sass-copies/jquery.ui.core.scss";
-@import "../../../cache/assets/sass-copies/jquery.ui.theme.scss";
-@import "../../../cache/assets/sass-copies/jquery.ui.resizable.scss";
-@import "../../../cache/assets/sass-copies/jquery.ui.dialog.scss";
+@import "../../../cache/assets/sass-copies/jquery.ui.core";
+@import "../../../cache/assets/sass-copies/jquery.ui.theme";
+@import "../../../cache/assets/sass-copies/jquery.ui.resizable";
+@import "../../../cache/assets/sass-copies/jquery.ui.dialog";
 
 @import "../../../cache/assets/sass-copies/colorbox";
 
@@ -10,8 +10,8 @@
 @import "../../../cache/assets/sass-copies/tipsy.scss";
 
 
-@import "css/main.scss";
-@import "css/selectToCheckboxes.scss";
-@import "css/filtering.scss";
-@import "css/package.scss";
-@import "css/jquery-ui-changes.scss";
+@import "global";
+@import "selectToCheckboxes";
+@import "filtering";
+@import "package";
+@import "jquery-ui-changes";
