@@ -116,6 +116,10 @@ class RoboFile extends \Robo\Tasks
     protected function copySass()
     {
         $this->_copy('bower_components/tipsy/src/stylesheets/tipsy.css', 'cache/assets/sass-copies/tipsy.scss');
+        $this->_copy('bower_components/jquery-ui/themes/base/jquery.ui.core.css', 'cache/assets/sass-copies/jquery.ui.core.scss');
+        $this->_copy('bower_components/jquery-ui/themes/base/jquery.ui.theme.css', 'cache/assets/sass-copies/jquery.ui.theme.scss');
+        $this->_copy('bower_components/jquery-ui/themes/base/jquery.ui.resizable.css', 'cache/assets/sass-copies/jquery.ui.resizable.scss');
+        $this->_copy('bower_components/jquery-ui/themes/base/jquery.ui.dialog.css', 'cache/assets/sass-copies/jquery.ui.dialog.scss');
     }
 
     protected function _clean()

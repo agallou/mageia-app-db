@@ -5,5 +5,11 @@
 @import "../../../bower_components/fontawesome/scss/font-awesome";
 @import "../../../cache/assets/sass-copies/tipsy.scss";
 @import "css/package.scss";
-@import "css/vendor/jquery/ui-lightness/jquery-ui-1.8.13.custom.scss";
+
+@import "../../../cache/assets/sass-copies/jquery.ui.core.scss";
+@import "../../../cache/assets/sass-copies/jquery.ui.theme.scss";
+@import "../../../cache/assets/sass-copies/jquery.ui.resizable.scss";
+@import "../../../cache/assets/sass-copies/jquery.ui.dialog.scss";
+
+
 @import "css/jquery-ui-changes.scss";
