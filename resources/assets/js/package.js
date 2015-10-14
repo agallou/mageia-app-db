@@ -1,42 +1,54 @@
 $(document).ready(function(){
   var subscribe_dialog = $('#subscribeForm');
-  subscribe_dialog.dialog({
-    autoOpen: false,
-    width: 600,
-    height: 650,
-    modal: true,
-    buttons: {
-      "Subscribe": function() {
+
+    $('.cancel', subscribe_dialog).click(function(e) {
+        $.colorbox.close();
+        e.preventDefault();
+        return false;
+    });
+
+    $('.subscribe', subscribe_dialog).click(function(e) {
         var params = getSubscriptionParams();
         $.post($('#subscribeForm form:first').attr('action'), {
-          'real_action' : 'add',
-          'package_id': $('#subscribe_package_id').attr('value'),
-          'params': params
-        },
-        function(data){
-          subscribe_dialog.dialog( "close" );
+                'real_action' : 'add',
+                'package_id': $('#subscribe_package_id').attr('value'),
+                'params': params
+            },
+            function(data){
+                $.colorbox.close();
         });
-      },
-      "Remove subscription": function() {
+        e.preventDefault();
+        return false;
+    });
+
+    $('.unsubscribe', subscribe_dialog).click(function(e) {
         $.post($('#subscribeForm form:first').attr('action'), {
-          'real_action': 'remove',
-          'package_id': $('#subscribe_package_id').attr('value')
-        },
-        function(data){
-          subscribe_dialog.dialog( "close" );
+                'real_action': 'remove',
+                'package_id': $('#subscribe_package_id').attr('value')
+            },
+            function(data){
+                $.colorbox.close();
         });
-      },
-      Cancel: function() {
-        subscribe_dialog.dialog( "close" );
-      }
-    },
-    close: function() {
-     window.location.reload();
-    }
-  });
+        e.preventDefault();
+        return false;
+    });
+
   $('a#packageSubscribe').click(function(event){
-    $('#subscribeForm').dialog('open');
-    event.preventDefault();
+
+      $.colorbox({
+          html: subscribe_dialog,
+          onOpen: function() {
+              subscribe_dialog.show();
+          },
+          onClosed: function() {
+              window.location.reload();
+          },
+          width: 660,
+          height: 550,
+          className: "colorbox-modal"
+      });
+
+      event.preventDefault();
   });
 });
 
@@ -78,17 +90,13 @@ $(document).ready(function(){
     $.ajax({
       url: $(event.target).attr('href'),
       success: function(data) {
-        tag.html(data).dialog(
-         {
-           modal: true,
-           width: 660,
-           height: 550,
-           buttons: {
-             Cancel: function() {
-               $(this).dialog( "close" );
-             }
-           }
-         }).dialog('open');
+
+        $.colorbox({
+            html: tag.html(data),
+            width: 660,
+            height: 550,
+            className: "colorbox-modal"
+        });
       }
     });
     return false;

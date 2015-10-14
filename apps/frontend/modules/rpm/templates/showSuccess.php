@@ -70,17 +70,13 @@ $(document).ready(function(){
     $.ajax({
       url: $(event.target).attr('href'),
       success: function(data) {
-        tag.html(data).dialog(
-         {
-           modal: true,
-           width: 660,
-           height: 550,
-           buttons: {
-             Cancel: function() {
-               $(this).dialog( "close" );
-             }
-           }
-         }).dialog('open');
+
+        $.colorbox({
+            html: tag.html(data),
+            width: 660,
+            height: 550,
+            className: "colorbox-modal"
+        });
       }
     });
     return false;

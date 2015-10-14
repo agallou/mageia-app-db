@@ -76,14 +76,6 @@ class RoboFile extends \Robo\Tasks
                 'bower_components/jquery/jquery.js',
                 'bower_components/js-base64/base64.js',
 
-                'bower_components/jquery-ui/ui/jquery.ui.core.js',
-                'bower_components/jquery-ui/ui/jquery.ui.position.js',
-                'bower_components/jquery-ui/ui/jquery.ui.widget.js',
-                'bower_components/jquery-ui/ui/jquery.ui.mouse.js',
-                'bower_components/jquery-ui/ui/jquery.ui.draggable.js',
-                'bower_components/jquery-ui/ui/jquery.ui.resizable.js',
-                'bower_components/jquery-ui/ui/jquery.ui.dialog.js',
-
                 'bower_components/tipsy/src/javascripts/jquery.tipsy.js',
 
                 'bower_components/colorbox/jquery.colorbox.js',
@@ -113,10 +105,6 @@ class RoboFile extends \Robo\Tasks
     protected function copySass()
     {
         $this->_copy('bower_components/tipsy/src/stylesheets/tipsy.css', 'cache/assets/sass-copies/tipsy.scss');
-        $this->_copy('bower_components/jquery-ui/themes/base/jquery.ui.core.css', 'cache/assets/sass-copies/jquery.ui.core.scss');
-        $this->_copy('bower_components/jquery-ui/themes/base/jquery.ui.theme.css', 'cache/assets/sass-copies/jquery.ui.theme.scss');
-        $this->_copy('bower_components/jquery-ui/themes/base/jquery.ui.resizable.css', 'cache/assets/sass-copies/jquery.ui.resizable.scss');
-        $this->_copy('bower_components/jquery-ui/themes/base/jquery.ui.dialog.css', 'cache/assets/sass-copies/jquery.ui.dialog.scss');
         $this->_copy('bower_components/colorbox/example2/colorbox.css', 'cache/assets/sass-copies/colorbox.scss');
     }
 
@@ -160,7 +148,6 @@ class RoboFile extends \Robo\Tasks
     protected function _buildOtherAssets()
     {
         $this->_copyDir('bower_components/fontawesome/font/', 'web/assets/font');
-        $this->_copyDir('bower_components/jquery-ui/themes/base/images/', 'web/assets/css/images/');
         $this->_copyDir('bower_components/colorbox/example2/images/', 'web/assets/css/images/');
     }
 }
