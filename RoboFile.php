@@ -14,11 +14,18 @@ class RoboFile extends \Robo\Tasks
             $this->_buildCss();
         };
 
+        $buildJs = function () {
+            $this->_cleanBase();
+            $this->_cleanJs();
+            $this->_buildJs();
+        };
+
         $this
             ->taskWatch()
-            ->monitor(array('app/Resources/assets/sass/'), $buildCss)
+            ->monitor('resources/assets/sass', $buildCss)
+            ->monitor('resources/assets/js', $buildJs)
             ->run()
-            ;
+        ;
     }
 
     public function install()
