@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "721c4774578160e4b1f17380cb92bb7d",
+    "hash": "a788f4365a53dd9ee43e995761338eba",
     "packages": [
         {
             "name": "agallou/robo-hash",
@@ -368,16 +368,16 @@
         },
         {
             "name": "henrikbjorn/lurker",
-            "version": "1.0.0",
+            "version": "dev-fix/is-dir",
             "source": {
                 "type": "git",
-                "url": "https://github.com/henrikbjorn/Lurker.git",
-                "reference": "a020d45b3bc37810aeafe27343c51af8a74c9419"
+                "url": "https://github.com/burzum/Lurker.git",
+                "reference": "8ce166bd89cca54da7fe58bfdb8bb083bd273e93"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/henrikbjorn/Lurker/zipball/a020d45b3bc37810aeafe27343c51af8a74c9419",
-                "reference": "a020d45b3bc37810aeafe27343c51af8a74c9419",
+                "url": "https://api.github.com/repos/burzum/Lurker/zipball/8ce166bd89cca54da7fe58bfdb8bb083bd273e93",
+                "reference": "8ce166bd89cca54da7fe58bfdb8bb083bd273e93",
                 "shasum": ""
             },
             "require": {
@@ -399,24 +399,21 @@
                     "Lurker": "src"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
             "authors": [
                 {
-                    "name": "Henrik Bjornskov",
-                    "email": "henrik@bjrnskov.dk",
-                    "homepage": "http://henrik.bjrnskov.dk"
-                },
-                {
                     "name": "Konstantin Kudryashov",
-                    "email": "ever.zet@gmail.com",
-                    "homepage": "http://everzet.com"
+                    "email": "ever.zet@gmail.com"
                 },
                 {
                     "name": "Yaroslav Kiliba",
                     "email": "om.dattaya@gmail.com"
+                },
+                {
+                    "name": "Henrik Bjrnskov",
+                    "email": "henrik@bjrnskov.dk"
                 }
             ],
             "description": "Resource Watcher.",
@@ -425,7 +422,10 @@
                 "resource",
                 "watching"
             ],
-            "time": "2013-05-24 06:47:29"
+            "support": {
+                "source": "https://github.com/burzum/Lurker/tree/fix/is-dir"
+            },
+            "time": "2015-10-20 13:16:28"
         },
         {
             "name": "knplabs/github-api",
@@ -1352,12 +1352,20 @@
             "type": "symfony1-plugin"
         }
     ],
-    "aliases": [],
+    "aliases": [
+        {
+            "alias": "1.0.0",
+            "alias_normalized": "1.0.0.0",
+            "version": "dev-fix/is-dir",
+            "package": "henrikbjorn/lurker"
+        }
+    ],
     "minimum-stability": "stable",
     "stability-flags": {
         "propel/sf-propel-o-r-m-plugin": 20,
         "codegyre/robo": 20,
         "beelab/bowerphp": 10,
+        "henrikbjorn/lurker": 20,
         "atoum/sfatoumplugin": 20,
         "atoum/atoum": 20
     },
