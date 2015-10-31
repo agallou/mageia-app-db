@@ -1,6 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
     <?php $madbConfig = new madbConfig(); ?>
+    <?php $madbAsset = new madbAssets('/assets/'); ?>
     <head>
         <?php include_http_metas() ?>
         <?php include_metas() ?>
@@ -13,8 +14,8 @@
 	    ?>
         </title>
         <link rel="shortcut icon" href="/favicon.ico" />
-        <?php include_stylesheets() ?>
-        <?php include_javascripts() ?>
+        <link rel="stylesheet" href="<?php echo $madbAsset->robotAsset('css/main.css') ?>" />
+        <script src="<?php echo $madbAsset->robotAsset('js/main.js') ?>"></script>
     </head>
     <body>
         <div id="container">

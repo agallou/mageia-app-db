@@ -77,10 +77,12 @@ Package : <?php echo $package->getName() ?>
 <?php use_helper('JavascriptBase') ?>
 <script type="text/javascript">
 //<![CDATA[
-$("a[rel=screenshots]").fancybox({
-  'transitionIn' : 'none',
-  'transitionOut' : 'none',
-  'type' : 'image'
+$(document).ready(function() {
+    $("a[rel=screenshots]").colorbox({
+        rel:'screenshots',
+        photo: true,
+        transition: "none"
+    });
 });
 //]]>
 </script>
@@ -94,7 +96,7 @@ $("a[rel=screenshots]").fancybox({
     <?php echo ($subscription) ? "Change or remove your subscription to this package's changes" : "Subscribe to this package's changes"?>
   </a>
 
-  <div id="subscribeForm" title="Subscribe to changes for this package">
+  <div id="subscribeForm" title="Subscribe to changes for this package" style="display: none">
   Select the type of changes for which you want to be notified, and if needed restrict the subscription to one or
   several distribution releases, archs and/or medias. Unchecking everything means "all".
   <br/>
@@ -138,6 +140,10 @@ $("a[rel=screenshots]").fancybox({
   <br style="clear:both;"/>
   <br/>
   <?php endforeach;?>
+
+      <button class="subscribe">Subscribe</button>
+      <button class="unsubscribe">Remove subscription</button>
+      <button class="cancel">Cancel</button>
 
   </form>
   </div>
