@@ -92,6 +92,7 @@ class RoboFile extends \Robo\Tasks
                 'resources/assets/js/searchform.js',
                 'resources/assets/js/tooltip.js',
                 'resources/assets/js/header.js',
+                'resources/assets/js/screenshots.js',
 
                 'resources/assets/js/package.js',
             ])

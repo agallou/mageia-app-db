@@ -15,7 +15,6 @@
         </title>
         <link rel="shortcut icon" href="/favicon.ico" />
         <link rel="stylesheet" href="<?php echo $madbAsset->robotAsset('css/main.css') ?>" />
-        <script src="<?php echo $madbAsset->robotAsset('js/main.js') ?>"></script>
     </head>
     <body>
         <div id="container">
@@ -88,6 +87,7 @@
             </div>
 
 
+    <script src="<?php echo $madbAsset->robotAsset('js/main.js') ?>"></script>
 
     <?php include_component('default', 'tracker') ?>
     </body>

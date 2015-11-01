@@ -43,7 +43,4 @@
 <input type="submit" value="Filter" />
 </form>
 </div>
-<script>
-  $('.filters').hide();
-</script>
 

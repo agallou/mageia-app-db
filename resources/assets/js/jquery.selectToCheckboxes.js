@@ -46,7 +46,7 @@
       var ng1 = $('<div>', { id: 'widgetcontent_' + selectId + '1', 'class' : 'widgetcontent1' });
 
       button.click(function() {
-        if (settings.active) {
+        if (!widget.hasClass('disabled_filter') && settings.active) {
           document.getElementById('widgetcontent_' + selectId + '1').style.left = button.position().left+ 'px';
           $('#widgetcontent_' + selectId + '1').toggle({
             duration: 0,

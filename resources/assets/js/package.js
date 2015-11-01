@@ -147,3 +147,15 @@ function getSubscriptionValuesFromCheckboxes(checkboxes)
   });
   return vals;
 }
+
+$(document).ready(function() {
+  if ($('.package-details').length > 0) {
+    $('#global_filtering_application').addClass('disabled_filter');
+    $('#global_filtering_group').addClass('disabled_filter');
+    $('#global_filtering_group').next().next().next('a').remove();
+    $('#global_filtering_source').addClass('disabled_filter');
+    $('#global_filtering_source').next().next().next('a').remove();
+    $('#global_filtering_maint').addClass('disabled_filter');
+    $('#global_filtering_maint').next().next().next('a').remove();
+  }
+});

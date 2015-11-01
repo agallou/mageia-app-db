@@ -4,7 +4,7 @@
 Package : <?php echo $package->getName() ?>
 <?php end_slot('name') ?>
 
-<div class="package">
+<div class="package" class="screenshots">
 <div>
 <h2>Package details</h2>
 
@@ -73,21 +73,6 @@ Package : <?php echo $package->getName() ?>
 </div>
 <?php endif ?>
 
-
-<?php use_helper('JavascriptBase') ?>
-<script type="text/javascript">
-//<![CDATA[
-$(document).ready(function() {
-    $("a[rel=screenshots]").colorbox({
-        rel:'screenshots',
-        photo: true,
-        transition: "none"
-    });
-});
-//]]>
-</script>
-
-
 <br/>
 <br/>
 <!--  <h2>Backport requests</h2> -->
@@ -149,14 +134,5 @@ $(document).ready(function() {
   </div>
 <?php endif; ?>
 
-<?php // Disable unneeded filters ?>
-<?php echo javascript_tag() ?>
-$('#filtering_application').addClass('disabled_filter');
-$('#filtering_group').addClass('disabled_filter');
-$('#filtering_group').next().next().next('a').remove();
-$('#filtering_source').addClass('disabled_filter');
-$('#filtering_source').next().next().next('a').remove();
-$('#filtering_maint').addClass('disabled_filter');
-$('#filtering_maint').next().next().next('a').remove();
-<?php end_javascript_tag() ?>
 </div>
+
