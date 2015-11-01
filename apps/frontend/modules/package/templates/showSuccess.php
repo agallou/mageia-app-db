@@ -4,7 +4,7 @@
 Package : <?php echo $package->getName() ?>
 <?php end_slot('name') ?>
 
-<div class="package" class="screenshots">
+<div class="package screenshots">
 <div>
 <h2>Package details</h2>
 
