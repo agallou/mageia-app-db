@@ -2,6 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
     <?php $madbConfig = new madbConfig(); ?>
     <?php $madbAsset = new madbAssets('/assets/'); ?>
+    <script src="<?php echo $madbAsset->robotAsset('js/main.js') ?>" async="true"></script>
     <head>
         <?php include_http_metas() ?>
         <?php include_metas() ?>
@@ -87,7 +88,6 @@
             </div>
 
 
-    <script src="<?php echo $madbAsset->robotAsset('js/main.js') ?>"></script>
 
     <?php include_component('default', 'tracker') ?>
     </body>
