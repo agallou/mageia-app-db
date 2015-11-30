@@ -10,7 +10,7 @@ class dbInfosFactory
     $infos->setPassword($connection['password']);
     $dsn = $connection['dsn'];
     $matches = array();
-    preg_match('/:host=(\w*);dbname=(.*)/', $dsn, $matches);
+    preg_match('/:host=(.*);dbname=(.*)/', $dsn, $matches);
     $infos->setHost($matches[1]);
     $infos->setName($matches[2]);
     return $infos;
