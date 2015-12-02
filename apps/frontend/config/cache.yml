@@ -8,3 +8,7 @@ default:
 
 _menu:
   enabled: true
+
+_filtering:
+  enabled: true
+  contextual: true
