@@ -23,7 +23,7 @@ class showAction extends madbActions
     if (count($this->rpms) && isset($this->rpms[0]))
     {
       $packageLicense = $this->rpms[0]->getLicense();
-      if (strlen($url = $this->rpms[0]->getUrl()))
+      if (strlen($url = $this->rpms[0]->getUrl(true)))
       {
         $packageUrl = $url;
       }
