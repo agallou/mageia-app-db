@@ -7,9 +7,12 @@ See <a href="https://wiki.mageia.org/en/QA_process_for_validating_updates">QA pr
 <p>A <span class="feedback">gray background</span> means "QA team waiting for packager feedback". A star* next to the update type means that an advisory has been uploaded to SVN already.
 </p>
 <br />
-<?php foreach (array('pending', 'validated') as $status): ?>
-  <?php if ($status == 'validated'): ?>
-  <br/><br/><br/>Below is a list of validated updates waiting to be pushed to the updates media. Those without a star* need an advisory to be uploaded, first.<br/><br/>
+<?php foreach (array('pending', 'validated_update', 'validated_backport') as $status): ?>
+  <?php if ($status == 'validated_update'): ?>
+  <br/><br/><br/>Below is a list of validated <strong>updates</strong> waiting to be pushed to the updates media. Those without a star* need an advisory to be uploaded, first.<br/><br/>
+  <?php endif ?>
+  <?php if ($status == 'validated_backport'): ?>
+  <br/><br/><br/>Below is a list of validated <strong>backports</strong> waiting to be pushed to the backports media. Those without a star* need an advisory to be uploaded, first.<br/><br/>
   <?php endif ?>
   <?php foreach ($updates_by_version as $version => $updates_by_type): ?>
   <h2>Mageia <?php echo $version ?></h2>
@@ -35,15 +38,18 @@ See <a href="https://wiki.mageia.org/en/QA_process_for_validating_updates">QA pr
       <?php if (isset($updates_by_type[$type])): ?>
         <?php foreach ($updates_by_type[$type] as $id): ?>
         <?php
-        if (false !== strpos($updates[$id]['keywords'], 'validated_update') && $status == 'pending')
+        if ($status == 'pending' && false !== strpos($updates[$id]['keywords'], 'validated_'))
         {
           continue;
         }
-        if (false === strpos($updates[$id]['keywords'], 'validated_update') && $status == 'validated')
+        if ($status == 'validated_update' && false === strpos($updates[$id]['keywords'], 'validated_update'))
         {
           continue;
         }
-        
+        if ($status == 'validated_backport' && false === strpos($updates[$id]['keywords'], 'validated_backport'))
+        {
+          continue;
+        }
         
         $tr_class = '';
         switch ($updates[$id]['severity'])
@@ -167,12 +173,18 @@ See <a href="https://wiki.mageia.org/en/QA_process_for_validating_updates">QA pr
     <?php endforeach; ?>
   </tbody>
   </table>
+    <?php if ($status == "pending"): ?>
 Number of update candidates: <?php echo $count['total'] - $count['backport']; ?> 
 (security: <?php echo $count['security'] ?>,
 bugfix: <?php echo $count['bugfix'] ?>,
 enhancement: <?php echo $count['enhancement'] ?>)<br/>
 Number of backports : <?php echo $count['backport'] ?><br/>
   <br/>
+    <?php elseif ($status == "validated_update"): ?>
+Number of validated updates: <?php echo $count['total'] ?>
+    <?php elseif ($status == "validated_backport"): ?>
+Number of validated backports: <?php echo $count['total'] ?>
+    <?php endif; ?>
   <?php endforeach; ?>
 <?php endforeach; ?>
 
