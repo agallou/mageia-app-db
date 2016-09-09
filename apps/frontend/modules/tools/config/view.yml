@@ -1,3 +1,6 @@
 updatesSuccess:
   stylesheets:
     - buglist.css
+blockersSuccess:
+  stylesheets:
+    - buglist.css

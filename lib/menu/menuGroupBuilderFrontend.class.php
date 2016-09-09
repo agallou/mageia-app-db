@@ -37,6 +37,7 @@ class menuGroupBuilderFrontend extends menuGroupBuilder
     if ($madbConfig->get("distribution") == "mageia")
     {
       $items[] = $this->createItem('QA Updates', 'tools/updates');
+      $items[] = $this->createItem('Release blockers', 'tools/blockers');
     }
     $this->addGroup('Tools', $items, 'icon-puzzle-piece');
 
