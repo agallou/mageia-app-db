@@ -2,22 +2,27 @@
 <?php slot('name') ?>
 Current Blockers
 <?php end_slot('name') ?>
-<p></p>
+<p>This page lists all bug reports that have been marked as release blockers, which means that
+they must be fixed before the next release of Mageia. The <strong>bug watcher</strong>
+(QA contact field in bugzilla) is someone who commits to update the <strong>bug status comment</strong>
+regularly and tries to get a status from the packagers involved and remind them about the bug if needed.
+<strong>Anyone</strong> can be bug watcher and it greatly helps.</p>
 <br />
-<?php foreach ($bugs as $assignee => $assignee_bugs):?>
+<?php foreach ($sorted_assignees as $assignee):?>
   <h2><?php echo $assignee; ?></h2>
   <table class='buglist'>
     <thead>
     <tr>
       <th style="width:7%">Bug number</th>
-      <th style="width:44%">Summary</th>
+      <th style="width:40%">Summary</th>
       <th style="width:10%">Bug Watcher</th>
-      <th style="width:32%">Status comment</th>
+      <th style="width:28%">Status comment</th>
       <th style="width:7%">Status</th>
+      <th style="width:7%">No action for</th>
     </tr>
     </thead>
     <tbody>
-    <?php foreach ($assignee_bugs as $bug): ?>
+    <?php foreach ($bugs[$assignee] as $bug): ?>
     <?php $id = $bug['bug_id'] ?>
     <tr>
       <td><?php echo link_to($id, 'https://bugs.mageia.org/show_bug.cgi?id=' . $id) ?></td>
@@ -27,8 +32,12 @@ Current Blockers
               'https://bugs.mageia.org/show_bug.cgi?id=' . $id)
       ?></td>
       <td><?php echo $bug["qacontact"] ?></td>
-      <td><?php echo $bug["statuscomment"] ?></td>
+      <td style="text-align:left;"><?php echo $bug["statuscomment"] ?></td>
       <td><?php echo $bug["status"] ?></td>
+      <td><?php
+      $date = new DateTime(substr($bug['changed'], 0, 10));
+      echo $date->diff($now)->format("%a");
+      ?> days</td>
     </tr>
     <?php endforeach; ?>
     </tbody>
