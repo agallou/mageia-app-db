@@ -15,8 +15,8 @@
         <h1>An Error Occurred</h1>
         <h5>The server returned a "<?php echo $code ?> <?php echo $text ?>".</h5>
         <br />
-        Something is broken<br />
-        Please let us know by creating and issue in our <a href="http://mageia-app-db.tuxette.fr/projects/mageia-app-db/issues">bug tracker</a>.<br/>
+        Something is broken.<br />
+        Please let us know by creating and issue in our <a href="https://github.com/agallou/mageia-app-db/issues">bug tracker</a>.<br/>
         We will fix it as soon as possible. Sorry for any inconvenience caused.<br />
     </div>
 
