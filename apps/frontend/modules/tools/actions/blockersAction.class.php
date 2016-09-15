@@ -5,6 +5,10 @@ class blockersAction extends madbActions
   {
     // This action is very Mageia-QA-specific, should be in a mageia-specific plugin
 
+    $url_closed = "https://bugs.mageia.org/buglist.cgi?bug_status=RESOLVED&chfield=bug_status&chfieldfrom=2w&chfieldto=Now&chfieldvalue=RESOLVED&priority=release_blocker&query_format=advanced&ctype=csv&human=1";
+    $csv_closed = explode("\n", file_get_contents($url_closed));
+    unset($csv_closed[0]);
+    $this->nb_closed = count($csv_closed);
     $url = "https://bugs.mageia.org/buglist.cgi?bug_status=NEW&bug_status=UNCONFIRMED&bug_status=ASSIGNED&bug_status=REOPENED&columnlist=product%2Ccomponent%2Cbug_status%2Cshort_desc%2Cchangeddate%2Ccf_statuscomment%2Cqa_contact_realname%2Cpriority%2Cbug_severity%2Ccf_rpmpkg%2Cassigned_to_realname%2Cbug_id%2Cassigned_to&human=1&priority=release_blocker&query_format=advanced&ctype=csv&human=1";
     $csv = explode("\n", file_get_contents($url));
     $rank['bug_id'] = 0;
@@ -23,6 +27,7 @@ class blockersAction extends madbActions
 
     $bugs = array();
     unset($csv[0]);
+    $this->nb_blockers = count($csv);
     foreach ($csv as $row)
     {
       $bug_array = str_getcsv($row);

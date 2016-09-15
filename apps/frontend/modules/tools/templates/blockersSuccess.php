@@ -6,8 +6,9 @@ Current Blockers
 they must be fixed before the next release of Mageia. The <strong>bug watcher</strong>
 (QA contact field in bugzilla) is someone who commits to update the <strong>bug status comment</strong>
 regularly and tries to get a status from the packagers involved and remind them about the bug if needed.
-<strong>Anyone</strong> can be bug watcher and it greatly helps.</p>
-<br />
+<strong>Anyone</strong> can be bug watcher.</p>
+<br/><p><em>Total: <?php echo $nb_blockers ?>. Closed in the last fourteen days: <?php echo $nb_closed ?>.</em></p>
+<br/>
 <?php foreach ($sorted_assignees as $assignee):?>
   <h2><?php echo $assignee; ?></h2>
   <table class='buglist'>
