@@ -1,16 +1,16 @@
-<?php slot('title', 'Current Blockers') ?>
+<?php slot('title', 'Intended for next release, except blockers') ?>
 <?php slot('name') ?>
 Current Blockers
 <?php end_slot('name') ?>
-<p>This page lists all bug reports that have been marked as release blockers, which means that
-they must be fixed before the next release of Mageia. The <strong>bug watcher</strong>
-(QA contact field in bugzilla) is someone who commits to update the <strong>bug status comment</strong>
+<p>This page lists all bug reports that have been marked as intented for next release, except release blockers
+The <strong>bug watcher</strong> (QA contact field in bugzilla) is someone who commits to update the <strong>bug status comment</strong>
 regularly and tries to get a status from the packagers involved and remind them about the bug if needed.
 <strong>Anyone</strong> can be bug watcher.</p>
-<br/><p><em>Total: <?php echo $total ?>.<br/>
+<br/><p><em>Total:
+<?php  echo link_to($total, $base_url); ?>.<br/>
 In the last two weeks:
-<?php echo $nb_created ?> created and <?php echo $nb_demoted ?> promoted.
-<?php echo $nb_closed ?> closed and <?php echo $nb_demoted ?> demoted.
+<?php echo link_to($nb_created, $url_created) ?> created and <?php echo link_to($nb_promoted, $url_promoted) ?> promoted.
+<?php echo link_to($nb_closed, $url_closed) ?> closed and <?php echo link_to($nb_demoted, $url_demoted) ?> demoted.
 </em></p>
 <br/>
 <?php foreach ($sorted_assignees as $assignee):?>

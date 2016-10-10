@@ -38,6 +38,7 @@ class menuGroupBuilderFrontend extends menuGroupBuilder
     {
       $items[] = $this->createItem('QA Updates', 'tools/updates');
       $items[] = $this->createItem('Release blockers', 'tools/blockers');
+      $items[] = $this->createItem('Intended for next release', 'tools/milestone');
     }
     $this->addGroup('Tools', $items, 'icon-puzzle-piece');
 

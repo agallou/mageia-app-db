@@ -1,11 +1,10 @@
 <?php
-class blockersAction extends madbActions
+class milestoneAction extends madbActions
 {
   public function execute($request)
   {
     // This action is very Mageia-QA-specific, should be in a mageia-specific plugin
-
-    $this->base_url = "https://bugs.mageia.org/buglist.cgi?bug_status=NEW&bug_status=UNCONFIRMED&bug_status=ASSIGNED&bug_status=REOPENED&columnlist=product%2Ccomponent%2Cbug_status%2Cshort_desc%2Cchangeddate%2Ccf_statuscomment%2Cqa_contact_realname%2Cpriority%2Cbug_severity%2Ccf_rpmpkg%2Cassigned_to_realname%2Cbug_id%2Cassigned_to&human=1&priority=release_blocker&query_format=advanced&ctype=csv&human=1";
+    $this->base_url = "https://bugs.mageia.org/buglist.cgi?priority=High&priority=Normal&priority=Low&columnlist=product%2Ccomponent%2Cbug_status%2Cshort_desc%2Cchangeddate%2Ccf_statuscomment%2Cqa_contact_realname%2Cpriority%2Cbug_severity%2Ccf_rpmpkg%2Cassigned_to_realname%2Cbug_id%2Cassigned_to&query_format=advanced&bug_status=NEW&bug_status=UNCONFIRMED&bug_status=ASSIGNED&bug_status=REOPENED&target_milestone=Mageia%206";
     $param_closed = "&chfieldto=Now&chfieldvalue=RESOLVED&chfield=bug_status&chfieldfrom=2w";
     $this->url_closed = $this->base_url . $param_closed;
     $param_created = "&chfield=%5BBug%20creation%5D&chfieldfrom=2w&chfieldto=Now";
@@ -43,7 +42,6 @@ class blockersAction extends madbActions
     foreach ($csv as $row)
     {
       $bug_array = str_getcsv($row);
-      //print_r($bug_array);
       $bug = array();
       foreach(array_keys($rank) as $key)
       {
@@ -64,9 +62,9 @@ class blockersAction extends madbActions
       {
         if (stripos($assigneename, $word) !== false)
         {
-            $group_assignees[] = $assigneename;
-            unset($assignees[$key]);
-            break;
+          $group_assignees[] = $assigneename;
+          unset($assignees[$key]);
+          break;
         }
       }
       ksort($bugs[$assigneename]);
