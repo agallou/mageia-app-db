@@ -6,8 +6,7 @@ class blockersAction extends madbActions
     // This action is very Mageia-QA-specific, should be in a mageia-specific plugin
 
     $this->base_url = "https://bugs.mageia.org/buglist.cgi?bug_status=NEW&bug_status=UNCONFIRMED&bug_status=ASSIGNED&bug_status=REOPENED&columnlist=product%2Ccomponent%2Cbug_status%2Cshort_desc%2Cchangeddate%2Ccf_statuscomment%2Cqa_contact_realname%2Cpriority%2Cbug_severity%2Ccf_rpmpkg%2Cassigned_to_realname%2Cbug_id%2Cassigned_to&human=1&priority=release_blocker&query_format=advanced";
-    $param_closed = "&chfieldto=Now&chfieldvalue=RESOLVED&chfield=bug_status&chfieldfrom=2w";
-    $this->url_closed = $this->base_url . $param_closed;
+    $this->url_closed = "https://bugs.mageia.org/buglist.cgi?priority=release_blocker&columnlist=product%2Ccomponent%2Cbug_status%2Cshort_desc%2Cchangeddate%2Ccf_statuscomment%2Cqa_contact_realname%2Cpriority%2Cbug_severity%2Ccf_rpmpkg%2Cassigned_to_realname%2Cbug_id%2Cassigned_to&chfieldto=Now&query_format=advanced&chfield=bug_status&chfieldfrom=2w&chfieldvalue=RESOLVED&bug_status=RESOLVED&bug_status=VERIFIED";
     $param_created = "&chfield=%5BBug%20creation%5D&chfieldfrom=2w&chfieldto=Now";
     $this->url_created = $this->base_url . $param_created;
     $param_promoted = "&chfieldto=Now&chfield=priority&chfieldfrom=2w&chfieldvalue=release_blocker&f1=creation_ts&o1=lessthan&v1=2w";
