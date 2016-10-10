@@ -1,6 +1,6 @@
 <?php slot('title', 'Intended for next release, except blockers') ?>
 <?php slot('name') ?>
-Current Blockers
+Intended for next release, except blockers
 <?php end_slot('name') ?>
 <p>This page lists all bug reports that have been marked as intented for next release, except release blockers
 The <strong>bug watcher</strong> (QA contact field in bugzilla) is someone who commits to update the <strong>bug status comment</strong>
