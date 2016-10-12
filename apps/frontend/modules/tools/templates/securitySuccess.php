@@ -9,9 +9,11 @@ Security issues
     <thead>
       <th style="width:7%">Bug number</th>
       <th style="text-align:left;">Summary (hover for RPM name)</th>
-      <th style="width:10%">Versions affected</th>
-      <th style="width:10%">Date created</th>
-      <th style="width:10%">Last action (days)</th>
+      <th style="width:10%">Assignee</th>
+      <th style="width:7%">Versions affected</th>
+      <th style="width:30%">Status comment</th>
+      <th style="width:7%">Date created</th>
+      <th style="width:8%">Last action (days)</th>
     </thead>
     <tbody>
     <?php $count = array(); ?>
@@ -46,7 +48,9 @@ Security issues
                 substr($updates[$id]['summary'], 0, 100) . (strlen($updates[$id]['summary'])>100 ? "[...]" : ""),
                 'https://bugs.mageia.org/show_bug.cgi?id=' . $id)
         ?></td>
+        <td><?php echo $updates[$id]['assigneename'] ?></td>
         <td><?php echo join(", ", $updates[$id]['versions']) ?></td>
+        <td><?php echo $updates[$id]['statuscomment'] ?></td>
         <td><?php echo $updates[$id]['created'] ?></td>
         <td><?php
         $date = new DateTime(substr($updates[$id]['changed'], 0, 10));
