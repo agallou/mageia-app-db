@@ -5,6 +5,8 @@ class securityAction extends madbActions
   {
     // This action is very Mageia-QA-specific, should be in a mageia-specific plugin
 
+    $this->search_url = "https://bugs.mageia.org/buglist.cgi?columnlist=version%2Cassigned_to%2Cbug_status%2Cresolution%2Cshort_desc%2Ccf_rpmpkg%2Cstatus_whiteboard&email1=qa-bugs%40ml.mageia.org&emailassigned_to1=1&emailcc1=1&emailtype1=substring&field0-0-0=cf_rpmpkg&field0-0-2=short_desc&product=Mageia&query_format=advanced&type0-0-0=substring&type0-0-1=substring&type0-0-2=substring&type0-0-3=matches&value0-0-0={{SEARCH}}&value0-0-1={{SEARCH}}&value0-0-2={{SEARCH}}&value0-0-3=%22{{SEARCH}}%22&order=bug_id%20DESC&query_based_on=";
+
     // get the list of current security issues from bugzilla
     $url = "https://bugs.mageia.org/buglist.cgi?bug_status=NEW&bug_status=UNCONFIRMED&bug_status=ASSIGNED&bug_status=REOPENED&columnlist=bug_severity%2Cpriority%2Cop_sys%2Cassigned_to%2Cbug_status%2Cresolution%2Cshort_desc%2Cstatus_whiteboard%2Ckeywords%2Cversion%2Ccf_rpmpkg%2Ccomponent%2Cchangeddate%2Copendate%2Ccf_statuscomment%2Cassigned_to_realname&component=Security&email1=qa-bugs&emailassigned_to1=1&emailtype1=notsubstring&query_format=advanced&query_based_on=";
     $param_csv = "&ctype=csv&human=1";
@@ -55,35 +57,20 @@ class securityAction extends madbActions
       }
       ksort($versions);
 
-      switch ($update[$rank['severity']])
-      {
-        case 'enhancement':
-          $severity_weight = 0;
-          break;
-        case 'low':
-          $severity_weight = 1;
-          break;
-        case 'major':
-          $severity_weight = 3;
-          break;
-        case 'critical':
-          $severity_weight = 4;
-          break;
-        default:
-          $severity_weight = 2; // normal
-          break;
-      }
-
       $updates[$update[$rank['bug_id']]] = array(
           'summary'         => $update[$rank['summary']],
           'versions'        => $versions,
           'RPM'             => $update[$rank['RPM']],
           'severity'        => $update[$rank['severity']],
-          'severity_weight' => $severity_weight,
           'changed'         => $update[$rank['changed']],
           'created'         => substr($update[$rank['created']], 0, 10),
           'statuscomment'   => $update[$rank['statuscomment']],
-          'assigneename'    => $update[$rank['assigneename']]
+          'assigneename'    => $update[$rank['assigneename']],
+          'source_package'  => $update[$rank['RPM']]
+                               ? ($source_package = PackagePeer::retrieveSourcePackageFromString($update[$rank['RPM']], false))
+                                 ? $source_package
+                                 : PackagePeer::stripVersionFromName($update[$rank['RPM']])
+                               : false,
       );
     }
     $this->updates_by_version = array();
@@ -98,25 +85,6 @@ class securityAction extends madbActions
     foreach ($this->updates_by_version as $version => $values)
     {
       ksort($this->updates_by_version[$version]);
-      // sort security updates by severity
-      $updates_by_severity = array();
-      foreach ($this->updates_by_version[$version] as $id)
-      {
-        if (!isset($updates_by_severity[$updates[$id]['severity_weight']]))
-        {
-          $updates_by_severity[$updates[$id]['severity_weight']] = array();
-        }
-        $updates_by_severity[$updates[$id]['severity_weight']][] = $id;
-      }
-      krsort($updates_by_severity);
-      $this->updates_by_version[$version] = array();
-      foreach ($updates_by_severity as $severity_weight => $ids)
-      {
-        foreach ($ids as $id)
-        {
-          $this->updates_by_version[$version][$id] = $id;
-        }
-      }
     }
 
     $this->updates = $updates;

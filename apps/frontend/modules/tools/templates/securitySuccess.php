@@ -2,7 +2,7 @@
 <?php slot('name') ?>
 Security issues
 <?php end_slot('name') ?>
-<br />
+
   <?php foreach ($updates_by_version as $version => $ids): ?>
   <h2>Mageia <?php echo $version ?></h2>
   <table class='buglist'>
@@ -11,9 +11,10 @@ Security issues
       <th style="text-align:left;">Summary (hover for RPM name)</th>
       <th style="width:10%">Assignee</th>
       <th style="width:7%">Versions affected</th>
-      <th style="width:30%">Status comment</th>
+      <th style="width:24%">Status comment</th>
       <th style="width:7%">Date created</th>
       <th style="width:8%">Last action (days)</th>
+      <th style="width:6%">Quick search</th>
     </thead>
     <tbody>
     <?php $count = array(); ?>
@@ -56,6 +57,20 @@ Security issues
         $date = new DateTime(substr($updates[$id]['changed'], 0, 10));
         echo $date->diff($now)->format("%a");
         ?></td>
+        <td style="text-align:left;"><?php
+          if ($source_package = $updates[$id]['source_package'])
+          {
+            if (is_object($source_package))
+            {
+              $name = $source_package->getName();
+            }
+            else
+            {
+              $name = $source_package;
+            }
+            echo link_to("Bugzilla", str_replace('{{SEARCH}}', $name, $search_url));
+          }?>
+        </td>
       </tr>
     <?php endforeach; ?>
     </tbody>
