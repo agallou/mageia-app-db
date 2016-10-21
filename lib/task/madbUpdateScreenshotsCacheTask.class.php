@@ -44,7 +44,7 @@ class madbUpdateScreenshotsCacheTask extends madbBaseTask
    */
   protected function cleanUrl($url)
   {
-      return ltrim($url, 'http:');
+      return ltrim(ltrim($url, 'https:'), 'http:');
   }
 
 }
