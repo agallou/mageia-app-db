@@ -4,7 +4,7 @@ class updatesAction extends madbActions
   public function execute($request)
   {
     // This action is very Mageia-QA-specific, should be in a mageia-specific plugin
-    
+
     // get the list of current updates candidates from bugzilla
     $url = "https://bugs.mageia.org/buglist.cgi?bug_status=REOPENED&bug_status=NEW&bug_status=ASSIGNED&bug_status=UNCONFIRMED&columnlist=bug_severity%2Cpriority%2Cop_sys%2Cassigned_to%2Cbug_status%2Cresolution%2Cshort_desc%2Cstatus_whiteboard%2Ckeywords%2Cversion%2Ccf_rpmpkg%2Ccomponent%2Cchangeddate&field0-0-0=assigned_to&query_format=advanced&type0-0-0=substring&type1-0-0=notsubstring&value0-0-0=qa-bugs&ctype=csv";
     // search URL based on RPM name
@@ -20,8 +20,8 @@ class updatesAction extends madbActions
     $rank['RPM'] = 11;
     $rank['component'] = 12;
     $rank['changed'] = 13;
-    
-    
+
+
     $updates = array();
     unset($updates_csv[0]);
     foreach ($updates_csv as $row)
@@ -38,7 +38,7 @@ class updatesAction extends madbActions
       {
         foreach ($matches[1] as $version)
         {
-          $versions[$version] = $version; 
+          $versions[$version] = $version;
         }
       }
       // 3) from whiteboard
@@ -48,11 +48,11 @@ class updatesAction extends madbActions
       {
         foreach ($matches[1] as $version)
         {
-          $versions[$version] = $version; 
+          $versions[$version] = $version;
         }
       }
       ksort($versions);
-      
+
       // Get testing status for each version and arch
       $testing_status = array();
       foreach ($versions as $version)
@@ -60,23 +60,23 @@ class updatesAction extends madbActions
         $testing_status[$version] = array();
         // tested
         $matches = array();
-        preg_match_all('/MGA'.$version.'-([^-]+)-OK\b/i', $update[$rank['whiteboard']], $matches); 
+        preg_match_all('/MGA'.$version.'-([^-]+)-OK\b/i', $update[$rank['whiteboard']], $matches);
         if (!empty($matches[1]))
         {
           foreach ($matches[1] as $arch)
           {
             $testing_status[$version][$arch] = 1;
-          }          
+          }
         }
         // tested, with some doubts
         $matches = array();
-        preg_match_all('/MGA'.$version.'-([^-]+)-OK\?/i', $update[$rank['whiteboard']], $matches); 
+        preg_match_all('/MGA'.$version.'-([^-]+)-OK\?/i', $update[$rank['whiteboard']], $matches);
         if (!empty($matches[1]))
         {
           foreach ($matches[1] as $arch)
           {
             $testing_status[$version][$arch] = 2;
-          }          
+          }
         }
       }
 
@@ -88,7 +88,7 @@ class updatesAction extends madbActions
           $update[$rank['severity']] = 'low';
         }
       }
-      
+
       switch ($update[$rank['severity']])
       {
         case 'enhancement':
@@ -107,7 +107,7 @@ class updatesAction extends madbActions
           $severity_weight = 2; // normal
           break;
       }
-      
+
       $updates[$update[$rank['bug_id']]] = array(
           'summary'         => $update[$rank['summary']],
           'whiteboard'      => $update[$rank['whiteboard']],
@@ -121,13 +121,13 @@ class updatesAction extends madbActions
           'severity_weight' => $severity_weight,
           'changed'         => $update[$rank['changed']],
           'feedback'        => strpos($update[$rank['whiteboard']], 'feedback') === false ? false : true,
-          'source_package'  => $update[$rank['RPM']] 
+          'source_package'  => $update[$rank['RPM']]
                                ? ($source_package = PackagePeer::retrieveSourcePackageFromString($update[$rank['RPM']], false))
                                  ? $source_package
                                  : PackagePeer::stripVersionFromName($update[$rank['RPM']])
                                : false,
           'has_advisory'    => strpos($update[$rank['whiteboard']], 'advisory') === false ? false : true
-      );      
+      );
     }
     $this->updates_by_version = array();
     foreach ($updates as $id => $update)
@@ -184,7 +184,7 @@ class updatesAction extends madbActions
         }
       }
     }
-    
+
     $this->archs = array('32' => '32', '64' => '64');
     foreach ($updates as $update)
     {
@@ -192,7 +192,7 @@ class updatesAction extends madbActions
       {
         foreach ($statuses as $arch => $status)
         {
-          $this->archs[$arch] = $arch;            
+          $this->archs[$arch] = $arch;
         }
       }
     }
