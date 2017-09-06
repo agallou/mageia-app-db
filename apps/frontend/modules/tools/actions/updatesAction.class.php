@@ -31,17 +31,7 @@ class updatesAction extends madbActions
       $versions = array();
       // 1) from version field
       $versions[$update[$rank['version']]] = $update[$rank['version']];
-      // 2) from summary
-      $matches = array();
-      preg_match_all('/\bmga([0-9]+)\b/', $update[$rank['summary']], $matches);
-      if (!empty($matches[1]))
-      {
-        foreach ($matches[1] as $version)
-        {
-          $versions[$version] = $version;
-        }
-      }
-      // 3) from whiteboard
+      // 2) from whiteboard
       $matches = array();
       preg_match_all('/\bMGA([0-9]+)TOO/', $update[$rank['whiteboard']], $matches);
       if (!empty($matches[1]))
