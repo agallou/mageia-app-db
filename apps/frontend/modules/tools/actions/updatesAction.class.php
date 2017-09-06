@@ -104,19 +104,19 @@ class updatesAction extends madbActions
           'keywords'        => $update[$rank['keywords']],
           'versions'        => $versions,
           'RPM'             => $update[$rank['RPM']],
-          'has_procedure'   => strpos($update[$rank['whiteboard']], 'has_procedure') === false ? false : true,
+          'has_procedure'   => strpos($update[$rank['whiteboard']] . $update[$rank['keywords']], 'has_procedure') === false ? false : true,
           'testing_status'  => $testing_status,
           'component'       => $update[$rank['component']],
           'severity'        => $update[$rank['severity']],
           'severity_weight' => $severity_weight,
           'changed'         => $update[$rank['changed']],
-          'feedback'        => strpos($update[$rank['whiteboard']], 'feedback') === false ? false : true,
+          'feedback'        => strpos($update[$rank['whiteboard']] . $update[$rank['keywords']], 'feedback') === false ? false : true,
           'source_package'  => $update[$rank['RPM']]
                                ? ($source_package = PackagePeer::retrieveSourcePackageFromString($update[$rank['RPM']], false))
                                  ? $source_package
                                  : PackagePeer::stripVersionFromName($update[$rank['RPM']])
                                : false,
-          'has_advisory'    => strpos($update[$rank['whiteboard']], 'advisory') === false ? false : true
+          'has_advisory'    => strpos($update[$rank['whiteboard']] . $update[$rank['keywords']], 'advisory') === false ? false : true
       );
     }
     $this->updates_by_version = array();
