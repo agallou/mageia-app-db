@@ -77,4 +77,21 @@ class Rpm extends BaseRpm {
     return false;
   }  
   
+
+  /**
+   * Get the [url] column value.
+   *
+   * @param bool $add_scheme if set to true, add missing scheme
+   *
+   * @return string
+   *    */
+  public function getUrl($add_scheme=false)
+  {
+    $url = parent::getUrl();
+    if ($add_scheme and !empty($url) and strpos($url, ":") === false)
+    {
+      $url = "http://" . $url;
+    }
+    return $url;
+  }
 } // Rpm
