@@ -2,7 +2,7 @@
 <?php slot('name') ?>
 High Priority Bugs for next release, except those already having a milestone set.
 <?php end_slot('name') ?>
-<p>This page lists all bug reports that have been marked with a high priority (except bugs with a milestone, which are already present in the "Intended for MGA6" page).
+<p>This page lists all bug reports that have been marked with a high priority (except bugs with a milestone, which are already present in the "Intended for..." page).
 The <strong>bug watcher</strong>
 (QA contact field in bugzilla) is someone who commits to update the <strong>bug status comment</strong>
 regularly and tries to get a status from the packagers involved and remind them about the bug if needed.
