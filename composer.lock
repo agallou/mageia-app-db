@@ -4,7 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "a788f4365a53dd9ee43e995761338eba",
+    "hash": "8201c4033d709097eab0d2b2f4521242",
+    "content-hash": "3e80a0e908bcde7aae4cf40ae42d94f9",
     "packages": [
         {
             "name": "agallou/robo-hash",
@@ -152,12 +153,12 @@
             "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "https://github.com/Codegyre/Robo.git",
-                "reference": "6af37990f10825e9ae45ca53111770ef2093a4b0"
+                "url": "https://github.com/consolidation/Robo.git",
+                "reference": "9cd779e647d4db766405a38b464674119f8a8168"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Codegyre/Robo/zipball/6af37990f10825e9ae45ca53111770ef2093a4b0",
+                "url": "https://api.github.com/repos/consolidation/Robo/zipball/9cd779e647d4db766405a38b464674119f8a8168",
                 "reference": "6af37990f10825e9ae45ca53111770ef2093a4b0",
                 "shasum": ""
             },
@@ -595,9 +596,9 @@
             "name": "omCrossAppUrlPlugin",
             "version": "1.0.2",
             "source": {
-                "type": "svn",
-                "url": "http://svn.symfony-project.com/plugins/omCrossAppUrlPlugin/",
-                "reference": "trunk/"
+                "type": "git",
+                "url": "https://github.com/Symfony-Plugins/omCrossAppUrlPlugin.git",
+                "reference": "master"
             },
             "require": {
                 "composer/installers": "*"
@@ -738,7 +739,8 @@
             "authors": [
                 {
                     "name": "Michiel Rook",
-                    "email": "mrook@php.net"
+                    "email": "mrook@php.net",
+                    "role": "Lead"
                 },
                 {
                     "name": "Phing Community",
@@ -820,17 +822,17 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/propelorm/sfPropelORMPlugin.git",
-                "reference": "5e30c6745432e1c07cdce0f1097c3792f8f22ba3"
+                "reference": "3f8b344aa80015564bd22c4cf9b00299da5b799c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/propelorm/sfPropelORMPlugin/zipball/3ea83d9ec805d1c4b8e7b8a7e5ce4e1b8dcfb3d8",
-                "reference": "5e30c6745432e1c07cdce0f1097c3792f8f22ba3",
+                "url": "https://api.github.com/repos/propelorm/sfPropelORMPlugin/zipball/3f8b344aa80015564bd22c4cf9b00299da5b799c",
+                "reference": "3f8b344aa80015564bd22c4cf9b00299da5b799c",
                 "shasum": ""
             },
             "require": {
                 "composer/installers": "*",
-                "propel/propel1": "1.6.*"
+                "propel/propel1": "~1.6"
             },
             "type": "symfony1-plugin",
             "extra": {
@@ -850,15 +852,15 @@
                 "propel",
                 "symfony"
             ],
-            "time": "2013-09-02 22:02:29"
+            "time": "2018-02-12 14:27:32"
         },
         {
             "name": "sfGuardPlugin",
             "version": "4.0.2",
             "source": {
-                "type": "svn",
-                "url": "http://svn.symfony-project.com/plugins/sfGuardPlugin/",
-                "reference": "branches/1.3/"
+                "type": "git",
+                "url": "https://github.com/rdavaillaud/sfGuardPlugin-1.3.git",
+                "reference": "5cb6c41cacd99436d1152faa459011e3dbd6ee66"
             },
             "require": {
                 "composer/installers": "*"
@@ -875,7 +877,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/config/zipball/9698fdf0a750d6887d5e7729d5cf099765b20e61",
+                "url": "https://api.github.com/repos/symfony/config/zipball/0327509ffd6d37354ec9acefcd946db7caaabdb7",
                 "reference": "9698fdf0a750d6887d5e7729d5cf099765b20e61",
                 "shasum": ""
             },
@@ -1252,7 +1254,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/atoum/atoum/zipball/8295a17544e0118720debbbff845a84b6f44396e",
+                "url": "https://api.github.com/repos/atoum/atoum/zipball/2ba79f3383683c6c04071ea5201238a2cdb4b3a6",
                 "reference": "e88ce0e6b709627c7727a766967e183052855145",
                 "shasum": ""
             },
@@ -1342,9 +1344,9 @@
             "name": "elXHProfPlugin",
             "version": "1.0.0",
             "source": {
-                "type": "svn",
-                "url": "http://svn.symfony-project.com/plugins/elXHProfPlugin/",
-                "reference": "tags/1.0.0"
+                "type": "git",
+                "url": "https://github.com/Symfony-Plugins/elXHProfPlugin.git",
+                "reference": "master"
             },
             "require": {
                 "composer/installers": "*"
