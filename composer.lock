@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "8201c4033d709097eab0d2b2f4521242",
-    "content-hash": "3e80a0e908bcde7aae4cf40ae42d94f9",
+    "hash": "645cbe787e1b78fa0408c5053299a99c",
+    "content-hash": "740c7f8121a21d2a92d631dca3744514",
     "packages": [
         {
             "name": "agallou/robo-hash",
@@ -41,35 +41,35 @@
         },
         {
             "name": "beelab/bowerphp",
-            "version": "v0.3.4-beta",
+            "version": "v0.5.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Bee-Lab/bowerphp.git",
-                "reference": "6c5611cedd54bc9c76a12d53a338f36c20382706"
+                "reference": "d8950d65377818fc97052b3b73deac433837fee2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Bee-Lab/bowerphp/zipball/6c5611cedd54bc9c76a12d53a338f36c20382706",
-                "reference": "6c5611cedd54bc9c76a12d53a338f36c20382706",
+                "url": "https://api.github.com/repos/Bee-Lab/bowerphp/zipball/d8950d65377818fc97052b3b73deac433837fee2",
+                "reference": "d8950d65377818fc97052b3b73deac433837fee2",
                 "shasum": ""
             },
             "require": {
-                "camspiers/json-pretty": "1.0.*",
                 "ext-fileinfo": "*",
                 "ext-zip": "*",
-                "knplabs/github-api": "1.4.*",
-                "php": ">=5.3.6",
-                "symfony/console": "~2.3",
-                "symfony/filesystem": "~2.1",
-                "symfony/finder": "~2.2",
-                "symfony/process": "~2.1",
-                "vierbergenlars/php-semver": "~3.0"
+                "knplabs/github-api": "^1.4",
+                "php": ">=5.6",
+                "samsonasik/package-versions": "^1.1",
+                "symfony/console": "^2.7|^3.0",
+                "symfony/filesystem": "^2.7|^3.0",
+                "symfony/finder": "^2.7|^3.0",
+                "symfony/process": "^2.7|^3.0",
+                "vierbergenlars/php-semver": "^3.0"
             },
             "require-dev": {
                 "ext-phar": "*",
-                "fabpot/php-cs-fixer": "~1.5",
-                "mockery/mockery": "~0.9.3",
-                "phpunit/phpunit": "4.*"
+                "friendsofphp/php-cs-fixer": "^2.0",
+                "mockery/mockery": "^1.0@dev",
+                "phpunit/phpunit": "^5.7|^6.0"
             },
             "bin": [
                 "bin/bowerphp"
@@ -104,49 +104,14 @@
                 }
             ],
             "description": "An implementation of bower in PHP",
-            "homepage": "http://bowerphp.org/",
+            "homepage": "https://bowerphp.github.io/",
             "keywords": [
+                "bower",
                 "dependency",
                 "frontend",
                 "package"
             ],
-            "time": "2015-07-16 07:55:49"
-        },
-        {
-            "name": "camspiers/json-pretty",
-            "version": "1.0.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/camspiers/json-pretty.git",
-                "reference": "73c0bd55ca966f31f79d690a4b0aabaf98ad5d94"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/camspiers/json-pretty/zipball/73c0bd55ca966f31f79d690a4b0aabaf98ad5d94",
-                "reference": "73c0bd55ca966f31f79d690a4b0aabaf98ad5d94",
-                "shasum": ""
-            },
-            "require-dev": {
-                "phpunit/phpunit": "~4.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-0": {
-                    "Camspiers": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Cam Spiers",
-                    "email": "cameron@heyday.co.nz"
-                }
-            ],
-            "description": "Provides support for json pretty printing",
-            "time": "2015-09-17 16:05:48"
+            "time": "2017-09-26 13:50:17"
         },
         {
             "name": "codegyre/robo",
@@ -855,6 +820,56 @@
             "time": "2018-02-12 14:27:32"
         },
         {
+            "name": "samsonasik/package-versions",
+            "version": "1.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/samsonasik/PackageVersions.git",
+                "reference": "1dab884977464613383afe0e4be571cdef2317fc"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/samsonasik/PackageVersions/zipball/1dab884977464613383afe0e4be571cdef2317fc",
+                "reference": "1dab884977464613383afe0e4be571cdef2317fc",
+                "shasum": ""
+            },
+            "require": {
+                "composer-plugin-api": "^1.0",
+                "php": "^5.6 || ^7.0"
+            },
+            "replace": {
+                "ocramius/package-versions": ">=1.0.0"
+            },
+            "require-dev": {
+                "composer/composer": "^1.0.0-ALPHA11@ALPHA",
+                "phpunit/phpunit": "^5.2.8"
+            },
+            "type": "composer-plugin",
+            "extra": {
+                "class": "PackageVersions\\Installer",
+                "branch-alias": {
+                    "dev-master": "2.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "PackageVersions\\": "src/PackageVersions"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Marco Pivetta",
+                    "email": "ocramius@gmail.com"
+                }
+            ],
+            "description": "A backport of ocramius/package-versions that supports php ^5.6. Composer plugin that provides efficient querying for installed package versions (no runtime IO)",
+            "time": "2016-07-21 12:03:58"
+        },
+        {
             "name": "sfGuardPlugin",
             "version": "4.0.2",
             "source": {
@@ -1341,6 +1356,42 @@
             "time": "2012-11-30 08:32:39"
         },
         {
+            "name": "camspiers/json-pretty",
+            "version": "1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/camspiers/json-pretty.git",
+                "reference": "73c0bd55ca966f31f79d690a4b0aabaf98ad5d94"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/camspiers/json-pretty/zipball/73c0bd55ca966f31f79d690a4b0aabaf98ad5d94",
+                "reference": "73c0bd55ca966f31f79d690a4b0aabaf98ad5d94",
+                "shasum": ""
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Camspiers": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Cam Spiers",
+                    "email": "cameron@heyday.co.nz"
+                }
+            ],
+            "description": "Provides support for json pretty printing",
+            "time": "2015-09-17 16:05:48"
+        },
+        {
             "name": "elXHProfPlugin",
             "version": "1.0.0",
             "source": {
@@ -1366,7 +1417,6 @@
     "stability-flags": {
         "propel/sf-propel-o-r-m-plugin": 20,
         "codegyre/robo": 20,
-        "beelab/bowerphp": 10,
         "henrikbjorn/lurker": 20,
         "atoum/sfatoumplugin": 20,
         "atoum/atoum": 20
