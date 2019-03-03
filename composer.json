@@ -12,7 +12,7 @@
         "natxet/CssMin": "3.0.x",
         "leafo/scssphp": "0.2.0",
         "patchwork/jsqueeze": "2.0.x",
-        "beelab/bowerphp": "0.3.*@beta",
+        "beelab/bowerphp": "0.5.3",
         "agallou/robo-hash": "^0.0.1",
         "henrikbjorn/lurker": "dev-fix/is-dir as 1.0.0"
 
@@ -55,10 +55,10 @@
                   "composer/installers":"*"
                 },
                 "version": "4.0.2",
-                "source": {
-                    "url": "http://svn.symfony-project.com/plugins/sfGuardPlugin/",
-                    "type": "svn",
-                    "reference": "branches/1.3/"
+                "source":  {
+                    "url": "https://github.com/rdavaillaud/sfGuardPlugin-1.3.git",
+                    "type": "git",
+                    "reference": "5cb6c41cacd99436d1152faa459011e3dbd6ee66"
                 }
             }
         },
@@ -71,10 +71,10 @@
                   "composer/installers":"*"
                 },
                 "version": "1.0.2",
-                "source": {
-                    "url": "http://svn.symfony-project.com/plugins/omCrossAppUrlPlugin/",
-                    "type": "svn",
-                    "reference": "trunk/"
+                "source":  {
+                    "url": "https://github.com/Symfony-Plugins/omCrossAppUrlPlugin.git",
+                    "type": "git",
+                    "reference": "master"
                 }
             }
         },
@@ -87,10 +87,10 @@
                   "composer/installers":"*"
                 },
                 "version": "1.0.0",
-                "source": {
-                    "url": "http://svn.symfony-project.com/plugins/elXHProfPlugin/",
-                    "type": "svn",
-                    "reference": "tags/1.0.0"
+                "source":  {
+                    "url": "https://github.com/Symfony-Plugins/elXHProfPlugin.git",
+                    "type": "git",
+                    "reference": "master"
                 }
             }
         }
