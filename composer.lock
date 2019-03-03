@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "645cbe787e1b78fa0408c5053299a99c",
-    "content-hash": "740c7f8121a21d2a92d631dca3744514",
+    "hash": "b5090d84e823be6894e2a9b48d131d00",
+    "content-hash": "3be8628405200e5b31044ffd489d7717",
     "packages": [
         {
             "name": "agallou/robo-hash",
@@ -115,32 +115,36 @@
         },
         {
             "name": "codegyre/robo",
-            "version": "dev-master",
+            "version": "0.7.2",
             "source": {
                 "type": "git",
-                "url": "https://github.com/consolidation/Robo.git",
-                "reference": "9cd779e647d4db766405a38b464674119f8a8168"
+                "url": "https://github.com/consolidation-org/Robo.git",
+                "reference": "9982edecb19f59420031dd9855b0d31e861b8b68"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/consolidation/Robo/zipball/9cd779e647d4db766405a38b464674119f8a8168",
-                "reference": "6af37990f10825e9ae45ca53111770ef2093a4b0",
+                "url": "https://api.github.com/repos/consolidation-org/Robo/zipball/9982edecb19f59420031dd9855b0d31e861b8b68",
+                "reference": "9982edecb19f59420031dd9855b0d31e861b8b68",
                 "shasum": ""
             },
             "require": {
-                "henrikbjorn/lurker": "1.0.*@dev",
+                "henrikbjorn/lurker": "~1.0",
                 "php": ">=5.4.0",
-                "symfony/console": "~2.5",
-                "symfony/filesystem": "~2.5",
-                "symfony/finder": "~2.5",
-                "symfony/process": "~2.5"
+                "symfony/console": "~2.5|~3.0",
+                "symfony/filesystem": "~2.5|~3.0",
+                "symfony/finder": "~2.5|~3.0",
+                "symfony/process": "~2.5|~3.0"
             },
             "require-dev": {
-                "codeception/aspect-mock": "0.5.*",
-                "codeception/base": "~2.1",
+                "codeception/aspect-mock": "0.5.4",
+                "codeception/base": "~2.1.5",
                 "codeception/verify": "0.2.*",
                 "natxet/cssmin": "~3.0",
-                "patchwork/jsqueeze": "~1.0"
+                "patchwork/jsqueeze": "~1.0",
+                "pear/archive_tar": "~1.0"
+            },
+            "suggest": {
+                "pear/archive_tar": "Allows tar archives to be created and extracted in taskPack and taskExtract, respectively."
             },
             "bin": [
                 "robo"
@@ -162,7 +166,8 @@
                 }
             ],
             "description": "Modern task runner",
-            "time": "2015-10-11 01:54:43"
+            "abandoned": "consolidation/robo",
+            "time": "2016-04-13 20:14:17"
         },
         {
             "name": "composer/installers",
@@ -1416,7 +1421,6 @@
     "minimum-stability": "stable",
     "stability-flags": {
         "propel/sf-propel-o-r-m-plugin": 20,
-        "codegyre/robo": 20,
         "henrikbjorn/lurker": 20,
         "atoum/sfatoumplugin": 20,
         "atoum/atoum": 20
