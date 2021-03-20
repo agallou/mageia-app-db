@@ -10,8 +10,8 @@ abbot-suite
 abe
 abiword
 abrt-gui
-abuse_sdl
 abuse-sdl
+abuse_sdl
 ac3jack
 accerciser
 acetoneiso
@@ -36,6 +36,7 @@ akonadi-import-wizard
 akonadi-kde
 akregator
 alacarte
+alacritty
 aladin
 al-anvar
 albert
@@ -77,6 +78,7 @@ anki
 antlrworks
 ant-phone
 aoi
+apitrace-gui
 apollon
 appeditor
 apper
@@ -145,6 +147,7 @@ ayttm
 babytrans
 backintime-gnome
 backintime-kde4
+backintime-qt
 backintime-qt4
 bacula-bat
 bacula-console-gnome
@@ -190,6 +193,7 @@ bino
 biogenesis
 birdfont
 birdie
+birdtray
 birt
 bisho
 bitcoin-qt
@@ -215,6 +219,7 @@ blueberry
 bluedevil
 bluedj-hall
 bluefish
+bluegriffon
 bluej
 blueman
 blueproximity
@@ -229,6 +234,7 @@ bombono-dvd
 bomi
 boncuk
 booh
+bookworm
 boomaga
 bos
 boswars
@@ -312,6 +318,7 @@ calligra-active
 calligra-author
 calligra-core
 calligra-gemini
+calligra-handbook
 calligra-mobile
 calligraplan
 calligra-sheets
@@ -347,6 +354,7 @@ cdvst
 cedega-mandriva
 ceed
 celestia
+celluloid
 cellwriter
 celtx-ca
 celtx-cs
@@ -358,6 +366,7 @@ celtx-pt-BR
 cervisia
 cgoban
 cgoban1
+chavier
 chbg
 cheese
 cheesetracker
@@ -389,6 +398,7 @@ cinnamon-settings-daemon
 circuslinux
 cire
 cirkuit
+ckb-next
 clamtk
 clamz
 clanbomber
@@ -420,6 +430,7 @@ communi
 compiz
 compiz-ccsm
 compiz-fusion-icon
+compiz-simple-ccsm
 compton
 compton-conf
 conduit
@@ -427,13 +438,16 @@ configure-thinkpad
 configure-trackpoint
 conglomerate
 congruity
+conky
 conky-manager
 connectagram
+connections
 contacts
 converseen
 convertall
 cooledit
 coolreader3
+cool-retro-term
 coondog
 copter-commander
 copyq
@@ -441,6 +455,7 @@ coq-ide
 coquillo
 coralftp
 corebird
+corectrl
 corsixth
 couturier
 cowbell
@@ -508,6 +523,7 @@ devidify
 d-feet
 dia
 dianara
+dibuja
 diffpdf
 diffuse
 digger
@@ -521,6 +537,7 @@ disksearch
 dispcalGUI
 displaycal
 distcc
+distcc-gnome
 distcc-gnome-monitor
 djl
 djview4
@@ -528,6 +545,7 @@ djvulibre
 dlume
 dmeternal
 dnfdragora-common
+dnfdragora-updater
 docky
 dogecoin-qt
 dogtail
@@ -536,6 +554,7 @@ dolphin-emu
 dopewars
 dopi
 dosbox
+dosbox-staging
 doublecmd-gtk
 doublecmd-qt
 douml
@@ -605,10 +624,12 @@ edgar
 editra
 edje_editor
 edje_viewer
+eduactiv8
 educazionik
 edugraphe
 eduke32-console
 eduke32-gui
+eduvpn-client
 edyuk
 eee-control
 efax-gtk
@@ -636,6 +657,7 @@ emesene
 emi
 empathy
 emphasis
+encryptpad-qt5
 endeavour
 endless-sky
 enemylines4
@@ -674,6 +696,7 @@ euclide
 eureka
 eve
 evince
+evisum
 evol-client
 evolution
 evolution-data-server
@@ -693,6 +716,7 @@ extremetuxracer
 eyesight
 f4l
 falkon-core
+fallingtime
 fbdesk
 fbida
 fbreader
@@ -725,6 +749,8 @@ filezilla
 fillets-ng
 findbugs
 finfaktura
+fire-and-fondness
+fire-and-fondness-2
 firefox
 firefox-aurora
 firefox-beta
@@ -735,6 +761,7 @@ fityk
 five-or-more
 flacon
 flamerobin
+flameshot
 flare
 flare-engine
 flash-imagewriter
@@ -756,6 +783,7 @@ fluxbox
 fluxstyle
 fmit
 focuswriter
+foliate
 fontforge
 foobillard
 foobillardplus
@@ -822,6 +850,7 @@ fuse-emulator
 fusion-icon
 fvwm
 fvwm2
+fvwm3
 fvwm-crystal
 fwbackups
 fwbuilder
@@ -861,6 +890,7 @@ gamine
 ganttproject
 ganyremote
 gapcmon
+gargoyle
 gargoyle-free
 garlic
 gastman
@@ -928,6 +958,8 @@ ggz-gtk-client
 ggz-txt-client
 ghemical
 ghex
+giac-xcas
+giada
 giFTcurs
 gigedit
 giggle
@@ -935,6 +967,7 @@ gigolo
 gimageview
 gimp
 ginkgo
+git-cola
 gitg
 gjay
 gjots2
@@ -963,6 +996,7 @@ gmameui
 gmasqdialer
 gmemusage
 gmerlin
+gmic
 gmorgan
 gmpc
 gmtp
@@ -1022,6 +1056,7 @@ gnomeicu
 gnome-kerberos
 gnome-keyring-manager
 gnome-klotski
+gnome-latex
 gnome-lirc-properties
 gnome-logs
 gnome-mahjongg
@@ -1077,6 +1112,7 @@ gnome-tetravex
 gnome-todo
 gnome-tweaks
 gnome-tweak-tool
+gnome-usage
 gnome-user-share
 gnome-utils
 gnome-volume-manager
@@ -1130,6 +1166,7 @@ gossip
 gottet
 gourmet
 gournal
+goverlay
 goxel
 gpa
 gpaint
@@ -1149,9 +1186,11 @@ gpredict
 gprolog
 gprsec
 gpsbabel-gui
+gpscorrelate
 gpsd-clients
 gpsdrive
 gpspoint
+gpsprune
 gq
 gqmpeg
 gqrx
@@ -1211,6 +1250,7 @@ gtkfind
 gtkgep
 gtk-gnutella
 gtkguitune
+gtkhash
 gtk-iptables
 gtklp
 gtkmotd
@@ -1265,9 +1305,11 @@ harbour-hbdbu
 harbour-hbide
 harddrake-ui
 hardinfo
+harris
 hatari
 hattrick-organizer
 hdfview
+hdhomerun
 hdspconf
 hdspmixer
 heaptrack
@@ -1288,6 +1330,7 @@ hhexen-sdl
 higan
 highlight-gui
 highmoon
+hijinx
 hime
 hinedo
 hipo
@@ -1299,6 +1342,7 @@ horgand
 hornsey
 hot-babe
 hotot
+hotspot
 hotwire
 howto-html-de
 howto-html-el
@@ -1325,6 +1369,7 @@ hugin
 hugo
 hv3
 hwloc
+hydra-gui
 hydraslayer
 hydrogen
 hyperrogue
@@ -1337,6 +1382,7 @@ ibus-cangjie
 ibus-chewing
 ibus-hangul
 ibus-libpinyin
+ibus-m17n
 ibus-pinyin
 ibus-table
 ibWebAdmin
@@ -1364,10 +1410,12 @@ indexhtml
 inkscape
 install-brother-printer
 inventory
+invertapple
 invesalius
 ioquake3
 ioquake3-demo
 iplist
+ipqalc
 iqnotes
 iqpuzzle
 iraf
@@ -1383,7 +1431,9 @@ itest-client
 itest-server
 itext-rups
 itext-toolbox
+itinerary
 iv
+ivan
 iyfct
 j7z
 jabbim
@@ -1396,7 +1446,11 @@ jack-rack
 jag
 jajuk
 jalopy
+jami-client-gnome
 jamin
+jamulus
+java-11-openjdk-devel
+java-11-openjdk-devel-slowdebug
 java-1.5.0-sun
 java-1.6.0-openjdk
 java-1.6.0-openjdk-devel
@@ -1405,6 +1459,8 @@ java-1.6.0-sun-devel
 java-1.7.0-openjdk-devel
 java-1.8.0-openjdk
 java-1.8.0-openjdk-devel
+java-1.8.0-openjdk-devel-slowdebug
+java-1.8.0-openjdk-slowdebug
 jcgui
 jclasslib-scripts
 jedit
@@ -1424,8 +1480,10 @@ josm
 jovie
 jpilot
 jrpm
+js8call
 juffed
 juk
+julia
 jumpnbump
 jumpnbump-menu
 junkie
@@ -1439,6 +1497,7 @@ kaconnect
 kaddressbook
 kadu
 kaffeine
+kaidan
 kajongg
 kalarm
 kalgebra
@@ -1462,6 +1521,7 @@ kaudiocreator
 kavi2svcd
 kazam
 kazehakase
+kbackup
 kbattleship
 kbbtray
 kbibtex
@@ -1490,6 +1550,7 @@ kdebluetooth4
 kdebugsettings
 kde-cdemu
 kde-cdemu-manager
+kde-cli-tools
 kdeconnect-kde
 kde-dev-utils
 kdegraphics-mobipocket
@@ -1511,6 +1572,7 @@ kdf
 kdiamond
 kdiff3
 kding
+kdiskmark
 kdocker
 keditbookmarks
 keepass
@@ -1567,10 +1629,12 @@ kipi-plugins-dngconverter
 kipi-plugins-expoblending
 kipi-plugins-panorama
 kipi-plugins-photolayouts-editor
+kirigami-gallery
 kiriki
 kitchensync
 kiten
 kitsune
+kitty
 kjots
 kjumpingcube
 klash
@@ -1630,6 +1694,7 @@ konqueror
 konquest
 konsole
 kontact
+kontrast
 konversation
 konvertible
 kopete
@@ -1677,6 +1742,7 @@ kshutdown
 ksirk
 ksnakeduel
 ksnapshot
+ksnip
 kspaceduel
 kspread
 ksquares
@@ -1708,6 +1774,7 @@ kuickshow
 kuiviewer
 kumir
 kuser
+kuserfeedback
 kverbos
 kvirc
 kvirustotal
@@ -1728,12 +1795,14 @@ labplot
 laby
 labyrinth
 laditools
+laigter
 lash
 last-exit
 lastfm-player
 lastpod
 lat
 latexila
+latte-dock
 lavaps
 lazarus
 lbreakout2
@@ -1742,10 +1811,12 @@ lecaviste
 lemonpos
 lemonpos-squeeze
 leocad
+lepton-eda
 lftp
 lgeneral
 lib64gtk+3.0-devel
 lib64gtk+4.0-devel
+lib64gtk4.0-devel
 lib64qt3-devel
 libbonoboui
 libfm
@@ -1758,6 +1829,7 @@ libgtk+3.0-devel
 libgtk+4.0-devel
 libhocr-gtk
 libosmo-dsp-doc
+libprojectm-data
 libqt3-devel
 librecad
 libreoffice
@@ -1771,6 +1843,7 @@ libreoffice-javafilter
 libreoffice-math
 libreoffice-writer
 libreoffice-xsltfilter
+librepcb
 libxfce4ui
 licq-qt4
 lierolibre
@@ -1787,6 +1860,7 @@ links-hacked
 linkx
 linpacker
 linphone
+linphone-desktop
 linphoneqt
 linpopup
 lintalk
@@ -1808,6 +1882,7 @@ logisim
 logjam
 lokalize
 loki_patch-fix
+lollypop
 lopster
 lordsawar
 lostsky
@@ -1819,6 +1894,7 @@ lplayer
 lprof
 lshw-gui
 lskat
+lsp-plugins
 ltris
 luciole
 luckybackup
@@ -1847,6 +1923,7 @@ lxmed
 lxmusic
 lxqt-about
 lxqt-admin
+lxqt-archiver
 lxqt-common
 lxqt-config
 lxqt-globalkeys
@@ -1866,6 +1943,7 @@ madbomber
 madman
 maelstrom
 Maelstrom
+mageia-doc-draklive-common
 mageia-doc-draklive-cs
 mageia-doc-draklive-de
 mageia-doc-draklive-el
@@ -1888,6 +1966,7 @@ mageia-doc-draklive-tr
 mageia-doc-draklive-uk
 mageia-doc-draklive-zh_CN
 mageia-doc-installer-ca
+mageia-doc-installer-common
 mageia-doc-installer-cs
 mageia-doc-installer-de
 mageia-doc-installer-el
@@ -1913,6 +1992,7 @@ mageia-doc-installer-tr
 mageia-doc-installer-uk
 mageia-doc-installer-zh_CN
 mageia-doc-mcc-ca
+mageia-doc-mcc-common
 mageia-doc-mcc-cs
 mageia-doc-mcc-de
 mageia-doc-mcc-el
@@ -1936,6 +2016,7 @@ mageia-doc-mcc-tr
 mageia-doc-mcc-uk
 mageia-doc-mcc-zh_CN
 mageia-doc-netinstall-ca
+mageia-doc-netinstall-common
 mageia-doc-netinstall-cs
 mageia-doc-netinstall-de
 mageia-doc-netinstall-el
@@ -1963,6 +2044,8 @@ magicos-magcc
 mahjongg3d
 mail-notification
 mailody
+malcontent
+manafirewall-common
 manaplus
 manatools
 manatools-common
@@ -2002,6 +2085,7 @@ mate-character-map
 mate-control-center
 mate-desktop
 mate-dictionary
+mate-disk-image-mounter
 mate-disk-usage-analyzer
 mate-document-viewer
 mate-file-archiver
@@ -2043,6 +2127,7 @@ mdvinput
 meandmyshadow
 mediainfo-gui-qt
 mediainfo-gui-wx
+mediawriter
 medit
 mednaffe
 megaglest
@@ -2079,6 +2164,7 @@ mirrormagic
 mixxx
 mj
 mkvtoolnix
+mkvtoolnix-gui
 mldonkey-gui
 mlterm
 mlview
@@ -2115,6 +2201,7 @@ mozo
 mp3info
 mp3splt-gtk
 mp3valgui
+mpc-qt
 mplayer-gui
 mplayer-vaapi-gui
 mps-youtube
@@ -2164,6 +2251,7 @@ nabi
 naev
 nagios-www
 nagstamon
+nanovna-saver
 natmonitor
 nautilus
 nautilus-actions
@@ -2179,6 +2267,8 @@ nemo-compare
 nemo-pastebin
 nemo-seahorse
 neovim
+neovim-gtk
+neovim-qt
 nepomuk
 nepomukannotation
 nepomuk-core
@@ -2205,6 +2295,7 @@ nexuiz-glx
 nexuiz-sdl
 nfoview
 nicotine
+nicotine+
 nightfall
 nil
 ninja-ide
@@ -2213,6 +2304,7 @@ nitrogen
 nitroshare
 nmap-frontend
 nmapsi4
+nocomprendo
 nodeview
 nogravity
 noiz2sa
@@ -2232,6 +2324,7 @@ nuclearchess
 nuface
 nulog
 numptyphysics
+nunit2-gui
 nunit-gui
 nut-monitor
 nuvolaplayer
@@ -2289,6 +2382,7 @@ openlierox
 openlp
 openmortal
 openmsx
+openmsx-catapult
 openmw
 openoffice.org-base
 openoffice.org-calc
@@ -2316,6 +2410,7 @@ orage
 orbital_eunuchs_sniper
 orca
 oregano
+orion
 osmo
 osmose
 ostrichriders
@@ -2325,6 +2420,8 @@ owncloud-client
 oxim-setup
 oxine
 padevchooser
+padthv1
+pageedit
 pairs
 pairs-editor
 palapeli
@@ -2365,6 +2462,7 @@ pcmanfm-qt
 pcmanx-gtk2
 pcsx2
 pcsxr
+pdfarranger
 pdfchain
 pdfedit
 pdfmod
@@ -2376,6 +2474,7 @@ peerguardian
 peg-e
 pekwm
 pencil
+pencil2d
 pencil-planner
 penguin-command
 penguintv
@@ -2386,6 +2485,7 @@ perroquet
 pessulus
 pgaccess
 pgadmin3
+pgadmin4
 pgmodeler
 pgworksheet
 phasex
@@ -2394,6 +2494,7 @@ phoronix-test-suite
 photo
 photoprint
 photoqt
+photorec
 phototonic
 phpldapadmin
 phpludoreve
@@ -2407,6 +2508,7 @@ pianobooster-timidity
 picard
 picasa
 picmi
+picom
 pidgin
 pim-data-exporter
 pim-sieve-editor
@@ -2421,9 +2523,11 @@ pioneers
 pioneerspacesim
 pioneers-server-gtk
 pipepanic
+piper
 pitivi
 pix
 pixelize
+pixelorama
 plan
 planeshift
 plank
@@ -2496,6 +2600,7 @@ plasma-applet-raptor
 plasma-applet-rsibreak
 plasma-applet-rssnow
 plasma-applet-rtm
+plasma-applets-alkimia
 plasma-applet-showdashboard
 plasma-applet-showdesktop
 plasma-applet-simplewelcome
@@ -2544,6 +2649,7 @@ polyxmass
 ponyprog2000
 popfile
 posterazor
+postgis-gui
 postr
 powdertoy
 powermanga
@@ -2592,6 +2698,7 @@ pyspread
 pysycache
 python2.4-docs
 python3-docs
+python3-xdot
 python-card
 python-coherence-applet
 python-docs
@@ -2603,11 +2710,13 @@ python-xdot
 pywords
 pyzo
 q4wine
+qabcs
 qacdp
 qalculate-gtk
 qamix
 qaquarelle
 qarecord
+qarepo
 qarte
 qasmixer
 qastools
@@ -2621,6 +2730,7 @@ qdigidoc-tera
 qdvdauthor
 qelectrotech
 qelly
+qemu-common
 qemulator
 qemu-launcher
 qesteidutil
@@ -2628,6 +2738,7 @@ qeven
 qfaxreader
 qgis
 qgit
+qhexedit2
 qiv
 qjackconnect
 qjackctl
@@ -2644,7 +2755,9 @@ qmidictl
 qmidinet
 qmidiroute
 qmmp
+qnetstatview
 qosmic
+qownnotes
 qpdfview
 qps
 qpxtool
@@ -2671,6 +2784,7 @@ qtemu
 qterm
 qterminal
 qtfm
+qt-fsarchiver
 qt-ike
 qtiplot
 qtoctave
@@ -2787,6 +2901,7 @@ rocs
 rodovid
 rogueboxadventures
 rolisteam
+root
 root-tail
 rosegarden
 rott-registered
@@ -2842,6 +2957,7 @@ scourge
 scratch
 screem
 screengrab
+screenkey
 screenlets
 scribes
 scribus
@@ -2909,6 +3025,7 @@ skobo
 skrooge
 skychart
 skype
+slade
 slic3r
 slic3r-experimental
 slic3r-stable
@@ -2942,6 +3059,7 @@ songs
 songwrite
 songwrite2
 sonic-visualiser
+sonnet-config
 sooperlooper
 soundconverter
 sound-juicer
@@ -2986,9 +3104,11 @@ step
 stepintochinese
 stepmania
 stickers
+stlink-gui
 stopmotion
 stormbaancoureur
 straw
+strawberry
 streamtuner
 stuntrally
 subcomposer
@@ -2999,6 +3119,7 @@ subtitleeditor
 sudokuki
 sugar
 sugar-browse-activity
+sugar-calculate-activity
 sugar-chat-activity
 sugar-emulator
 sugar-imageviewer-activity
@@ -3009,6 +3130,7 @@ sugar-pippy-activity
 sugar-read-activity
 sugar-runner
 sugar-terminal-activity
+sugar-turtleblocks-activity
 sugar-write-activity
 sulu
 sumwars
@@ -3066,6 +3188,7 @@ tangogps
 tanks-of-freedom
 tano
 tapiocaui
+tartube
 taskcoach
 tasks
 tasque
@@ -3112,6 +3235,7 @@ themonospot-gtk
 themonospot-gui-gtk
 themonospot-gui-qt
 thoggen
+thonny
 thunar
 thunar-volman
 thunderbird
@@ -3122,6 +3246,7 @@ tiled
 tilitin
 tilp2
 timemachine
+timeshift
 timevault
 timidity++
 TiMidity++
@@ -3149,6 +3274,7 @@ tora
 tora-oracle
 tor-arm-gui
 torcs
+torrent-file-editor
 tortoisehg
 totem
 touchegg-gui
@@ -3211,6 +3337,7 @@ ugene
 uget
 uidesigner
 uim
+ulcc
 ultimatestunts
 ultracopier
 ultrastardx
@@ -3235,6 +3362,8 @@ utopia-documents
 v4l2ucp
 v4l-utils-qt4
 v4l-utils-qt5
+valentina
+valentina-tape
 valknut
 valyriatear
 vapor
@@ -3277,6 +3406,7 @@ vnc
 VOCP
 VOCP-web
 vodafone-mobile-connect
+vokoscreenNG
 volume.app
 voxelands
 vpnpptp
@@ -3294,8 +3424,10 @@ warsow
 warzone2100
 wavbreaker
 wavesurfer
+webcamoid
 webmin
 weboob
+weechat
 wengophone
 wesnoth
 wherever-racer
@@ -3343,6 +3475,7 @@ wmwebcam
 wmwifi
 wmxss
 woeusb
+wordgrinder-gui
 wordnet
 wordwarvi
 worker
@@ -3353,6 +3486,8 @@ wormux
 wsjtx
 wxcam
 wxdesmume
+wxformbuilder
+wxglade
 wxGlade
 wxhexeditor
 wxmaxima
@@ -3364,6 +3499,7 @@ wyrmsun
 x11-driver-video-nvidia173
 x11-driver-video-nvidia304
 x11-driver-video-nvidia340
+x11-driver-video-nvidia390
 x11-driver-video-nvidia96xx
 x11-driver-video-nvidia-current
 x11vnc
@@ -3394,6 +3530,7 @@ xcpc
 xcpustate
 xdaliclock
 xdg-desktop-portal-gtk
+xdg-desktop-portal-kde
 xdiskusage
 xdosemu
 xdrawchem
@@ -3415,6 +3552,7 @@ xfce4-notifyd
 xfce4-panel
 xfce4-panel-profiles
 xfce4-power-manager
+xfce4-screensaver
 xfce4-screenshooter
 xfce4-sensors
 xfce4-sensors-plugin
@@ -3461,6 +3599,7 @@ xombrero
 xonotic
 xosview
 xournal
+xournalpp
 xpad
 xpaint
 xpat2
@@ -3532,6 +3671,8 @@ yoshimi
 youki
 yourik
 youtube-dl-gui
+yubikey-personalization-gui
+yubioath-desktop
 yudit
 yumex-dnf
 z42tool
@@ -3549,7 +3690,10 @@ zhu3d
 zim
 zinf
 zint-qt
+zrythm
 zsnes
+zulucrypt
+zvvonlinetv
 zygrib
 zynaddsubfx
 zynjacku
