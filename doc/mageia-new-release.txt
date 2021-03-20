@@ -1,9 +1,11 @@
+(This doc is for when we want to do the update before the official release)
+
 Listing here the steps just before a new Mageia is released:
 * update the applications list from rpmdrake's gui.lst
-** download latest rpmdrake rpm from cauldron
-** extract it and get from it the /usr/share/rpmdrake/gui.lst file
-** sort the file
-** meld it with data/distros/mageia/applications.txt. We add new applications but never remove missing ones because they can exist in older versions of the distro. Remove one entry only if it's clearly misleading.
+** download http://gitweb.mageia.org/software/rpmdrake/tree/gui.lst
+** cat gui.lst data/distros/mageia/applications.txt > applications-tmp.txt
+** sort applications-tmp.txt -u > data/distros/mageia/applications.txt
+** (We add new applications but never remove missing ones because they can exist in older versions of the distro. Remove one entry only if it's clearly misleading.)
 * make the "comparison" page not show newer versions from other distros, to not distract from comparison to previous release (gray lines can be frightening)
 * make the "comparison" page not show backports, if any (or use an option in the URL)
 * give the comparison links for blog post, web page and press release
