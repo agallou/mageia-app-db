@@ -4,7 +4,7 @@
     "license": "AGPL-3.0",
     "private": true,
     "dependencies": {
-        "jquery": "1.5.1",
+        "jquery": "git@github.com:jquery/jquery-dist.git#1.5.1",
         "js-base64": "2.1.9",
         "tipsy": "git@github.com:jaz303/tipsy.git#*",
         "fontawesome": "3.2.1",

@@ -80,7 +80,7 @@ class RoboFile extends \Robo\Tasks
     {
         $this
             ->taskConcat([
-                'bower_components/jquery/jquery.js',
+                'bower_components/jquery-dist/jquery.js',
                 'bower_components/js-base64/base64.js',
 
                 'bower_components/tipsy/src/javascripts/jquery.tipsy.js',
