@@ -1,1 +1,24 @@
 see http://www.madb.org/
+
+
+# Install with docker
+
+## Prerequisites
+
+* docker
+* make
+
+## Steps
+
+* Run the command `make docker-up`.
+* In another window, run `make init`, in ordr to generate propel files and fill the database with test data
+
+## Configuration
+
+You can update the `docker-compose.override.yml` file to choose wich ports will be used.
+
+## Tools
+
+This commands are available :
+* `./docker/bin/bash` : to acces a shell
+* `./docker/bin/mysql` : to access the database

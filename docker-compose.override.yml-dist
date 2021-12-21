@@ -1,0 +1,8 @@
+version: "2.1"
+services:
+  dbapp:
+    ports:
+      - "3208:3306"
+  apachephp:
+    ports:
+      - "9505:80"
