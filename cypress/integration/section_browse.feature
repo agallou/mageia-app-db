@@ -18,3 +18,11 @@ Feature: Browse
     Then I should see "Education : 2"
     Then I should see "Games : 3"
 
+  Scenario: I can go to the groups page with a global filter change
+
+    Given I go to the page "/"
+    When I click on the link "Groups"
+    And I click on the "Distribution" filter
+    And I click on the "Mageia 3" filter value
+    Then I should see "Education : 38"
+    Then I should see "Games : 264"
