@@ -8,3 +8,7 @@ And(`I click on the {string} filter value`, clickedItem => {
   cy.get(`.widgetcontent div`).contains(clickedItem).click({force: true})
 })
 
+
+And(`I click on more filters`, () => {
+  cy.get('#linkmore').click()
+})

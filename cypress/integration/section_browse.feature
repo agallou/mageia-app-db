@@ -26,3 +26,11 @@ Feature: Browse
     And I click on the "Mageia 3" filter value
     Then I should see "Education : 38"
     Then I should see "Games : 264"
+
+# Il a des erreurs JS en faisant cela, on ajoute donc pas de test pour le moment
+#  Scenario: I can go to the groups page with a filter that is on "more" and as a search field
+#
+#    Given I go to the page "/"
+#    When I click on the link "Groups"
+#    When I click on more filters
+#    And I click on the "Group" filter
