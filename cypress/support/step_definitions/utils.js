@@ -7,3 +7,11 @@ Then(`I should see {string}`, expectedString => {
 And(`I click on the link {string}`, clickedItem => {
   cy.contains("a", clickedItem).click()
 })
+
+And(`I click on the next pagination link`, () => {
+  cy.get("#pagerbuttons:first a > i.icon-angle-right").click()
+})
+
+And(`I click on the latest pagination link`, () => {
+  cy.get("#pagerbuttons:first a > i.icon-double-angle-right").click()
+})
