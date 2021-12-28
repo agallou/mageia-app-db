@@ -30,6 +30,12 @@ vendor: composer.phar
 docker-up: log/docker-build data_dirs
 	docker-compose up
 
+docker-up--detached: log/docker-build data_dirs
+	docker-compose up -d
+
+docker-down:
+	docker-compose down
+
 docker-build: log/docker-build
 
 log/docker-build: data_dirs docker-compose.yml docker-compose.override.yml $(shell find docker/dockerfiles -type f)
@@ -66,6 +72,13 @@ config/propel.ini:
 
 config/madbconf.yml:
 	cp config/madbconf.yml-dist config/madbconf.yml
+
+.PHONY: test-functional
+test-functional:
+	make docker-up--detached
+	make init
+	make test-functional--run
+	make docker-down
 
 .PHONY: test-functional--run
 test-functional--run:
