@@ -10,8 +10,9 @@ CURRENT_GID=$(shell id -g)
 
 init: config
 	docker-compose run --rm cli /bin/bash -l -c "make vendors"
-	docker-compose run --rm cli /bin/bash -l -c "./symfony  propel:build-all --no-confirmation"
-	docker-compose run --rm cli /bin/bash -l -c "./symfony  madb:insert-test-data"
+	docker-compose run --rm cli /bin/bash -l -c "./symfony propel:build-all --no-confirmation"
+	docker-compose run --rm cli /bin/bash -l -c "./symfony madb:insert-test-data"
+	docker-compose run --rm cli /bin/bash -l -c "./symfony cache:clear"
 
 # vendors
 vendors: vendor
