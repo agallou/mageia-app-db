@@ -33,3 +33,18 @@ services:
     links:
       - dbapp
     command: "false"
+  cypress:
+    build:
+      context: ./docker/dockerfiles/cypress
+    depends_on:
+      - apachephp
+    links:
+      - apachephp
+    volumes:
+      - ./:/e2e
+      - /tmp/.X11-unix:/tmp/.X11-unix
+    working_dir: /e2e
+    command: "true"
+    ipc: host
+    environment:
+      - CYPRESS_baseUrl=http://apachephp:80/frontend.php

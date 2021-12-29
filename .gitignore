@@ -63,3 +63,5 @@ bin/update-versions
 .docker-build
 docker-compose.override.yml
 docker/data
+
+cypress/videos

@@ -67,3 +67,16 @@ config/propel.ini:
 config/madbconf.yml:
 	cp config/madbconf.yml-dist config/madbconf.yml
 
+.PHONY: test-functional--run
+test-functional--run:
+	docker-compose build cypress
+	#on donne l'accès à x11 depuis le container
+	xhost local:root
+	docker-compose run -e DISPLAY=unix$(DISPLAY) cypress
+
+.PHONY: test-functional--open
+test-functional--open:
+	docker-compose build cypress
+	#on donne l'accès à x11 depuis le container
+	xhost local:root
+	docker-compose run --entrypoint=cypress -e DISPLAY=unix$(DISPLAY) cypress open --project ./

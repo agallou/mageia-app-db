@@ -8,7 +8,7 @@ class madbInsertTestDataTask extends madbBaseTask
   {
     $this->namespace = 'madb';
     $this->name      = 'insert-test-data';
-    $this->defaultUrl = 'http://stormi.lautre.net/fichiers/mageia/test-data-mageia.zip';
+    $this->defaultUrl = 'https://github.com/agallou/mageia-app-db/releases/download/v0.1/data.zip';
     $this->addOption('url', null, sfCommandOption::PARAMETER_OPTIONAL, 'url where test data are stored. Setting this option forces the download even if test data already are on the local system.', null);
 
     $this->propel = true;
