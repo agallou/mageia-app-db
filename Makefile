@@ -10,8 +10,9 @@ CURRENT_GID=$(shell id -g)
 
 init: config
 	docker-compose run --rm cli /bin/bash -l -c "make vendors"
-	docker-compose run --rm cli /bin/bash -l -c "./symfony  propel:build-all --no-confirmation"
-	docker-compose run --rm cli /bin/bash -l -c "./symfony  madb:insert-test-data"
+	docker-compose run --rm cli /bin/bash -l -c "./symfony propel:build-all --no-confirmation"
+	docker-compose run --rm cli /bin/bash -l -c "./symfony madb:insert-test-data"
+	docker-compose run --rm cli /bin/bash -l -c "./symfony cache:clear"
 
 # vendors
 vendors: vendor
@@ -29,6 +30,12 @@ vendor: composer.phar
 # docker
 docker-up: log/docker-build data_dirs
 	docker-compose up
+
+docker-up--detached: log/docker-build data_dirs
+	docker-compose up -d
+
+docker-down:
+	docker-compose down
 
 docker-build: log/docker-build
 
@@ -67,12 +74,17 @@ config/propel.ini:
 config/madbconf.yml:
 	cp config/madbconf.yml-dist config/madbconf.yml
 
+.PHONY: test-functional
+test-functional:
+	make docker-up--detached
+	make init
+	make test-functional--run
+	make docker-down
+
 .PHONY: test-functional--run
 test-functional--run:
 	docker-compose build cypress
-	#on donne l'accès à x11 depuis le container
-	xhost local:root
-	docker-compose run -e DISPLAY=unix$(DISPLAY) cypress
+	docker-compose run cypress
 
 .PHONY: test-functional--open
 test-functional--open:
