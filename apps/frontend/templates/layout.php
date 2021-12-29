@@ -40,7 +40,7 @@
                                   'action_to' => 'list',
                               )) ?>
                           </div>
-                          <div id="user_infos">
+                          <div id="user_infos" style="display: none">
                               <div class="header-button">
                                   <?php if ($sf_user->isAuthenticated()): ?>
                                       <?php echo link_to('<i class="icon-signout"></i><br />Logout', url_for('@sf_guard_signout')); ?>
