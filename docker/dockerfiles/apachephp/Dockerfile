@@ -1,4 +1,4 @@
-FROM php:5.6-apache
+FROM php:7.2-apache
 
 RUN echo "date.timezone=Europe/Paris" >> "/usr/local/etc/php/php.ini"
 RUN docker-php-ext-install pdo_mysql

@@ -3,24 +3,23 @@
     "description" : "A social package browser",
     "license"     : "AGPL-3.0",
     "require": {
-        "symfony/symfony1"                    : "v1.4.20",
-        "sfGuardPlugin"       : "v4.0.2",
-        "omCrossAppUrlPlugin" : "v1.0.2",
+        "local/sf-guard-plugin"       : "v4.0.2",
+        "local/om-cross-app-url-plugin" : "v1.0.2",
         "propel/sf-propel-o-r-m-plugin"       : "dev-master",
         "openlss/func-format" : "0.0.8",
-        "natxet/CssMin": "3.0.x",
+        "natxet/cssmin": "3.0.x",
         "codegyre/robo": "^0.7",
         "leafo/scssphp": "0.2.0",
         "patchwork/jsqueeze": "2.0.x",
-        "beelab/bowerphp": "0.5.3",
+        "beelab/bowerphp": "*",
         "agallou/robo-hash": "^0.0.1",
-        "henrikbjorn/lurker": "1.2.0"
-
+        "henrikbjorn/lurker": "1.2.0",
+        "friendsofsymfony1/symfony1": "^1.5"
 },
     "require-dev": {
-        "atoum/sfAtoumPlugin": "dev-master",
+        "atoum/sfatoumplugin": "dev-master",
         "atoum/atoum"        : "dev-master",
-        "elXHProfPlugin"     : "1.0.0"
+        "local/el-x-h-prof-plugin"     : "1.0.0"
     },
     "scripts": {
         "post-install-cmd": [
@@ -28,7 +27,11 @@
         ]
     },
     "config": {
-        "bin-dir": "bin"
+        "bin-dir": "bin",
+        "allow-plugins": {
+            "composer/installers": true,
+            "samsonasik/package-versions": true
+        }
     },
     "repositories": [
         {
@@ -49,7 +52,7 @@
        {
             "type": "package",
             "package": {
-                "name": "sfGuardPlugin",
+                "name": "local/sf-guard-plugin",
                 "type" : "symfony1-plugin",
                 "require" : {
                   "composer/installers":"*"
@@ -65,7 +68,7 @@
        {
             "type": "package",
             "package": {
-                "name": "omCrossAppUrlPlugin",
+                "name": "local/om-cross-app-url-plugin",
                 "type" : "symfony1-plugin",
                 "require" : {
                   "composer/installers":"*"
@@ -81,7 +84,7 @@
         {
             "type": "package",
             "package": {
-                "name": "elXHProfPlugin",
+                "name": "local/el-x-h-prof-plugin",
                 "type" : "symfony1-plugin",
                 "require" : {
                   "composer/installers":"*"

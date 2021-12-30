@@ -59,6 +59,7 @@ bin/pscss
 bin/robo
 bin/semver
 bin/update-versions
+bin/symfony
 
 .docker-build
 docker-compose.override.yml

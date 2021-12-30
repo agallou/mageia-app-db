@@ -1,0 +1,9 @@
+{
+    "bower-dependencies": {
+        "jquery-colorbox": "https://github.com/jackmoore/colorbox.git#1.6.3",
+        "fontawesome": "https://github.com/FortAwesome/Font-Awesome.git#3.2.1",
+        "jquery": "https://github.com/jquery/jquery-dist.git#1.5.1",
+        "js-base64": "https://github.com/dankogai/js-base64.git#2.1.9"
+    },
+    "npm-dependencies": []
+}

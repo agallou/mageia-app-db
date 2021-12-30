@@ -1,6 +1,6 @@
 <?php
 
-require_once dirname(__FILE__).'/../vendor/symfony/symfony1/lib/autoload/sfCoreAutoload.class.php';
+require_once dirname(__FILE__).'/../vendor/friendsofsymfony1/symfony1/lib/autoload/sfCoreAutoload.class.php';
 sfCoreAutoload::register();
 
 class ProjectConfiguration extends sfProjectConfiguration
@@ -19,13 +19,16 @@ class ProjectConfiguration extends sfProjectConfiguration
       (in_array(sfConfig::get('sf_environment'), array('dev', 'test')) || (sfConfig::get('sf_environment') === null))
     )
     {
-      require_once sfConfig::get('sf_root_dir') . '/vendor/symfony/symfony1/lib/helper/AssetHelper.php';
+      require_once sfConfig::get('sf_root_dir') . '/vendor/friendsofsymfony1/symfony1/lib/helper/AssetHelper.php';
       $this->enablePlugins('sfAtoumPlugin', 'elXHProfPlugin');
     }
 
     sfConfig::set('sf_phing_path', sfConfig::get('sf_root_dir') .'/vendor/phing/phing');
     sfConfig::set('sf_propel_path', sfConfig::get('sf_root_dir') .'/vendor/propel/propel1');
     sfConfig::set('sf_atoum_path', dirname(__FILE__) . '/../vendor/atoum/atoum');
+
+
+    require_once __DIR__ . '/../vendor/swiftmailer/swiftmailer/lib/swift_required.php';
 
     require_once dirname(__FILE__).'/../vendor/openlss/func-format/func/format.php';
   }
