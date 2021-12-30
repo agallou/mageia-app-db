@@ -1,4 +1,4 @@
-FROM php:5.6
+FROM php:7.2
 
 RUN echo "date.timezone=Europe/Paris" >> "/usr/local/etc/php/php.ini"
 RUN docker-php-ext-install pdo_mysql
@@ -10,7 +10,7 @@ RUN docker-php-ext-install zip
 
 RUN apt-get update && apt-get install -y git
 RUN apt-get update && apt-get install -y wget unzip
-RUN apt-get update && apt-get install -y wget mysql-client
+RUN apt-get update && apt-get install -y wget default-mysql-client
 
 ARG uid=1008
 ARG gid=1008
