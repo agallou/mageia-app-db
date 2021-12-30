@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1cb62e0053d63530acdd69113648371d",
+    "content-hash": "cffffe1d4076eacbe4c1d6ed93856e99",
     "packages": [
         {
             "name": "agallou/robo-hash",
@@ -323,6 +323,57 @@
             "time": "2021-09-13T08:19:44+00:00"
         },
         {
+            "name": "friendsofsymfony1/symfony1",
+            "version": "v1.5.13",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/FriendsOfSymfony1/symfony1.git",
+                "reference": "28fa68237e2ed4aa25eba8c453884b0a681c4ce2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/FriendsOfSymfony1/symfony1/zipball/28fa68237e2ed4aa25eba8c453884b0a681c4ce2",
+                "reference": "28fa68237e2ed4aa25eba8c453884b0a681c4ce2",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0",
+                "swiftmailer/swiftmailer": "~5.2"
+            },
+            "require-dev": {
+                "psr/log": "*"
+            },
+            "suggest": {
+                "friendsofsymfony1/doctrine1": "Doctrine plugin",
+                "propel/sf-propel-o-r-m-plugin": "Propel plugin",
+                "psr/log": "Psr logger"
+            },
+            "bin": [
+                "data/bin/symfony"
+            ],
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.5-dev"
+                }
+            },
+            "autoload": {
+                "files": [
+                    "autoload.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Fork of symfony 1.4 with dic, form enhancements, latest swiftmailer and better performance",
+            "support": {
+                "issues": "https://github.com/FriendsOfSymfony1/symfony1/issues",
+                "source": "https://github.com/FriendsOfSymfony1/symfony1/tree/master"
+            },
+            "time": "2020-06-08T13:48:13+00:00"
+        },
+        {
             "name": "guzzle/guzzle",
             "version": "v3.8.1",
             "source": {
@@ -605,7 +656,7 @@
             "time": "2015-08-25T15:37:56+00:00"
         },
         {
-            "name": "local/omcrossappurlplugin",
+            "name": "local/om-cross-app-url-plugin",
             "version": "1.0.2",
             "source": {
                 "type": "git",
@@ -618,7 +669,7 @@
             "type": "symfony1-plugin"
         },
         {
-            "name": "local/sfguardplugin",
+            "name": "local/sf-guard-plugin",
             "version": "4.0.2",
             "source": {
                 "type": "git",
@@ -907,6 +958,7 @@
                 "composer/installers": "*",
                 "propel/propel1": "~1.6"
             },
+            "default-branch": true,
             "type": "symfony1-plugin",
             "extra": {
                 "branch-alias": {
@@ -925,6 +977,10 @@
                 "propel",
                 "symfony"
             ],
+            "support": {
+                "issues": "https://github.com/propelorm/sfPropelORMPlugin/issues",
+                "source": "https://github.com/propelorm/sfPropelORMPlugin/tree/master"
+            },
             "time": "2019-03-19T19:53:01+00:00"
         },
         {
@@ -976,6 +1032,65 @@
                 "source": "https://github.com/php-fig/log/tree/1.1.4"
             },
             "time": "2021-05-03T11:20:27+00:00"
+        },
+        {
+            "name": "swiftmailer/swiftmailer",
+            "version": "v5.4.12",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/swiftmailer/swiftmailer.git",
+                "reference": "181b89f18a90f8925ef805f950d47a7190e9b950"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/swiftmailer/swiftmailer/zipball/181b89f18a90f8925ef805f950d47a7190e9b950",
+                "reference": "181b89f18a90f8925ef805f950d47a7190e9b950",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.3"
+            },
+            "require-dev": {
+                "mockery/mockery": "~0.9.1",
+                "symfony/phpunit-bridge": "~3.2"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "5.4-dev"
+                }
+            },
+            "autoload": {
+                "files": [
+                    "lib/swift_required.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Chris Corbyn"
+                },
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com"
+                }
+            ],
+            "description": "Swiftmailer, free feature-rich PHP mailer",
+            "homepage": "https://swiftmailer.symfony.com",
+            "keywords": [
+                "email",
+                "mail",
+                "mailer"
+            ],
+            "support": {
+                "issues": "https://github.com/swiftmailer/swiftmailer/issues",
+                "source": "https://github.com/swiftmailer/swiftmailer/tree/v5.4.12"
+            },
+            "abandoned": "symfony/mailer",
+            "time": "2018-07-31T09:26:32+00:00"
         },
         {
             "name": "symfony/config",
@@ -1779,7 +1894,7 @@
             "time": "2012-11-30T08:32:39+00:00"
         },
         {
-            "name": "local/elxhprofplugin",
+            "name": "local/el-x-h-prof-plugin",
             "version": "1.0.0",
             "source": {
                 "type": "git",
