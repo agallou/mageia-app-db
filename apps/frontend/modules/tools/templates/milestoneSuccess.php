@@ -52,5 +52,9 @@ In the last two weeks:
 
 <?php use_helper('JavascriptBase') ?>
 <?php echo javascript_tag() ?>
-  $('#filtering-border').remove();
+    var element = document.querySelector('#filtering-border');
+    if (element) {
+        element.parentNode.removeChild(element);
+    }
 <?php end_javascript_tag() ?>
+
